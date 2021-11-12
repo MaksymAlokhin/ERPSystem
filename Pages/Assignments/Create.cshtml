@@ -1,0 +1,63 @@
+﻿@page
+@model ERPSystem.Pages.Assignments.CreateModel
+
+@{
+    ViewData["Title"] = "Create";
+    Layout = "~/Pages/Shared/_Layout.cshtml";
+}
+
+<h1>Create</h1>
+
+<h4>Assignment</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form method="post">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="Assignment.Name" class="control-label"></label>
+                <input asp-for="Assignment.Name" class="form-control" />
+                <span asp-validation-for="Assignment.Name" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Assignment.FTE" class="control-label"></label>
+                <input asp-for="Assignment.FTE" class="form-control" />
+                <span asp-validation-for="Assignment.FTE" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Assignment.StartDate" class="control-label"></label>
+                <input asp-for="Assignment.StartDate" class="form-control" />
+                <span asp-validation-for="Assignment.StartDate" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Assignment.EndDate" class="control-label"></label>
+                <input asp-for="Assignment.EndDate" class="form-control" />
+                <span asp-validation-for="Assignment.EndDate" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Assignment.AssignmentState" class="control-label"></label>
+                <select asp-for="Assignment.AssignmentState" class="form-control"></select>
+                <span asp-validation-for="Assignment.AssignmentState" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Assignment.PositionId" class="control-label"></label>
+                <select asp-for="Assignment.PositionId" class ="form-control" asp-items="ViewBag.PositionId"></select>
+            </div>
+            <div class="form-group">
+                <label asp-for="Assignment.EmployeeId" class="control-label"></label>
+                <select asp-for="Assignment.EmployeeId" class ="form-control" asp-items="ViewBag.EmployeeId"></select>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-page="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

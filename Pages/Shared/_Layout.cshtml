@@ -18,11 +18,23 @@
                 </button>
                 <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
                     <ul class="navbar-nav flex-grow-1">
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-page="/Index">Home</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-page="/Privacy">Privacy</a>
+                        <li class="nav-item dropdown">
+                            <a class="nav-link text-dark dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Menu</a>
+                            <div class="dropdown-menu">
+                                <a class="dropdown-item" href="/Assignments/Index">Assignments</a>
+                                <a class="dropdown-item" href="/Branches/Index">Branches</a>
+                                <a class="dropdown-item" href="/Companies/Index">Companies</a>
+                                <a class="dropdown-item" href="/Departments/Index">Departments</a>
+                                <a class="dropdown-item" href="/Employees/Index">Employees</a>
+                                <a class="dropdown-item" href="/GeneralManagers/Index">GeneralManagers</a>
+                                <a class="dropdown-item" href="/Mentors/Index">Mentors</a>
+                                <a class="dropdown-item" href="/Positions/Index">Positions</a>
+                                <a class="dropdown-item" href="/ProjectManagers/Index">ProjectManagers</a>
+                                <a class="dropdown-item" href="/Projects/Index">Projects</a>
+                                <a class="dropdown-item" href="/Reports/Index">Reports</a>
+
+                                @*<div class="dropdown-divider"></div>*@
+                            </div>
                         </li>
                     </ul>
                     <partial name="_LoginPartial" />
