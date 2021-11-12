@@ -1,0 +1,50 @@
+﻿@page
+@model ERPSystem.Pages.Mentors.DetailsModel
+
+@{
+    ViewData["Title"] = "Details";
+    Layout = "~/Pages/Shared/_Layout.cshtml";
+}
+
+<h1>Details</h1>
+
+<div>
+    <h4>Mentor</h4>
+    <hr />
+    <dl class="row">
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Mentor.FirstName)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Mentor.FirstName)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Mentor.LastName)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Mentor.LastName)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Mentor.DateOfBirth)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Mentor.DateOfBirth)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Mentor.EmployeeState)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Mentor.EmployeeState)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Mentor.Branch)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Mentor.Branch.Name)
+        </dd>
+    </dl>
+</div>
+<div>
+    <a asp-page="./Edit" asp-route-id="@Model.Mentor.Id">Edit</a> |
+    <a asp-page="./Index">Back to List</a>
+</div>
