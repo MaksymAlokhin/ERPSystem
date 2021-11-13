@@ -19,6 +19,11 @@
                 <select asp-for="ProjectManager.ProjectId" class="form-control" asp-items="ViewBag.ProjectId"></select>
                 <span asp-validation-for="ProjectManager.ProjectId" class="text-danger"></span>
             </div>
+            <div class="form-group">
+                <label asp-for="ProjectManager.BranchId" class="control-label"></label>
+                <select asp-for="ProjectManager.BranchId" class="form-control" asp-items="ViewBag.BranchId"></select>
+                <span asp-validation-for="ProjectManager.BranchId" class="text-danger"></span>
+            </div>
             <input type="hidden" asp-for="ProjectManager.Id" />
             <div class="form-group">
                 <label asp-for="ProjectManager.FirstName" class="control-label"></label>
@@ -39,11 +44,6 @@
                 <label asp-for="ProjectManager.EmployeeState" class="control-label"></label>
                 <select asp-for="ProjectManager.EmployeeState" class="form-control"></select>
                 <span asp-validation-for="ProjectManager.EmployeeState" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="ProjectManager.BranchId" class="control-label"></label>
-                <select asp-for="ProjectManager.BranchId" class="form-control" asp-items="ViewBag.BranchId"></select>
-                <span asp-validation-for="ProjectManager.BranchId" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <input type="submit" value="Save" class="btn btn-primary" />

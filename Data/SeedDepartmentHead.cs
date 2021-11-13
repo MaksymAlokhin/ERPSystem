@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using static ERPSystem.Data.SeedDepartment;
 
 namespace ERPSystem.Data
 {
@@ -13,6 +14,7 @@ namespace ERPSystem.Data
         {
             FirstName = "Orlando",
             LastName = "Odom",
+            Department = WalmartProduction,
             DateOfBirth = DateTime.Parse("1995-02-20"),
             EmployeeState = EmployeeState.Active
         };
@@ -20,6 +22,7 @@ namespace ERPSystem.Data
         {
             FirstName = "Renee",
             LastName = "Harper",
+            Department = WalmartResearchAndDevelopment,
             DateOfBirth = DateTime.Parse("1998-04-14"),
             EmployeeState = EmployeeState.Active
         };
@@ -27,6 +30,7 @@ namespace ERPSystem.Data
         {
             FirstName = "Dominic",
             LastName = "Powers",
+            Department = WalmartPurchasing,
             DateOfBirth = DateTime.Parse("1996-09-07"),
             EmployeeState = EmployeeState.Active
         };
@@ -34,6 +38,7 @@ namespace ERPSystem.Data
         {
             FirstName = "Miranda",
             LastName = "Ward",
+            Department = WalmartMarketing,
             DateOfBirth = DateTime.Parse("1983-05-05"),
             EmployeeState = EmployeeState.Active
         };
@@ -41,6 +46,7 @@ namespace ERPSystem.Data
         {
             FirstName = "Petra",
             LastName = "Kinney",
+            Department = WalmartHumanResourceManagement,
             DateOfBirth = DateTime.Parse("1987-08-15"),
             EmployeeState = EmployeeState.Active
         };
@@ -48,6 +54,7 @@ namespace ERPSystem.Data
         {
             FirstName = "Cassidy",
             LastName = "Blackwell",
+            Department = WalmartAccountingandFinance,
             DateOfBirth = DateTime.Parse("1981-08-14"),
             EmployeeState = EmployeeState.Active
         };
@@ -55,6 +62,7 @@ namespace ERPSystem.Data
         {
             FirstName = "Ramona",
             LastName = "Cannon",
+            Department = AmazonProduction,
             DateOfBirth = DateTime.Parse("1990-12-01"),
             EmployeeState = EmployeeState.Active
         };
@@ -62,6 +70,7 @@ namespace ERPSystem.Data
         {
             FirstName = "Naida",
             LastName = "Vance",
+            Department = AmazonResearchAndDevelopment,
             DateOfBirth = DateTime.Parse("1984-01-27"),
             EmployeeState = EmployeeState.Active
         };
@@ -69,6 +78,7 @@ namespace ERPSystem.Data
         {
             FirstName = "Jin",
             LastName = "Garrett",
+            Department = AmazonPurchasing,
             DateOfBirth = DateTime.Parse("1982-08-23"),
             EmployeeState = EmployeeState.Active
         };
@@ -76,6 +86,7 @@ namespace ERPSystem.Data
         {
             FirstName = "Giselle",
             LastName = "Whitaker",
+            Department = AmazonMarketing,
             DateOfBirth = DateTime.Parse("1988-12-05"),
             EmployeeState = EmployeeState.Active
         };
@@ -83,6 +94,7 @@ namespace ERPSystem.Data
         {
             FirstName = "Brenden",
             LastName = "Emerson",
+            Department = AmazonHumanResourceManagement,
             DateOfBirth = DateTime.Parse("1984-10-03"),
             EmployeeState = EmployeeState.Active
         };
@@ -90,6 +102,7 @@ namespace ERPSystem.Data
         {
             FirstName = "Brody",
             LastName = "Roach",
+            Department = AmazonAccountingandFinance,
             DateOfBirth = DateTime.Parse("1999-10-31"),
             EmployeeState = EmployeeState.Active
         };
@@ -97,6 +110,7 @@ namespace ERPSystem.Data
         {
             FirstName = "Walter",
             LastName = "Ashley",
+            Department = AppleProduction,
             DateOfBirth = DateTime.Parse("1995-11-30"),
             EmployeeState = EmployeeState.Active
         };
@@ -104,6 +118,7 @@ namespace ERPSystem.Data
         {
             FirstName = "Vanna",
             LastName = "Stafford",
+            Department = AppleResearchAndDevelopment,
             DateOfBirth = DateTime.Parse("1984-08-04"),
             EmployeeState = EmployeeState.Active
         };
@@ -111,6 +126,7 @@ namespace ERPSystem.Data
         {
             FirstName = "Yen",
             LastName = "Jennings",
+            Department = ApplePurchasing,
             DateOfBirth = DateTime.Parse("1993-02-07"),
             EmployeeState = EmployeeState.Active
         };
@@ -118,6 +134,7 @@ namespace ERPSystem.Data
         {
             FirstName = "Zephr",
             LastName = "Kelley",
+            Department = AppleMarketing,
             DateOfBirth = DateTime.Parse("1991-03-31"),
             EmployeeState = EmployeeState.Active
         };
@@ -125,6 +142,7 @@ namespace ERPSystem.Data
         {
             FirstName = "Elliott",
             LastName = "Moran",
+            Department = AppleHumanResourceManagement,
             DateOfBirth = DateTime.Parse("1998-12-03"),
             EmployeeState = EmployeeState.Active
         };
@@ -132,6 +150,7 @@ namespace ERPSystem.Data
         {
             FirstName = "Dale",
             LastName = "West",
+            Department = AppleAccountingandFinance,
             DateOfBirth = DateTime.Parse("1990-05-09"),
             EmployeeState = EmployeeState.Active
         };
@@ -139,6 +158,7 @@ namespace ERPSystem.Data
         {
             FirstName = "Hannah",
             LastName = "Garza",
+            Department = FordMotorProduction,
             DateOfBirth = DateTime.Parse("1986-09-15"),
             EmployeeState = EmployeeState.Active
         };
@@ -146,6 +166,7 @@ namespace ERPSystem.Data
         {
             FirstName = "Bree",
             LastName = "Coleman",
+            Department = FordMotorResearchAndDevelopment,
             DateOfBirth = DateTime.Parse("1990-05-17"),
             EmployeeState = EmployeeState.Active
         };
@@ -153,6 +174,7 @@ namespace ERPSystem.Data
         {
             FirstName = "Dalton",
             LastName = "Christensen",
+            Department = FordMotorPurchasing,
             DateOfBirth = DateTime.Parse("1994-03-10"),
             EmployeeState = EmployeeState.Active
         };
@@ -160,6 +182,7 @@ namespace ERPSystem.Data
         {
             FirstName = "Iliana",
             LastName = "Ewing",
+            Department = FordMotorMarketing,
             DateOfBirth = DateTime.Parse("1988-04-21"),
             EmployeeState = EmployeeState.Active
         };
@@ -167,6 +190,7 @@ namespace ERPSystem.Data
         {
             FirstName = "Dieter",
             LastName = "Grant",
+            Department = FordMotorHumanResourceManagement,
             DateOfBirth = DateTime.Parse("1997-05-01"),
             EmployeeState = EmployeeState.Active
         };
@@ -174,6 +198,7 @@ namespace ERPSystem.Data
         {
             FirstName = "Nasim",
             LastName = "Bonner",
+            Department = FordMotorAccountingandFinance,
             DateOfBirth = DateTime.Parse("1999-05-21"),
             EmployeeState = EmployeeState.Active
         };
@@ -181,6 +206,7 @@ namespace ERPSystem.Data
         {
             FirstName = "Rahim",
             LastName = "Butler",
+            Department = FedExProduction,
             DateOfBirth = DateTime.Parse("1990-10-20"),
             EmployeeState = EmployeeState.Active
         };
@@ -188,6 +214,7 @@ namespace ERPSystem.Data
         {
             FirstName = "Dorothy",
             LastName = "Burt",
+            Department = FedExResearchAndDevelopment,
             DateOfBirth = DateTime.Parse("2000-04-29"),
             EmployeeState = EmployeeState.Active
         };
@@ -195,6 +222,7 @@ namespace ERPSystem.Data
         {
             FirstName = "Daquan",
             LastName = "Mack",
+            Department = FedExPurchasing,
             DateOfBirth = DateTime.Parse("1981-07-19"),
             EmployeeState = EmployeeState.Active
         };
@@ -202,6 +230,7 @@ namespace ERPSystem.Data
         {
             FirstName = "Phyllis",
             LastName = "Curtis",
+            Department = FedExMarketing,
             DateOfBirth = DateTime.Parse("1988-02-28"),
             EmployeeState = EmployeeState.Active
         };
@@ -209,6 +238,7 @@ namespace ERPSystem.Data
         {
             FirstName = "Giselle",
             LastName = "Knight",
+            Department = FedExHumanResourceManagement,
             DateOfBirth = DateTime.Parse("1984-05-29"),
             EmployeeState = EmployeeState.Active
         };
@@ -216,6 +246,7 @@ namespace ERPSystem.Data
         {
             FirstName = "Stacy",
             LastName = "Ramirez",
+            Department = FedExAccountingandFinance,
             DateOfBirth = DateTime.Parse("1989-04-05"),
             EmployeeState = EmployeeState.Active
         };
@@ -223,6 +254,7 @@ namespace ERPSystem.Data
         {
             FirstName = "Winter",
             LastName = "Guy",
+            Department = BankOfAmericaProduction,
             DateOfBirth = DateTime.Parse("1989-03-25"),
             EmployeeState = EmployeeState.Active
         };
@@ -230,6 +262,7 @@ namespace ERPSystem.Data
         {
             FirstName = "Ocean",
             LastName = "Malone",
+            Department = BankOfAmericaResearchAndDevelopment,
             DateOfBirth = DateTime.Parse("2001-06-20"),
             EmployeeState = EmployeeState.Active
         };
@@ -237,6 +270,7 @@ namespace ERPSystem.Data
         {
             FirstName = "Lavinia",
             LastName = "Hubbard",
+            Department = BankOfAmericaPurchasing,
             DateOfBirth = DateTime.Parse("1981-02-06"),
             EmployeeState = EmployeeState.Active
         };
@@ -244,6 +278,7 @@ namespace ERPSystem.Data
         {
             FirstName = "Deacon",
             LastName = "Roberts",
+            Department = BankOfAmericaMarketing,
             DateOfBirth = DateTime.Parse("1984-11-10"),
             EmployeeState = EmployeeState.Active
         };
@@ -251,6 +286,7 @@ namespace ERPSystem.Data
         {
             FirstName = "Anastasia",
             LastName = "Gibbs",
+            Department = BankOfAmericaHumanResourceManagement,
             DateOfBirth = DateTime.Parse("1997-10-09"),
             EmployeeState = EmployeeState.Active
         };
@@ -258,6 +294,7 @@ namespace ERPSystem.Data
         {
             FirstName = "Brynn",
             LastName = "Rivas",
+            Department = BankOfAmericaAccountingandFinance,
             DateOfBirth = DateTime.Parse("1981-07-30"),
             EmployeeState = EmployeeState.Active
         };
@@ -265,6 +302,7 @@ namespace ERPSystem.Data
         {
             FirstName = "Laith",
             LastName = "Vargas",
+            Department = JohnsonAndJohnsonProduction,
             DateOfBirth = DateTime.Parse("1994-08-24"),
             EmployeeState = EmployeeState.Active
         };
@@ -272,6 +310,7 @@ namespace ERPSystem.Data
         {
             FirstName = "Dylan",
             LastName = "Mcbride",
+            Department = JohnsonAndJohnsonResearchAndDevelopment,
             DateOfBirth = DateTime.Parse("1981-05-16"),
             EmployeeState = EmployeeState.Active
         };
@@ -279,6 +318,7 @@ namespace ERPSystem.Data
         {
             FirstName = "Hadley",
             LastName = "Fisher",
+            Department = JohnsonAndJohnsonPurchasing,
             DateOfBirth = DateTime.Parse("1987-08-19"),
             EmployeeState = EmployeeState.Active
         };
@@ -286,6 +326,7 @@ namespace ERPSystem.Data
         {
             FirstName = "Aphrodite",
             LastName = "Rich",
+            Department = JohnsonAndJohnsonMarketing,
             DateOfBirth = DateTime.Parse("1996-02-06"),
             EmployeeState = EmployeeState.Active
         };
@@ -293,6 +334,7 @@ namespace ERPSystem.Data
         {
             FirstName = "Lynn",
             LastName = "Huffman",
+            Department = JohnsonAndJohnsonHumanResourceManagement,
             DateOfBirth = DateTime.Parse("1991-09-18"),
             EmployeeState = EmployeeState.Active
         };
@@ -300,6 +342,7 @@ namespace ERPSystem.Data
         {
             FirstName = "Anthony",
             LastName = "Hammond",
+            Department = JohnsonAndJohnsonAccountingandFinance,
             DateOfBirth = DateTime.Parse("1997-07-16"),
             EmployeeState = EmployeeState.Active
         };
@@ -307,6 +350,7 @@ namespace ERPSystem.Data
         {
             FirstName = "Jordan",
             LastName = "Tate",
+            Department = FacebookProduction,
             DateOfBirth = DateTime.Parse("1987-09-26"),
             EmployeeState = EmployeeState.Active
         };
@@ -314,6 +358,7 @@ namespace ERPSystem.Data
         {
             FirstName = "Jeanette",
             LastName = "Estes",
+            Department = FacebookResearchAndDevelopment,
             DateOfBirth = DateTime.Parse("1996-03-18"),
             EmployeeState = EmployeeState.Active
         };
@@ -321,6 +366,7 @@ namespace ERPSystem.Data
         {
             FirstName = "Montana",
             LastName = "Battle",
+            Department = FacebookPurchasing,
             DateOfBirth = DateTime.Parse("1992-12-25"),
             EmployeeState = EmployeeState.Active
         };
@@ -328,6 +374,7 @@ namespace ERPSystem.Data
         {
             FirstName = "Haley",
             LastName = "Daniels",
+            Department = FacebookMarketing,
             DateOfBirth = DateTime.Parse("1993-05-15"),
             EmployeeState = EmployeeState.Active
         };
@@ -335,6 +382,7 @@ namespace ERPSystem.Data
         {
             FirstName = "Otto",
             LastName = "Clements",
+            Department = FacebookHumanResourceManagement,
             DateOfBirth = DateTime.Parse("1997-09-04"),
             EmployeeState = EmployeeState.Active
         };
@@ -342,6 +390,7 @@ namespace ERPSystem.Data
         {
             FirstName = "Ray",
             LastName = "Franco",
+            Department = FacebookAccountingandFinance,
             DateOfBirth = DateTime.Parse("2000-07-26"),
             EmployeeState = EmployeeState.Active
         };
@@ -349,6 +398,7 @@ namespace ERPSystem.Data
         {
             FirstName = "Karyn",
             LastName = "Montoya",
+            Department = AlphabetProduction,
             DateOfBirth = DateTime.Parse("1996-12-27"),
             EmployeeState = EmployeeState.Active
         };
@@ -356,6 +406,7 @@ namespace ERPSystem.Data
         {
             FirstName = "Amber",
             LastName = "Albert",
+            Department = AlphabetResearchAndDevelopment,
             DateOfBirth = DateTime.Parse("1981-04-26"),
             EmployeeState = EmployeeState.Active
         };
@@ -363,6 +414,7 @@ namespace ERPSystem.Data
         {
             FirstName = "Harlan",
             LastName = "Suarez",
+            Department = AlphabetPurchasing,
             DateOfBirth = DateTime.Parse("1991-01-09"),
             EmployeeState = EmployeeState.Active
         };
@@ -370,6 +422,7 @@ namespace ERPSystem.Data
         {
             FirstName = "Sigourney",
             LastName = "Knight",
+            Department = AlphabetMarketing,
             DateOfBirth = DateTime.Parse("1993-03-13"),
             EmployeeState = EmployeeState.Active
         };
@@ -377,6 +430,7 @@ namespace ERPSystem.Data
         {
             FirstName = "Rigel",
             LastName = "Walls",
+            Department = AlphabetHumanResourceManagement,
             DateOfBirth = DateTime.Parse("1992-04-30"),
             EmployeeState = EmployeeState.Active
         };
@@ -384,6 +438,7 @@ namespace ERPSystem.Data
         {
             FirstName = "Martina",
             LastName = "Harvey",
+            Department = AlphabetAccountingandFinance,
             DateOfBirth = DateTime.Parse("1991-05-02"),
             EmployeeState = EmployeeState.Active
         };
@@ -391,6 +446,7 @@ namespace ERPSystem.Data
         {
             FirstName = "Lydia",
             LastName = "Vincent",
+            Department = ExxonMobilProduction,
             DateOfBirth = DateTime.Parse("1989-10-17"),
             EmployeeState = EmployeeState.Active
         };
@@ -398,6 +454,7 @@ namespace ERPSystem.Data
         {
             FirstName = "Florence",
             LastName = "Hutchinson",
+            Department = ExxonMobilResearchAndDevelopment,
             DateOfBirth = DateTime.Parse("1985-07-07"),
             EmployeeState = EmployeeState.Active
         };
@@ -405,6 +462,7 @@ namespace ERPSystem.Data
         {
             FirstName = "Hayden",
             LastName = "Walton",
+            Department = ExxonMobilPurchasing,
             DateOfBirth = DateTime.Parse("2000-10-15"),
             EmployeeState = EmployeeState.Active
         };
@@ -412,6 +470,7 @@ namespace ERPSystem.Data
         {
             FirstName = "Dane",
             LastName = "English",
+            Department = ExxonMobilMarketing,
             DateOfBirth = DateTime.Parse("2001-04-07"),
             EmployeeState = EmployeeState.Active
         };
@@ -419,6 +478,7 @@ namespace ERPSystem.Data
         {
             FirstName = "Orson",
             LastName = "Morton",
+            Department = ExxonMobilHumanResourceManagement,
             DateOfBirth = DateTime.Parse("1997-11-30"),
             EmployeeState = EmployeeState.Active
         };
@@ -426,94 +486,75 @@ namespace ERPSystem.Data
         {
             FirstName = "Alfreda",
             LastName = "Cline",
+            Department = ExxonMobilAccountingandFinance,
             DateOfBirth = DateTime.Parse("1999-01-07"),
             EmployeeState = EmployeeState.Active
-        };
-        public static DepartmentHead dh061 = new DepartmentHead
-        {
-            FirstName = "Brittany",
-            LastName = "Savage",
-            DateOfBirth = DateTime.Parse("1992-03-18"),
-            EmployeeState = EmployeeState.Inactive
-        };
-        public static DepartmentHead dh062 = new DepartmentHead
-        {
-            FirstName = "Herman",
-            LastName = "Casey",
-            DateOfBirth = DateTime.Parse("1993-10-14"),
-            EmployeeState = EmployeeState.Inactive
-        };
-        public static DepartmentHead dh063 = new DepartmentHead
-        {
-            FirstName = "Yoko",
-            LastName = "Johnson",
-            DateOfBirth = DateTime.Parse("1995-05-29"),
-            EmployeeState = EmployeeState.Inactive
-        };
-        public static DepartmentHead dh064 = new DepartmentHead
-        {
-            FirstName = "Sonya",
-            LastName = "Conner",
-            DateOfBirth = DateTime.Parse("1983-03-05"),
-            EmployeeState = EmployeeState.Inactive
-        };
-        public static DepartmentHead dh065 = new DepartmentHead
-        {
-            FirstName = "Isaiah",
-            LastName = "Holmes",
-            DateOfBirth = DateTime.Parse("1997-02-12"),
-            EmployeeState = EmployeeState.Inactive
-        };
-        public static DepartmentHead dh066 = new DepartmentHead
-        {
-            FirstName = "Wing",
-            LastName = "Trujillo",
-            DateOfBirth = DateTime.Parse("1992-10-27"),
-            EmployeeState = EmployeeState.Inactive
-        };
-        public static DepartmentHead dh067 = new DepartmentHead
-        {
-            FirstName = "Tatum",
-            LastName = "Hudson",
-            DateOfBirth = DateTime.Parse("1990-02-23"),
-            EmployeeState = EmployeeState.Inactive
-        };
-        public static DepartmentHead dh068 = new DepartmentHead
-        {
-            FirstName = "Erasmus",
-            LastName = "Mays",
-            DateOfBirth = DateTime.Parse("1999-05-15"),
-            EmployeeState = EmployeeState.Inactive
-        };
-        public static DepartmentHead dh069 = new DepartmentHead
-        {
-            FirstName = "Keegan",
-            LastName = "Curry",
-            DateOfBirth = DateTime.Parse("1993-06-03"),
-            EmployeeState = EmployeeState.Inactive
-        };
-        public static DepartmentHead dh070 = new DepartmentHead
-        {
-            FirstName = "Hanna",
-            LastName = "Bell",
-            DateOfBirth = DateTime.Parse("1996-08-26"),
-            EmployeeState = EmployeeState.Inactive
         };
         #endregion
         public static List<DepartmentHead> data;
         static SeedDepartmentHead()
         {
             data = new List<DepartmentHead>();
-            data.Add(dh061);
-            data.Add(dh062);
-            data.Add(dh063);
-            data.Add(dh064);
-            data.Add(dh065);
-            data.Add(dh066);
-            data.Add(dh067);
-            data.Add(dh068);
-            data.Add(dh069);
-            data.Add(dh070);
+            data.Add(dh001);
+            data.Add(dh002);
+            data.Add(dh003);
+            data.Add(dh004);
+            data.Add(dh005);
+            data.Add(dh006);
+            data.Add(dh007);
+            data.Add(dh008);
+            data.Add(dh009);
+            data.Add(dh010);
+            data.Add(dh011);
+            data.Add(dh012);
+            data.Add(dh013);
+            data.Add(dh014);
+            data.Add(dh015);
+            data.Add(dh016);
+            data.Add(dh017);
+            data.Add(dh018);
+            data.Add(dh019);
+            data.Add(dh020);
+            data.Add(dh021);
+            data.Add(dh022);
+            data.Add(dh023);
+            data.Add(dh024);
+            data.Add(dh025);
+            data.Add(dh026);
+            data.Add(dh027);
+            data.Add(dh028);
+            data.Add(dh029);
+            data.Add(dh030);
+            data.Add(dh031);
+            data.Add(dh032);
+            data.Add(dh033);
+            data.Add(dh034);
+            data.Add(dh035);
+            data.Add(dh036);
+            data.Add(dh037);
+            data.Add(dh038);
+            data.Add(dh039);
+            data.Add(dh040);
+            data.Add(dh041);
+            data.Add(dh042);
+            data.Add(dh043);
+            data.Add(dh044);
+            data.Add(dh045);
+            data.Add(dh046);
+            data.Add(dh047);
+            data.Add(dh048);
+            data.Add(dh049);
+            data.Add(dh050);
+            data.Add(dh051);
+            data.Add(dh052);
+            data.Add(dh053);
+            data.Add(dh054);
+            data.Add(dh055);
+            data.Add(dh056);
+            data.Add(dh057);
+            data.Add(dh058);
+            data.Add(dh059);
+            data.Add(dh060);
         }
     }
 }

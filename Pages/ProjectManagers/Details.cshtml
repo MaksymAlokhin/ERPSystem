@@ -19,6 +19,12 @@
             @Html.DisplayFor(model => model.ProjectManager.Project.Id)
         </dd>
         <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.ProjectManager.Branch)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.ProjectManager.Branch.Name)
+        </dd>
+        <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.ProjectManager.FirstName)
         </dt>
         <dd class="col-sm-10">
@@ -41,12 +47,6 @@
         </dt>
         <dd class="col-sm-10">
             @Html.DisplayFor(model => model.ProjectManager.EmployeeState)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.ProjectManager.Branch)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.ProjectManager.Branch.Name)
         </dd>
     </dl>
 </div>

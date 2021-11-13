@@ -58,23 +58,13 @@ namespace ERPSystem.Data
                 .HasConversion<string>()
                 .HasMaxLength(16);
             #endregion
-            //Many-to-many cycles of cascade deletes fix
-            //https://github.com/dotnet/efcore/issues/22803#issuecomment-729221687
-            //https://docs.microsoft.com/en-us/ef/core/saving/cascade-delete#optional-relationship-with-dependentschildren-loaded
-            modelBuilder.Entity<Employee>()
-                        .HasMany(f => f.Mentors)
-                        .WithMany(g => g.Mentees)
-                        .UsingEntity<Dictionary<string, object>>(
-                            "MentorsMentees",
-                            j => j.HasOne<Mentor>().WithMany().OnDelete(DeleteBehavior.Cascade),
-                            j => j.HasOne<Employee>().WithMany().OnDelete(DeleteBehavior.ClientCascade));
+            #region Cascade Delete Cycles Fix
             //One-to-many cycles of cascade deletes fix
             //https://docs.microsoft.com/en-us/ef/core/saving/cascade-delete
-            modelBuilder.Entity<Branch>()
-                        .HasMany(e => e.Employees)
-                        .WithOne(e => e.Branch)
+            modelBuilder.Entity<Position>()
+                        .HasMany(e => e.Assignments)
+                        .WithOne(e => e.Position)
                         .OnDelete(DeleteBehavior.ClientCascade);
-            
             //One-to-one cycles of cascade deletes fix
             modelBuilder.Entity<Department>()
                         .HasOne(e => e.DepartmentHead)
@@ -84,6 +74,7 @@ namespace ERPSystem.Data
                         .HasOne(e => e.ProjectManager)
                         .WithOne(e => e.Project)
                         .OnDelete(DeleteBehavior.ClientCascade);
+            #endregion
         }
         #region DBSet
         public DbSet<Assignment> Assignments { get; set; }
@@ -92,12 +83,14 @@ namespace ERPSystem.Data
         public DbSet<Department> Departments { get; set; }
         public DbSet<DepartmentHead> DepartmentHeads { get; set; }
         public DbSet<Employee> Employees { get; set; }
+        public DbSet<Employee> Workers { get; set; }
         public DbSet<GeneralManager> GeneralManagers { get; set; }
         public DbSet<Mentor> Mentors { get; set; }
         public DbSet<Position> Positions { get; set; }
         public DbSet<Project> Projects { get; set; }
         public DbSet<ProjectManager> ProjectManagers { get; set; }
         public DbSet<Report> Reports { get; set; }
+        public DbSet<ERPSystem.Models.Worker> Worker { get; set; }
         #endregion
     }
 }

@@ -3,7 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using static ERPSystem.Data.SeedEmployee;
+using static ERPSystem.Data.SeedCompany;
 
 namespace ERPSystem.Data
 {
@@ -14,542 +14,427 @@ namespace ERPSystem.Data
         {
             Name = "Asia",
             BranchState = BranchState.Active,
-            Employees = new List<Employee>
-            {
-                e001,e002,e003,e004,e005,e006,e007,e008,e009,e010,e011,e012,e013,e014,e015
-            }
+            Company = Walmart
         };
         public static Branch WalmartAfrica = new Branch
         {
             Name = "Africa",
             BranchState = BranchState.Active,
-            Employees = new List<Employee>
-            {
-                e016,e017,e018,e019,e020,e021,e022,e023,e024,e025,e026,e027,e028,e029,e030
-            }
+            Company = Walmart
         };
         public static Branch WalmartNorthAmerica = new Branch
         {
             Name = "North America",
             BranchState = BranchState.Active,
-            Employees = new List<Employee>
-            {
-                e031,e032,e033,e034,e035,e036,e037,e038,e039,e040,e041,e042,e043,e044,e045
-            }
+            Company = Walmart
         };
         public static Branch WalmartSouthAmerica = new Branch
         {
             Name = "South America",
             BranchState = BranchState.Active,
-            Employees = new List<Employee>
-            {
-                e046,e047,e048,e049,e050,e051,e052,e053,e054,e055,e056,e057,e058,e059,e060
-            }
+            Company = Walmart
         };
         public static Branch WalmartEurope = new Branch
         {
             Name = "Europe",
             BranchState = BranchState.Active,
-            Employees = new List<Employee>
-            {
-                e061,e062,e063,e064,e065,e066,e067,e068,e069,e070,e071,e072,e073,e074,e075
-            }
+            Company = Walmart
         };
         public static Branch WalmartAustralia = new Branch
         {
             Name = "Australia",
             BranchState = BranchState.Active,
-            Employees = new List<Employee>
-            {
-                e076,e077,e078,e079,e080,e081,e082,e083,e084,e085,e086,e087,e088,e089,e090
-            }
+            Company = Walmart
         };
         public static Branch AmazonAsia = new Branch
         {
             Name = "Asia",
             BranchState = BranchState.Active,
-            Employees = new List<Employee>
-            {
-
-            }
+            Company = Amazon
         };
         public static Branch AmazonAfrica = new Branch
         {
             Name = "Africa",
             BranchState = BranchState.Active,
-            Employees = new List<Employee>
-            {
-
-            }
+            Company = Amazon
         };
         public static Branch AmazonNorthAmerica = new Branch
         {
             Name = "North America",
             BranchState = BranchState.Active,
-            Employees = new List<Employee>
-            {
-
-            }
+            Company = Amazon
         };
         public static Branch AmazonSouthAmerica = new Branch
         {
             Name = "South America",
             BranchState = BranchState.Active,
-            Employees = new List<Employee>
-            {
-
-            }
+            Company = Amazon
         };
         public static Branch AmazonEurope = new Branch
         {
             Name = "Europe",
             BranchState = BranchState.Active,
-            Employees = new List<Employee>
-            {
-
-            }
+            Company = Amazon
         };
         public static Branch AmazonAustralia = new Branch
         {
             Name = "Australia",
             BranchState = BranchState.Active,
-            Employees = new List<Employee>
-            {
-
-            }
+            Company = Amazon
         };
         public static Branch AppleAsia = new Branch
         {
             Name = "Asia",
             BranchState = BranchState.Active,
-            Employees = new List<Employee>
-            {
-
-            }
+            Company = Apple
         };
         public static Branch AppleAfrica = new Branch
         {
             Name = "Africa",
             BranchState = BranchState.Active,
-            Employees = new List<Employee>
-            {
-
-            }
+            Company = Amazon
         };
         public static Branch AppleNorthAmerica = new Branch
         {
             Name = "North America",
             BranchState = BranchState.Active,
-            Employees = new List<Employee>
-            {
-
-            }
+            Company = Apple
         };
         public static Branch AppleSouthAmerica = new Branch
         {
             Name = "South America",
             BranchState = BranchState.Active,
-            Employees = new List<Employee>
-            {
-
-            }
+            Company = Apple
         };
         public static Branch AppleEurope = new Branch
         {
             Name = "Europe",
             BranchState = BranchState.Active,
-            Employees = new List<Employee>
-            {
-
-            }
+            Company = Apple
         };
         public static Branch AppleAustralia = new Branch
         {
             Name = "Australia",
             BranchState = BranchState.Active,
-            Employees = new List<Employee>
-            {
-
-            }
+            Company = Apple
         };
         public static Branch FordMotorAsia = new Branch
         {
             Name = "Asia",
             BranchState = BranchState.Active,
-            Employees = new List<Employee>
-            {
-
-            }
+            Company = FordMotor
         };
         public static Branch FordMotorAfrica = new Branch
         {
             Name = "Africa",
             BranchState = BranchState.Active,
-            Employees = new List<Employee>
-            {
-
-            }
+            Company = FordMotor
         };
         public static Branch FordMotorNorthAmerica = new Branch
         {
             Name = "North America",
             BranchState = BranchState.Active,
-            Employees = new List<Employee>
-            {
-
-            }
+            Company = FordMotor
         };
         public static Branch FordMotorSouthAmerica = new Branch
         {
             Name = "South America",
             BranchState = BranchState.Active,
-            Employees = new List<Employee>
-            {
-
-            }
+            Company = FordMotor
         };
         public static Branch FordMotorEurope = new Branch
         {
             Name = "Europe",
             BranchState = BranchState.Active,
-            Employees = new List<Employee>
-            {
-
-            }
+            Company = FordMotor
         };
         public static Branch FordMotorAustralia = new Branch
         {
             Name = "Australia",
             BranchState = BranchState.Active,
-            Employees = new List<Employee>
-            {
-
-            }
+            Company = FordMotor
         };
-        public static Branch MicrosoftAsia = new Branch
+        public static Branch FedExAsia = new Branch
         {
             Name = "Asia",
             BranchState = BranchState.Active,
-            Employees = new List<Employee>
-            {
-
-            }
+            Company = FedEx
         };
-        public static Branch MicrosoftAfrica = new Branch
+        public static Branch FedExAfrica = new Branch
         {
             Name = "Africa",
             BranchState = BranchState.Active,
-            Employees = new List<Employee>
-            {
-
-            }
+            Company = FedEx
         };
-        public static Branch MicrosoftNorthAmerica = new Branch
+        public static Branch FedExNorthAmerica = new Branch
         {
             Name = "North America",
             BranchState = BranchState.Active,
-            Employees = new List<Employee>
-            {
-
-            }
+            Company = FedEx
         };
-        public static Branch MicrosoftSouthAmerica = new Branch
+        public static Branch FedExSouthAmerica = new Branch
         {
             Name = "South America",
             BranchState = BranchState.Active,
-            Employees = new List<Employee>
-            {
-
-            }
+            Company = FedEx
         };
-        public static Branch MicrosoftEurope = new Branch
+        public static Branch FedExEurope = new Branch
         {
             Name = "Europe",
             BranchState = BranchState.Active,
-            Employees = new List<Employee>
-            {
-
-            }
+            Company = FedEx
         };
-        public static Branch MicrosoftAustralia = new Branch
+        public static Branch FedExAustralia = new Branch
         {
             Name = "Australia",
             BranchState = BranchState.Active,
-            Employees = new List<Employee>
-            {
-
-            }
+            Company = FedEx
         };
         public static Branch BankOfAmericaAsia = new Branch
         {
             Name = "Asia",
             BranchState = BranchState.Active,
-            Employees = new List<Employee>
-            {
-
-            }
+            Company = BankOfAmerica
         };
         public static Branch BankOfAmericaAfrica = new Branch
         {
             Name = "Africa",
             BranchState = BranchState.Active,
-            Employees = new List<Employee>
-            {
-
-            }
+            Company = BankOfAmerica
         };
         public static Branch BankOfAmericaNorthAmerica = new Branch
         {
             Name = "North America",
             BranchState = BranchState.Active,
-            Employees = new List<Employee>
-            {
-
-            }
+            Company = BankOfAmerica
         };
         public static Branch BankOfAmericaSouthAmerica = new Branch
         {
             Name = "South America",
             BranchState = BranchState.Active,
-            Employees = new List<Employee>
-            {
-
-            }
+            Company = BankOfAmerica
         };
         public static Branch BankOfAmericaEurope = new Branch
         {
             Name = "Europe",
             BranchState = BranchState.Active,
-            Employees = new List<Employee>
-            {
-
-            }
+            Company = BankOfAmerica
         };
         public static Branch BankOfAmericaAustralia = new Branch
         {
             Name = "Australia",
             BranchState = BranchState.Active,
-            Employees = new List<Employee>
-            {
-
-            }
+            Company = BankOfAmerica
         };
         public static Branch JohnsonAndJohnsonAsia = new Branch
         {
             Name = "Asia",
             BranchState = BranchState.Active,
-            Employees = new List<Employee>
-            {
-
-            }
+            Company = JohnsonAndJohnson
         };
         public static Branch JohnsonAndJohnsonAfrica = new Branch
         {
             Name = "Africa",
             BranchState = BranchState.Active,
-            Employees = new List<Employee>
-            {
-
-            }
+            Company = JohnsonAndJohnson
         };
         public static Branch JohnsonAndJohnsonNorthAmerica = new Branch
         {
             Name = "North America",
             BranchState = BranchState.Active,
-            Employees = new List<Employee>
-            {
-
-            }
+            Company = JohnsonAndJohnson
         };
         public static Branch JohnsonAndJohnsonSouthAmerica = new Branch
         {
             Name = "South America",
             BranchState = BranchState.Active,
-            Employees = new List<Employee>
-            {
-
-            }
+            Company = JohnsonAndJohnson
         };
         public static Branch JohnsonAndJohnsonEurope = new Branch
         {
             Name = "Europe",
             BranchState = BranchState.Active,
-            Employees = new List<Employee>
-            {
-
-            }
+            Company = JohnsonAndJohnson
         };
         public static Branch JohnsonAndJohnsonAustralia = new Branch
         {
             Name = "Australia",
             BranchState = BranchState.Active,
-            Employees = new List<Employee>
-            {
-
-            }
+            Company = JohnsonAndJohnson
         };
         public static Branch FacebookAsia = new Branch
         {
             Name = "Asia",
             BranchState = BranchState.Active,
-            Employees = new List<Employee>
-            {
-
-            }
+            Company = Facebook
         };
         public static Branch FacebookAfrica = new Branch
         {
             Name = "Africa",
             BranchState = BranchState.Active,
-            Employees = new List<Employee>
-            {
-
-            }
+            Company = Facebook
         };
         public static Branch FacebookNorthAmerica = new Branch
         {
             Name = "North America",
             BranchState = BranchState.Active,
-            Employees = new List<Employee>
-            {
-
-            }
+            Company = Facebook
         };
         public static Branch FacebookSouthAmerica = new Branch
         {
             Name = "South America",
             BranchState = BranchState.Active,
-            Employees = new List<Employee>
-            {
-
-            }
+            Company = Facebook
         };
         public static Branch FacebookEurope = new Branch
         {
             Name = "Europe",
             BranchState = BranchState.Active,
-            Employees = new List<Employee>
-            {
-
-            }
+            Company = Facebook
         };
         public static Branch FacebookAustralia = new Branch
         {
             Name = "Australia",
             BranchState = BranchState.Active,
-            Employees = new List<Employee>
-            {
-
-            }
+            Company = Facebook
         };
         public static Branch AlphabetAsia = new Branch
         {
             Name = "Asia",
             BranchState = BranchState.Active,
-            Employees = new List<Employee>
-            {
-
-            }
+            Company = Alphabet
         };
         public static Branch AlphabetAfrica = new Branch
         {
             Name = "Africa",
             BranchState = BranchState.Active,
-            Employees = new List<Employee>
-            {
-
-            }
+            Company = Alphabet
         };
         public static Branch AlphabetNorthAmerica = new Branch
         {
             Name = "North America",
             BranchState = BranchState.Active,
-            Employees = new List<Employee>
-            {
-
-            }
+            Company = Alphabet
         };
         public static Branch AlphabetSouthAmerica = new Branch
         {
             Name = "South America",
             BranchState = BranchState.Active,
-            Employees = new List<Employee>
-            {
-
-            }
+            Company = Alphabet
         };
         public static Branch AlphabetEurope = new Branch
         {
             Name = "Europe",
             BranchState = BranchState.Active,
-            Employees = new List<Employee>
-            {
-
-            }
+            Company = Alphabet
         };
         public static Branch AlphabetAustralia = new Branch
         {
             Name = "Australia",
             BranchState = BranchState.Active,
-            Employees = new List<Employee>
-            {
-
-            }
+            Company = Alphabet
         };
         public static Branch ExxonMobilAsia = new Branch
         {
             Name = "Asia",
             BranchState = BranchState.Active,
-            Employees = new List<Employee>
-            {
-
-            }
+            Company = ExxonMobil
         };
         public static Branch ExxonMobilAfrica = new Branch
         {
             Name = "Africa",
             BranchState = BranchState.Active,
-            Employees = new List<Employee>
-            {
-
-            }
+            Company = ExxonMobil
         };
         public static Branch ExxonMobilNorthAmerica = new Branch
         {
             Name = "North America",
             BranchState = BranchState.Active,
-            Employees = new List<Employee>
-            {
-
-            }
+            Company = ExxonMobil
         };
         public static Branch ExxonMobilSouthAmerica = new Branch
         {
             Name = "South America",
             BranchState = BranchState.Active,
-            Employees = new List<Employee>
-            {
-
-            }
+            Company = ExxonMobil
         };
         public static Branch ExxonMobilEurope = new Branch
         {
             Name = "Europe",
             BranchState = BranchState.Active,
-            Employees = new List<Employee>
-            {
-
-            }
+            Company = ExxonMobil
         };
         public static Branch ExxonMobilAustralia = new Branch
         {
             Name = "Australia",
             BranchState = BranchState.Active,
-            Employees = new List<Employee>
-            {
-
-            }
+            Company = ExxonMobil
         };
         #endregion
+        public static List<Branch> data;
+        static SeedBranch()
+        {
+            data = new List<Branch>();
+            data.Add(WalmartAsia);
+            data.Add(WalmartAfrica);
+            data.Add(WalmartNorthAmerica);
+            data.Add(WalmartSouthAmerica);
+            data.Add(WalmartEurope);
+            data.Add(WalmartAustralia);
+            data.Add(AmazonAsia);
+            data.Add(AmazonAfrica);
+            data.Add(AmazonNorthAmerica);
+            data.Add(AmazonSouthAmerica);
+            data.Add(AmazonEurope);
+            data.Add(AmazonAustralia);
+            data.Add(AppleAsia);
+            data.Add(AppleAfrica);
+            data.Add(AppleNorthAmerica);
+            data.Add(AppleSouthAmerica);
+            data.Add(AppleEurope);
+            data.Add(AppleAustralia);
+            data.Add(FordMotorAsia);
+            data.Add(FordMotorAfrica);
+            data.Add(FordMotorNorthAmerica);
+            data.Add(FordMotorSouthAmerica);
+            data.Add(FordMotorEurope);
+            data.Add(FordMotorAustralia);
+            data.Add(FedExAsia);
+            data.Add(FedExAfrica);
+            data.Add(FedExNorthAmerica);
+            data.Add(FedExSouthAmerica);
+            data.Add(FedExEurope);
+            data.Add(FedExAustralia);
+            data.Add(BankOfAmericaAsia);
+            data.Add(BankOfAmericaAfrica);
+            data.Add(BankOfAmericaNorthAmerica);
+            data.Add(BankOfAmericaSouthAmerica);
+            data.Add(BankOfAmericaEurope);
+            data.Add(BankOfAmericaAustralia);
+            data.Add(JohnsonAndJohnsonAsia);
+            data.Add(JohnsonAndJohnsonAfrica);
+            data.Add(JohnsonAndJohnsonNorthAmerica);
+            data.Add(JohnsonAndJohnsonSouthAmerica);
+            data.Add(JohnsonAndJohnsonEurope);
+            data.Add(JohnsonAndJohnsonAustralia);
+            data.Add(FacebookAsia);
+            data.Add(FacebookAfrica);
+            data.Add(FacebookNorthAmerica);
+            data.Add(FacebookSouthAmerica);
+            data.Add(FacebookEurope);
+            data.Add(FacebookAustralia);
+            data.Add(AlphabetAsia);
+            data.Add(AlphabetAfrica);
+            data.Add(AlphabetNorthAmerica);
+            data.Add(AlphabetSouthAmerica);
+            data.Add(AlphabetEurope);
+            data.Add(AlphabetAustralia);
+            data.Add(ExxonMobilAsia);
+            data.Add(ExxonMobilAfrica);
+            data.Add(ExxonMobilNorthAmerica);
+            data.Add(ExxonMobilSouthAmerica);
+            data.Add(ExxonMobilEurope);
+            data.Add(ExxonMobilAustralia);
+        }
     }
 }

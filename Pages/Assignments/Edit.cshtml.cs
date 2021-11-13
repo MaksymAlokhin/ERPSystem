@@ -31,15 +31,15 @@ namespace ERPSystem.Pages.Assignments
             }
 
             Assignment = await _context.Assignments
-                .Include(a => a.Employee)
-                .Include(a => a.Position).FirstOrDefaultAsync(m => m.Id == id);
+                .Include(a => a.Position)
+                .Include(a => a.Worker).FirstOrDefaultAsync(m => m.Id == id);
 
             if (Assignment == null)
             {
                 return NotFound();
             }
-           ViewData["EmployeeId"] = new SelectList(_context.Employees, "Id", "Discriminator");
            ViewData["PositionId"] = new SelectList(_context.Positions, "Id", "Name");
+           ViewData["WorkerId"] = new SelectList(_context.Set<Worker>(), "Id", "Discriminator");
             return Page();
         }
 

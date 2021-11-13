@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using ERPSystem.Data;
 using ERPSystem.Models;
 
-namespace ERPSystem.Pages.Employees
+namespace ERPSystem.Pages.Workers
 {
     public class IndexModel : PageModel
     {
@@ -19,12 +19,12 @@ namespace ERPSystem.Pages.Employees
             _context = context;
         }
 
-        public IList<Employee> Employee { get;set; }
+        public IList<Worker> Worker { get;set; }
 
         public async Task OnGetAsync()
         {
-            Employee = await _context.Employees
-                .Include(e => e.Branch).ToListAsync();
+            Worker = await _context.Worker
+                .Include(w => w.Branch).ToListAsync();
         }
     }
 }

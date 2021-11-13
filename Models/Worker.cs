@@ -5,11 +5,10 @@ using System.Threading.Tasks;
 
 namespace ERPSystem.Models
 {
-    public class ProjectManager : Employee
+    public class Worker : Employee
     {
         //Navigation properties
-        public int ProjectId { get; set; }
-        public Project Project { get; set; }
+        public ICollection<Assignment> Assignments { get; set; }
         public ICollection<Mentor> Mentors { get; set; }
     }
 }
