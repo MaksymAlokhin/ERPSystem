@@ -18,9 +18,6 @@
                 @Html.DisplayNameFor(model => model.ProjectManager[0].Project)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.ProjectManager[0].Branch)
-            </th>
-            <th>
                 @Html.DisplayNameFor(model => model.ProjectManager[0].FirstName)
             </th>
             <th>
@@ -32,6 +29,9 @@
             <th>
                 @Html.DisplayNameFor(model => model.ProjectManager[0].EmployeeState)
             </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ProjectManager[0].Branch)
+            </th>
             <th></th>
         </tr>
     </thead>
@@ -40,9 +40,6 @@
         <tr>
             <td>
                 @Html.DisplayFor(modelItem => item.Project.Id)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Branch.Name)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.FirstName)
@@ -55,6 +52,9 @@
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.EmployeeState)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Branch.Name)
             </td>
             <td>
                 <a asp-page="./Edit" asp-route-id="@item.Id">Edit</a> |

@@ -31,12 +31,14 @@ namespace ERPSystem.Pages.GeneralManagers
             }
 
             GeneralManager = await _context.GeneralManagers
+                .Include(g => g.Branch)
                 .Include(g => g.Company).FirstOrDefaultAsync(m => m.Id == id);
 
             if (GeneralManager == null)
             {
                 return NotFound();
             }
+           ViewData["BranchId"] = new SelectList(_context.Branches, "Id", "Name");
            ViewData["CompanyId"] = new SelectList(_context.Companies, "Id", "Name");
             return Page();
         }

@@ -29,6 +29,9 @@
             <th>
                 @Html.DisplayNameFor(model => model.GeneralManager[0].EmployeeState)
             </th>
+            <th>
+                @Html.DisplayNameFor(model => model.GeneralManager[0].Branch)
+            </th>
             <th></th>
         </tr>
     </thead>
@@ -49,6 +52,9 @@
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.EmployeeState)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Branch.Name)
             </td>
             <td>
                 <a asp-page="./Edit" asp-route-id="@item.Id">Edit</a> |

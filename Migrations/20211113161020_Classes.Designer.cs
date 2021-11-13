@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ERPSystem.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20211113150419_Classes")]
+    [Migration("20211113161020_Classes")]
     partial class Classes
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -33,14 +33,14 @@ namespace ERPSystem.Migrations
                         .HasMaxLength(16)
                         .HasColumnType("nvarchar(16)");
 
+                    b.Property<int>("EmployeeId")
+                        .HasColumnType("int");
+
                     b.Property<DateTime>("EndDate")
                         .HasColumnType("datetime2");
 
                     b.Property<double>("FTE")
                         .HasColumnType("float");
-
-                    b.Property<int?>("MentorId")
-                        .HasColumnType("int");
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -53,16 +53,11 @@ namespace ERPSystem.Migrations
                     b.Property<DateTime>("StartDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("WorkerId")
-                        .HasColumnType("int");
-
                     b.HasKey("Id");
 
-                    b.HasIndex("MentorId");
+                    b.HasIndex("EmployeeId");
 
                     b.HasIndex("PositionId");
-
-                    b.HasIndex("WorkerId");
 
                     b.ToTable("Assignments");
                 });
@@ -553,9 +548,11 @@ namespace ERPSystem.Migrations
 
             modelBuilder.Entity("ERPSystem.Models.Assignment", b =>
                 {
-                    b.HasOne("ERPSystem.Models.Mentor", null)
+                    b.HasOne("ERPSystem.Models.Employee", "Employee")
                         .WithMany("Assignments")
-                        .HasForeignKey("MentorId");
+                        .HasForeignKey("EmployeeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("ERPSystem.Models.Position", "Position")
                         .WithMany("Assignments")
@@ -563,15 +560,9 @@ namespace ERPSystem.Migrations
                         .OnDelete(DeleteBehavior.ClientCascade)
                         .IsRequired();
 
-                    b.HasOne("ERPSystem.Models.Worker", "Worker")
-                        .WithMany("Assignments")
-                        .HasForeignKey("WorkerId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                    b.Navigation("Employee");
 
                     b.Navigation("Position");
-
-                    b.Navigation("Worker");
                 });
 
             modelBuilder.Entity("ERPSystem.Models.Branch", b =>
@@ -767,6 +758,11 @@ namespace ERPSystem.Migrations
                     b.Navigation("Projects");
                 });
 
+            modelBuilder.Entity("ERPSystem.Models.Employee", b =>
+                {
+                    b.Navigation("Assignments");
+                });
+
             modelBuilder.Entity("ERPSystem.Models.Position", b =>
                 {
                     b.Navigation("Assignments");
@@ -786,8 +782,6 @@ namespace ERPSystem.Migrations
 
             modelBuilder.Entity("ERPSystem.Models.Mentor", b =>
                 {
-                    b.Navigation("Assignments");
-
                     b.Navigation("Mentees");
                 });
 
@@ -798,8 +792,6 @@ namespace ERPSystem.Migrations
 
             modelBuilder.Entity("ERPSystem.Models.Worker", b =>
                 {
-                    b.Navigation("Assignments");
-
                     b.Navigation("Mentors");
                 });
 #pragma warning restore 612, 618

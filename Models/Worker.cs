@@ -8,7 +8,6 @@ namespace ERPSystem.Models
     public class Worker : Employee
     {
         //Navigation properties
-        public ICollection<Assignment> Assignments { get; set; }
         public ICollection<Mentor> Mentors { get; set; }
     }
 }

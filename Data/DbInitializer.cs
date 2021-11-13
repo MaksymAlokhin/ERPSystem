@@ -45,6 +45,10 @@ namespace ERPSystem.Data
             {
                 context.AddRange(SeedProjectManager.data);
             }
+            if (!context.GeneralManagers.Any())
+            {
+                context.AddRange(SeedGeneralManager.data);
+            }
             if (!context.Positions.Any())
             {
                 context.AddRange(SeedPosition.data);

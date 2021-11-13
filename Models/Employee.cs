@@ -43,7 +43,7 @@ namespace ERPSystem.Models
         //Navigation properties
         public int? BranchId { get; set; }
         public Branch Branch { get; set; }
-
+        public ICollection<Assignment> Assignments { get; set; }
     }
     public enum EmployeeState
     {

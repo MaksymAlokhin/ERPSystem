@@ -339,21 +339,14 @@ namespace ERPSystem.Migrations
                     EndDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     AssignmentState = table.Column<string>(type: "nvarchar(16)", maxLength: 16, nullable: false),
                     PositionId = table.Column<int>(type: "int", nullable: false),
-                    WorkerId = table.Column<int>(type: "int", nullable: false),
-                    MentorId = table.Column<int>(type: "int", nullable: true)
+                    EmployeeId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Assignments", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Assignments_Employee_MentorId",
-                        column: x => x.MentorId,
-                        principalTable: "Employee",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
-                    table.ForeignKey(
-                        name: "FK_Assignments_Employee_WorkerId",
-                        column: x => x.WorkerId,
+                        name: "FK_Assignments_Employee_EmployeeId",
+                        column: x => x.EmployeeId,
                         principalTable: "Employee",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
@@ -426,19 +419,14 @@ namespace ERPSystem.Migrations
                 filter: "[NormalizedUserName] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Assignments_MentorId",
+                name: "IX_Assignments_EmployeeId",
                 table: "Assignments",
-                column: "MentorId");
+                column: "EmployeeId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Assignments_PositionId",
                 table: "Assignments",
                 column: "PositionId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Assignments_WorkerId",
-                table: "Assignments",
-                column: "WorkerId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Branches_CompanyId",
