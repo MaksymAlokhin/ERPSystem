@@ -24,7 +24,7 @@ namespace ERPSystem.Pages.GeneralManagers
         public async Task OnGetAsync()
         {
             GeneralManager = await _context.GeneralManagers
-                .Include(g => g.Branch).ToListAsync();
+                .Include(g => g.Company).ToListAsync();
         }
     }
 }

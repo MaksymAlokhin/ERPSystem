@@ -1,5 +1,5 @@
 ﻿@page
-@model ERPSystem.Pages.Employees.IndexModel
+@model ERPSystem.Pages.Workers.IndexModel
 
 @{
     ViewData["Title"] = "Index";
@@ -15,26 +15,29 @@
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.Employee[0].FirstName)
+                @Html.DisplayNameFor(model => model.Worker[0].Branch)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Employee[0].LastName)
+                @Html.DisplayNameFor(model => model.Worker[0].FirstName)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Employee[0].DateOfBirth)
+                @Html.DisplayNameFor(model => model.Worker[0].LastName)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Employee[0].EmployeeState)
+                @Html.DisplayNameFor(model => model.Worker[0].DateOfBirth)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Employee[0].Branch)
+                @Html.DisplayNameFor(model => model.Worker[0].EmployeeState)
             </th>
             <th></th>
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model.Employee) {
+@foreach (var item in Model.Worker) {
         <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Branch.Name)
+            </td>
             <td>
                 @Html.DisplayFor(modelItem => item.FirstName)
             </td>
@@ -46,9 +49,6 @@
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.EmployeeState)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Branch.Name)
             </td>
             <td>
                 <a asp-page="./Edit" asp-route-id="@item.Id">Edit</a> |

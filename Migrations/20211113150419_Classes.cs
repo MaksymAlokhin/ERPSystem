@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace ERPSystem.Migrations
 {
-    public partial class ClassesInitial : Migration
+    public partial class Classes : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -44,6 +44,20 @@ namespace ERPSystem.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_AspNetUsers", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Companies",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Name = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
+                    CompanyState = table.Column<string>(type: "nvarchar(16)", maxLength: 16, nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Companies", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -153,86 +167,6 @@ namespace ERPSystem.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Reports",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Hours = table.Column<double>(type: "float", nullable: false),
-                    ReportState = table.Column<string>(type: "nvarchar(16)", maxLength: 16, nullable: false),
-                    AssignmentId = table.Column<int>(type: "int", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Reports", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Employees",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    FirstName = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
-                    LastName = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
-                    DateOfBirth = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    EmployeeState = table.Column<string>(type: "nvarchar(16)", maxLength: 16, nullable: false),
-                    BranchId = table.Column<int>(type: "int", nullable: false),
-                    Discriminator = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    DepartmentId = table.Column<int>(type: "int", nullable: true),
-                    ProjectId = table.Column<int>(type: "int", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Employees", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Companies",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Name = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
-                    CompanyState = table.Column<string>(type: "nvarchar(16)", maxLength: 16, nullable: false),
-                    GeneralManagerId = table.Column<int>(type: "int", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Companies", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Companies_Employees_GeneralManagerId",
-                        column: x => x.GeneralManagerId,
-                        principalTable: "Employees",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "MentorsMentees",
-                columns: table => new
-                {
-                    MenteesId = table.Column<int>(type: "int", nullable: false),
-                    MentorsId = table.Column<int>(type: "int", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_MentorsMentees", x => new { x.MenteesId, x.MentorsId });
-                    table.ForeignKey(
-                        name: "FK_MentorsMentees_Employees_MenteesId",
-                        column: x => x.MenteesId,
-                        principalTable: "Employees",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
-                    table.ForeignKey(
-                        name: "FK_MentorsMentees_Employees_MentorsId",
-                        column: x => x.MentorsId,
-                        principalTable: "Employees",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "Branches",
                 columns: table => new
                 {
@@ -298,6 +232,79 @@ namespace ERPSystem.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Employee",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    FirstName = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
+                    LastName = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
+                    DateOfBirth = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    EmployeeState = table.Column<string>(type: "nvarchar(16)", maxLength: 16, nullable: false),
+                    BranchId = table.Column<int>(type: "int", nullable: true),
+                    Discriminator = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    MentorId = table.Column<int>(type: "int", nullable: true),
+                    DepartmentId = table.Column<int>(type: "int", nullable: true),
+                    CompanyId = table.Column<int>(type: "int", nullable: true),
+                    DepartmentHeadId = table.Column<int>(type: "int", nullable: true),
+                    ProjectManagerId = table.Column<int>(type: "int", nullable: true),
+                    WorkerId = table.Column<int>(type: "int", nullable: true),
+                    ProjectId = table.Column<int>(type: "int", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Employee", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Employee_Branches_BranchId",
+                        column: x => x.BranchId,
+                        principalTable: "Branches",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_Employee_Companies_CompanyId",
+                        column: x => x.CompanyId,
+                        principalTable: "Companies",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Employee_Departments_DepartmentId",
+                        column: x => x.DepartmentId,
+                        principalTable: "Departments",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_Employee_Employee_DepartmentHeadId",
+                        column: x => x.DepartmentHeadId,
+                        principalTable: "Employee",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_Employee_Employee_MentorId",
+                        column: x => x.MentorId,
+                        principalTable: "Employee",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_Employee_Employee_ProjectManagerId",
+                        column: x => x.ProjectManagerId,
+                        principalTable: "Employee",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_Employee_Employee_WorkerId",
+                        column: x => x.WorkerId,
+                        principalTable: "Employee",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_Employee_Projects_ProjectId",
+                        column: x => x.ProjectId,
+                        principalTable: "Projects",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Positions",
                 columns: table => new
                 {
@@ -332,21 +339,49 @@ namespace ERPSystem.Migrations
                     EndDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     AssignmentState = table.Column<string>(type: "nvarchar(16)", maxLength: 16, nullable: false),
                     PositionId = table.Column<int>(type: "int", nullable: false),
-                    EmployeeId = table.Column<int>(type: "int", nullable: false)
+                    WorkerId = table.Column<int>(type: "int", nullable: false),
+                    MentorId = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Assignments", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Assignments_Employees_EmployeeId",
-                        column: x => x.EmployeeId,
-                        principalTable: "Employees",
+                        name: "FK_Assignments_Employee_MentorId",
+                        column: x => x.MentorId,
+                        principalTable: "Employee",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_Assignments_Employee_WorkerId",
+                        column: x => x.WorkerId,
+                        principalTable: "Employee",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_Assignments_Positions_PositionId",
                         column: x => x.PositionId,
                         principalTable: "Positions",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Reports",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Hours = table.Column<double>(type: "float", nullable: false),
+                    ReportState = table.Column<string>(type: "nvarchar(16)", maxLength: 16, nullable: false),
+                    AssignmentId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Reports", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Reports_Assignments_AssignmentId",
+                        column: x => x.AssignmentId,
+                        principalTable: "Assignments",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -391,9 +426,9 @@ namespace ERPSystem.Migrations
                 filter: "[NormalizedUserName] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Assignments_EmployeeId",
+                name: "IX_Assignments_MentorId",
                 table: "Assignments",
-                column: "EmployeeId");
+                column: "MentorId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Assignments_PositionId",
@@ -401,14 +436,14 @@ namespace ERPSystem.Migrations
                 column: "PositionId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Assignments_WorkerId",
+                table: "Assignments",
+                column: "WorkerId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Branches_CompanyId",
                 table: "Branches",
                 column: "CompanyId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Companies_GeneralManagerId",
-                table: "Companies",
-                column: "GeneralManagerId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Departments_CompanyId",
@@ -416,28 +451,50 @@ namespace ERPSystem.Migrations
                 column: "CompanyId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Employees_BranchId",
-                table: "Employees",
+                name: "IX_Employee_BranchId",
+                table: "Employee",
                 column: "BranchId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Employees_DepartmentId",
-                table: "Employees",
+                name: "IX_Employee_CompanyId",
+                table: "Employee",
+                column: "CompanyId",
+                unique: true,
+                filter: "[CompanyId] IS NOT NULL");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Employee_DepartmentHeadId",
+                table: "Employee",
+                column: "DepartmentHeadId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Employee_DepartmentId",
+                table: "Employee",
                 column: "DepartmentId",
                 unique: true,
                 filter: "[DepartmentId] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Employees_ProjectId",
-                table: "Employees",
+                name: "IX_Employee_MentorId",
+                table: "Employee",
+                column: "MentorId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Employee_ProjectId",
+                table: "Employee",
                 column: "ProjectId",
                 unique: true,
                 filter: "[ProjectId] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
-                name: "IX_MentorsMentees_MentorsId",
-                table: "MentorsMentees",
-                column: "MentorsId");
+                name: "IX_Employee_ProjectManagerId",
+                table: "Employee",
+                column: "ProjectManagerId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Employee_WorkerId",
+                table: "Employee",
+                column: "WorkerId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Positions_ProjectId",
@@ -454,46 +511,10 @@ namespace ERPSystem.Migrations
                 table: "Reports",
                 column: "AssignmentId",
                 unique: true);
-
-            migrationBuilder.AddForeignKey(
-                name: "FK_Reports_Assignments_AssignmentId",
-                table: "Reports",
-                column: "AssignmentId",
-                principalTable: "Assignments",
-                principalColumn: "Id",
-                onDelete: ReferentialAction.Cascade);
-
-            migrationBuilder.AddForeignKey(
-                name: "FK_Employees_Branches_BranchId",
-                table: "Employees",
-                column: "BranchId",
-                principalTable: "Branches",
-                principalColumn: "Id",
-                onDelete: ReferentialAction.Restrict);
-
-            migrationBuilder.AddForeignKey(
-                name: "FK_Employees_Departments_DepartmentId",
-                table: "Employees",
-                column: "DepartmentId",
-                principalTable: "Departments",
-                principalColumn: "Id",
-                onDelete: ReferentialAction.Restrict);
-
-            migrationBuilder.AddForeignKey(
-                name: "FK_Employees_Projects_ProjectId",
-                table: "Employees",
-                column: "ProjectId",
-                principalTable: "Projects",
-                principalColumn: "Id",
-                onDelete: ReferentialAction.Restrict);
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.DropForeignKey(
-                name: "FK_Companies_Employees_GeneralManagerId",
-                table: "Companies");
-
             migrationBuilder.DropTable(
                 name: "AspNetRoleClaims");
 
@@ -510,9 +531,6 @@ namespace ERPSystem.Migrations
                 name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
-                name: "MentorsMentees");
-
-            migrationBuilder.DropTable(
                 name: "Reports");
 
             migrationBuilder.DropTable(
@@ -525,10 +543,10 @@ namespace ERPSystem.Migrations
                 name: "Assignments");
 
             migrationBuilder.DropTable(
-                name: "Positions");
+                name: "Employee");
 
             migrationBuilder.DropTable(
-                name: "Employees");
+                name: "Positions");
 
             migrationBuilder.DropTable(
                 name: "Branches");

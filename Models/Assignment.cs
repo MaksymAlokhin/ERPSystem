@@ -35,8 +35,8 @@ namespace ERPSystem.Models
         public Report Report { get; set; }
         public int PositionId { get; set; }
         public Position Position { get; set; }
-        public int EmployeeId { get; set; }
-        public Employee Employee { get; set; }
+        public int WorkerId { get; set; }
+        public Worker Worker { get; set; }
     }
     public enum AssignmentState
     {

@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ERPSystem.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20211112153016_ClassesInitial")]
-    partial class ClassesInitial
+    [Migration("20211113150419_Classes")]
+    partial class Classes
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -33,14 +33,14 @@ namespace ERPSystem.Migrations
                         .HasMaxLength(16)
                         .HasColumnType("nvarchar(16)");
 
-                    b.Property<int>("EmployeeId")
-                        .HasColumnType("int");
-
                     b.Property<DateTime>("EndDate")
                         .HasColumnType("datetime2");
 
                     b.Property<double>("FTE")
                         .HasColumnType("float");
+
+                    b.Property<int?>("MentorId")
+                        .HasColumnType("int");
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -53,11 +53,16 @@ namespace ERPSystem.Migrations
                     b.Property<DateTime>("StartDate")
                         .HasColumnType("datetime2");
 
+                    b.Property<int>("WorkerId")
+                        .HasColumnType("int");
+
                     b.HasKey("Id");
 
-                    b.HasIndex("EmployeeId");
+                    b.HasIndex("MentorId");
 
                     b.HasIndex("PositionId");
+
+                    b.HasIndex("WorkerId");
 
                     b.ToTable("Assignments");
                 });
@@ -101,17 +106,12 @@ namespace ERPSystem.Migrations
                         .HasMaxLength(16)
                         .HasColumnType("nvarchar(16)");
 
-                    b.Property<int?>("GeneralManagerId")
-                        .HasColumnType("int");
-
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("GeneralManagerId");
 
                     b.ToTable("Companies");
                 });
@@ -150,7 +150,7 @@ namespace ERPSystem.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int>("BranchId")
+                    b.Property<int?>("BranchId")
                         .HasColumnType("int");
 
                     b.Property<DateTime>("DateOfBirth")
@@ -175,11 +175,16 @@ namespace ERPSystem.Migrations
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
 
+                    b.Property<int?>("MentorId")
+                        .HasColumnType("int");
+
                     b.HasKey("Id");
 
                     b.HasIndex("BranchId");
 
-                    b.ToTable("Employees");
+                    b.HasIndex("MentorId");
+
+                    b.ToTable("Employee");
 
                     b.HasDiscriminator<string>("Discriminator").HasValue("Employee");
                 });
@@ -273,21 +278,6 @@ namespace ERPSystem.Migrations
                         .IsUnique();
 
                     b.ToTable("Reports");
-                });
-
-            modelBuilder.Entity("MentorsMentees", b =>
-                {
-                    b.Property<int>("MenteesId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("MentorsId")
-                        .HasColumnType("int");
-
-                    b.HasKey("MenteesId", "MentorsId");
-
-                    b.HasIndex("MentorsId");
-
-                    b.ToTable("MentorsMentees");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
@@ -508,12 +498,34 @@ namespace ERPSystem.Migrations
                 {
                     b.HasBaseType("ERPSystem.Models.Employee");
 
+                    b.Property<int>("CompanyId")
+                        .HasColumnType("int");
+
+                    b.HasIndex("CompanyId")
+                        .IsUnique()
+                        .HasFilter("[CompanyId] IS NOT NULL");
+
                     b.HasDiscriminator().HasValue("GeneralManager");
                 });
 
             modelBuilder.Entity("ERPSystem.Models.Mentor", b =>
                 {
                     b.HasBaseType("ERPSystem.Models.Employee");
+
+                    b.Property<int?>("DepartmentHeadId")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("ProjectManagerId")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("WorkerId")
+                        .HasColumnType("int");
+
+                    b.HasIndex("DepartmentHeadId");
+
+                    b.HasIndex("ProjectManagerId");
+
+                    b.HasIndex("WorkerId");
 
                     b.HasDiscriminator().HasValue("Mentor");
                 });
@@ -532,23 +544,34 @@ namespace ERPSystem.Migrations
                     b.HasDiscriminator().HasValue("ProjectManager");
                 });
 
+            modelBuilder.Entity("ERPSystem.Models.Worker", b =>
+                {
+                    b.HasBaseType("ERPSystem.Models.Employee");
+
+                    b.HasDiscriminator().HasValue("Worker");
+                });
+
             modelBuilder.Entity("ERPSystem.Models.Assignment", b =>
                 {
-                    b.HasOne("ERPSystem.Models.Employee", "Employee")
+                    b.HasOne("ERPSystem.Models.Mentor", null)
                         .WithMany("Assignments")
-                        .HasForeignKey("EmployeeId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("MentorId");
 
                     b.HasOne("ERPSystem.Models.Position", "Position")
                         .WithMany("Assignments")
                         .HasForeignKey("PositionId")
+                        .OnDelete(DeleteBehavior.ClientCascade)
+                        .IsRequired();
+
+                    b.HasOne("ERPSystem.Models.Worker", "Worker")
+                        .WithMany("Assignments")
+                        .HasForeignKey("WorkerId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Employee");
-
                     b.Navigation("Position");
+
+                    b.Navigation("Worker");
                 });
 
             modelBuilder.Entity("ERPSystem.Models.Branch", b =>
@@ -560,15 +583,6 @@ namespace ERPSystem.Migrations
                         .IsRequired();
 
                     b.Navigation("Company");
-                });
-
-            modelBuilder.Entity("ERPSystem.Models.Company", b =>
-                {
-                    b.HasOne("ERPSystem.Models.GeneralManager", "GeneralManager")
-                        .WithMany()
-                        .HasForeignKey("GeneralManagerId");
-
-                    b.Navigation("GeneralManager");
                 });
 
             modelBuilder.Entity("ERPSystem.Models.Department", b =>
@@ -586,9 +600,11 @@ namespace ERPSystem.Migrations
                 {
                     b.HasOne("ERPSystem.Models.Branch", "Branch")
                         .WithMany("Employees")
-                        .HasForeignKey("BranchId")
-                        .OnDelete(DeleteBehavior.ClientCascade)
-                        .IsRequired();
+                        .HasForeignKey("BranchId");
+
+                    b.HasOne("ERPSystem.Models.Mentor", null)
+                        .WithMany("Mentees")
+                        .HasForeignKey("MentorId");
 
                     b.Navigation("Branch");
                 });
@@ -624,21 +640,6 @@ namespace ERPSystem.Migrations
                         .IsRequired();
 
                     b.Navigation("Assignment");
-                });
-
-            modelBuilder.Entity("MentorsMentees", b =>
-                {
-                    b.HasOne("ERPSystem.Models.Employee", null)
-                        .WithMany()
-                        .HasForeignKey("MenteesId")
-                        .OnDelete(DeleteBehavior.ClientCascade)
-                        .IsRequired();
-
-                    b.HasOne("ERPSystem.Models.Mentor", null)
-                        .WithMany()
-                        .HasForeignKey("MentorsId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -703,6 +704,32 @@ namespace ERPSystem.Migrations
                     b.Navigation("Department");
                 });
 
+            modelBuilder.Entity("ERPSystem.Models.GeneralManager", b =>
+                {
+                    b.HasOne("ERPSystem.Models.Company", "Company")
+                        .WithOne("GeneralManager")
+                        .HasForeignKey("ERPSystem.Models.GeneralManager", "CompanyId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Company");
+                });
+
+            modelBuilder.Entity("ERPSystem.Models.Mentor", b =>
+                {
+                    b.HasOne("ERPSystem.Models.DepartmentHead", null)
+                        .WithMany("Mentors")
+                        .HasForeignKey("DepartmentHeadId");
+
+                    b.HasOne("ERPSystem.Models.ProjectManager", null)
+                        .WithMany("Mentors")
+                        .HasForeignKey("ProjectManagerId");
+
+                    b.HasOne("ERPSystem.Models.Worker", null)
+                        .WithMany("Mentors")
+                        .HasForeignKey("WorkerId");
+                });
+
             modelBuilder.Entity("ERPSystem.Models.ProjectManager", b =>
                 {
                     b.HasOne("ERPSystem.Models.Project", "Project")
@@ -729,6 +756,8 @@ namespace ERPSystem.Migrations
                     b.Navigation("Branches");
 
                     b.Navigation("Departments");
+
+                    b.Navigation("GeneralManager");
                 });
 
             modelBuilder.Entity("ERPSystem.Models.Department", b =>
@@ -736,11 +765,6 @@ namespace ERPSystem.Migrations
                     b.Navigation("DepartmentHead");
 
                     b.Navigation("Projects");
-                });
-
-            modelBuilder.Entity("ERPSystem.Models.Employee", b =>
-                {
-                    b.Navigation("Assignments");
                 });
 
             modelBuilder.Entity("ERPSystem.Models.Position", b =>
@@ -753,6 +777,30 @@ namespace ERPSystem.Migrations
                     b.Navigation("Positions");
 
                     b.Navigation("ProjectManager");
+                });
+
+            modelBuilder.Entity("ERPSystem.Models.DepartmentHead", b =>
+                {
+                    b.Navigation("Mentors");
+                });
+
+            modelBuilder.Entity("ERPSystem.Models.Mentor", b =>
+                {
+                    b.Navigation("Assignments");
+
+                    b.Navigation("Mentees");
+                });
+
+            modelBuilder.Entity("ERPSystem.Models.ProjectManager", b =>
+                {
+                    b.Navigation("Mentors");
+                });
+
+            modelBuilder.Entity("ERPSystem.Models.Worker", b =>
+                {
+                    b.Navigation("Assignments");
+
+                    b.Navigation("Mentors");
                 });
 #pragma warning restore 612, 618
         }

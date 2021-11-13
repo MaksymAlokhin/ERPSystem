@@ -39,12 +39,11 @@ namespace ERPSystem.Models
         [Required]
         [Display(Name = "State")]
         public EmployeeState EmployeeState { get; set; }
-
-        //Navigation Properties
-        public int BranchId { get; set; }
+        
+        //Navigation properties
+        public int? BranchId { get; set; }
         public Branch Branch { get; set; }
-        public ICollection<Mentor> Mentors { get; set; }
-        public ICollection<Assignment> Assignments { get; set; }
+
     }
     public enum EmployeeState
     {
