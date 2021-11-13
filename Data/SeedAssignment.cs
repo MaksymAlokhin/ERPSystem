@@ -17,7 +17,7 @@ namespace ERPSystem.Data
             StartDate = DateTime.Parse("2020-12-30"),
             EndDate = DateTime.Parse("2023-03-05"),
             FTE = 0.5,
-            Worker = w001,
+            Employee = w001,
             AssignmentState = AssignmentState.Active,
             Position = pos0101
         };
@@ -27,7 +27,7 @@ namespace ERPSystem.Data
             StartDate = DateTime.Parse("2020-12-30"),
             EndDate = DateTime.Parse("2023-03-05"),
             FTE = 0.5,
-            Worker = w002,
+            Employee = w002,
             AssignmentState = AssignmentState.Active,
             Position = pos0102
         };
@@ -37,7 +37,7 @@ namespace ERPSystem.Data
             StartDate = DateTime.Parse("2020-12-30"),
             EndDate = DateTime.Parse("2023-03-05"),
             FTE = 0.5,
-            Worker = w003,
+            Employee = w003,
             AssignmentState = AssignmentState.Active,
             Position = pos0103
         };
@@ -47,7 +47,7 @@ namespace ERPSystem.Data
             StartDate = DateTime.Parse("2020-12-30"),
             EndDate = DateTime.Parse("2023-03-05"),
             FTE = 0.5,
-            Worker = w004,
+            Employee = w004,
             AssignmentState = AssignmentState.Active,
             Position = pos0104
         };
@@ -57,7 +57,7 @@ namespace ERPSystem.Data
             StartDate = DateTime.Parse("2020-12-30"),
             EndDate = DateTime.Parse("2023-03-05"),
             FTE = 0.5,
-            Worker = w005,
+            Employee = w005,
             AssignmentState = AssignmentState.Active,
             Position = pos0105
         };
@@ -67,7 +67,7 @@ namespace ERPSystem.Data
             StartDate = DateTime.Parse("2020-12-30"),
             EndDate = DateTime.Parse("2023-03-05"),
             FTE = 0.5,
-            Worker = w006,
+            Employee = w006,
             AssignmentState = AssignmentState.Active,
             Position = pos0106
         };
@@ -77,7 +77,7 @@ namespace ERPSystem.Data
             StartDate = DateTime.Parse("2020-12-30"),
             EndDate = DateTime.Parse("2023-03-05"),
             FTE = 0.5,
-            Worker = w007,
+            Employee = w007,
             AssignmentState = AssignmentState.Active,
             Position = pos0107
         };
@@ -87,7 +87,7 @@ namespace ERPSystem.Data
             StartDate = DateTime.Parse("2020-12-30"),
             EndDate = DateTime.Parse("2023-03-05"),
             FTE = 0.5,
-            Worker = w008,
+            Employee = w008,
             AssignmentState = AssignmentState.Active,
             Position = pos0108
         };
@@ -97,7 +97,7 @@ namespace ERPSystem.Data
             StartDate = DateTime.Parse("2020-12-30"),
             EndDate = DateTime.Parse("2023-03-05"),
             FTE = 0.5,
-            Worker = w009,
+            Employee = w009,
             AssignmentState = AssignmentState.Active,
             Position = pos0109
         };
@@ -107,7 +107,7 @@ namespace ERPSystem.Data
             StartDate = DateTime.Parse("2020-07-10"),
             EndDate = DateTime.Parse("2022-09-09"),
             FTE = 0.5,
-            Worker = w010,
+            Employee = w010,
             AssignmentState = AssignmentState.Active,
             Position = pos0201
         };
@@ -117,7 +117,7 @@ namespace ERPSystem.Data
             StartDate = DateTime.Parse("2020-07-10"),
             EndDate = DateTime.Parse("2022-09-09"),
             FTE = 0.5,
-            Worker = w011,
+            Employee = w011,
             AssignmentState = AssignmentState.Active,
             Position = pos0202
         };
@@ -127,7 +127,7 @@ namespace ERPSystem.Data
             StartDate = DateTime.Parse("2020-07-10"),
             EndDate = DateTime.Parse("2022-09-09"),
             FTE = 0.5,
-            Worker = w012,
+            Employee = w012,
             AssignmentState = AssignmentState.Active,
             Position = pos0203
         };
@@ -137,7 +137,7 @@ namespace ERPSystem.Data
             StartDate = DateTime.Parse("2020-07-10"),
             EndDate = DateTime.Parse("2022-09-09"),
             FTE = 0.5,
-            Worker = w013,
+            Employee = w013,
             AssignmentState = AssignmentState.Active,
             Position = pos0204
         };
@@ -147,7 +147,7 @@ namespace ERPSystem.Data
             StartDate = DateTime.Parse("2020-07-10"),
             EndDate = DateTime.Parse("2022-09-09"),
             FTE = 0.5,
-            Worker = w014,
+            Employee = w014,
             AssignmentState = AssignmentState.Active,
             Position = pos0205
         };
@@ -157,7 +157,7 @@ namespace ERPSystem.Data
             StartDate = DateTime.Parse("2020-07-10"),
             EndDate = DateTime.Parse("2022-09-09"),
             FTE = 0.5,
-            Worker = w015,
+            Employee = w015,
             AssignmentState = AssignmentState.Active,
             Position = pos0206
         };
@@ -167,7 +167,7 @@ namespace ERPSystem.Data
             StartDate = DateTime.Parse("2020-07-10"),
             EndDate = DateTime.Parse("2022-09-09"),
             FTE = 0.5,
-            Worker = w016,
+            Employee = w016,
             AssignmentState = AssignmentState.Active,
             Position = pos0207
         };
@@ -177,7 +177,7 @@ namespace ERPSystem.Data
             StartDate = DateTime.Parse("2020-07-10"),
             EndDate = DateTime.Parse("2022-09-09"),
             FTE = 0.5,
-            Worker = w017,
+            Employee = w017,
             AssignmentState = AssignmentState.Active,
             Position = pos0208
         };
@@ -187,7 +187,7 @@ namespace ERPSystem.Data
             StartDate = DateTime.Parse("2020-07-10"),
             EndDate = DateTime.Parse("2022-09-09"),
             FTE = 0.5,
-            Worker = w018,
+            Employee = w018,
             AssignmentState = AssignmentState.Active,
             Position = pos0209
         };
@@ -197,7 +197,7 @@ namespace ERPSystem.Data
             StartDate = DateTime.Parse("2021-05-10"),
             EndDate = DateTime.Parse("2023-10-09"),
             FTE = 0.5,
-            Worker = w019,
+            Employee = w019,
             AssignmentState = AssignmentState.Active,
             Position = pos0301
         };
@@ -207,7 +207,7 @@ namespace ERPSystem.Data
             StartDate = DateTime.Parse("2021-05-10"),
             EndDate = DateTime.Parse("2023-10-09"),
             FTE = 0.5,
-            Worker = w020,
+            Employee = w020,
             AssignmentState = AssignmentState.Active,
             Position = pos0302
         };
@@ -217,7 +217,7 @@ namespace ERPSystem.Data
             StartDate = DateTime.Parse("2021-05-10"),
             EndDate = DateTime.Parse("2023-10-09"),
             FTE = 0.5,
-            Worker = w021,
+            Employee = w021,
             AssignmentState = AssignmentState.Active,
             Position = pos0303
         };
@@ -227,7 +227,7 @@ namespace ERPSystem.Data
             StartDate = DateTime.Parse("2021-05-10"),
             EndDate = DateTime.Parse("2023-10-09"),
             FTE = 0.5,
-            Worker = w022,
+            Employee = w022,
             AssignmentState = AssignmentState.Active,
             Position = pos0304
         };
@@ -237,7 +237,7 @@ namespace ERPSystem.Data
             StartDate = DateTime.Parse("2021-05-10"),
             EndDate = DateTime.Parse("2023-10-09"),
             FTE = 0.5,
-            Worker = w023,
+            Employee = w023,
             AssignmentState = AssignmentState.Active,
             Position = pos0305
         };
@@ -247,7 +247,7 @@ namespace ERPSystem.Data
             StartDate = DateTime.Parse("2021-05-10"),
             EndDate = DateTime.Parse("2023-10-09"),
             FTE = 0.5,
-            Worker = w024,
+            Employee = w024,
             AssignmentState = AssignmentState.Active,
             Position = pos0306
         };
@@ -257,7 +257,7 @@ namespace ERPSystem.Data
             StartDate = DateTime.Parse("2021-05-10"),
             EndDate = DateTime.Parse("2023-10-09"),
             FTE = 0.5,
-            Worker = w025,
+            Employee = w025,
             AssignmentState = AssignmentState.Active,
             Position = pos0307
         };
@@ -267,7 +267,7 @@ namespace ERPSystem.Data
             StartDate = DateTime.Parse("2021-05-10"),
             EndDate = DateTime.Parse("2023-10-09"),
             FTE = 0.5,
-            Worker = w026,
+            Employee = w026,
             AssignmentState = AssignmentState.Active,
             Position = pos0308
         };
@@ -277,7 +277,7 @@ namespace ERPSystem.Data
             StartDate = DateTime.Parse("2021-05-10"),
             EndDate = DateTime.Parse("2023-10-09"),
             FTE = 0.5,
-            Worker = w027,
+            Employee = w027,
             AssignmentState = AssignmentState.Active,
             Position = pos0309
         };
@@ -287,7 +287,7 @@ namespace ERPSystem.Data
             StartDate = DateTime.Parse("2021-06-03"),
             EndDate = DateTime.Parse("2022-03-14"),
             FTE = 0.5,
-            Worker = w028,
+            Employee = w028,
             AssignmentState = AssignmentState.Active,
             Position = pos0401
         };
@@ -297,7 +297,7 @@ namespace ERPSystem.Data
             StartDate = DateTime.Parse("2021-06-03"),
             EndDate = DateTime.Parse("2022-03-14"),
             FTE = 0.5,
-            Worker = w029,
+            Employee = w029,
             AssignmentState = AssignmentState.Active,
             Position = pos0402
         };
@@ -307,7 +307,7 @@ namespace ERPSystem.Data
             StartDate = DateTime.Parse("2021-06-03"),
             EndDate = DateTime.Parse("2022-03-14"),
             FTE = 0.5,
-            Worker = w030,
+            Employee = w030,
             AssignmentState = AssignmentState.Active,
             Position = pos0403
         };
@@ -317,7 +317,7 @@ namespace ERPSystem.Data
             StartDate = DateTime.Parse("2021-06-03"),
             EndDate = DateTime.Parse("2022-03-14"),
             FTE = 0.5,
-            Worker = w031,
+            Employee = w031,
             AssignmentState = AssignmentState.Active,
             Position = pos0404
         };
@@ -327,7 +327,7 @@ namespace ERPSystem.Data
             StartDate = DateTime.Parse("2021-06-03"),
             EndDate = DateTime.Parse("2022-03-14"),
             FTE = 0.5,
-            Worker = w032,
+            Employee = w032,
             AssignmentState = AssignmentState.Active,
             Position = pos0405
         };
@@ -337,7 +337,7 @@ namespace ERPSystem.Data
             StartDate = DateTime.Parse("2021-06-03"),
             EndDate = DateTime.Parse("2022-03-14"),
             FTE = 0.5,
-            Worker = w033,
+            Employee = w033,
             AssignmentState = AssignmentState.Active,
             Position = pos0406
         };
@@ -347,7 +347,7 @@ namespace ERPSystem.Data
             StartDate = DateTime.Parse("2021-06-03"),
             EndDate = DateTime.Parse("2022-03-14"),
             FTE = 0.5,
-            Worker = w034,
+            Employee = w034,
             AssignmentState = AssignmentState.Active,
             Position = pos0407
         };
@@ -357,7 +357,7 @@ namespace ERPSystem.Data
             StartDate = DateTime.Parse("2021-06-03"),
             EndDate = DateTime.Parse("2022-03-14"),
             FTE = 0.5,
-            Worker = w035,
+            Employee = w035,
             AssignmentState = AssignmentState.Active,
             Position = pos0408
         };
@@ -367,7 +367,7 @@ namespace ERPSystem.Data
             StartDate = DateTime.Parse("2021-06-03"),
             EndDate = DateTime.Parse("2022-03-14"),
             FTE = 0.5,
-            Worker = w036,
+            Employee = w036,
             AssignmentState = AssignmentState.Active,
             Position = pos0409
         };
@@ -377,7 +377,7 @@ namespace ERPSystem.Data
             StartDate = DateTime.Parse("2020-09-23"),
             EndDate = DateTime.Parse("2022-05-28"),
             FTE = 0.5,
-            Worker = w037,
+            Employee = w037,
             AssignmentState = AssignmentState.Active,
             Position = pos0501
         };
@@ -387,7 +387,7 @@ namespace ERPSystem.Data
             StartDate = DateTime.Parse("2020-09-23"),
             EndDate = DateTime.Parse("2022-05-28"),
             FTE = 0.5,
-            Worker = w038,
+            Employee = w038,
             AssignmentState = AssignmentState.Active,
             Position = pos0502
         };
@@ -397,7 +397,7 @@ namespace ERPSystem.Data
             StartDate = DateTime.Parse("2020-09-23"),
             EndDate = DateTime.Parse("2022-05-28"),
             FTE = 0.5,
-            Worker = w039,
+            Employee = w039,
             AssignmentState = AssignmentState.Active,
             Position = pos0503
         };
@@ -407,7 +407,7 @@ namespace ERPSystem.Data
             StartDate = DateTime.Parse("2020-09-23"),
             EndDate = DateTime.Parse("2022-05-28"),
             FTE = 0.5,
-            Worker = w040,
+            Employee = w040,
             AssignmentState = AssignmentState.Active,
             Position = pos0504
         };
@@ -417,7 +417,7 @@ namespace ERPSystem.Data
             StartDate = DateTime.Parse("2020-09-23"),
             EndDate = DateTime.Parse("2022-05-28"),
             FTE = 0.5,
-            Worker = w041,
+            Employee = w041,
             AssignmentState = AssignmentState.Active,
             Position = pos0505
         };
@@ -427,7 +427,7 @@ namespace ERPSystem.Data
             StartDate = DateTime.Parse("2020-09-23"),
             EndDate = DateTime.Parse("2022-05-28"),
             FTE = 0.5,
-            Worker = w042,
+            Employee = w042,
             AssignmentState = AssignmentState.Active,
             Position = pos0506
         };
@@ -437,7 +437,7 @@ namespace ERPSystem.Data
             StartDate = DateTime.Parse("2020-09-23"),
             EndDate = DateTime.Parse("2022-05-28"),
             FTE = 0.5,
-            Worker = w043,
+            Employee = w043,
             AssignmentState = AssignmentState.Active,
             Position = pos0507
         };
@@ -447,7 +447,7 @@ namespace ERPSystem.Data
             StartDate = DateTime.Parse("2020-09-23"),
             EndDate = DateTime.Parse("2022-05-28"),
             FTE = 0.5,
-            Worker = w044,
+            Employee = w044,
             AssignmentState = AssignmentState.Active,
             Position = pos0508
         };
@@ -457,7 +457,7 @@ namespace ERPSystem.Data
             StartDate = DateTime.Parse("2020-09-23"),
             EndDate = DateTime.Parse("2022-05-28"),
             FTE = 0.5,
-            Worker = w045,
+            Employee = w045,
             AssignmentState = AssignmentState.Active,
             Position = pos0509
         };
@@ -467,7 +467,7 @@ namespace ERPSystem.Data
             StartDate = DateTime.Parse("2020-07-28"),
             EndDate = DateTime.Parse("2022-08-03"),
             FTE = 0.5,
-            Worker = w046,
+            Employee = w046,
             AssignmentState = AssignmentState.Active,
             Position = pos0601
         };
@@ -477,7 +477,7 @@ namespace ERPSystem.Data
             StartDate = DateTime.Parse("2020-07-28"),
             EndDate = DateTime.Parse("2022-08-03"),
             FTE = 0.5,
-            Worker = w047,
+            Employee = w047,
             AssignmentState = AssignmentState.Active,
             Position = pos0602
         };
@@ -487,7 +487,7 @@ namespace ERPSystem.Data
             StartDate = DateTime.Parse("2020-07-28"),
             EndDate = DateTime.Parse("2022-08-03"),
             FTE = 0.5,
-            Worker = w048,
+            Employee = w048,
             AssignmentState = AssignmentState.Active,
             Position = pos0603
         };
@@ -497,7 +497,7 @@ namespace ERPSystem.Data
             StartDate = DateTime.Parse("2020-07-28"),
             EndDate = DateTime.Parse("2022-08-03"),
             FTE = 0.5,
-            Worker = w049,
+            Employee = w049,
             AssignmentState = AssignmentState.Active,
             Position = pos0604
         };
@@ -507,7 +507,7 @@ namespace ERPSystem.Data
             StartDate = DateTime.Parse("2020-07-28"),
             EndDate = DateTime.Parse("2022-08-03"),
             FTE = 0.5,
-            Worker = w050,
+            Employee = w050,
             AssignmentState = AssignmentState.Active,
             Position = pos0605
         };
@@ -517,7 +517,7 @@ namespace ERPSystem.Data
             StartDate = DateTime.Parse("2020-07-28"),
             EndDate = DateTime.Parse("2022-08-03"),
             FTE = 0.5,
-            Worker = w051,
+            Employee = w051,
             AssignmentState = AssignmentState.Active,
             Position = pos0606
         };
@@ -527,7 +527,7 @@ namespace ERPSystem.Data
             StartDate = DateTime.Parse("2020-07-28"),
             EndDate = DateTime.Parse("2022-08-03"),
             FTE = 0.5,
-            Worker = w052,
+            Employee = w052,
             AssignmentState = AssignmentState.Active,
             Position = pos0607
         };
@@ -537,7 +537,7 @@ namespace ERPSystem.Data
             StartDate = DateTime.Parse("2020-07-28"),
             EndDate = DateTime.Parse("2022-08-03"),
             FTE = 0.5,
-            Worker = w053,
+            Employee = w053,
             AssignmentState = AssignmentState.Active,
             Position = pos0608
         };
@@ -547,7 +547,7 @@ namespace ERPSystem.Data
             StartDate = DateTime.Parse("2020-07-28"),
             EndDate = DateTime.Parse("2022-08-03"),
             FTE = 0.5,
-            Worker = w054,
+            Employee = w054,
             AssignmentState = AssignmentState.Active,
             Position = pos0609
         };
@@ -557,7 +557,7 @@ namespace ERPSystem.Data
             StartDate = DateTime.Parse("2020-04-29"),
             EndDate = DateTime.Parse("2022-11-04"),
             FTE = 0.5,
-            Worker = w055,
+            Employee = w055,
             AssignmentState = AssignmentState.Active,
             Position = pos0701
         };
@@ -567,7 +567,7 @@ namespace ERPSystem.Data
             StartDate = DateTime.Parse("2020-04-29"),
             EndDate = DateTime.Parse("2022-11-04"),
             FTE = 0.5,
-            Worker = w056,
+            Employee = w056,
             AssignmentState = AssignmentState.Active,
             Position = pos0702
         };
@@ -577,7 +577,7 @@ namespace ERPSystem.Data
             StartDate = DateTime.Parse("2020-04-29"),
             EndDate = DateTime.Parse("2022-11-04"),
             FTE = 0.5,
-            Worker = w057,
+            Employee = w057,
             AssignmentState = AssignmentState.Active,
             Position = pos0703
         };
@@ -587,7 +587,7 @@ namespace ERPSystem.Data
             StartDate = DateTime.Parse("2020-04-29"),
             EndDate = DateTime.Parse("2022-11-04"),
             FTE = 0.5,
-            Worker = w058,
+            Employee = w058,
             AssignmentState = AssignmentState.Active,
             Position = pos0704
         };
@@ -597,7 +597,7 @@ namespace ERPSystem.Data
             StartDate = DateTime.Parse("2020-04-29"),
             EndDate = DateTime.Parse("2022-11-04"),
             FTE = 0.5,
-            Worker = w059,
+            Employee = w059,
             AssignmentState = AssignmentState.Active,
             Position = pos0705
         };
@@ -607,7 +607,7 @@ namespace ERPSystem.Data
             StartDate = DateTime.Parse("2020-04-29"),
             EndDate = DateTime.Parse("2022-11-04"),
             FTE = 0.5,
-            Worker = w060,
+            Employee = w060,
             AssignmentState = AssignmentState.Active,
             Position = pos0706
         };
@@ -617,7 +617,7 @@ namespace ERPSystem.Data
             StartDate = DateTime.Parse("2020-04-29"),
             EndDate = DateTime.Parse("2022-11-04"),
             FTE = 0.5,
-            Worker = w061,
+            Employee = w061,
             AssignmentState = AssignmentState.Active,
             Position = pos0707
         };
@@ -627,7 +627,7 @@ namespace ERPSystem.Data
             StartDate = DateTime.Parse("2020-04-29"),
             EndDate = DateTime.Parse("2022-11-04"),
             FTE = 0.5,
-            Worker = w062,
+            Employee = w062,
             AssignmentState = AssignmentState.Active,
             Position = pos0708
         };
@@ -637,7 +637,7 @@ namespace ERPSystem.Data
             StartDate = DateTime.Parse("2020-04-29"),
             EndDate = DateTime.Parse("2022-11-04"),
             FTE = 0.5,
-            Worker = w063,
+            Employee = w063,
             AssignmentState = AssignmentState.Active,
             Position = pos0709
         };
@@ -647,7 +647,7 @@ namespace ERPSystem.Data
             StartDate = DateTime.Parse("2020-02-13"),
             EndDate = DateTime.Parse("2022-02-10"),
             FTE = 0.5,
-            Worker = w064,
+            Employee = w064,
             AssignmentState = AssignmentState.Active,
             Position = pos0801
         };
@@ -657,7 +657,7 @@ namespace ERPSystem.Data
             StartDate = DateTime.Parse("2020-02-13"),
             EndDate = DateTime.Parse("2022-02-10"),
             FTE = 0.5,
-            Worker = w065,
+            Employee = w065,
             AssignmentState = AssignmentState.Active,
             Position = pos0802
         };
@@ -667,7 +667,7 @@ namespace ERPSystem.Data
             StartDate = DateTime.Parse("2020-02-13"),
             EndDate = DateTime.Parse("2022-02-10"),
             FTE = 0.5,
-            Worker = w066,
+            Employee = w066,
             AssignmentState = AssignmentState.Active,
             Position = pos0803
         };
@@ -677,7 +677,7 @@ namespace ERPSystem.Data
             StartDate = DateTime.Parse("2020-02-13"),
             EndDate = DateTime.Parse("2022-02-10"),
             FTE = 0.5,
-            Worker = w067,
+            Employee = w067,
             AssignmentState = AssignmentState.Active,
             Position = pos0804
         };
@@ -687,7 +687,7 @@ namespace ERPSystem.Data
             StartDate = DateTime.Parse("2020-02-13"),
             EndDate = DateTime.Parse("2022-02-10"),
             FTE = 0.5,
-            Worker = w068,
+            Employee = w068,
             AssignmentState = AssignmentState.Active,
             Position = pos0805
         };
@@ -697,7 +697,7 @@ namespace ERPSystem.Data
             StartDate = DateTime.Parse("2020-02-13"),
             EndDate = DateTime.Parse("2022-02-10"),
             FTE = 0.5,
-            Worker = w069,
+            Employee = w069,
             AssignmentState = AssignmentState.Active,
             Position = pos0806
         };
@@ -707,7 +707,7 @@ namespace ERPSystem.Data
             StartDate = DateTime.Parse("2020-02-13"),
             EndDate = DateTime.Parse("2022-02-10"),
             FTE = 0.5,
-            Worker = w070,
+            Employee = w070,
             AssignmentState = AssignmentState.Active,
             Position = pos0807
         };
@@ -717,7 +717,7 @@ namespace ERPSystem.Data
             StartDate = DateTime.Parse("2020-02-13"),
             EndDate = DateTime.Parse("2022-02-10"),
             FTE = 0.5,
-            Worker = w071,
+            Employee = w071,
             AssignmentState = AssignmentState.Active,
             Position = pos0808
         };
@@ -727,7 +727,7 @@ namespace ERPSystem.Data
             StartDate = DateTime.Parse("2020-02-13"),
             EndDate = DateTime.Parse("2022-02-10"),
             FTE = 0.5,
-            Worker = w072,
+            Employee = w072,
             AssignmentState = AssignmentState.Active,
             Position = pos0809
         };
@@ -737,7 +737,7 @@ namespace ERPSystem.Data
             StartDate = DateTime.Parse("2021-08-18"),
             EndDate = DateTime.Parse("2022-04-01"),
             FTE = 0.5,
-            Worker = w073,
+            Employee = w073,
             AssignmentState = AssignmentState.Active,
             Position = pos0901
         };
@@ -747,7 +747,7 @@ namespace ERPSystem.Data
             StartDate = DateTime.Parse("2021-08-18"),
             EndDate = DateTime.Parse("2022-04-01"),
             FTE = 0.5,
-            Worker = w074,
+            Employee = w074,
             AssignmentState = AssignmentState.Active,
             Position = pos0902
         };
@@ -757,7 +757,7 @@ namespace ERPSystem.Data
             StartDate = DateTime.Parse("2021-08-18"),
             EndDate = DateTime.Parse("2022-04-01"),
             FTE = 0.5,
-            Worker = w075,
+            Employee = w075,
             AssignmentState = AssignmentState.Active,
             Position = pos0903
         };
@@ -767,7 +767,7 @@ namespace ERPSystem.Data
             StartDate = DateTime.Parse("2021-08-18"),
             EndDate = DateTime.Parse("2022-04-01"),
             FTE = 0.5,
-            Worker = w076,
+            Employee = w076,
             AssignmentState = AssignmentState.Active,
             Position = pos0904
         };
@@ -777,7 +777,7 @@ namespace ERPSystem.Data
             StartDate = DateTime.Parse("2021-08-18"),
             EndDate = DateTime.Parse("2022-04-01"),
             FTE = 0.5,
-            Worker = w077,
+            Employee = w077,
             AssignmentState = AssignmentState.Active,
             Position = pos0905
         };
@@ -787,7 +787,7 @@ namespace ERPSystem.Data
             StartDate = DateTime.Parse("2021-08-18"),
             EndDate = DateTime.Parse("2022-04-01"),
             FTE = 0.5,
-            Worker = w078,
+            Employee = w078,
             AssignmentState = AssignmentState.Active,
             Position = pos0906
         };
@@ -797,7 +797,7 @@ namespace ERPSystem.Data
             StartDate = DateTime.Parse("2021-08-18"),
             EndDate = DateTime.Parse("2022-04-01"),
             FTE = 0.5,
-            Worker = w079,
+            Employee = w079,
             AssignmentState = AssignmentState.Active,
             Position = pos0907
         };
@@ -807,7 +807,7 @@ namespace ERPSystem.Data
             StartDate = DateTime.Parse("2021-08-18"),
             EndDate = DateTime.Parse("2022-04-01"),
             FTE = 0.5,
-            Worker = w080,
+            Employee = w080,
             AssignmentState = AssignmentState.Active,
             Position = pos0908
         };
@@ -817,7 +817,7 @@ namespace ERPSystem.Data
             StartDate = DateTime.Parse("2021-08-18"),
             EndDate = DateTime.Parse("2022-04-01"),
             FTE = 0.5,
-            Worker = w081,
+            Employee = w081,
             AssignmentState = AssignmentState.Active,
             Position = pos0909
         };
@@ -827,7 +827,7 @@ namespace ERPSystem.Data
             StartDate = DateTime.Parse("2019-11-13"),
             EndDate = DateTime.Parse("2023-07-01"),
             FTE = 0.5,
-            Worker = w082,
+            Employee = w082,
             AssignmentState = AssignmentState.Active,
             Position = pos1001
         };
@@ -837,7 +837,7 @@ namespace ERPSystem.Data
             StartDate = DateTime.Parse("2019-11-13"),
             EndDate = DateTime.Parse("2023-07-01"),
             FTE = 0.5,
-            Worker = w083,
+            Employee = w083,
             AssignmentState = AssignmentState.Active,
             Position = pos1002
         };
@@ -847,7 +847,7 @@ namespace ERPSystem.Data
             StartDate = DateTime.Parse("2019-11-13"),
             EndDate = DateTime.Parse("2023-07-01"),
             FTE = 0.5,
-            Worker = w084,
+            Employee = w084,
             AssignmentState = AssignmentState.Active,
             Position = pos1003
         };
@@ -857,7 +857,7 @@ namespace ERPSystem.Data
             StartDate = DateTime.Parse("2019-11-13"),
             EndDate = DateTime.Parse("2023-07-01"),
             FTE = 0.5,
-            Worker = w085,
+            Employee = w085,
             AssignmentState = AssignmentState.Active,
             Position = pos1004
         };
@@ -867,7 +867,7 @@ namespace ERPSystem.Data
             StartDate = DateTime.Parse("2019-11-13"),
             EndDate = DateTime.Parse("2023-07-01"),
             FTE = 0.5,
-            Worker = w086,
+            Employee = w086,
             AssignmentState = AssignmentState.Active,
             Position = pos1005
         };
@@ -877,7 +877,7 @@ namespace ERPSystem.Data
             StartDate = DateTime.Parse("2019-11-13"),
             EndDate = DateTime.Parse("2023-07-01"),
             FTE = 0.5,
-            Worker = w087,
+            Employee = w087,
             AssignmentState = AssignmentState.Active,
             Position = pos1006
         };
@@ -887,7 +887,7 @@ namespace ERPSystem.Data
             StartDate = DateTime.Parse("2019-11-13"),
             EndDate = DateTime.Parse("2023-07-01"),
             FTE = 0.5,
-            Worker = w088,
+            Employee = w088,
             AssignmentState = AssignmentState.Active,
             Position = pos1007
         };
@@ -897,7 +897,7 @@ namespace ERPSystem.Data
             StartDate = DateTime.Parse("2019-11-13"),
             EndDate = DateTime.Parse("2023-07-01"),
             FTE = 0.5,
-            Worker = w089,
+            Employee = w089,
             AssignmentState = AssignmentState.Active,
             Position = pos1008
         };
@@ -907,7 +907,7 @@ namespace ERPSystem.Data
             StartDate = DateTime.Parse("2019-11-13"),
             EndDate = DateTime.Parse("2023-07-01"),
             FTE = 0.5,
-            Worker = w090,
+            Employee = w090,
             AssignmentState = AssignmentState.Active,
             Position = pos1009
         };
@@ -917,7 +917,7 @@ namespace ERPSystem.Data
             StartDate = DateTime.Parse("2020-01-07"),
             EndDate = DateTime.Parse("2022-03-05"),
             FTE = 0.5,
-            Worker = w091,
+            Employee = w091,
             AssignmentState = AssignmentState.Active,
             Position = pos1101
         };
@@ -927,7 +927,7 @@ namespace ERPSystem.Data
             StartDate = DateTime.Parse("2020-01-07"),
             EndDate = DateTime.Parse("2022-03-05"),
             FTE = 0.5,
-            Worker = w092,
+            Employee = w092,
             AssignmentState = AssignmentState.Active,
             Position = pos1102
         };
@@ -937,7 +937,7 @@ namespace ERPSystem.Data
             StartDate = DateTime.Parse("2020-01-07"),
             EndDate = DateTime.Parse("2022-03-05"),
             FTE = 0.5,
-            Worker = w093,
+            Employee = w093,
             AssignmentState = AssignmentState.Active,
             Position = pos1103
         };
@@ -947,7 +947,7 @@ namespace ERPSystem.Data
             StartDate = DateTime.Parse("2020-01-07"),
             EndDate = DateTime.Parse("2022-03-05"),
             FTE = 0.5,
-            Worker = w094,
+            Employee = w094,
             AssignmentState = AssignmentState.Active,
             Position = pos1104
         };
@@ -957,7 +957,7 @@ namespace ERPSystem.Data
             StartDate = DateTime.Parse("2020-01-07"),
             EndDate = DateTime.Parse("2022-03-05"),
             FTE = 0.5,
-            Worker = w095,
+            Employee = w095,
             AssignmentState = AssignmentState.Active,
             Position = pos1105
         };
@@ -967,7 +967,7 @@ namespace ERPSystem.Data
             StartDate = DateTime.Parse("2020-01-07"),
             EndDate = DateTime.Parse("2022-03-05"),
             FTE = 0.5,
-            Worker = w096,
+            Employee = w096,
             AssignmentState = AssignmentState.Active,
             Position = pos1106
         };
@@ -977,7 +977,7 @@ namespace ERPSystem.Data
             StartDate = DateTime.Parse("2020-01-07"),
             EndDate = DateTime.Parse("2022-03-05"),
             FTE = 0.5,
-            Worker = w097,
+            Employee = w097,
             AssignmentState = AssignmentState.Active,
             Position = pos1107
         };
@@ -987,7 +987,7 @@ namespace ERPSystem.Data
             StartDate = DateTime.Parse("2020-01-07"),
             EndDate = DateTime.Parse("2022-03-05"),
             FTE = 0.5,
-            Worker = w098,
+            Employee = w098,
             AssignmentState = AssignmentState.Active,
             Position = pos1108
         };
@@ -997,7 +997,7 @@ namespace ERPSystem.Data
             StartDate = DateTime.Parse("2020-01-07"),
             EndDate = DateTime.Parse("2022-03-05"),
             FTE = 0.5,
-            Worker = w099,
+            Employee = w099,
             AssignmentState = AssignmentState.Active,
             Position = pos1109
         };
@@ -1007,7 +1007,7 @@ namespace ERPSystem.Data
             StartDate = DateTime.Parse("2020-01-13"),
             EndDate = DateTime.Parse("2022-05-29"),
             FTE = 0.5,
-            Worker = w100,
+            Employee = w100,
             AssignmentState = AssignmentState.Active,
             Position = pos1201
         };
@@ -1017,7 +1017,7 @@ namespace ERPSystem.Data
             StartDate = DateTime.Parse("2020-01-13"),
             EndDate = DateTime.Parse("2022-05-29"),
             FTE = 0.5,
-            Worker = w101,
+            Employee = w101,
             AssignmentState = AssignmentState.Active,
             Position = pos1202
         };
@@ -1027,7 +1027,7 @@ namespace ERPSystem.Data
             StartDate = DateTime.Parse("2020-01-13"),
             EndDate = DateTime.Parse("2022-05-29"),
             FTE = 0.5,
-            Worker = w102,
+            Employee = w102,
             AssignmentState = AssignmentState.Active,
             Position = pos1203
         };
@@ -1037,7 +1037,7 @@ namespace ERPSystem.Data
             StartDate = DateTime.Parse("2020-01-13"),
             EndDate = DateTime.Parse("2022-05-29"),
             FTE = 0.5,
-            Worker = w103,
+            Employee = w103,
             AssignmentState = AssignmentState.Active,
             Position = pos1204
         };
@@ -1047,7 +1047,7 @@ namespace ERPSystem.Data
             StartDate = DateTime.Parse("2020-01-13"),
             EndDate = DateTime.Parse("2022-05-29"),
             FTE = 0.5,
-            Worker = w104,
+            Employee = w104,
             AssignmentState = AssignmentState.Active,
             Position = pos1205
         };
@@ -1057,7 +1057,7 @@ namespace ERPSystem.Data
             StartDate = DateTime.Parse("2020-01-13"),
             EndDate = DateTime.Parse("2022-05-29"),
             FTE = 0.5,
-            Worker = w105,
+            Employee = w105,
             AssignmentState = AssignmentState.Active,
             Position = pos1206
         };
@@ -1067,7 +1067,7 @@ namespace ERPSystem.Data
             StartDate = DateTime.Parse("2020-01-13"),
             EndDate = DateTime.Parse("2022-05-29"),
             FTE = 0.5,
-            Worker = w106,
+            Employee = w106,
             AssignmentState = AssignmentState.Active,
             Position = pos1207
         };
@@ -1077,7 +1077,7 @@ namespace ERPSystem.Data
             StartDate = DateTime.Parse("2020-01-13"),
             EndDate = DateTime.Parse("2022-05-29"),
             FTE = 0.5,
-            Worker = w107,
+            Employee = w107,
             AssignmentState = AssignmentState.Active,
             Position = pos1208
         };
@@ -1087,7 +1087,7 @@ namespace ERPSystem.Data
             StartDate = DateTime.Parse("2020-01-13"),
             EndDate = DateTime.Parse("2022-05-29"),
             FTE = 0.5,
-            Worker = w108,
+            Employee = w108,
             AssignmentState = AssignmentState.Active,
             Position = pos1209
         };

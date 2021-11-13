@@ -9,6 +9,5 @@ namespace ERPSystem.Models
     {
         //Navigation properties
         public ICollection<Employee> Mentees { get; set; }
-        public ICollection<Assignment> Assignments { get; set; }
     }
 }

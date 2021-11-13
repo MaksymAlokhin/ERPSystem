@@ -14,12 +14,6 @@
     <hr />
     <dl class="row">
         <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Mentor.Branch)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Mentor.Branch.Name)
-        </dd>
-        <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.Mentor.FirstName)
         </dt>
         <dd class="col-sm-10">
@@ -42,6 +36,12 @@
         </dt>
         <dd class="col-sm-10">
             @Html.DisplayFor(model => model.Mentor.EmployeeState)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Mentor.Branch)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Mentor.Branch.Name)
         </dd>
     </dl>
     

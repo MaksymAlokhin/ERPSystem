@@ -24,8 +24,8 @@ namespace ERPSystem.Pages.Assignments
         public async Task OnGetAsync()
         {
             Assignment = await _context.Assignments
-                .Include(a => a.Position)
-                .Include(a => a.Worker).ToListAsync();
+                .Include(a => a.Employee)
+                .Include(a => a.Position).ToListAsync();
         }
     }
 }

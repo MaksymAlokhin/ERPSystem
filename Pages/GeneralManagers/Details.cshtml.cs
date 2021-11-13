@@ -29,6 +29,7 @@ namespace ERPSystem.Pages.GeneralManagers
             }
 
             GeneralManager = await _context.GeneralManagers
+                .Include(g => g.Branch)
                 .Include(g => g.Company).FirstOrDefaultAsync(m => m.Id == id);
 
             if (GeneralManager == null)

@@ -30,8 +30,8 @@ namespace ERPSystem.Pages.Assignments
             }
 
             Assignment = await _context.Assignments
-                .Include(a => a.Position)
-                .Include(a => a.Worker).FirstOrDefaultAsync(m => m.Id == id);
+                .Include(a => a.Employee)
+                .Include(a => a.Position).FirstOrDefaultAsync(m => m.Id == id);
 
             if (Assignment == null)
             {
