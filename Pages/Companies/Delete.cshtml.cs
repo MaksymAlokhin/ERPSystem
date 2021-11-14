@@ -58,10 +58,14 @@ namespace ERPSystem.Pages.Companies
                 return NotFound();
             }
 
-            Company = await _context.Companies.FindAsync(id);
+            Company = await _context.Companies
+                .Include(c => c.GeneralManager)
+                .FirstOrDefaultAsync(m => m.Id == id);
 
             if (Company != null)
             {
+                var gm = await _context.GeneralManagers.FindAsync(Company.GeneralManager.Id);
+                gm.CompanyId = null;
                 _context.Companies.Remove(Company);
                 await _context.SaveChangesAsync();
             }
