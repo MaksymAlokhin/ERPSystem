@@ -58,23 +58,6 @@ namespace ERPSystem.Data
                 .HasConversion<string>()
                 .HasMaxLength(16);
             #endregion
-            #region Cascade Delete Cycles Fix
-            //One-to-many cycles of cascade deletes fix
-            //https://docs.microsoft.com/en-us/ef/core/saving/cascade-delete
-            modelBuilder.Entity<Position>()
-                        .HasMany(e => e.Assignments)
-                        .WithOne(e => e.Position)
-                        .OnDelete(DeleteBehavior.ClientCascade);
-            //One-to-one cycles of cascade deletes fix
-            modelBuilder.Entity<Department>()
-                        .HasOne(e => e.DepartmentHead)
-                        .WithOne(e => e.Department)
-                        .OnDelete(DeleteBehavior.ClientCascade);
-            modelBuilder.Entity<Project>()
-                        .HasOne(e => e.ProjectManager)
-                        .WithOne(e => e.Project)
-                        .OnDelete(DeleteBehavior.ClientCascade);
-            #endregion
         }
         #region DBSet
         public DbSet<Assignment> Assignments { get; set; }

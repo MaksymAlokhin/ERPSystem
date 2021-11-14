@@ -8,7 +8,7 @@ namespace ERPSystem.Models
     public class ProjectManager : Employee
     {
         //Navigation properties
-        public int ProjectId { get; set; }
+        public int? ProjectId { get; set; }
         public Project Project { get; set; }
         public ICollection<Mentor> Mentors { get; set; }
     }

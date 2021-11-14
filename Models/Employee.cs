@@ -22,7 +22,7 @@ namespace ERPSystem.Models
         [RegularExpression(@"^[A-Z]+[a-zA-Z-. ]*$")]
         public string LastName { get; set; }
 
-        [Display(Name = "Full Name")]
+        [Display(Name = "Name")]
         public string FullName
         {
             get

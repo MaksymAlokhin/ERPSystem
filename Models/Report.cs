@@ -18,7 +18,7 @@ namespace ERPSystem.Models
         public ReportState ReportState { get; set; }
 
         //Navigation properties
-        public int AssignmentId { get; set; }
+        public int? AssignmentId { get; set; }
         public Assignment Assignment { get; set; }
     }
     public enum ReportState

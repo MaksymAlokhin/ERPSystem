@@ -14,7 +14,16 @@ namespace ERPSystem.Pages.Companies
     public class EditModel : PageModel
     {
         private readonly ERPSystem.Data.ApplicationDbContext _context;
-
+        public int? PageIndex { get; set; }
+        public string CurrentFilter { get; set; }
+        public string CurrentSort { get; set; }
+        public List<SelectListItem> GeneralManagerList { get; set; }
+        public int? GeneralManagerId;
+        public int? FormerGeneralManagerId;
+        public List<int> SelectedBranches { get; set; }
+        public SelectList BranchesSelectList { get; set; }
+        public List<int> SelectedDepartments { get; set; }
+        public SelectList DepartmentsSelectList { get; set; }
         public EditModel(ERPSystem.Data.ApplicationDbContext context)
         {
             _context = context;
@@ -23,32 +32,97 @@ namespace ERPSystem.Pages.Companies
         [BindProperty]
         public Company Company { get; set; }
 
-        public async Task<IActionResult> OnGetAsync(int? id)
+        public async Task<IActionResult> OnGetAsync(string sortOrder,
+            string currentFilter, int? pageIndex, int? id)
         {
+            PageIndex = pageIndex;
+            CurrentSort = sortOrder;
+            CurrentFilter = currentFilter;
+
             if (id == null)
             {
                 return NotFound();
             }
-
-            Company = await _context.Companies.FirstOrDefaultAsync(m => m.Id == id);
+            Company = await _context.Companies
+                .Include(g => g.GeneralManager)
+                .Include(d => d.Departments)
+                .Include(b => b.Branches)
+                .AsNoTracking()
+                .FirstOrDefaultAsync(m => m.Id == id);
 
             if (Company == null)
             {
                 return NotFound();
+            }
+
+            GeneralManagerList = new List<SelectListItem>();
+            foreach (GeneralManager gm in _context.GeneralManagers)
+            {
+                GeneralManagerList.Add(new SelectListItem { Value = $"{gm.Id}", Text = $"{gm.FullName}" });
+            }
+            if(Company.GeneralManager != null)
+            {
+                GeneralManagerId = FormerGeneralManagerId = Company.GeneralManager.Id;
+            }
+
+            var BranchesQuery = _context.Branches.OrderBy(b => b.Name);
+            BranchesSelectList = new SelectList(BranchesQuery.AsNoTracking(), "Id", "Name"); //list, id, value
+            var DepartmentsQuery = _context.Departments.OrderBy(b => b.Name);
+            DepartmentsSelectList = new SelectList(DepartmentsQuery.AsNoTracking(), "Id", "Name"); //list, id, value
+
+            SelectedBranches = new List<int>();
+            foreach (var branch in Company.Branches)
+            {
+                SelectedBranches.Add(branch.Id);
+            }
+            SelectedDepartments = new List<int>();
+            foreach (var department in Company.Departments)
+            {
+                SelectedDepartments.Add(department.Id);
             }
             return Page();
         }
 
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see https://aka.ms/RazorPagesCRUD.
-        public async Task<IActionResult> OnPostAsync()
+        public async Task<IActionResult> OnPostAsync(int? id, int? GeneralManagerId, int? FormerGeneralManagerId, string sortOrder,
+            string currentFilter, int? pageIndex, int[] SelectedBranches, int[] SelectedDepartments)
         {
             if (!ModelState.IsValid)
             {
                 return Page();
             }
 
-            _context.Attach(Company).State = EntityState.Modified;
+            var CompanyToUpdate = _context.Companies
+                .Include(g => g.GeneralManager)
+                .Include(d => d.Departments)
+                .Include(b => b.Branches)
+                .Single(m => m.Id == id);
+
+            if (await TryUpdateModelAsync<Company>(
+                            CompanyToUpdate,
+                            "Company",
+                            c => c.Name, c => c.CompanyState))
+            {
+                if (GeneralManagerId != null)
+                {
+                    GeneralManager gm = await _context.GeneralManagers.FindAsync(GeneralManagerId);
+                    gm.CompanyId = Company.Id;
+                }
+                else
+                {
+                    GeneralManager gm = await _context.GeneralManagers.FindAsync(FormerGeneralManagerId);
+                    if(FormerGeneralManagerId != null)
+                    {
+                        gm.CompanyId = null;
+                    }
+                }
+
+                UpdateDepartments(SelectedDepartments, CompanyToUpdate);
+                UpdateBrances(SelectedBranches, CompanyToUpdate);
+            }
+
+            //_context.Attach(Company).State = EntityState.Modified;
 
             try
             {
@@ -66,12 +140,89 @@ namespace ERPSystem.Pages.Companies
                 }
             }
 
-            return RedirectToPage("./Index");
+            return RedirectToPage("./Index", new
+            {
+                pageIndex = $"{pageIndex}",
+                sortOrder = $"{sortOrder}",
+                currentFilter = $"{currentFilter}"
+            });
         }
 
         private bool CompanyExists(int id)
         {
             return _context.Companies.Any(e => e.Id == id);
+        }
+        private void UpdateDepartments(int[] SelectedDepartments, Company Company)
+        {
+            {
+                if (SelectedDepartments == null)
+                {
+                    Company.Departments = new List<Department>();
+                    return;
+                }
+
+                var SelectedDepartmentsHS = new HashSet<int>(SelectedDepartments);
+                var CompanyDepartmentsHS = new HashSet<int>
+                    (Company.Departments.Select(s => s.Id));
+                foreach (var department in _context.Departments)
+                {
+                    //If items are selected
+                    if (SelectedDepartmentsHS.Contains(department.Id))
+                    {
+                        //If item not present
+                        if (!CompanyDepartmentsHS.Contains(department.Id))
+                        {
+                            Company.Departments.Add(department);
+                        }
+                    }
+                    //If items are not selected
+                    else
+                    {
+                        //If item is present
+                        if (CompanyDepartmentsHS.Contains(department.Id))
+                        {
+                            var toRemove = Company.Departments.Single(s => s.Id == department.Id);
+                            Company.Departments.Remove(toRemove);
+                        }
+                    }
+                }
+            }
+        }
+        private void UpdateBrances(int[] SelectedBranches, Company Company)
+        {
+            {
+                if (SelectedBranches == null)
+                {
+                    Company.Branches = new List<Branch>();
+                    return;
+                }
+
+                var SelectedBranchesHS = new HashSet<int>(SelectedBranches);
+                var CompanyBranchesHS = new HashSet<int>
+                    (Company.Branches.Select(s => s.Id));
+                foreach (var branch in _context.Branches)
+                {
+                    //If items are selected
+                    if (SelectedBranchesHS.Contains(branch.Id))
+                    {
+                        //If item not present
+                        if (!CompanyBranchesHS.Contains(branch.Id))
+                        {
+                            Company.Branches.Add(branch);
+                        }
+                    }
+                    //If items are not selected
+                    else
+                    {
+                        //If item is present
+                        if (CompanyBranchesHS.Contains(branch.Id))
+                        {
+                            var toRemove = Company.Branches.Single(s => s.Id == branch.Id);
+                            Company.Branches.Remove(toRemove);
+                        }
+                    }
+                }
+            }
         }
     }
 }

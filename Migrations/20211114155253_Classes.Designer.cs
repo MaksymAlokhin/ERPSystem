@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ERPSystem.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20211113161020_Classes")]
+    [Migration("20211114155253_Classes")]
     partial class Classes
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -33,7 +33,7 @@ namespace ERPSystem.Migrations
                         .HasMaxLength(16)
                         .HasColumnType("nvarchar(16)");
 
-                    b.Property<int>("EmployeeId")
+                    b.Property<int?>("EmployeeId")
                         .HasColumnType("int");
 
                     b.Property<DateTime>("EndDate")
@@ -47,7 +47,7 @@ namespace ERPSystem.Migrations
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
 
-                    b.Property<int>("PositionId")
+                    b.Property<int?>("PositionId")
                         .HasColumnType("int");
 
                     b.Property<DateTime>("StartDate")
@@ -74,7 +74,7 @@ namespace ERPSystem.Migrations
                         .HasMaxLength(16)
                         .HasColumnType("nvarchar(16)");
 
-                    b.Property<int>("CompanyId")
+                    b.Property<int?>("CompanyId")
                         .HasColumnType("int");
 
                     b.Property<string>("Name")
@@ -118,7 +118,7 @@ namespace ERPSystem.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int>("CompanyId")
+                    b.Property<int?>("CompanyId")
                         .HasColumnType("int");
 
                     b.Property<string>("DepartmentState")
@@ -204,7 +204,7 @@ namespace ERPSystem.Migrations
                         .HasMaxLength(16)
                         .HasColumnType("nvarchar(16)");
 
-                    b.Property<int>("ProjectId")
+                    b.Property<int?>("ProjectId")
                         .HasColumnType("int");
 
                     b.Property<DateTime>("StartDate")
@@ -224,7 +224,7 @@ namespace ERPSystem.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int>("DepartmentId")
+                    b.Property<int?>("DepartmentId")
                         .HasColumnType("int");
 
                     b.Property<DateTime>("EndDate")
@@ -256,7 +256,7 @@ namespace ERPSystem.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int>("AssignmentId")
+                    b.Property<int?>("AssignmentId")
                         .HasColumnType("int");
 
                     b.Property<double>("Hours")
@@ -270,7 +270,8 @@ namespace ERPSystem.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("AssignmentId")
-                        .IsUnique();
+                        .IsUnique()
+                        .HasFilter("[AssignmentId] IS NOT NULL");
 
                     b.ToTable("Reports");
                 });
@@ -479,7 +480,7 @@ namespace ERPSystem.Migrations
                 {
                     b.HasBaseType("ERPSystem.Models.Employee");
 
-                    b.Property<int>("DepartmentId")
+                    b.Property<int?>("DepartmentId")
                         .HasColumnType("int");
 
                     b.HasIndex("DepartmentId")
@@ -493,7 +494,7 @@ namespace ERPSystem.Migrations
                 {
                     b.HasBaseType("ERPSystem.Models.Employee");
 
-                    b.Property<int>("CompanyId")
+                    b.Property<int?>("CompanyId")
                         .HasColumnType("int");
 
                     b.HasIndex("CompanyId")
@@ -529,7 +530,7 @@ namespace ERPSystem.Migrations
                 {
                     b.HasBaseType("ERPSystem.Models.Employee");
 
-                    b.Property<int>("ProjectId")
+                    b.Property<int?>("ProjectId")
                         .HasColumnType("int");
 
                     b.HasIndex("ProjectId")
@@ -550,15 +551,11 @@ namespace ERPSystem.Migrations
                 {
                     b.HasOne("ERPSystem.Models.Employee", "Employee")
                         .WithMany("Assignments")
-                        .HasForeignKey("EmployeeId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("EmployeeId");
 
                     b.HasOne("ERPSystem.Models.Position", "Position")
                         .WithMany("Assignments")
-                        .HasForeignKey("PositionId")
-                        .OnDelete(DeleteBehavior.ClientCascade)
-                        .IsRequired();
+                        .HasForeignKey("PositionId");
 
                     b.Navigation("Employee");
 
@@ -569,9 +566,7 @@ namespace ERPSystem.Migrations
                 {
                     b.HasOne("ERPSystem.Models.Company", "Company")
                         .WithMany("Branches")
-                        .HasForeignKey("CompanyId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("CompanyId");
 
                     b.Navigation("Company");
                 });
@@ -580,9 +575,7 @@ namespace ERPSystem.Migrations
                 {
                     b.HasOne("ERPSystem.Models.Company", "Company")
                         .WithMany("Departments")
-                        .HasForeignKey("CompanyId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("CompanyId");
 
                     b.Navigation("Company");
                 });
@@ -604,9 +597,7 @@ namespace ERPSystem.Migrations
                 {
                     b.HasOne("ERPSystem.Models.Project", "Project")
                         .WithMany("Positions")
-                        .HasForeignKey("ProjectId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("ProjectId");
 
                     b.Navigation("Project");
                 });
@@ -615,9 +606,7 @@ namespace ERPSystem.Migrations
                 {
                     b.HasOne("ERPSystem.Models.Department", "Department")
                         .WithMany("Projects")
-                        .HasForeignKey("DepartmentId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("DepartmentId");
 
                     b.Navigation("Department");
                 });
@@ -626,9 +615,7 @@ namespace ERPSystem.Migrations
                 {
                     b.HasOne("ERPSystem.Models.Assignment", "Assignment")
                         .WithOne("Report")
-                        .HasForeignKey("ERPSystem.Models.Report", "AssignmentId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("ERPSystem.Models.Report", "AssignmentId");
 
                     b.Navigation("Assignment");
                 });
@@ -688,9 +675,7 @@ namespace ERPSystem.Migrations
                 {
                     b.HasOne("ERPSystem.Models.Department", "Department")
                         .WithOne("DepartmentHead")
-                        .HasForeignKey("ERPSystem.Models.DepartmentHead", "DepartmentId")
-                        .OnDelete(DeleteBehavior.ClientCascade)
-                        .IsRequired();
+                        .HasForeignKey("ERPSystem.Models.DepartmentHead", "DepartmentId");
 
                     b.Navigation("Department");
                 });
@@ -699,9 +684,7 @@ namespace ERPSystem.Migrations
                 {
                     b.HasOne("ERPSystem.Models.Company", "Company")
                         .WithOne("GeneralManager")
-                        .HasForeignKey("ERPSystem.Models.GeneralManager", "CompanyId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("ERPSystem.Models.GeneralManager", "CompanyId");
 
                     b.Navigation("Company");
                 });
@@ -725,9 +708,7 @@ namespace ERPSystem.Migrations
                 {
                     b.HasOne("ERPSystem.Models.Project", "Project")
                         .WithOne("ProjectManager")
-                        .HasForeignKey("ERPSystem.Models.ProjectManager", "ProjectId")
-                        .OnDelete(DeleteBehavior.ClientCascade)
-                        .IsRequired();
+                        .HasForeignKey("ERPSystem.Models.ProjectManager", "ProjectId");
 
                     b.Navigation("Project");
                 });
