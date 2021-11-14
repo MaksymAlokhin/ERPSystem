@@ -44,6 +44,8 @@ namespace ERPSystem.Pages.Companies
             SelectedBranches = new List<int>();
             SelectedDepartments = new List<int>();
 
+            Company = new Company();
+            Company.CompanyState = CompanyState.Inactive;
             return Page();
         }
 
@@ -94,11 +96,20 @@ namespace ERPSystem.Pages.Companies
                                             "Company",
                                             c => c.Name, c => c.CompanyState))
             {
-                if (GeneralManagerId != null)
+                if (GeneralManagerId != 0)
                 {
                     GeneralManager gm = await _context.GeneralManagers.FindAsync(GeneralManagerId);
+                    if(gm.CompanyId != null)
+                    {
+                        var oldCompany = await _context.Companies.FindAsync(gm.CompanyId);
+                        oldCompany.CompanyState = CompanyState.Inactive;
+                    }
                     gm.CompanyId = null;
                     NewCompany.GeneralManager = gm;
+                }
+                else
+                {
+                    NewCompany.CompanyState = CompanyState.Inactive;
                 }
                 _context.Companies.Add(NewCompany);
                 await _context.SaveChangesAsync();

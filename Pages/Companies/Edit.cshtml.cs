@@ -104,25 +104,29 @@ namespace ERPSystem.Pages.Companies
                             "Company",
                             c => c.Name, c => c.CompanyState))
             {
-                if (GeneralManagerId != null)
+                GeneralManager gm = await _context.GeneralManagers.FindAsync(GeneralManagerId); 
+                if (gm != null)
                 {
-                    GeneralManager gm = await _context.GeneralManagers.FindAsync(GeneralManagerId);
+                    if (gm.Id != FormerGeneralManagerId && gm.CompanyId != null)
+                    {
+                        var oldCompany = await _context.Companies.FindAsync(gm.CompanyId);
+                        oldCompany.CompanyState = CompanyState.Inactive;
+                    }
                     gm.CompanyId = Company.Id;
                 }
                 else
                 {
-                    GeneralManager gm = await _context.GeneralManagers.FindAsync(FormerGeneralManagerId);
                     if(FormerGeneralManagerId != null)
                     {
-                        gm.CompanyId = null;
+                        GeneralManager formerGm = await _context.GeneralManagers.FindAsync(FormerGeneralManagerId);
+                        formerGm.CompanyId = null;
+                        CompanyToUpdate.CompanyState = CompanyState.Inactive;
                     }
                 }
 
                 UpdateDepartments(SelectedDepartments, CompanyToUpdate);
                 UpdateBrances(SelectedBranches, CompanyToUpdate);
             }
-
-            //_context.Attach(Company).State = EntityState.Modified;
 
             try
             {
