@@ -9,7 +9,7 @@ namespace ERPSystem.Models
     public class GeneralManager : Employee
     {
         //Navigation properties
-        public int CompanyId { get; set; }
+        public int? CompanyId { get; set; }
         public Company Company { get; set; }
     }
 }

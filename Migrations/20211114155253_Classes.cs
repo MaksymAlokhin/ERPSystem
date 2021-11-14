@@ -174,7 +174,7 @@ namespace ERPSystem.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Name = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
                     BranchState = table.Column<string>(type: "nvarchar(16)", maxLength: 16, nullable: false),
-                    CompanyId = table.Column<int>(type: "int", nullable: false)
+                    CompanyId = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -184,7 +184,7 @@ namespace ERPSystem.Migrations
                         column: x => x.CompanyId,
                         principalTable: "Companies",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -195,7 +195,7 @@ namespace ERPSystem.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Name = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
                     DepartmentState = table.Column<string>(type: "nvarchar(16)", maxLength: 16, nullable: false),
-                    CompanyId = table.Column<int>(type: "int", nullable: false)
+                    CompanyId = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -205,7 +205,7 @@ namespace ERPSystem.Migrations
                         column: x => x.CompanyId,
                         principalTable: "Companies",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -218,7 +218,7 @@ namespace ERPSystem.Migrations
                     StartDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     EndDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     ProjectState = table.Column<string>(type: "nvarchar(16)", maxLength: 16, nullable: false),
-                    DepartmentId = table.Column<int>(type: "int", nullable: false)
+                    DepartmentId = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -228,7 +228,7 @@ namespace ERPSystem.Migrations
                         column: x => x.DepartmentId,
                         principalTable: "Departments",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -265,7 +265,7 @@ namespace ERPSystem.Migrations
                         column: x => x.CompanyId,
                         principalTable: "Companies",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_Employee_Departments_DepartmentId",
                         column: x => x.DepartmentId,
@@ -314,7 +314,7 @@ namespace ERPSystem.Migrations
                     StartDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     EndDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     PositionState = table.Column<string>(type: "nvarchar(16)", maxLength: 16, nullable: false),
-                    ProjectId = table.Column<int>(type: "int", nullable: false)
+                    ProjectId = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -324,7 +324,7 @@ namespace ERPSystem.Migrations
                         column: x => x.ProjectId,
                         principalTable: "Projects",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -338,8 +338,8 @@ namespace ERPSystem.Migrations
                     StartDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     EndDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     AssignmentState = table.Column<string>(type: "nvarchar(16)", maxLength: 16, nullable: false),
-                    PositionId = table.Column<int>(type: "int", nullable: false),
-                    EmployeeId = table.Column<int>(type: "int", nullable: false)
+                    PositionId = table.Column<int>(type: "int", nullable: true),
+                    EmployeeId = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -349,7 +349,7 @@ namespace ERPSystem.Migrations
                         column: x => x.EmployeeId,
                         principalTable: "Employee",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_Assignments_Positions_PositionId",
                         column: x => x.PositionId,
@@ -366,7 +366,7 @@ namespace ERPSystem.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Hours = table.Column<double>(type: "float", nullable: false),
                     ReportState = table.Column<string>(type: "nvarchar(16)", maxLength: 16, nullable: false),
-                    AssignmentId = table.Column<int>(type: "int", nullable: false)
+                    AssignmentId = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -376,7 +376,7 @@ namespace ERPSystem.Migrations
                         column: x => x.AssignmentId,
                         principalTable: "Assignments",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateIndex(
@@ -498,7 +498,8 @@ namespace ERPSystem.Migrations
                 name: "IX_Reports_AssignmentId",
                 table: "Reports",
                 column: "AssignmentId",
-                unique: true);
+                unique: true,
+                filter: "[AssignmentId] IS NOT NULL");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)

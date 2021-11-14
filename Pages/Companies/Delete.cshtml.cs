@@ -13,6 +13,9 @@ namespace ERPSystem.Pages.Companies
     public class DeleteModel : PageModel
     {
         private readonly ERPSystem.Data.ApplicationDbContext _context;
+        public int? PageIndex { get; set; }
+        public string CurrentFilter { get; set; }
+        public string CurrentSort { get; set; }
 
         public DeleteModel(ERPSystem.Data.ApplicationDbContext context)
         {
@@ -22,14 +25,23 @@ namespace ERPSystem.Pages.Companies
         [BindProperty]
         public Company Company { get; set; }
 
-        public async Task<IActionResult> OnGetAsync(int? id)
+        public async Task<IActionResult> OnGetAsync(string sortOrder,
+            string currentFilter, int? pageIndex, int? id)
         {
+            PageIndex = pageIndex;
+            CurrentSort = sortOrder;
+            CurrentFilter = currentFilter;
+
             if (id == null)
             {
                 return NotFound();
             }
 
-            Company = await _context.Companies.FirstOrDefaultAsync(m => m.Id == id);
+            Company = await _context.Companies
+                .Include(g => g.GeneralManager)
+                .Include(d => d.Departments)
+                .Include(b => b.Branches)
+                .FirstOrDefaultAsync(m => m.Id == id);
 
             if (Company == null)
             {
@@ -38,7 +50,8 @@ namespace ERPSystem.Pages.Companies
             return Page();
         }
 
-        public async Task<IActionResult> OnPostAsync(int? id)
+        public async Task<IActionResult> OnPostAsync(string sortOrder,
+            string currentFilter, int? pageIndex, int? id)
         {
             if (id == null)
             {
@@ -53,7 +66,12 @@ namespace ERPSystem.Pages.Companies
                 await _context.SaveChangesAsync();
             }
 
-            return RedirectToPage("./Index");
+            return RedirectToPage("./Index", new
+            {
+                pageIndex = $"{pageIndex}",
+                sortOrder = $"{sortOrder}",
+                currentFilter = $"{currentFilter}"
+            });
         }
     }
 }

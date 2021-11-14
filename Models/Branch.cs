@@ -21,7 +21,7 @@ namespace ERPSystem.Models
         
         //Navigation properties
         public ICollection<Employee> Employees { get; set; }
-        public int CompanyId { get; set; }
+        public int? CompanyId { get; set; }
         public Company Company { get; set; }
     }
     public enum BranchState

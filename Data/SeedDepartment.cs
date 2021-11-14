@@ -12,361 +12,361 @@ namespace ERPSystem.Data
         #region Create Departments
         public static Department WalmartProduction = new Department
         {
-            Name = "Production",
+            Name = "Walmart Production",
             Company = Walmart,
             DepartmentState = DepartmentState.Active
         };
         public static Department WalmartResearchAndDevelopment = new Department
         {
-            Name = "Research and Development",
+            Name = "Walmart Research and Development",
             Company = Walmart,
             DepartmentState = DepartmentState.Active
         };
         public static Department WalmartPurchasing = new Department
         {
-            Name = "Purchasing",
+            Name = "Walmart Purchasing",
             Company = Walmart,
             DepartmentState = DepartmentState.Active
         };
         public static Department WalmartMarketing = new Department
         {
-            Name = "Marketing",
+            Name = "Walmart Marketing",
             Company = Walmart,
             DepartmentState = DepartmentState.Active
         };
         public static Department WalmartHumanResourceManagement = new Department
         {
-            Name = "Human Resource Management",
+            Name = "Walmart Human Resource Management",
             Company = Walmart,
             DepartmentState = DepartmentState.Active
         };
         public static Department WalmartAccountingandFinance = new Department
         {
-            Name = "Accounting and Finance",
+            Name = "Walmart Accounting and Finance",
             Company = Walmart,
             DepartmentState = DepartmentState.Active
         };
         public static Department AmazonProduction = new Department
         {
-            Name = "Production",
+            Name = "Amazon Production",
             Company = Amazon,
             DepartmentState = DepartmentState.Active
         };
         public static Department AmazonResearchAndDevelopment = new Department
         {
-            Name = "Research and Development",
+            Name = "Amazon Research and Development",
             Company = Amazon,
             DepartmentState = DepartmentState.Active
         };
         public static Department AmazonPurchasing = new Department
         {
-            Name = "Purchasing",
+            Name = "Amazon Purchasing",
             Company = Amazon,
             DepartmentState = DepartmentState.Active
         };
         public static Department AmazonMarketing = new Department
         {
-            Name = "Marketing",
+            Name = "Amazon Marketing",
             Company = Amazon,
             DepartmentState = DepartmentState.Active
         };
         public static Department AmazonHumanResourceManagement = new Department
         {
-            Name = "Human Resource Management",
+            Name = "Amazon Human Resource Management",
             Company = Amazon,
             DepartmentState = DepartmentState.Active
         };
         public static Department AmazonAccountingandFinance = new Department
         {
-            Name = "Accounting and Finance",
+            Name = "Amazon Accounting and Finance",
             Company = Amazon,
             DepartmentState = DepartmentState.Active
         };
         public static Department AppleProduction = new Department
         {
-            Name = "Production",
+            Name = "Apple Production",
             Company = Apple,
             DepartmentState = DepartmentState.Active
         };
         public static Department AppleResearchAndDevelopment = new Department
         {
-            Name = "Research and Development",
+            Name = "Apple Research and Development",
             Company = Apple,
             DepartmentState = DepartmentState.Active
         };
         public static Department ApplePurchasing = new Department
         {
-            Name = "Purchasing",
+            Name = "Apple Purchasing",
             Company = Apple,
             DepartmentState = DepartmentState.Active
         };
         public static Department AppleMarketing = new Department
         {
-            Name = "Marketing",
+            Name = "Apple Marketing",
             Company = Apple,
             DepartmentState = DepartmentState.Active
         };
         public static Department AppleHumanResourceManagement = new Department
         {
-            Name = "Human Resource Management",
+            Name = "Apple Human Resource Management",
             Company = Apple,
             DepartmentState = DepartmentState.Active
         };
         public static Department AppleAccountingandFinance = new Department
         {
-            Name = "Accounting and Finance",
+            Name = "Apple Accounting and Finance",
             Company = Apple,
             DepartmentState = DepartmentState.Active
         };
         public static Department FordMotorProduction = new Department
         {
-            Name = "Production",
+            Name = "Ford Motor Production",
             Company = FordMotor,
             DepartmentState = DepartmentState.Active
         };
         public static Department FordMotorResearchAndDevelopment = new Department
         {
-            Name = "Research and Development",
+            Name = "Ford Motor Research and Development",
             Company = FordMotor,
             DepartmentState = DepartmentState.Active
         };
         public static Department FordMotorPurchasing = new Department
         {
-            Name = "Purchasing",
+            Name = "Ford Motor Purchasing",
             Company = FordMotor,
             DepartmentState = DepartmentState.Active
         };
         public static Department FordMotorMarketing = new Department
         {
-            Name = "Marketing",
+            Name = "Ford Motor Marketing",
             Company = FordMotor,
             DepartmentState = DepartmentState.Active
         };
         public static Department FordMotorHumanResourceManagement = new Department
         {
-            Name = "Human Resource Management",
+            Name = "Ford Motor Human Resource Management",
             Company = FordMotor,
             DepartmentState = DepartmentState.Active
         };
         public static Department FordMotorAccountingandFinance = new Department
         {
-            Name = "Accounting and Finance",
+            Name = "Ford Motor Accounting and Finance",
             Company = FordMotor,
             DepartmentState = DepartmentState.Active
         };
         public static Department FedExProduction = new Department
         {
-            Name = "Production",
+            Name = "FedExProduction",
             Company = FedEx,
             DepartmentState = DepartmentState.Active
         };
         public static Department FedExResearchAndDevelopment = new Department
         {
-            Name = "Research and Development",
+            Name = "FedExResearch and Development",
             Company = FedEx,
             DepartmentState = DepartmentState.Active
         };
         public static Department FedExPurchasing = new Department
         {
-            Name = "Purchasing",
+            Name = "FedExPurchasing",
             Company = FedEx,
             DepartmentState = DepartmentState.Active
         };
         public static Department FedExMarketing = new Department
         {
-            Name = "Marketing",
+            Name = "FedExMarketing",
             Company = FedEx,
             DepartmentState = DepartmentState.Active
         };
         public static Department FedExHumanResourceManagement = new Department
         {
-            Name = "Human Resource Management",
+            Name = "FedExHuman Resource Management",
             Company = FedEx,
             DepartmentState = DepartmentState.Active
         };
         public static Department FedExAccountingandFinance = new Department
         {
-            Name = "Accounting and Finance",
+            Name = "FedExAccounting and Finance",
             Company = FedEx,
             DepartmentState = DepartmentState.Active
         };
         public static Department BankOfAmericaProduction = new Department
         {
-            Name = "Production",
+            Name = "Bank of America Production",
             Company = BankOfAmerica,
             DepartmentState = DepartmentState.Active
         };
         public static Department BankOfAmericaResearchAndDevelopment = new Department
         {
-            Name = "Research and Development",
+            Name = "Bank of America Research and Development",
             Company = BankOfAmerica,
             DepartmentState = DepartmentState.Active
         };
         public static Department BankOfAmericaPurchasing = new Department
         {
-            Name = "Purchasing",
+            Name = "Bank of America Purchasing",
             Company = BankOfAmerica,
             DepartmentState = DepartmentState.Active
         };
         public static Department BankOfAmericaMarketing = new Department
         {
-            Name = "Marketing",
+            Name = "Bank of America Marketing",
             Company = BankOfAmerica,
             DepartmentState = DepartmentState.Active
         };
         public static Department BankOfAmericaHumanResourceManagement = new Department
         {
-            Name = "Human Resource Management",
+            Name = "Bank of America Human Resource Management",
             Company = BankOfAmerica,
             DepartmentState = DepartmentState.Active
         };
         public static Department BankOfAmericaAccountingandFinance = new Department
         {
-            Name = "Accounting and Finance",
+            Name = "Bank of America Accounting and Finance",
             Company = BankOfAmerica,
             DepartmentState = DepartmentState.Active
         };
         public static Department JohnsonAndJohnsonProduction = new Department
         {
-            Name = "Production",
+            Name = "Johnson & Johnson Production",
             Company = JohnsonAndJohnson,
             DepartmentState = DepartmentState.Active
         };
         public static Department JohnsonAndJohnsonResearchAndDevelopment = new Department
         {
-            Name = "Research and Development",
+            Name = "Johnson & Johnson Research and Development",
             Company = JohnsonAndJohnson,
             DepartmentState = DepartmentState.Active
         };
         public static Department JohnsonAndJohnsonPurchasing = new Department
         {
-            Name = "Purchasing",
+            Name = "Johnson & Johnson Purchasing",
             Company = JohnsonAndJohnson,
             DepartmentState = DepartmentState.Active
         };
         public static Department JohnsonAndJohnsonMarketing = new Department
         {
-            Name = "Marketing",
+            Name = "Johnson & Johnson Marketing",
             Company = JohnsonAndJohnson,
             DepartmentState = DepartmentState.Active
         };
         public static Department JohnsonAndJohnsonHumanResourceManagement = new Department
         {
-            Name = "Human Resource Management",
+            Name = "Johnson & Johnson Human Resource Management",
             Company = JohnsonAndJohnson,
             DepartmentState = DepartmentState.Active
         };
         public static Department JohnsonAndJohnsonAccountingandFinance = new Department
         {
-            Name = "Accounting and Finance",
+            Name = "Johnson & Johnson Accounting and Finance",
             Company = JohnsonAndJohnson,
             DepartmentState = DepartmentState.Active
         };
         public static Department FacebookProduction = new Department
         {
-            Name = "Production",
+            Name = "Facebook Production",
             Company = Facebook,
             DepartmentState = DepartmentState.Active
         };
         public static Department FacebookResearchAndDevelopment = new Department
         {
-            Name = "Research and Development",
+            Name = "Facebook Research and Development",
             Company = Facebook,
             DepartmentState = DepartmentState.Active
         };
         public static Department FacebookPurchasing = new Department
         {
-            Name = "Purchasing",
+            Name = "Facebook Purchasing",
             Company = Facebook,
             DepartmentState = DepartmentState.Active
         };
         public static Department FacebookMarketing = new Department
         {
-            Name = "Marketing",
+            Name = "Facebook Marketing",
             Company = Facebook,
             DepartmentState = DepartmentState.Active
         };
         public static Department FacebookHumanResourceManagement = new Department
         {
-            Name = "Human Resource Management",
+            Name = "Facebook Human Resource Management",
             Company = Facebook,
             DepartmentState = DepartmentState.Active
         };
         public static Department FacebookAccountingandFinance = new Department
         {
-            Name = "Accounting and Finance",
+            Name = "Facebook Accounting and Finance",
             Company = Facebook,
             DepartmentState = DepartmentState.Active
         };
         public static Department AlphabetProduction = new Department
         {
-            Name = "Production",
+            Name = "Alphabet Production",
             Company = Alphabet,
             DepartmentState = DepartmentState.Active
         };
         public static Department AlphabetResearchAndDevelopment = new Department
         {
-            Name = "Research and Development",
+            Name = "Alphabet Research and Development",
             Company = Alphabet,
             DepartmentState = DepartmentState.Active
         };
         public static Department AlphabetPurchasing = new Department
         {
-            Name = "Purchasing",
+            Name = "Alphabet Purchasing",
             Company = Alphabet,
             DepartmentState = DepartmentState.Active
         };
         public static Department AlphabetMarketing = new Department
         {
-            Name = "Marketing",
+            Name = "Alphabet Marketing",
             Company = Alphabet,
             DepartmentState = DepartmentState.Active
         };
         public static Department AlphabetHumanResourceManagement = new Department
         {
-            Name = "Human Resource Management",
+            Name = "Alphabet Human Resource Management",
             Company = Alphabet,
             DepartmentState = DepartmentState.Active
         };
         public static Department AlphabetAccountingandFinance = new Department
         {
-            Name = "Accounting and Finance",
+            Name = "Alphabet Accounting and Finance",
             Company = Alphabet,
             DepartmentState = DepartmentState.Active
         };
         public static Department ExxonMobilProduction = new Department
         {
-            Name = "Production",
+            Name = "ExxonMobil Production",
             Company = ExxonMobil,
             DepartmentState = DepartmentState.Active
         };
         public static Department ExxonMobilResearchAndDevelopment = new Department
         {
-            Name = "Research and Development",
+            Name = "ExxonMobil Research and Development",
             Company = ExxonMobil,
             DepartmentState = DepartmentState.Active
         };
         public static Department ExxonMobilPurchasing = new Department
         {
-            Name = "Purchasing",
+            Name = "ExxonMobil Purchasing",
             Company = ExxonMobil,
             DepartmentState = DepartmentState.Active
         };
         public static Department ExxonMobilMarketing = new Department
         {
-            Name = "Marketing",
+            Name = "ExxonMobil Marketing",
             Company = ExxonMobil,
             DepartmentState = DepartmentState.Active
         };
         public static Department ExxonMobilHumanResourceManagement = new Department
         {
-            Name = "Human Resource Management",
+            Name = "ExxonMobil Human Resource Management",
             Company = ExxonMobil,
             DepartmentState = DepartmentState.Active
         };
         public static Department ExxonMobilAccountingandFinance = new Department
         {
-            Name = "Accounting and Finance",
+            Name = "ExxonMobil Accounting and Finance",
             Company = ExxonMobil,
             DepartmentState = DepartmentState.Active
         };

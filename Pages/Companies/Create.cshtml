@@ -10,26 +10,50 @@
 
 <h4>Company</h4>
 <hr />
-<div class="row">
-    <div class="col-md-4">
-        <form method="post">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+<form method="post">
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+    <div class="row">
+        <div class="col-sm-4">
             <div class="form-group">
                 <label asp-for="Company.Name" class="control-label"></label>
                 <input asp-for="Company.Name" class="form-control" />
                 <span asp-validation-for="Company.Name" class="text-danger"></span>
             </div>
+        </div>
+        <div class="col-sm-4">
             <div class="form-group">
                 <label asp-for="Company.CompanyState" class="control-label"></label>
-                <select asp-for="Company.CompanyState" class="form-control"></select>
+                <select asp-for="Company.CompanyState" asp-items="Html.GetEnumSelectList<Models.CompanyState>()" class="form-control"></select>
                 <span asp-validation-for="Company.CompanyState" class="text-danger"></span>
             </div>
+        </div>
+        <div class="col-sm-4">
             <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
+                <label asp-for="Company.GeneralManager" class="control-label"></label>
+                <select asp-for="@Model.GeneralManagerId" asp-items="@Model.GeneralManagerList" class="form-control"><option value="">--none--</option></select>
             </div>
-        </form>
+        </div>
     </div>
-</div>
+    <div class="row">
+        <div class="col-sm-auto">
+            <div class="form-group">
+                <label asp-for="Company.Departments" class="control-label"></label><br />
+                <select asp-for="SelectedDepartments" asp-items="Model.DepartmentsSelectList" size="10">
+                </select>
+            </div>
+        </div>
+        <div class="col-sm-auto">
+            <div class="form-group">
+                <label asp-for="Company.Branches" class="control-label"></label><br />
+                <select asp-for="SelectedBranches" asp-items="Model.BranchesSelectList" size="10">
+                </select>
+            </div>
+        </div>
+    </div>
+    <div class="form-group">
+        <input type="submit" value="Save" class="btn btn-primary" />
+    </div>
+</form>
 
 <div>
     <a asp-page="Index">Back to List</a>

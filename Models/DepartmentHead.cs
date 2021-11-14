@@ -8,7 +8,7 @@ namespace ERPSystem.Models
     public class DepartmentHead : Employee
     {
         //Navigation properties
-        public int DepartmentId { get; set; }
+        public int? DepartmentId { get; set; }
         public Department Department { get; set; }
         public ICollection<Mentor> Mentors { get; set; }
     }

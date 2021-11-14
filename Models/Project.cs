@@ -32,7 +32,7 @@ namespace ERPSystem.Models
         [Display(Name = "Project Manager")]
         public ProjectManager ProjectManager { get; set; }
         public ICollection<Position> Positions { get; set; }
-        public int DepartmentId { get; set; }
+        public int? DepartmentId { get; set; }
         public Department Department { get; set; }
     }
     public enum ProjectState

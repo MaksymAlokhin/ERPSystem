@@ -13,7 +13,7 @@ namespace ERPSystem.Pages.GeneralManagers
     public class CreateModel : PageModel
     {
         private readonly ERPSystem.Data.ApplicationDbContext _context;
-
+        public EmployeeState State { get; set; }
         public CreateModel(ERPSystem.Data.ApplicationDbContext context)
         {
             _context = context;
@@ -21,8 +21,8 @@ namespace ERPSystem.Pages.GeneralManagers
 
         public IActionResult OnGet()
         {
-        ViewData["BranchId"] = new SelectList(_context.Branches, "Id", "Name");
-        ViewData["CompanyId"] = new SelectList(_context.Companies, "Id", "Name");
+            ViewData["BranchId"] = new SelectList(_context.Branches, "Id", "Name");
+            ViewData["CompanyId"] = new SelectList(_context.Companies, "Id", "Name");
             return Page();
         }
 

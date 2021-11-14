@@ -30,7 +30,7 @@ namespace ERPSystem.Models
         public PositionState PositionState { get; set; }
 
         //Navigation properties
-        public int ProjectId { get; set; }
+        public int? ProjectId { get; set; }
         public Project Project { get; set; }
         public ICollection<Assignment> Assignments { get; set; }
     }
