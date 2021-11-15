@@ -23,6 +23,7 @@ namespace ERPSystem.Pages.Companies
         }
         public string NameSort { get; set; }
         public string ManagerSort { get; set; }
+        public string StateSort { get; set; }
         public string CurrentFilter { get; set; }
         public string CurrentSort { get; set; }
         public PaginatedList<Company> Company { get; set; }
@@ -32,6 +33,7 @@ namespace ERPSystem.Pages.Companies
             CurrentSort = sortOrder;
             NameSort = String.IsNullOrEmpty(sortOrder) ? "name_desc" : "";
             ManagerSort = sortOrder == "manager" ? "manager_desc" : "manager";
+            StateSort = sortOrder == "state" ? "state_desc" : "state";
             if (searchString != null)
             {
                 pageIndex = 1;
@@ -58,6 +60,12 @@ namespace ERPSystem.Pages.Companies
                     break;
                 case "manager_desc":
                     companiesIQ = companiesIQ.OrderByDescending(s => s.GeneralManager.LastName).ThenBy(s => s.GeneralManager.FirstName);
+                    break;
+                case "state":
+                    companiesIQ = companiesIQ.OrderBy(s => s.CompanyState).ThenBy(s => s.Name);
+                    break;
+                case "state_desc":
+                    companiesIQ = companiesIQ.OrderByDescending(s => s.CompanyState).ThenBy(s => s.Name);
                     break;
                 default:
                     companiesIQ = companiesIQ.OrderBy(s => s.Name);
