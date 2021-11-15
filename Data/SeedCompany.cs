@@ -40,7 +40,7 @@ namespace ERPSystem.Data
         };
         public static Company BankOfAmerica = new Company
         {
-            Name = "Bank Of America",
+            Name = "Bank of America",
             CompanyState = CompanyState.Active
         };
         public static Company JohnsonAndJohnson = new Company

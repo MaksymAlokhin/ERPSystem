@@ -14,19 +14,19 @@ namespace ERPSystem.Pages.Companies
     public class IndexModel : PageModel
     {
         private readonly ERPSystem.Data.ApplicationDbContext _context;
-        private readonly IConfiguration Configuration;
-
-        public IndexModel(ERPSystem.Data.ApplicationDbContext context, IConfiguration configuration)
-        {
-            _context = context;
-            Configuration = configuration;
-        }
+        private readonly IConfiguration Configuration; 
         public string NameSort { get; set; }
         public string ManagerSort { get; set; }
         public string StateSort { get; set; }
         public string CurrentFilter { get; set; }
         public string CurrentSort { get; set; }
         public PaginatedList<Company> Company { get; set; }
+
+        public IndexModel(ERPSystem.Data.ApplicationDbContext context, IConfiguration configuration)
+        {
+            _context = context;
+            Configuration = configuration;
+        }
         public async Task OnGetAsync(string sortOrder,
             string currentFilter, string searchString, int? pageIndex)
         {

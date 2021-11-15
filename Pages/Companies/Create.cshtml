@@ -23,7 +23,7 @@
         <div class="col-sm-4">
             <div class="form-group">
                 <label asp-for="Company.CompanyState" class="control-label"></label>
-                <select asp-for="Company.CompanyState" asp-items="Html.GetEnumSelectList<Models.CompanyState>()" class="form-control" onchange="checkGenManager()"></select>
+                <select asp-for="Company.CompanyState" asp-items="Html.GetEnumSelectList<Models.CompanyState>()" class="form-control" onchange="checkHead()"></select>
                 <span asp-validation-for="Company.CompanyState" class="text-danger"></span>
             </div>
         </div>
@@ -82,7 +82,7 @@
                 }
             }
         }
-        function checkGenManager() {
+        function checkHead() {
             var gm = document.getElementById("GeneralManagerId");
             var state = document.getElementById('Company_CompanyState');
             if (gm.options[gm.selectedIndex].value == '0') {

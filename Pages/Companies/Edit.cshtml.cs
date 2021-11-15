@@ -56,7 +56,7 @@ namespace ERPSystem.Pages.Companies
             }
 
             GeneralManagerList = new List<SelectListItem>();
-            foreach (GeneralManager gm in _context.GeneralManagers)
+            foreach (GeneralManager gm in _context.GeneralManagers.OrderBy(gm => gm.LastName).ThenBy(gm => gm.FirstName))
             {
                 GeneralManagerList.Add(new SelectListItem { Value = $"{gm.Id}", Text = $"{gm.FullName}" });
             }
@@ -93,11 +93,11 @@ namespace ERPSystem.Pages.Companies
                 return Page();
             }
 
-            var CompanyToUpdate = _context.Companies
+            var CompanyToUpdate = await _context.Companies
                 .Include(g => g.GeneralManager)
                 .Include(d => d.Departments)
                 .Include(b => b.Branches)
-                .Single(m => m.Id == id);
+                .FirstOrDefaultAsync(m => m.Id == id);
 
             if (await TryUpdateModelAsync<Company>(
                             CompanyToUpdate,
