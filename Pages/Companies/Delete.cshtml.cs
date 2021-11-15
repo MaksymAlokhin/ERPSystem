@@ -41,6 +41,7 @@ namespace ERPSystem.Pages.Companies
                 .Include(g => g.GeneralManager)
                 .Include(d => d.Departments)
                 .Include(b => b.Branches)
+                .AsNoTracking()
                 .FirstOrDefaultAsync(m => m.Id == id);
 
             if (Company == null)
