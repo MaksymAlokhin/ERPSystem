@@ -4,6 +4,11 @@ Demo App for Avenga<br />
 
 ![CompanyIndex](wwwroot/images/avenga-logo.png)<br /><br />
 
+Built With:<br />
+--------------------
+- ASP.NET Core 5
+- Entity Framework Core 5
+
 Entities Implemented:<br />
 --------------------
 - Company
