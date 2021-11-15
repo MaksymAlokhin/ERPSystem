@@ -29,7 +29,7 @@ namespace ERPSystem.Pages.Workers
                 return NotFound();
             }
 
-            Worker = await _context.Worker
+            Worker = await _context.Workers
                 .Include(w => w.Branch).FirstOrDefaultAsync(m => m.Id == id);
 
             if (Worker == null)
@@ -46,11 +46,11 @@ namespace ERPSystem.Pages.Workers
                 return NotFound();
             }
 
-            Worker = await _context.Worker.FindAsync(id);
+            Worker = await _context.Workers.FindAsync(id);
 
             if (Worker != null)
             {
-                _context.Worker.Remove(Worker);
+                _context.Workers.Remove(Worker);
                 await _context.SaveChangesAsync();
             }
 

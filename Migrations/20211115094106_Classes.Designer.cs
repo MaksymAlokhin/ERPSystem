@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ERPSystem.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20211114155253_Classes")]
+    [Migration("20211115094106_Classes")]
     partial class Classes
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -179,7 +179,7 @@ namespace ERPSystem.Migrations
 
                     b.HasIndex("MentorId");
 
-                    b.ToTable("Employee");
+                    b.ToTable("Employees");
 
                     b.HasDiscriminator<string>("Discriminator").HasValue("Employee");
                 });

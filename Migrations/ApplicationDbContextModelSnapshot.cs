@@ -177,7 +177,7 @@ namespace ERPSystem.Migrations
 
                     b.HasIndex("MentorId");
 
-                    b.ToTable("Employee");
+                    b.ToTable("Employees");
 
                     b.HasDiscriminator<string>("Discriminator").HasValue("Employee");
                 });

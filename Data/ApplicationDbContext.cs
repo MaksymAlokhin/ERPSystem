@@ -66,14 +66,13 @@ namespace ERPSystem.Data
         public DbSet<Department> Departments { get; set; }
         public DbSet<DepartmentHead> DepartmentHeads { get; set; }
         public DbSet<Employee> Employees { get; set; }
-        public DbSet<Employee> Workers { get; set; }
+        public DbSet<Worker> Workers { get; set; }
         public DbSet<GeneralManager> GeneralManagers { get; set; }
         public DbSet<Mentor> Mentors { get; set; }
         public DbSet<Position> Positions { get; set; }
         public DbSet<Project> Projects { get; set; }
         public DbSet<ProjectManager> ProjectManagers { get; set; }
         public DbSet<Report> Reports { get; set; }
-        public DbSet<ERPSystem.Models.Worker> Worker { get; set; }
         #endregion
     }
 }

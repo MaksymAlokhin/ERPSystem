@@ -232,7 +232,7 @@ namespace ERPSystem.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Employee",
+                name: "Employees",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
@@ -253,51 +253,51 @@ namespace ERPSystem.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Employee", x => x.Id);
+                    table.PrimaryKey("PK_Employees", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Employee_Branches_BranchId",
+                        name: "FK_Employees_Branches_BranchId",
                         column: x => x.BranchId,
                         principalTable: "Branches",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
-                        name: "FK_Employee_Companies_CompanyId",
+                        name: "FK_Employees_Companies_CompanyId",
                         column: x => x.CompanyId,
                         principalTable: "Companies",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
-                        name: "FK_Employee_Departments_DepartmentId",
+                        name: "FK_Employees_Departments_DepartmentId",
                         column: x => x.DepartmentId,
                         principalTable: "Departments",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
-                        name: "FK_Employee_Employee_DepartmentHeadId",
+                        name: "FK_Employees_Employees_DepartmentHeadId",
                         column: x => x.DepartmentHeadId,
-                        principalTable: "Employee",
+                        principalTable: "Employees",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
-                        name: "FK_Employee_Employee_MentorId",
+                        name: "FK_Employees_Employees_MentorId",
                         column: x => x.MentorId,
-                        principalTable: "Employee",
+                        principalTable: "Employees",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
-                        name: "FK_Employee_Employee_ProjectManagerId",
+                        name: "FK_Employees_Employees_ProjectManagerId",
                         column: x => x.ProjectManagerId,
-                        principalTable: "Employee",
+                        principalTable: "Employees",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
-                        name: "FK_Employee_Employee_WorkerId",
+                        name: "FK_Employees_Employees_WorkerId",
                         column: x => x.WorkerId,
-                        principalTable: "Employee",
+                        principalTable: "Employees",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
-                        name: "FK_Employee_Projects_ProjectId",
+                        name: "FK_Employees_Projects_ProjectId",
                         column: x => x.ProjectId,
                         principalTable: "Projects",
                         principalColumn: "Id",
@@ -345,9 +345,9 @@ namespace ERPSystem.Migrations
                 {
                     table.PrimaryKey("PK_Assignments", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Assignments_Employee_EmployeeId",
+                        name: "FK_Assignments_Employees_EmployeeId",
                         column: x => x.EmployeeId,
-                        principalTable: "Employee",
+                        principalTable: "Employees",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
@@ -439,49 +439,49 @@ namespace ERPSystem.Migrations
                 column: "CompanyId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Employee_BranchId",
-                table: "Employee",
+                name: "IX_Employees_BranchId",
+                table: "Employees",
                 column: "BranchId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Employee_CompanyId",
-                table: "Employee",
+                name: "IX_Employees_CompanyId",
+                table: "Employees",
                 column: "CompanyId",
                 unique: true,
                 filter: "[CompanyId] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Employee_DepartmentHeadId",
-                table: "Employee",
+                name: "IX_Employees_DepartmentHeadId",
+                table: "Employees",
                 column: "DepartmentHeadId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Employee_DepartmentId",
-                table: "Employee",
+                name: "IX_Employees_DepartmentId",
+                table: "Employees",
                 column: "DepartmentId",
                 unique: true,
                 filter: "[DepartmentId] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Employee_MentorId",
-                table: "Employee",
+                name: "IX_Employees_MentorId",
+                table: "Employees",
                 column: "MentorId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Employee_ProjectId",
-                table: "Employee",
+                name: "IX_Employees_ProjectId",
+                table: "Employees",
                 column: "ProjectId",
                 unique: true,
                 filter: "[ProjectId] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Employee_ProjectManagerId",
-                table: "Employee",
+                name: "IX_Employees_ProjectManagerId",
+                table: "Employees",
                 column: "ProjectManagerId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Employee_WorkerId",
-                table: "Employee",
+                name: "IX_Employees_WorkerId",
+                table: "Employees",
                 column: "WorkerId");
 
             migrationBuilder.CreateIndex(
@@ -532,7 +532,7 @@ namespace ERPSystem.Migrations
                 name: "Assignments");
 
             migrationBuilder.DropTable(
-                name: "Employee");
+                name: "Employees");
 
             migrationBuilder.DropTable(
                 name: "Positions");

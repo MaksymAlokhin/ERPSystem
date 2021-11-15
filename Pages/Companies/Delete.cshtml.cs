@@ -64,8 +64,6 @@ namespace ERPSystem.Pages.Companies
 
             if (Company != null)
             {
-                var gm = await _context.GeneralManagers.FindAsync(Company.GeneralManager.Id);
-                gm.CompanyId = null;
                 _context.Companies.Remove(Company);
                 await _context.SaveChangesAsync();
             }
