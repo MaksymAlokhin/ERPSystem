@@ -2,10 +2,13 @@
 =========
 Demo App for Avenga.
 
-Entities:<br />
----------------
+Entities Implemented:<br />
+--------------------
 - Company
 - Department
+
+Entities WIP:<br />
+------------
 - Branch
 - Project
 - Position
