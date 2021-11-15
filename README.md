@@ -1,6 +1,8 @@
 ﻿ERPSystem<br />
 =========
-Demo App for Avenga.
+Demo App for Avenga<br />
+
+![CompanyIndex](wwwroot/images/avenga-logo.png)<br /><br />
 
 Entities Implemented:<br />
 --------------------
