@@ -35,15 +35,28 @@
             @Html.DisplayNameFor(model => model.Branch.Employees)
         </dt>
         <dd class="col-sm-auto" style="overflow-y: auto; max-height: 400px;">
-            <table class="table">
-                @foreach (var item in Model.Branch.Employees)
-                {
+            <table class="table-striped">
+                <thead style="text-align: center">
                     <tr>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.FullName)
-                        </td>
+                        <th class="col-sm-auto">#</th>
+                        <th class="col-sm-auto">@Html.DisplayNameFor(model => model.EmployeeList[0].FullName)</th>
                     </tr>
-                }
+                </thead>
+                <tbody>
+                    @{
+                        int i = 1;
+                        @foreach (var item in Model.EmployeeList)
+                        {
+                            <tr>
+                                <td style="text-align: center">@i</td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.FullName)
+                                </td>
+                            </tr>
+                            i++;
+                        }
+                    }
+                </tbody>
             </table>
         </dd>
     </dl>

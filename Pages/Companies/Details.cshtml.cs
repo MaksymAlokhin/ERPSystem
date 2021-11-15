@@ -16,6 +16,8 @@ namespace ERPSystem.Pages.Companies
         public int? PageIndex { get; set; }
         public string CurrentFilter { get; set; }
         public string CurrentSort { get; set; }
+        public List<Department> DepartmentsList { get; set; }
+        public List<Branch> BranchesList { get; set; }
 
         public DetailsModel(ERPSystem.Data.ApplicationDbContext context)
         {
@@ -38,10 +40,18 @@ namespace ERPSystem.Pages.Companies
 
             Company = await _context.Companies
                 .Include(g => g.GeneralManager)
-                .Include(d => d.Departments)
-                .Include(b => b.Branches)
                 .AsNoTracking()
                 .FirstOrDefaultAsync(m => m.Id == id);
+
+            DepartmentsList = await _context.Departments
+                .Where(e => e.CompanyId == id)
+                .OrderBy(e => e.Name)
+                .ToListAsync();
+
+            BranchesList = await _context.Branches
+                .Where(e => e.CompanyId == id)
+                .OrderBy(e => e.Name)
+                .ToListAsync();
 
             if (Company == null)
             {
