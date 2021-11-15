@@ -59,7 +59,9 @@ namespace ERPSystem.Pages.Companies
             }
 
             Company = await _context.Companies
-                .Include(c => c.GeneralManager)
+                .Include(g => g.GeneralManager)
+                .Include(d => d.Departments)
+                .Include(b => b.Branches)
                 .FirstOrDefaultAsync(m => m.Id == id);
 
             if (Company != null)
