@@ -33,7 +33,7 @@
         <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.Company.Departments.First().Name)
         </dt>
-        <dd class="col-sm-10">
+        <dd class="col-sm-auto" style="overflow-y: auto; max-height: 200px;">
             <table class="table">
                 @foreach (var item in Model.Company.Departments)
                 {
@@ -45,10 +45,11 @@
                 }
             </table>
         </dd>
+        <div class="w-100"></div>
         <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.Company.Branches.First().Name)
         </dt>
-        <dd class="col-sm-10">
+        <dd class="col-sm-auto" style="overflow-y: auto; max-height: 200px;">
             <table class="table">
                 @foreach (var item in Model.Company.Branches)
                 {
