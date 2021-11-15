@@ -23,7 +23,7 @@ namespace ERPSystem.Pages.Workers
 
         public async Task OnGetAsync()
         {
-            Worker = await _context.Worker
+            Worker = await _context.Workers
                 .Include(w => w.Branch).ToListAsync();
         }
     }

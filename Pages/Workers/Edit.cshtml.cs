@@ -30,7 +30,7 @@ namespace ERPSystem.Pages.Workers
                 return NotFound();
             }
 
-            Worker = await _context.Worker
+            Worker = await _context.Workers
                 .Include(w => w.Branch).FirstOrDefaultAsync(m => m.Id == id);
 
             if (Worker == null)
@@ -73,7 +73,7 @@ namespace ERPSystem.Pages.Workers
 
         private bool WorkerExists(int id)
         {
-            return _context.Worker.Any(e => e.Id == id);
+            return _context.Workers.Any(e => e.Id == id);
         }
     }
 }

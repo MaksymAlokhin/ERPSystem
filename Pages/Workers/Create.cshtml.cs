@@ -36,7 +36,7 @@ namespace ERPSystem.Pages.Workers
                 return Page();
             }
 
-            _context.Worker.Add(Worker);
+            _context.Workers.Add(Worker);
             await _context.SaveChangesAsync();
 
             return RedirectToPage("./Index");
