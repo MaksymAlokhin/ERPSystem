@@ -21,25 +21,35 @@
                 <input asp-for="Department.Name" class="form-control" />
                 <span asp-validation-for="Department.Name" class="text-danger"></span>
             </div>
-            <div class="form-group">
-                <label asp-for="Department.DepartmentState" class="control-label"></label>
-                <select asp-for="Department.DepartmentState" asp-items="Html.GetEnumSelectList<Models.DepartmentState>()" class="form-control" onchange="checkHead()"></select>
-                <span asp-validation-for="Department.DepartmentState" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Department.DepartmentHead" class="control-label"></label>
-                <select asp-for="@Model.DepartmentHeadId" asp-items="@Model.DepartmentHeadList" class="form-control" onchange="toggleActive()"><option value="0">--none--</option></select>
-            </div>
+        </div>
+        <div class="col-sm-4">
             <div class="form-group">
                 <label asp-for="Department.Company" class="control-label"></label>
                 <select asp-for="Department.CompanyId" class="form-control" asp-items="ViewBag.CompanyId"><option value="">--none--</option></select>
                 <span asp-validation-for="Department.CompanyId" class="text-danger"></span>
             </div>
         </div>
-        <div class="col-sm-auto">
+    </div>
+    <div class="row">
+        <div class="col-sm-4">
+            <div class="form-group">
+                <label asp-for="Department.DepartmentHead" class="control-label"></label>
+                <select asp-for="@Model.DepartmentHeadId" asp-items="@Model.DepartmentHeadList" class="form-control" onchange="toggleActive()"><option value="0">--none--</option></select>
+            </div>
+        </div>
+        <div class="col-sm-4">
+            <div class="form-group">
+                <label asp-for="Department.DepartmentState" class="control-label"></label>
+                <select asp-for="Department.DepartmentState" asp-items="Html.GetEnumSelectList<Models.DepartmentState>()" class="form-control" onchange="checkHead()"></select>
+                <span asp-validation-for="Department.DepartmentState" class="text-danger"></span>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-4">
             <div class="form-group">
                 <label asp-for="Department.Projects" class="control-label"></label><br />
-                <select asp-for="SelectedProjects" asp-items="Model.ProjectsSelectList" size="13">
+                <select asp-for="SelectedProjects" asp-items="Model.ProjectsSelectList" size="10">
                 </select>
             </div>
         </div>
@@ -48,7 +58,6 @@
         <input type="submit" value="Save" class="btn btn-primary" />
     </div>
 </form>
-
 <div>
     <a asp-page="./Index"
        asp-route-pageIndex="@Model.PageIndex"
