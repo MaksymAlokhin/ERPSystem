@@ -2,7 +2,7 @@
 =========
 Demo App for Avenga<br />
 
-![CompanyIndex](wwwroot/images/avenga-logo.png)<br /><br />
+![Avenga](wwwroot/images/avenga-logo.png)<br /><br />
 
 Built With:<br />
 --------------------

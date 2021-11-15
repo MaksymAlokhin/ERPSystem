@@ -33,6 +33,13 @@
             </th>
             <th>
                 <a asp-page="./Index"
+                   asp-route-sortOrder="@Model.CompanySort"
+                   asp-route-currentFilter="@Model.CurrentFilter">
+                    @Html.DisplayNameFor(model => model.Department[0].Company.Name)
+                </a>
+            </th>
+            <th>
+                <a asp-page="./Index"
                    asp-route-sortOrder="@Model.DepartmentHeadSort"
                    asp-route-currentFilter="@Model.CurrentFilter">
                     @Html.DisplayNameFor(model => model.Department[0].DepartmentHead)
@@ -59,6 +66,9 @@
                     </th>
                     <td>
                         @Html.DisplayFor(modelItem => item.Name)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Company.Name)
                     </td>
                     <td>
                         @Html.DisplayFor(modelItem => item.DepartmentHead.FullName)
