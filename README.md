@@ -21,6 +21,8 @@ Entities WIP:<br />
 - Project Manager
 - Worker
 - Mentor
-
+<br />
+Screenshots:<br />
+-----------
 ![CompanyIndex](Screenshots/CompanyIndex.png)<br /><br />
 ![CompanyEdit](Screenshots/CompanyEdit.png)<br /><br />
