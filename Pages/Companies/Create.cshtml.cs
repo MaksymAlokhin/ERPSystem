@@ -31,7 +31,7 @@ namespace ERPSystem.Pages.Companies
         public IActionResult OnGet()
         {
             GeneralManagerList = new List<SelectListItem>();
-            foreach (GeneralManager gm in _context.GeneralManagers)
+            foreach (GeneralManager gm in _context.GeneralManagers.OrderBy(gm => gm.LastName).ThenBy(gm => gm.FirstName))
             {
                 GeneralManagerList.Add(new SelectListItem { Value = $"{gm.Id}", Text = $"{gm.FullName}" });
             }

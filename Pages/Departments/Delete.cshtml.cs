@@ -13,6 +13,9 @@ namespace ERPSystem.Pages.Departments
     public class DeleteModel : PageModel
     {
         private readonly ERPSystem.Data.ApplicationDbContext _context;
+        public int? PageIndex { get; set; }
+        public string CurrentFilter { get; set; }
+        public string CurrentSort { get; set; }
 
         public DeleteModel(ERPSystem.Data.ApplicationDbContext context)
         {
@@ -22,15 +25,24 @@ namespace ERPSystem.Pages.Departments
         [BindProperty]
         public Department Department { get; set; }
 
-        public async Task<IActionResult> OnGetAsync(int? id)
+        public async Task<IActionResult> OnGetAsync(string sortOrder,
+            string currentFilter, int? pageIndex, int? id)
         {
+            PageIndex = pageIndex;
+            CurrentSort = sortOrder;
+            CurrentFilter = currentFilter;
+
             if (id == null)
             {
                 return NotFound();
             }
 
             Department = await _context.Departments
-                .Include(d => d.Company).FirstOrDefaultAsync(m => m.Id == id);
+                .Include(d => d.DepartmentHead)
+                .Include(p => p.Projects)
+                .Include(c => c.Company)
+                .AsNoTracking()
+                .FirstOrDefaultAsync(m => m.Id == id);
 
             if (Department == null)
             {
@@ -39,14 +51,19 @@ namespace ERPSystem.Pages.Departments
             return Page();
         }
 
-        public async Task<IActionResult> OnPostAsync(int? id)
+        public async Task<IActionResult> OnPostAsync(string sortOrder,
+            string currentFilter, int? pageIndex, int? id)
         {
             if (id == null)
             {
                 return NotFound();
             }
 
-            Department = await _context.Departments.FindAsync(id);
+            Department = await _context.Departments
+                .Include(d => d.DepartmentHead)
+                .Include(p => p.Projects)
+                .Include(c => c.Company)
+                .FirstOrDefaultAsync(m => m.Id == id);
 
             if (Department != null)
             {
@@ -54,7 +71,12 @@ namespace ERPSystem.Pages.Departments
                 await _context.SaveChangesAsync();
             }
 
-            return RedirectToPage("./Index");
+            return RedirectToPage("./Index", new
+            {
+                pageIndex = $"{pageIndex}",
+                sortOrder = $"{sortOrder}",
+                currentFilter = $"{currentFilter}"
+            });
         }
     }
 }
