@@ -46,6 +46,7 @@ namespace ERPSystem.Pages.Departments
                 .Include(d => d.DepartmentHead)
                 .Include(p => p.Projects)
                 .Include(c => c.Company)
+                .AsNoTracking()
                 .FirstOrDefaultAsync(m => m.Id == id);
 
             if (Department == null)
