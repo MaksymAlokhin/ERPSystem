@@ -16,6 +16,7 @@ namespace ERPSystem.Pages.Departments
         public int? PageIndex { get; set; }
         public string CurrentFilter { get; set; }
         public string CurrentSort { get; set; }
+        public List<Project> ProjectsList { get; set; }
 
         public DetailsModel(ERPSystem.Data.ApplicationDbContext context)
         {
@@ -38,10 +39,15 @@ namespace ERPSystem.Pages.Departments
 
             Department = await _context.Departments
                 .Include(d => d.DepartmentHead)
-                .Include(p => p.Projects)
                 .Include(c => c.Company)
                 .AsNoTracking()
                 .FirstOrDefaultAsync(m => m.Id == id);
+
+            ProjectsList = await _context.Projects
+                .Where(e => e.DepartmentId == id)
+                .OrderBy(e => e.Name)
+                .ToListAsync();
+
 
             if (Department == null)
             {

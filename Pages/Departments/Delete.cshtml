@@ -41,15 +41,28 @@
             @Html.DisplayNameFor(model => model.Department.Projects.First().Name)
         </dt>
         <dd class="col-sm-auto" style="overflow-y: auto; max-height: 400px;">
-            <table class="table">
-                @foreach (var item in Model.Department.Projects)
-                {
+            <table class="table-striped">
+                <thead style="text-align: center">
                     <tr>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.Name)
-                        </td>
+                        <th class="col-sm-auto">#</th>
+                        <th class="col-sm-auto">@Html.DisplayNameFor(model => model.ProjectsList[0].Name)</th>
                     </tr>
-                }
+                </thead>
+                <tbody>
+                    @{
+                        int i = 1;
+                        @foreach (var item in Model.ProjectsList)
+                        {
+                            <tr>
+                                <td style="text-align: center">@i</td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Name)
+                                </td>
+                            </tr>
+                            i++;
+                        }
+                    }
+                </tbody>
             </table>
         </dd>
     </dl>

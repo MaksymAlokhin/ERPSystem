@@ -16,6 +16,7 @@ namespace ERPSystem.Pages.Branches
         public int? PageIndex { get; set; }
         public string CurrentFilter { get; set; }
         public string CurrentSort { get; set; }
+        public List<Employee> EmployeeList { get; set; }
 
         public DeleteModel(ERPSystem.Data.ApplicationDbContext context)
         {
@@ -39,9 +40,15 @@ namespace ERPSystem.Pages.Branches
 
             Branch = await _context.Branches
                 .Include(b => b.Company)
-                .Include(e => e.Employees)
                 .AsNoTracking()
                 .FirstOrDefaultAsync(m => m.Id == id);
+
+            EmployeeList = await _context.Employees
+                .Where(e => e.BranchId == id)
+                .OrderBy(e => e.LastName)
+                .ThenBy(e => e.FirstName)
+                .ToListAsync();
+
 
             if (Branch == null)
             {

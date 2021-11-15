@@ -33,32 +33,58 @@
         <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.Company.Departments.First().Name)
         </dt>
-        <dd class="col-sm-auto" style="overflow-y: auto; max-height: 200px;">
-            <table class="table">
-                @foreach (var item in Model.Company.Departments)
-                {
+        <dd class="col-sm-auto" style="overflow-y: auto; max-height: 400px;">
+            <table class="table-striped">
+                <thead style="text-align: center">
                     <tr>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.Name)
-                        </td>
+                        <th class="col-sm-auto">#</th>
+                        <th class="col-sm-auto">@Html.DisplayNameFor(model => model.DepartmentsList[0].Name)</th>
                     </tr>
-                }
+                </thead>
+                <tbody>
+                    @{
+                        int i = 1;
+                        @foreach (var item in Model.DepartmentsList)
+                        {
+                            <tr>
+                                <td style="text-align: center">@i</td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Name)
+                                </td>
+                            </tr>
+                            i++;
+                        }
+                    }
+                </tbody>
             </table>
         </dd>
         <div class="w-100"></div>
         <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.Company.Branches.First().Name)
         </dt>
-        <dd class="col-sm-auto" style="overflow-y: auto; max-height: 200px;">
-            <table class="table">
-                @foreach (var item in Model.Company.Branches)
-                {
+        <dd class="col-sm-auto" style="overflow-y: auto; max-height: 400px;">
+            <table class="table-striped">
+                <thead style="text-align: center">
                     <tr>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.Name)
-                        </td>
+                        <th class="col-sm-auto">#</th>
+                        <th class="col-sm-auto">@Html.DisplayNameFor(model => model.BranchesList[0].Name)</th>
                     </tr>
-                }
+                </thead>
+                <tbody>
+                    @{
+                        i = 1;
+                        @foreach (var item in Model.BranchesList)
+                        {
+                            <tr>
+                                <td style="text-align: center">@i</td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Name)
+                                </td>
+                            </tr>
+                            i++;
+                        }
+                    }
+                </tbody>
             </table>
         </dd>
     </dl>
