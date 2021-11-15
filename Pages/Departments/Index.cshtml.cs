@@ -18,6 +18,7 @@ namespace ERPSystem.Pages.Departments
         public string NameSort { get; set; }
         public string DepartmentHeadSort { get; set; }
         public string StateSort { get; set; }
+        public string CompanySort { get; set; }
         public string CurrentFilter { get; set; }
         public string CurrentSort { get; set; }
         public PaginatedList<Department> Department { get; set; }
@@ -34,6 +35,7 @@ namespace ERPSystem.Pages.Departments
             NameSort = String.IsNullOrEmpty(sortOrder) ? "name_desc" : "";
             DepartmentHeadSort = sortOrder == "head" ? "head_desc" : "head";
             StateSort = sortOrder == "state" ? "state_desc" : "state";
+            CompanySort = sortOrder == "company" ? "company_desc" : "company";
             if (searchString != null)
             {
                 pageIndex = 1;
@@ -43,7 +45,8 @@ namespace ERPSystem.Pages.Departments
                 searchString = currentFilter;
             }
             CurrentFilter = searchString;
-            IQueryable<Department> departmentsIQ = _context.Departments.Include(i => i.DepartmentHead);
+            IQueryable<Department> departmentsIQ = _context.Departments
+                .Include(i => i.DepartmentHead).Include(i => i.Company);
             if (!String.IsNullOrEmpty(searchString))
             {
                 departmentsIQ = departmentsIQ.Where(s => s.Name.Contains(searchString)
@@ -66,6 +69,12 @@ namespace ERPSystem.Pages.Departments
                     break;
                 case "state_desc":
                     departmentsIQ = departmentsIQ.OrderByDescending(s => s.DepartmentState).ThenBy(s => s.Name);
+                    break;
+                case "company":
+                    departmentsIQ = departmentsIQ.OrderBy(s => s.Company.Name).ThenBy(s => s.Name);
+                    break;
+                case "company_desc":
+                    departmentsIQ = departmentsIQ.OrderByDescending(s => s.Company.Name).ThenBy(s => s.Name);
                     break;
                 default:
                     departmentsIQ = departmentsIQ.OrderBy(s => s.Name);
