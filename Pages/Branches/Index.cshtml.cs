@@ -20,6 +20,7 @@ namespace ERPSystem.Pages.Branches
         public string CompanySort { get; set; }
         public string CurrentFilter { get; set; }
         public string CurrentSort { get; set; }
+        public string NumberOfEmployyesSort { get; set; }
         public PaginatedList<Branch> Branch { get; set; }
         public IndexModel(ERPSystem.Data.ApplicationDbContext context, IConfiguration configuration)
         {
@@ -34,6 +35,7 @@ namespace ERPSystem.Pages.Branches
             NameSort = String.IsNullOrEmpty(sortOrder) ? "name_desc" : "";
             StateSort = sortOrder == "state" ? "state_desc" : "state";
             CompanySort = sortOrder == "company" ? "company_desc" : "company";
+            NumberOfEmployyesSort = sortOrder == "employees" ? "employees_desc" : "employees";
             if (searchString != null)
             {
                 pageIndex = 1;
@@ -43,7 +45,9 @@ namespace ERPSystem.Pages.Branches
                 searchString = currentFilter;
             }
             CurrentFilter = searchString;
-            IQueryable<Branch> branchesIQ = _context.Branches.Include(i => i.Company);
+            IQueryable<Branch> branchesIQ = _context.Branches
+                .Include(i => i.Company)
+                .Include(i => i.Employees);
             if (!String.IsNullOrEmpty(searchString))
             {
                 branchesIQ = branchesIQ.Where(s => s.Name.Contains(searchString)
@@ -65,6 +69,12 @@ namespace ERPSystem.Pages.Branches
                     break;
                 case "company_desc":
                     branchesIQ = branchesIQ.OrderByDescending(s => s.Company.Name).ThenBy(s => s.Name);
+                    break;
+                case "employees":
+                    branchesIQ = branchesIQ.OrderBy(s => s.Employees.Count()).ThenBy(s => s.Name);
+                    break;
+                case "employees_desc":
+                    branchesIQ = branchesIQ.OrderByDescending(s => s.Employees.Count()).ThenBy(s => s.Name);
                     break;
                 default:
                     branchesIQ = branchesIQ.OrderBy(s => s.Name);

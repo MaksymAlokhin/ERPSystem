@@ -10,30 +10,43 @@
 
 <h4>Branch</h4>
 <hr />
-<div class="row">
-    <div class="col-md-4">
-        <form method="post">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+<form method="post">
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+    <div class="row">
+        <div class="col-sm-4">
             <div class="form-group">
                 <label asp-for="Branch.Name" class="control-label"></label>
                 <input asp-for="Branch.Name" class="form-control" />
                 <span asp-validation-for="Branch.Name" class="text-danger"></span>
             </div>
+        </div>
+        <div class="col-sm-4">
             <div class="form-group">
                 <label asp-for="Branch.BranchState" class="control-label"></label>
-                <select asp-for="Branch.BranchState" class="form-control"></select>
+                <select asp-for="Branch.BranchState" asp-items="Html.GetEnumSelectList<Models.BranchState>()" class="form-control" onchange="checkCompany()"></select>
                 <span asp-validation-for="Branch.BranchState" class="text-danger"></span>
             </div>
+        </div>
+        <div class="col-sm-4">
             <div class="form-group">
-                <label asp-for="Branch.CompanyId" class="control-label"></label>
-                <select asp-for="Branch.CompanyId" class ="form-control" asp-items="ViewBag.CompanyId"></select>
+                <label asp-for="Branch.Company" class="control-label"></label>
+                <select asp-for="Branch.CompanyId" class="form-control" asp-items="ViewBag.CompanyId" onchange="toggleActive()"><option value="">--none--</option></select>
             </div>
-            <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
-            </div>
-        </form>
+        </div>
     </div>
-</div>
+    <div class="row">
+        <div class="col-sm-auto">
+            <div class="form-group">
+                <label asp-for="Branch.Employees" class="control-label"></label><br />
+                <select asp-for="SelectedEmployees" asp-items="Model.EmployeesSelectList" size="10">
+                </select>
+            </div>
+        </div>
+    </div>
+    <div class="form-group">
+        <input type="submit" value="Create" class="btn btn-primary" />
+    </div>
+</form>
 
 <div>
     <a asp-page="Index">Back to List</a>
@@ -41,4 +54,38 @@
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    <script>
+        function toggleActive() {
+            var company = document.getElementById("Branch_CompanyId");
+            var state = document.getElementById('Branch_BranchState');
+            if (company.options[company.selectedIndex].value === '') {
+                for (var i = 0; i < state.options.length; i++) {
+                    if (state.options[i].text === 'Inactive') {
+                        state.selectedIndex = i;
+                        break;
+                    }
+                }
+            }
+            else {
+                for (var i = 0; i < state.options.length; i++) {
+                    if (state.options[i].text === 'Active') {
+                        state.selectedIndex = i;
+                        break;
+                    }
+                }
+            }
+        }
+        function checkCompany() {
+            var company = document.getElementById("Branch_CompanyId");
+            var state = document.getElementById('Branch_BranchState');
+            if (company.options[company.selectedIndex].value === '') {
+                for (var i = 0; i < state.options.length; i++) {
+                    if (state.options[i].text === 'Inactive') {
+                        state.selectedIndex = i;
+                        break;
+                    }
+                }
+            }
+        }
+    </script>
 }

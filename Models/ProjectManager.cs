@@ -10,6 +10,5 @@ namespace ERPSystem.Models
         //Navigation properties
         public int? ProjectId { get; set; }
         public Project Project { get; set; }
-        public ICollection<Mentor> Mentors { get; set; }
     }
 }

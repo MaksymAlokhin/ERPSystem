@@ -34,7 +34,7 @@
         <div class="col-sm-4">
             <div class="form-group">
                 <label asp-for="Department.DepartmentHead" class="control-label"></label>
-                <select asp-for="@Model.DepartmentHeadId" asp-items="@Model.DepartmentHeadList" class="form-control" onchange="toggleActive()"><option value="0">--none--</option></select>
+                <select asp-for="@Model.DepartmentHeadId" asp-items="@Model.DepartmentHeadList" class="form-control" onchange="toggleActive()"><option value="">--none--</option></select>
             </div>
         </div>
         <div class="col-sm-4">
@@ -73,7 +73,7 @@
         function toggleActive() {
             var gm = document.getElementById("DepartmentHeadId");
             var state = document.getElementById('Department_DepartmentState');
-            if (gm.options[gm.selectedIndex].value == '0') {
+            if (gm.options[gm.selectedIndex].value === '') {
                 for (var i = 0; i < state.options.length; i++) {
                     if (state.options[i].text === 'Inactive') {
                         state.selectedIndex = i;
@@ -93,7 +93,7 @@
         function checkHead() {
             var gm = document.getElementById("DepartmentHeadId");
             var state = document.getElementById('Department_DepartmentState');
-            if (gm.options[gm.selectedIndex].value == '0') {
+            if (gm.options[gm.selectedIndex].value === '') {
                 for (var i = 0; i < state.options.length; i++) {
                     if (state.options[i].text === 'Inactive') {
                         state.selectedIndex = i;

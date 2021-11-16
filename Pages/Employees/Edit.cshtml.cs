@@ -9,7 +9,7 @@ using Microsoft.EntityFrameworkCore;
 using ERPSystem.Data;
 using ERPSystem.Models;
 
-namespace ERPSystem.Pages.Workers
+namespace ERPSystem.Pages.Employees
 {
     public class EditModel : PageModel
     {
@@ -21,7 +21,7 @@ namespace ERPSystem.Pages.Workers
         }
 
         [BindProperty]
-        public Worker Worker { get; set; }
+        public Employee Employee { get; set; }
 
         public async Task<IActionResult> OnGetAsync(int? id)
         {
@@ -30,10 +30,10 @@ namespace ERPSystem.Pages.Workers
                 return NotFound();
             }
 
-            Worker = await _context.Workers
-                .Include(w => w.Branch).FirstOrDefaultAsync(m => m.Id == id);
+            Employee = await _context.Employees
+                .Include(e => e.Branch).FirstOrDefaultAsync(m => m.Id == id);
 
-            if (Worker == null)
+            if (Employee == null)
             {
                 return NotFound();
             }
@@ -50,7 +50,7 @@ namespace ERPSystem.Pages.Workers
                 return Page();
             }
 
-            _context.Attach(Worker).State = EntityState.Modified;
+            _context.Attach(Employee).State = EntityState.Modified;
 
             try
             {
@@ -58,7 +58,7 @@ namespace ERPSystem.Pages.Workers
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!WorkerExists(Worker.Id))
+                if (!EmployeeExists(Employee.Id))
                 {
                     return NotFound();
                 }
@@ -71,9 +71,9 @@ namespace ERPSystem.Pages.Workers
             return RedirectToPage("./Index");
         }
 
-        private bool WorkerExists(int id)
+        private bool EmployeeExists(int id)
         {
-            return _context.Workers.Any(e => e.Id == id);
+            return _context.Employees.Any(e => e.Id == id);
         }
     }
 }

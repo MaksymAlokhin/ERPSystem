@@ -8,7 +8,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using ERPSystem.Data;
 using ERPSystem.Models;
 
-namespace ERPSystem.Pages.Workers
+namespace ERPSystem.Pages.Employees
 {
     public class CreateModel : PageModel
     {
@@ -26,7 +26,7 @@ namespace ERPSystem.Pages.Workers
         }
 
         [BindProperty]
-        public Worker Worker { get; set; }
+        public Employee Employee { get; set; }
 
         // To protect from overposting attacks, see https://aka.ms/RazorPagesCRUD
         public async Task<IActionResult> OnPostAsync()
@@ -36,7 +36,7 @@ namespace ERPSystem.Pages.Workers
                 return Page();
             }
 
-            _context.Workers.Add(Worker);
+            _context.Employees.Add(Employee);
             await _context.SaveChangesAsync();
 
             return RedirectToPage("./Index");

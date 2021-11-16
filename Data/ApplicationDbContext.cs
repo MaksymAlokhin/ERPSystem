@@ -58,6 +58,17 @@ namespace ERPSystem.Data
                 .HasConversion<string>()
                 .HasMaxLength(16);
             #endregion
+            #region Many-to-many cycles of cascade deletes fix
+            //https://github.com/dotnet/efcore/issues/22803#issuecomment-729221687
+            //https://docs.microsoft.com/en-us/ef/core/saving/cascade-delete#optional-relationship-with-dependentschildren-loaded
+            modelBuilder.Entity<Employee>()
+                        .HasMany(m => m.Mentors)
+                        .WithMany(e => e.Employees)
+                        .UsingEntity<Dictionary<string, object>>(
+                            "MentorsMentees",
+                            j => j.HasOne<Mentor>().WithMany().OnDelete(DeleteBehavior.ClientSetNull),
+                            j => j.HasOne<Employee>().WithMany().OnDelete(DeleteBehavior.ClientSetNull));
+            #endregion
         }
         #region DBSet
         public DbSet<Assignment> Assignments { get; set; }
@@ -66,7 +77,6 @@ namespace ERPSystem.Data
         public DbSet<Department> Departments { get; set; }
         public DbSet<DepartmentHead> DepartmentHeads { get; set; }
         public DbSet<Employee> Employees { get; set; }
-        public DbSet<Worker> Workers { get; set; }
         public DbSet<GeneralManager> GeneralManagers { get; set; }
         public DbSet<Mentor> Mentors { get; set; }
         public DbSet<Position> Positions { get; set; }

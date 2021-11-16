@@ -8,6 +8,6 @@ namespace ERPSystem.Models
     public class Mentor : Employee
     {
         //Navigation properties
-        public ICollection<Employee> Mentees { get; set; }
+        public ICollection<Employee> Employees { get; set; }
     }
 }

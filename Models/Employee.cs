@@ -44,6 +44,7 @@ namespace ERPSystem.Models
         public int? BranchId { get; set; }
         public Branch Branch { get; set; }
         public ICollection<Assignment> Assignments { get; set; }
+        public ICollection<Mentor> Mentors { get; set; }
     }
     public enum EmployeeState
     {

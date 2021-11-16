@@ -53,7 +53,7 @@ namespace ERPSystem.Pages.Companies
         public Company Company { get; set; }
 
         // To protect from overposting attacks, see https://aka.ms/RazorPagesCRUD
-        public async Task<IActionResult> OnPostAsync(int? id, int? GeneralManagerId, int[] SelectedBranches, int[] SelectedDepartments)
+        public async Task<IActionResult> OnPostAsync(int? GeneralManagerId, int[] SelectedBranches, int[] SelectedDepartments)
         {
             if (!ModelState.IsValid)
             {

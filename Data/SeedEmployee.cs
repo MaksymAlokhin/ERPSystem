@@ -8,10 +8,10 @@ using static ERPSystem.Data.SeedBranch;
 
 namespace ERPSystem.Data
 {
-    public static class SeedWorker
+    public static class SeedEmployee
     {
-        #region Create Workers
-        public static Worker w001 = new Worker
+        #region Create Employees
+        public static Employee e001 = new Employee
         {
             FirstName = "Beverly",
             LastName = "Diaz",
@@ -23,7 +23,7 @@ namespace ERPSystem.Data
                 m001
             }
         };
-        public static Worker w002 = new Worker
+        public static Employee e002 = new Employee
         {
             FirstName = "Jescie",
             LastName = "Webb",
@@ -35,7 +35,7 @@ namespace ERPSystem.Data
                 m002
             }
         };
-        public static Worker w003 = new Worker
+        public static Employee e003 = new Employee
         {
             FirstName = "Deacon",
             LastName = "Bass",
@@ -47,7 +47,7 @@ namespace ERPSystem.Data
                 m003
             }
         };
-        public static Worker w004 = new Worker
+        public static Employee e004 = new Employee
         {
             FirstName = "Felix",
             LastName = "Chapman",
@@ -59,7 +59,7 @@ namespace ERPSystem.Data
                 m004
             }
         };
-        public static Worker w005 = new Worker
+        public static Employee e005 = new Employee
         {
             FirstName = "Alma",
             LastName = "O'donnell",
@@ -71,7 +71,7 @@ namespace ERPSystem.Data
                 m005
             }
         };
-        public static Worker w006 = new Worker
+        public static Employee e006 = new Employee
         {
             FirstName = "Dante",
             LastName = "Gordon",
@@ -83,7 +83,7 @@ namespace ERPSystem.Data
                 m006
             }
         };
-        public static Worker w007 = new Worker
+        public static Employee e007 = new Employee
         {
             FirstName = "Clarke",
             LastName = "Conley",
@@ -95,7 +95,7 @@ namespace ERPSystem.Data
                 m007
             }
         };
-        public static Worker w008 = new Worker
+        public static Employee e008 = new Employee
         {
             FirstName = "Myles",
             LastName = "Turner",
@@ -107,7 +107,7 @@ namespace ERPSystem.Data
                 m008
             }
         };
-        public static Worker w009 = new Worker
+        public static Employee e009 = new Employee
         {
             FirstName = "Leroy",
             LastName = "Morrow",
@@ -119,7 +119,7 @@ namespace ERPSystem.Data
                 m009
             }
         };
-        public static Worker w010 = new Worker
+        public static Employee e010 = new Employee
         {
             FirstName = "Charissa",
             LastName = "Conrad",
@@ -131,7 +131,7 @@ namespace ERPSystem.Data
                 m010
             }
         };
-        public static Worker w011 = new Worker
+        public static Employee e011 = new Employee
         {
             FirstName = "Jocelyn",
             LastName = "Whitley",
@@ -139,7 +139,7 @@ namespace ERPSystem.Data
             EmployeeState = EmployeeState.Active,
             Branch = WalmartNorthAmerica,
         };
-        public static Worker w012 = new Worker
+        public static Employee e012 = new Employee
         {
             FirstName = "Nehru",
             LastName = "Mueller",
@@ -147,7 +147,7 @@ namespace ERPSystem.Data
             EmployeeState = EmployeeState.Active,
             Branch = WalmartNorthAmerica,
         };
-        public static Worker w013 = new Worker
+        public static Employee e013 = new Employee
         {
             FirstName = "Beau",
             LastName = "Travis",
@@ -155,7 +155,7 @@ namespace ERPSystem.Data
             EmployeeState = EmployeeState.Active,
             Branch = WalmartNorthAmerica,
         };
-        public static Worker w014 = new Worker
+        public static Employee e014 = new Employee
         {
             FirstName = "Gemma",
             LastName = "Brock",
@@ -163,7 +163,7 @@ namespace ERPSystem.Data
             EmployeeState = EmployeeState.Active,
             Branch = WalmartNorthAmerica,
         };
-        public static Worker w015 = new Worker
+        public static Employee e015 = new Employee
         {
             FirstName = "Elijah",
             LastName = "Richmond",
@@ -171,7 +171,7 @@ namespace ERPSystem.Data
             EmployeeState = EmployeeState.Active,
             Branch = WalmartNorthAmerica,
         };
-        public static Worker w016 = new Worker
+        public static Employee e016 = new Employee
         {
             FirstName = "Roth",
             LastName = "Randolph",
@@ -179,7 +179,7 @@ namespace ERPSystem.Data
             EmployeeState = EmployeeState.Active,
             Branch = WalmartNorthAmerica,
         };
-        public static Worker w017 = new Worker
+        public static Employee e017 = new Employee
         {
             FirstName = "Dante",
             LastName = "Glenn",
@@ -187,7 +187,7 @@ namespace ERPSystem.Data
             EmployeeState = EmployeeState.Active,
             Branch = WalmartNorthAmerica,
         };
-        public static Worker w018 = new Worker
+        public static Employee e018 = new Employee
         {
             FirstName = "Ocean",
             LastName = "Vance",
@@ -195,7 +195,7 @@ namespace ERPSystem.Data
             EmployeeState = EmployeeState.Active,
             Branch = WalmartNorthAmerica,
         };
-        public static Worker w019 = new Worker
+        public static Employee e019 = new Employee
         {
             FirstName = "Ronan",
             LastName = "Lawrence",
@@ -203,7 +203,7 @@ namespace ERPSystem.Data
             EmployeeState = EmployeeState.Active,
             Branch = WalmartNorthAmerica,
         };
-        public static Worker w020 = new Worker
+        public static Employee e020 = new Employee
         {
             FirstName = "Robert",
             LastName = "Kirk",
@@ -211,7 +211,7 @@ namespace ERPSystem.Data
             EmployeeState = EmployeeState.Active,
             Branch = WalmartNorthAmerica,
         };
-        public static Worker w021 = new Worker
+        public static Employee e021 = new Employee
         {
             FirstName = "Marah",
             LastName = "Conner",
@@ -219,7 +219,7 @@ namespace ERPSystem.Data
             EmployeeState = EmployeeState.Active,
             Branch = WalmartNorthAmerica,
         };
-        public static Worker w022 = new Worker
+        public static Employee e022 = new Employee
         {
             FirstName = "Mason",
             LastName = "Sandoval",
@@ -227,7 +227,7 @@ namespace ERPSystem.Data
             EmployeeState = EmployeeState.Active,
             Branch = WalmartNorthAmerica,
         };
-        public static Worker w023 = new Worker
+        public static Employee e023 = new Employee
         {
             FirstName = "Stacey",
             LastName = "Lawrence",
@@ -235,7 +235,7 @@ namespace ERPSystem.Data
             EmployeeState = EmployeeState.Active,
             Branch = WalmartNorthAmerica,
         };
-        public static Worker w024 = new Worker
+        public static Employee e024 = new Employee
         {
             FirstName = "Orlando",
             LastName = "Miles",
@@ -243,7 +243,7 @@ namespace ERPSystem.Data
             EmployeeState = EmployeeState.Active,
             Branch = WalmartNorthAmerica,
         };
-        public static Worker w025 = new Worker
+        public static Employee e025 = new Employee
         {
             FirstName = "Savannah",
             LastName = "Hull",
@@ -251,7 +251,7 @@ namespace ERPSystem.Data
             EmployeeState = EmployeeState.Active,
             Branch = WalmartNorthAmerica,
         };
-        public static Worker w026 = new Worker
+        public static Employee e026 = new Employee
         {
             FirstName = "George",
             LastName = "Bradley",
@@ -259,7 +259,7 @@ namespace ERPSystem.Data
             EmployeeState = EmployeeState.Active,
             Branch = WalmartNorthAmerica,
         };
-        public static Worker w027 = new Worker
+        public static Employee e027 = new Employee
         {
             FirstName = "Jerome",
             LastName = "Carlson",
@@ -267,7 +267,7 @@ namespace ERPSystem.Data
             EmployeeState = EmployeeState.Active,
             Branch = WalmartNorthAmerica,
         };
-        public static Worker w028 = new Worker
+        public static Employee e028 = new Employee
         {
             FirstName = "Bert",
             LastName = "Buckley",
@@ -275,7 +275,7 @@ namespace ERPSystem.Data
             EmployeeState = EmployeeState.Active,
             Branch = WalmartNorthAmerica,
         };
-        public static Worker w029 = new Worker
+        public static Employee e029 = new Employee
         {
             FirstName = "Wing",
             LastName = "Frank",
@@ -283,7 +283,7 @@ namespace ERPSystem.Data
             EmployeeState = EmployeeState.Active,
             Branch = WalmartNorthAmerica,
         };
-        public static Worker w030 = new Worker
+        public static Employee e030 = new Employee
         {
             FirstName = "Astra",
             LastName = "Chen",
@@ -291,7 +291,7 @@ namespace ERPSystem.Data
             EmployeeState = EmployeeState.Active,
             Branch = WalmartNorthAmerica,
         };
-        public static Worker w031 = new Worker
+        public static Employee e031 = new Employee
         {
             FirstName = "Amery",
             LastName = "Savage",
@@ -299,7 +299,7 @@ namespace ERPSystem.Data
             EmployeeState = EmployeeState.Active,
             Branch = WalmartNorthAmerica,
         };
-        public static Worker w032 = new Worker
+        public static Employee e032 = new Employee
         {
             FirstName = "Nicole",
             LastName = "Kelly",
@@ -307,7 +307,7 @@ namespace ERPSystem.Data
             EmployeeState = EmployeeState.Active,
             Branch = WalmartNorthAmerica,
         };
-        public static Worker w033 = new Worker
+        public static Employee e033 = new Employee
         {
             FirstName = "Maxine",
             LastName = "Cruz",
@@ -315,7 +315,7 @@ namespace ERPSystem.Data
             EmployeeState = EmployeeState.Active,
             Branch = WalmartNorthAmerica,
         };
-        public static Worker w034 = new Worker
+        public static Employee e034 = new Employee
         {
             FirstName = "Alisa",
             LastName = "Fuller",
@@ -323,7 +323,7 @@ namespace ERPSystem.Data
             EmployeeState = EmployeeState.Active,
             Branch = WalmartNorthAmerica,
         };
-        public static Worker w035 = new Worker
+        public static Employee e035 = new Employee
         {
             FirstName = "Regina",
             LastName = "Estes",
@@ -331,7 +331,7 @@ namespace ERPSystem.Data
             EmployeeState = EmployeeState.Active,
             Branch = WalmartNorthAmerica,
         };
-        public static Worker w036 = new Worker
+        public static Employee e036 = new Employee
         {
             FirstName = "Adena",
             LastName = "Nixon",
@@ -339,7 +339,7 @@ namespace ERPSystem.Data
             EmployeeState = EmployeeState.Active,
             Branch = WalmartNorthAmerica,
         };
-        public static Worker w037 = new Worker
+        public static Employee e037 = new Employee
         {
             FirstName = "Bell",
             LastName = "Carson",
@@ -347,7 +347,7 @@ namespace ERPSystem.Data
             EmployeeState = EmployeeState.Active,
             Branch = WalmartNorthAmerica,
         };
-        public static Worker w038 = new Worker
+        public static Employee e038 = new Employee
         {
             FirstName = "Rahim",
             LastName = "Benson",
@@ -355,7 +355,7 @@ namespace ERPSystem.Data
             EmployeeState = EmployeeState.Active,
             Branch = WalmartNorthAmerica,
         };
-        public static Worker w039 = new Worker
+        public static Employee e039 = new Employee
         {
             FirstName = "Caesar",
             LastName = "Carpenter",
@@ -363,7 +363,7 @@ namespace ERPSystem.Data
             EmployeeState = EmployeeState.Active,
             Branch = WalmartNorthAmerica,
         };
-        public static Worker w040 = new Worker
+        public static Employee e040 = new Employee
         {
             FirstName = "Ezekiel",
             LastName = "Moore",
@@ -371,7 +371,7 @@ namespace ERPSystem.Data
             EmployeeState = EmployeeState.Active,
             Branch = WalmartNorthAmerica,
         };
-        public static Worker w041 = new Worker
+        public static Employee e041 = new Employee
         {
             FirstName = "Yasir",
             LastName = "Aguirre",
@@ -379,7 +379,7 @@ namespace ERPSystem.Data
             EmployeeState = EmployeeState.Active,
             Branch = WalmartNorthAmerica,
         };
-        public static Worker w042 = new Worker
+        public static Employee e042 = new Employee
         {
             FirstName = "Jael",
             LastName = "Barrera",
@@ -387,7 +387,7 @@ namespace ERPSystem.Data
             EmployeeState = EmployeeState.Active,
             Branch = WalmartNorthAmerica,
         };
-        public static Worker w043 = new Worker
+        public static Employee e043 = new Employee
         {
             FirstName = "Garth",
             LastName = "Mueller",
@@ -395,7 +395,7 @@ namespace ERPSystem.Data
             EmployeeState = EmployeeState.Active,
             Branch = WalmartNorthAmerica,
         };
-        public static Worker w044 = new Worker
+        public static Employee e044 = new Employee
         {
             FirstName = "Solomon",
             LastName = "Malone",
@@ -403,7 +403,7 @@ namespace ERPSystem.Data
             EmployeeState = EmployeeState.Active,
             Branch = WalmartNorthAmerica,
         };
-        public static Worker w045 = new Worker
+        public static Employee e045 = new Employee
         {
             FirstName = "Hilary",
             LastName = "Mooney",
@@ -411,7 +411,7 @@ namespace ERPSystem.Data
             EmployeeState = EmployeeState.Active,
             Branch = WalmartNorthAmerica,
         };
-        public static Worker w046 = new Worker
+        public static Employee e046 = new Employee
         {
             FirstName = "Bert",
             LastName = "Boyd",
@@ -419,7 +419,7 @@ namespace ERPSystem.Data
             EmployeeState = EmployeeState.Active,
             Branch = WalmartNorthAmerica,
         };
-        public static Worker w047 = new Worker
+        public static Employee e047 = new Employee
         {
             FirstName = "Gregory",
             LastName = "Harrington",
@@ -427,7 +427,7 @@ namespace ERPSystem.Data
             EmployeeState = EmployeeState.Active,
             Branch = WalmartNorthAmerica,
         };
-        public static Worker w048 = new Worker
+        public static Employee e048 = new Employee
         {
             FirstName = "Odessa",
             LastName = "Good",
@@ -435,7 +435,7 @@ namespace ERPSystem.Data
             EmployeeState = EmployeeState.Active,
             Branch = WalmartNorthAmerica,
         };
-        public static Worker w049 = new Worker
+        public static Employee e049 = new Employee
         {
             FirstName = "September",
             LastName = "Adams",
@@ -443,7 +443,7 @@ namespace ERPSystem.Data
             EmployeeState = EmployeeState.Active,
             Branch = WalmartNorthAmerica,
         };
-        public static Worker w050 = new Worker
+        public static Employee e050 = new Employee
         {
             FirstName = "Todd",
             LastName = "Dillon",
@@ -451,7 +451,7 @@ namespace ERPSystem.Data
             EmployeeState = EmployeeState.Active,
             Branch = WalmartNorthAmerica,
         };
-        public static Worker w051 = new Worker
+        public static Employee e051 = new Employee
         {
             FirstName = "Gemma",
             LastName = "Sanders",
@@ -459,7 +459,7 @@ namespace ERPSystem.Data
             EmployeeState = EmployeeState.Active,
             Branch = WalmartNorthAmerica,
         };
-        public static Worker w052 = new Worker
+        public static Employee e052 = new Employee
         {
             FirstName = "Echo",
             LastName = "Smith",
@@ -467,7 +467,7 @@ namespace ERPSystem.Data
             EmployeeState = EmployeeState.Active,
             Branch = WalmartNorthAmerica,
         };
-        public static Worker w053 = new Worker
+        public static Employee e053 = new Employee
         {
             FirstName = "Basia",
             LastName = "Lara",
@@ -475,7 +475,7 @@ namespace ERPSystem.Data
             EmployeeState = EmployeeState.Active,
             Branch = WalmartNorthAmerica,
         };
-        public static Worker w054 = new Worker
+        public static Employee e054 = new Employee
         {
             FirstName = "Petra",
             LastName = "Tate",
@@ -483,7 +483,7 @@ namespace ERPSystem.Data
             EmployeeState = EmployeeState.Active,
             Branch = WalmartNorthAmerica,
         };
-        public static Worker w055 = new Worker
+        public static Employee e055 = new Employee
         {
             FirstName = "Latifah",
             LastName = "Trevino",
@@ -491,7 +491,7 @@ namespace ERPSystem.Data
             EmployeeState = EmployeeState.Active,
             Branch = WalmartNorthAmerica,
         };
-        public static Worker w056 = new Worker
+        public static Employee e056 = new Employee
         {
             FirstName = "Nolan",
             LastName = "Padilla",
@@ -499,7 +499,7 @@ namespace ERPSystem.Data
             EmployeeState = EmployeeState.Active,
             Branch = WalmartNorthAmerica,
         };
-        public static Worker w057 = new Worker
+        public static Employee e057 = new Employee
         {
             FirstName = "Dennis",
             LastName = "Castro",
@@ -507,7 +507,7 @@ namespace ERPSystem.Data
             EmployeeState = EmployeeState.Active,
             Branch = WalmartNorthAmerica,
         };
-        public static Worker w058 = new Worker
+        public static Employee e058 = new Employee
         {
             FirstName = "Coby",
             LastName = "Keith",
@@ -515,7 +515,7 @@ namespace ERPSystem.Data
             EmployeeState = EmployeeState.Active,
             Branch = WalmartNorthAmerica,
         };
-        public static Worker w059 = new Worker
+        public static Employee e059 = new Employee
         {
             FirstName = "Rhona",
             LastName = "Le",
@@ -523,7 +523,7 @@ namespace ERPSystem.Data
             EmployeeState = EmployeeState.Active,
             Branch = WalmartNorthAmerica,
         };
-        public static Worker w060 = new Worker
+        public static Employee e060 = new Employee
         {
             FirstName = "Colleen",
             LastName = "Key",
@@ -531,7 +531,7 @@ namespace ERPSystem.Data
             EmployeeState = EmployeeState.Active,
             Branch = WalmartNorthAmerica,
         };
-        public static Worker w061 = new Worker
+        public static Employee e061 = new Employee
         {
             FirstName = "Brennan",
             LastName = "Scott",
@@ -539,7 +539,7 @@ namespace ERPSystem.Data
             EmployeeState = EmployeeState.Active,
             Branch = WalmartNorthAmerica,
         };
-        public static Worker w062 = new Worker
+        public static Employee e062 = new Employee
         {
             FirstName = "Reese",
             LastName = "Britt",
@@ -547,7 +547,7 @@ namespace ERPSystem.Data
             EmployeeState = EmployeeState.Active,
             Branch = WalmartNorthAmerica,
         };
-        public static Worker w063 = new Worker
+        public static Employee e063 = new Employee
         {
             FirstName = "Gavin",
             LastName = "Richardson",
@@ -555,7 +555,7 @@ namespace ERPSystem.Data
             EmployeeState = EmployeeState.Active,
             Branch = WalmartNorthAmerica,
         };
-        public static Worker w064 = new Worker
+        public static Employee e064 = new Employee
         {
             FirstName = "Lucius",
             LastName = "Stewart",
@@ -563,7 +563,7 @@ namespace ERPSystem.Data
             EmployeeState = EmployeeState.Active,
             Branch = WalmartNorthAmerica,
         };
-        public static Worker w065 = new Worker
+        public static Employee e065 = new Employee
         {
             FirstName = "Cheryl",
             LastName = "Atkinson",
@@ -571,7 +571,7 @@ namespace ERPSystem.Data
             EmployeeState = EmployeeState.Active,
             Branch = WalmartNorthAmerica,
         };
-        public static Worker w066 = new Worker
+        public static Employee e066 = new Employee
         {
             FirstName = "Teagan",
             LastName = "Mccormick",
@@ -579,7 +579,7 @@ namespace ERPSystem.Data
             EmployeeState = EmployeeState.Active,
             Branch = WalmartNorthAmerica,
         };
-        public static Worker w067 = new Worker
+        public static Employee e067 = new Employee
         {
             FirstName = "Palmer",
             LastName = "Mayer",
@@ -587,7 +587,7 @@ namespace ERPSystem.Data
             EmployeeState = EmployeeState.Active,
             Branch = WalmartNorthAmerica,
         };
-        public static Worker w068 = new Worker
+        public static Employee e068 = new Employee
         {
             FirstName = "Nash",
             LastName = "Lang",
@@ -595,7 +595,7 @@ namespace ERPSystem.Data
             EmployeeState = EmployeeState.Active,
             Branch = WalmartNorthAmerica,
         };
-        public static Worker w069 = new Worker
+        public static Employee e069 = new Employee
         {
             FirstName = "April",
             LastName = "Quinn",
@@ -603,7 +603,7 @@ namespace ERPSystem.Data
             EmployeeState = EmployeeState.Active,
             Branch = WalmartNorthAmerica,
         };
-        public static Worker w070 = new Worker
+        public static Employee e070 = new Employee
         {
             FirstName = "Addison",
             LastName = "Donovan",
@@ -611,7 +611,7 @@ namespace ERPSystem.Data
             EmployeeState = EmployeeState.Active,
             Branch = WalmartNorthAmerica,
         };
-        public static Worker w071 = new Worker
+        public static Employee e071 = new Employee
         {
             FirstName = "Jescie",
             LastName = "Crane",
@@ -619,7 +619,7 @@ namespace ERPSystem.Data
             EmployeeState = EmployeeState.Active,
             Branch = WalmartNorthAmerica,
         };
-        public static Worker w072 = new Worker
+        public static Employee e072 = new Employee
         {
             FirstName = "Darius",
             LastName = "Price",
@@ -627,7 +627,7 @@ namespace ERPSystem.Data
             EmployeeState = EmployeeState.Active,
             Branch = WalmartNorthAmerica,
         };
-        public static Worker w073 = new Worker
+        public static Employee e073 = new Employee
         {
             FirstName = "Savannah",
             LastName = "Kirby",
@@ -635,7 +635,7 @@ namespace ERPSystem.Data
             EmployeeState = EmployeeState.Active,
             Branch = WalmartNorthAmerica,
         };
-        public static Worker w074 = new Worker
+        public static Employee e074 = new Employee
         {
             FirstName = "Malachi",
             LastName = "Riddle",
@@ -643,7 +643,7 @@ namespace ERPSystem.Data
             EmployeeState = EmployeeState.Active,
             Branch = WalmartNorthAmerica,
         };
-        public static Worker w075 = new Worker
+        public static Employee e075 = new Employee
         {
             FirstName = "Cassandra",
             LastName = "Harrell",
@@ -651,7 +651,7 @@ namespace ERPSystem.Data
             EmployeeState = EmployeeState.Active,
             Branch = WalmartNorthAmerica,
         };
-        public static Worker w076 = new Worker
+        public static Employee e076 = new Employee
         {
             FirstName = "Whilemina",
             LastName = "Cantrell",
@@ -659,7 +659,7 @@ namespace ERPSystem.Data
             EmployeeState = EmployeeState.Active,
             Branch = WalmartNorthAmerica,
         };
-        public static Worker w077 = new Worker
+        public static Employee e077 = new Employee
         {
             FirstName = "Alec",
             LastName = "Larsen",
@@ -667,7 +667,7 @@ namespace ERPSystem.Data
             EmployeeState = EmployeeState.Active,
             Branch = WalmartNorthAmerica,
         };
-        public static Worker w078 = new Worker
+        public static Employee e078 = new Employee
         {
             FirstName = "Marvin",
             LastName = "Bell",
@@ -675,7 +675,7 @@ namespace ERPSystem.Data
             EmployeeState = EmployeeState.Active,
             Branch = WalmartNorthAmerica,
         };
-        public static Worker w079 = new Worker
+        public static Employee e079 = new Employee
         {
             FirstName = "Jared",
             LastName = "Atkins",
@@ -683,7 +683,7 @@ namespace ERPSystem.Data
             EmployeeState = EmployeeState.Active,
             Branch = WalmartNorthAmerica,
         };
-        public static Worker w080 = new Worker
+        public static Employee e080 = new Employee
         {
             FirstName = "Olympia",
             LastName = "Cameron",
@@ -691,7 +691,7 @@ namespace ERPSystem.Data
             EmployeeState = EmployeeState.Active,
             Branch = WalmartNorthAmerica,
         };
-        public static Worker w081 = new Worker
+        public static Employee e081 = new Employee
         {
             FirstName = "Ramona",
             LastName = "Hurley",
@@ -699,7 +699,7 @@ namespace ERPSystem.Data
             EmployeeState = EmployeeState.Active,
             Branch = WalmartNorthAmerica,
         };
-        public static Worker w082 = new Worker
+        public static Employee e082 = new Employee
         {
             FirstName = "Driscoll",
             LastName = "Houston",
@@ -707,7 +707,7 @@ namespace ERPSystem.Data
             EmployeeState = EmployeeState.Active,
             Branch = WalmartNorthAmerica,
         };
-        public static Worker w083 = new Worker
+        public static Employee e083 = new Employee
         {
             FirstName = "Hope",
             LastName = "Patrick",
@@ -715,7 +715,7 @@ namespace ERPSystem.Data
             EmployeeState = EmployeeState.Active,
             Branch = WalmartNorthAmerica,
         };
-        public static Worker w084 = new Worker
+        public static Employee e084 = new Employee
         {
             FirstName = "Cameron",
             LastName = "Mendez",
@@ -723,7 +723,7 @@ namespace ERPSystem.Data
             EmployeeState = EmployeeState.Active,
             Branch = WalmartNorthAmerica,
         };
-        public static Worker w085 = new Worker
+        public static Employee e085 = new Employee
         {
             FirstName = "Oleg",
             LastName = "Kidd",
@@ -731,7 +731,7 @@ namespace ERPSystem.Data
             EmployeeState = EmployeeState.Active,
             Branch = WalmartNorthAmerica,
         };
-        public static Worker w086 = new Worker
+        public static Employee e086 = new Employee
         {
             FirstName = "Candice",
             LastName = "Burnett",
@@ -739,7 +739,7 @@ namespace ERPSystem.Data
             EmployeeState = EmployeeState.Active,
             Branch = WalmartNorthAmerica,
         };
-        public static Worker w087 = new Worker
+        public static Employee e087 = new Employee
         {
             FirstName = "Abra",
             LastName = "Berger",
@@ -747,7 +747,7 @@ namespace ERPSystem.Data
             EmployeeState = EmployeeState.Active,
             Branch = WalmartNorthAmerica,
         };
-        public static Worker w088 = new Worker
+        public static Employee e088 = new Employee
         {
             FirstName = "Simon",
             LastName = "Griffin",
@@ -755,7 +755,7 @@ namespace ERPSystem.Data
             EmployeeState = EmployeeState.Active,
             Branch = WalmartNorthAmerica,
         };
-        public static Worker w089 = new Worker
+        public static Employee e089 = new Employee
         {
             FirstName = "Hollee",
             LastName = "Mckinney",
@@ -763,7 +763,7 @@ namespace ERPSystem.Data
             EmployeeState = EmployeeState.Active,
             Branch = WalmartNorthAmerica,
         };
-        public static Worker w090 = new Worker
+        public static Employee e090 = new Employee
         {
             FirstName = "Yoshi",
             LastName = "Burt",
@@ -771,7 +771,7 @@ namespace ERPSystem.Data
             EmployeeState = EmployeeState.Active,
             Branch = WalmartNorthAmerica,
         };
-        public static Worker w091 = new Worker
+        public static Employee e091 = new Employee
         {
             FirstName = "Dieter",
             LastName = "Stevenson",
@@ -779,7 +779,7 @@ namespace ERPSystem.Data
             EmployeeState = EmployeeState.Active,
             Branch = WalmartNorthAmerica,
         };
-        public static Worker w092 = new Worker
+        public static Employee e092 = new Employee
         {
             FirstName = "Brenden",
             LastName = "Gibbs",
@@ -787,7 +787,7 @@ namespace ERPSystem.Data
             EmployeeState = EmployeeState.Active,
             Branch = WalmartNorthAmerica,
         };
-        public static Worker w093 = new Worker
+        public static Employee e093 = new Employee
         {
             FirstName = "Deanna",
             LastName = "Hancock",
@@ -795,7 +795,7 @@ namespace ERPSystem.Data
             EmployeeState = EmployeeState.Active,
             Branch = WalmartNorthAmerica,
         };
-        public static Worker w094 = new Worker
+        public static Employee e094 = new Employee
         {
             FirstName = "Burton",
             LastName = "Boyd",
@@ -803,7 +803,7 @@ namespace ERPSystem.Data
             EmployeeState = EmployeeState.Active,
             Branch = WalmartNorthAmerica,
         };
-        public static Worker w095 = new Worker
+        public static Employee e095 = new Employee
         {
             FirstName = "Caryn",
             LastName = "Merritt",
@@ -811,7 +811,7 @@ namespace ERPSystem.Data
             EmployeeState = EmployeeState.Active,
             Branch = WalmartNorthAmerica,
         };
-        public static Worker w096 = new Worker
+        public static Employee e096 = new Employee
         {
             FirstName = "Madison",
             LastName = "Finley",
@@ -819,7 +819,7 @@ namespace ERPSystem.Data
             EmployeeState = EmployeeState.Active,
             Branch = WalmartNorthAmerica,
         };
-        public static Worker w097 = new Worker
+        public static Employee e097 = new Employee
         {
             FirstName = "Karly",
             LastName = "Chang",
@@ -827,7 +827,7 @@ namespace ERPSystem.Data
             EmployeeState = EmployeeState.Active,
             Branch = WalmartNorthAmerica,
         };
-        public static Worker w098 = new Worker
+        public static Employee e098 = new Employee
         {
             FirstName = "Magee",
             LastName = "Dotson",
@@ -835,7 +835,7 @@ namespace ERPSystem.Data
             EmployeeState = EmployeeState.Active,
             Branch = WalmartNorthAmerica,
         };
-        public static Worker w099 = new Worker
+        public static Employee e099 = new Employee
         {
             FirstName = "Liberty",
             LastName = "Woodward",
@@ -843,7 +843,7 @@ namespace ERPSystem.Data
             EmployeeState = EmployeeState.Active,
             Branch = WalmartNorthAmerica,
         };
-        public static Worker w100 = new Worker
+        public static Employee e100 = new Employee
         {
             FirstName = "Phelan",
             LastName = "Douglas",
@@ -851,7 +851,7 @@ namespace ERPSystem.Data
             EmployeeState = EmployeeState.Active,
             Branch = WalmartNorthAmerica,
         };
-        public static Worker w101 = new Worker
+        public static Employee e101 = new Employee
         {
             FirstName = "Alec",
             LastName = "Sampson",
@@ -859,7 +859,7 @@ namespace ERPSystem.Data
             EmployeeState = EmployeeState.Active,
             Branch = WalmartNorthAmerica,
         };
-        public static Worker w102 = new Worker
+        public static Employee e102 = new Employee
         {
             FirstName = "Brennan",
             LastName = "Gutierrez",
@@ -867,7 +867,7 @@ namespace ERPSystem.Data
             EmployeeState = EmployeeState.Active,
             Branch = WalmartNorthAmerica,
         };
-        public static Worker w103 = new Worker
+        public static Employee e103 = new Employee
         {
             FirstName = "Oleg",
             LastName = "Atkinson",
@@ -875,7 +875,7 @@ namespace ERPSystem.Data
             EmployeeState = EmployeeState.Active,
             Branch = WalmartNorthAmerica,
         };
-        public static Worker w104 = new Worker
+        public static Employee e104 = new Employee
         {
             FirstName = "Hanna",
             LastName = "Delgado",
@@ -883,7 +883,7 @@ namespace ERPSystem.Data
             EmployeeState = EmployeeState.Active,
             Branch = WalmartNorthAmerica,
         };
-        public static Worker w105 = new Worker
+        public static Employee e105 = new Employee
         {
             FirstName = "Kibo",
             LastName = "Rose",
@@ -891,7 +891,7 @@ namespace ERPSystem.Data
             EmployeeState = EmployeeState.Active,
             Branch = WalmartNorthAmerica,
         };
-        public static Worker w106 = new Worker
+        public static Employee e106 = new Employee
         {
             FirstName = "Felicia",
             LastName = "Snow",
@@ -899,7 +899,7 @@ namespace ERPSystem.Data
             EmployeeState = EmployeeState.Active,
             Branch = WalmartNorthAmerica,
         };
-        public static Worker w107 = new Worker
+        public static Employee e107 = new Employee
         {
             FirstName = "Brock",
             LastName = "Thornton",
@@ -907,7 +907,7 @@ namespace ERPSystem.Data
             EmployeeState = EmployeeState.Active,
             Branch = WalmartNorthAmerica,
         };
-        public static Worker w108 = new Worker
+        public static Employee e108 = new Employee
         {
             FirstName = "Lester",
             LastName = "Gray",
@@ -915,7 +915,7 @@ namespace ERPSystem.Data
             EmployeeState = EmployeeState.Active,
             Branch = WalmartNorthAmerica,
         };
-        public static Worker w109 = new Worker
+        public static Employee e109 = new Employee
         {
             FirstName = "Allegra",
             LastName = "Orr",
@@ -923,7 +923,7 @@ namespace ERPSystem.Data
             EmployeeState = EmployeeState.Active,
             Branch = WalmartNorthAmerica,
         };
-        public static Worker w110 = new Worker
+        public static Employee e110 = new Employee
         {
             FirstName = "Kyla",
             LastName = "Stark",
@@ -931,7 +931,7 @@ namespace ERPSystem.Data
             EmployeeState = EmployeeState.Active,
             Branch = WalmartNorthAmerica,
         };
-        public static Worker w111 = new Worker
+        public static Employee e111 = new Employee
         {
             FirstName = "Lyle",
             LastName = "Mcintyre",
@@ -939,7 +939,7 @@ namespace ERPSystem.Data
             EmployeeState = EmployeeState.Active,
             Branch = WalmartNorthAmerica,
         };
-        public static Worker w112 = new Worker
+        public static Employee e112 = new Employee
         {
             FirstName = "Anika",
             LastName = "Lamb",
@@ -947,7 +947,7 @@ namespace ERPSystem.Data
             EmployeeState = EmployeeState.Active,
             Branch = WalmartNorthAmerica,
         };
-        public static Worker w113 = new Worker
+        public static Employee e113 = new Employee
         {
             FirstName = "Dara",
             LastName = "Garrison",
@@ -955,7 +955,7 @@ namespace ERPSystem.Data
             EmployeeState = EmployeeState.Active,
             Branch = WalmartNorthAmerica,
         };
-        public static Worker w114 = new Worker
+        public static Employee e114 = new Employee
         {
             FirstName = "Preston",
             LastName = "Wolfe",
@@ -963,7 +963,7 @@ namespace ERPSystem.Data
             EmployeeState = EmployeeState.Active,
             Branch = WalmartNorthAmerica,
         };
-        public static Worker w115 = new Worker
+        public static Employee e115 = new Employee
         {
             FirstName = "Kenyon",
             LastName = "Baxter",
@@ -971,7 +971,7 @@ namespace ERPSystem.Data
             EmployeeState = EmployeeState.Active,
             Branch = WalmartNorthAmerica,
         };
-        public static Worker w116 = new Worker
+        public static Employee e116 = new Employee
         {
             FirstName = "Ivan",
             LastName = "Fischer",
@@ -979,7 +979,7 @@ namespace ERPSystem.Data
             EmployeeState = EmployeeState.Active,
             Branch = WalmartNorthAmerica,
         };
-        public static Worker w117 = new Worker
+        public static Employee e117 = new Employee
         {
             FirstName = "Armand",
             LastName = "Mcintosh",
@@ -987,7 +987,7 @@ namespace ERPSystem.Data
             EmployeeState = EmployeeState.Active,
             Branch = WalmartNorthAmerica,
         };
-        public static Worker w118 = new Worker
+        public static Employee e118 = new Employee
         {
             FirstName = "Knox",
             LastName = "Rutledge",
@@ -995,7 +995,7 @@ namespace ERPSystem.Data
             EmployeeState = EmployeeState.Active,
             Branch = WalmartNorthAmerica,
         };
-        public static Worker w119 = new Worker
+        public static Employee e119 = new Employee
         {
             FirstName = "Quin",
             LastName = "Robbins",
@@ -1003,7 +1003,7 @@ namespace ERPSystem.Data
             EmployeeState = EmployeeState.Active,
             Branch = WalmartNorthAmerica,
         };
-        public static Worker w120 = new Worker
+        public static Employee e120 = new Employee
         {
             FirstName = "John",
             LastName = "Talley",
@@ -1013,129 +1013,129 @@ namespace ERPSystem.Data
         };
         #endregion
         public static List<Employee> data;
-        static SeedWorker()
+        static SeedEmployee()
         {
             data = new List<Employee>();
-            data.Add(w001);
-            data.Add(w002);
-            data.Add(w003);
-            data.Add(w004);
-            data.Add(w005);
-            data.Add(w006);
-            data.Add(w007);
-            data.Add(w008);
-            data.Add(w009);
-            data.Add(w010);
-            data.Add(w011);
-            data.Add(w012);
-            data.Add(w013);
-            data.Add(w014);
-            data.Add(w015);
-            data.Add(w016);
-            data.Add(w017);
-            data.Add(w018);
-            data.Add(w019);
-            data.Add(w020);
-            data.Add(w021);
-            data.Add(w022);
-            data.Add(w023);
-            data.Add(w024);
-            data.Add(w025);
-            data.Add(w026);
-            data.Add(w027);
-            data.Add(w028);
-            data.Add(w029);
-            data.Add(w030);
-            data.Add(w031);
-            data.Add(w032);
-            data.Add(w033);
-            data.Add(w034);
-            data.Add(w035);
-            data.Add(w036);
-            data.Add(w037);
-            data.Add(w038);
-            data.Add(w039);
-            data.Add(w040);
-            data.Add(w041);
-            data.Add(w042);
-            data.Add(w043);
-            data.Add(w044);
-            data.Add(w045);
-            data.Add(w046);
-            data.Add(w047);
-            data.Add(w048);
-            data.Add(w049);
-            data.Add(w050);
-            data.Add(w051);
-            data.Add(w052);
-            data.Add(w053);
-            data.Add(w054);
-            data.Add(w055);
-            data.Add(w056);
-            data.Add(w057);
-            data.Add(w058);
-            data.Add(w059);
-            data.Add(w060);
-            data.Add(w061);
-            data.Add(w062);
-            data.Add(w063);
-            data.Add(w064);
-            data.Add(w065);
-            data.Add(w066);
-            data.Add(w067);
-            data.Add(w068);
-            data.Add(w069);
-            data.Add(w070);
-            data.Add(w071);
-            data.Add(w072);
-            data.Add(w073);
-            data.Add(w074);
-            data.Add(w075);
-            data.Add(w076);
-            data.Add(w077);
-            data.Add(w078);
-            data.Add(w079);
-            data.Add(w080);
-            data.Add(w081);
-            data.Add(w082);
-            data.Add(w083);
-            data.Add(w084);
-            data.Add(w085);
-            data.Add(w086);
-            data.Add(w087);
-            data.Add(w088);
-            data.Add(w089);
-            data.Add(w090);
-            data.Add(w091);
-            data.Add(w092);
-            data.Add(w093);
-            data.Add(w094);
-            data.Add(w095);
-            data.Add(w096);
-            data.Add(w097);
-            data.Add(w098);
-            data.Add(w099);
-            data.Add(w100);
-            data.Add(w101);
-            data.Add(w102);
-            data.Add(w103);
-            data.Add(w104);
-            data.Add(w105);
-            data.Add(w106);
-            data.Add(w107);
-            data.Add(w108);
-            data.Add(w109);
-            data.Add(w110);
-            data.Add(w111);
-            data.Add(w112);
-            data.Add(w113);
-            data.Add(w114);
-            data.Add(w115);
-            data.Add(w116);
-            data.Add(w117);
-            data.Add(w118);
-            data.Add(w119);
-            data.Add(w120);
+            data.Add(e001);
+            data.Add(e002);
+            data.Add(e003);
+            data.Add(e004);
+            data.Add(e005);
+            data.Add(e006);
+            data.Add(e007);
+            data.Add(e008);
+            data.Add(e009);
+            data.Add(e010);
+            data.Add(e011);
+            data.Add(e012);
+            data.Add(e013);
+            data.Add(e014);
+            data.Add(e015);
+            data.Add(e016);
+            data.Add(e017);
+            data.Add(e018);
+            data.Add(e019);
+            data.Add(e020);
+            data.Add(e021);
+            data.Add(e022);
+            data.Add(e023);
+            data.Add(e024);
+            data.Add(e025);
+            data.Add(e026);
+            data.Add(e027);
+            data.Add(e028);
+            data.Add(e029);
+            data.Add(e030);
+            data.Add(e031);
+            data.Add(e032);
+            data.Add(e033);
+            data.Add(e034);
+            data.Add(e035);
+            data.Add(e036);
+            data.Add(e037);
+            data.Add(e038);
+            data.Add(e039);
+            data.Add(e040);
+            data.Add(e041);
+            data.Add(e042);
+            data.Add(e043);
+            data.Add(e044);
+            data.Add(e045);
+            data.Add(e046);
+            data.Add(e047);
+            data.Add(e048);
+            data.Add(e049);
+            data.Add(e050);
+            data.Add(e051);
+            data.Add(e052);
+            data.Add(e053);
+            data.Add(e054);
+            data.Add(e055);
+            data.Add(e056);
+            data.Add(e057);
+            data.Add(e058);
+            data.Add(e059);
+            data.Add(e060);
+            data.Add(e061);
+            data.Add(e062);
+            data.Add(e063);
+            data.Add(e064);
+            data.Add(e065);
+            data.Add(e066);
+            data.Add(e067);
+            data.Add(e068);
+            data.Add(e069);
+            data.Add(e070);
+            data.Add(e071);
+            data.Add(e072);
+            data.Add(e073);
+            data.Add(e074);
+            data.Add(e075);
+            data.Add(e076);
+            data.Add(e077);
+            data.Add(e078);
+            data.Add(e079);
+            data.Add(e080);
+            data.Add(e081);
+            data.Add(e082);
+            data.Add(e083);
+            data.Add(e084);
+            data.Add(e085);
+            data.Add(e086);
+            data.Add(e087);
+            data.Add(e088);
+            data.Add(e089);
+            data.Add(e090);
+            data.Add(e091);
+            data.Add(e092);
+            data.Add(e093);
+            data.Add(e094);
+            data.Add(e095);
+            data.Add(e096);
+            data.Add(e097);
+            data.Add(e098);
+            data.Add(e099);
+            data.Add(e100);
+            data.Add(e101);
+            data.Add(e102);
+            data.Add(e103);
+            data.Add(e104);
+            data.Add(e105);
+            data.Add(e106);
+            data.Add(e107);
+            data.Add(e108);
+            data.Add(e109);
+            data.Add(e110);
+            data.Add(e111);
+            data.Add(e112);
+            data.Add(e113);
+            data.Add(e114);
+            data.Add(e115);
+            data.Add(e116);
+            data.Add(e117);
+            data.Add(e118);
+            data.Add(e119);
+            data.Add(e120);
         }
     }
 }
