@@ -21,7 +21,7 @@ namespace ERPSystem.Models
         
         //Navigation Properties
         [Display(Name = "General Manager")]
-        public GeneralManager GeneralManager { get; set; }
+        public Employee GeneralManager { get; set; }
         public ICollection<Department> Departments { get; set; }
         public ICollection<Branch> Branches { get; set; }
     }

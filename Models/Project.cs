@@ -30,7 +30,7 @@ namespace ERPSystem.Models
 
         //Navigation Properties
         [Display(Name = "Project Manager")]
-        public ProjectManager ProjectManager { get; set; }
+        public Employee ProjectManager { get; set; }
         public ICollection<Position> Positions { get; set; }
         public int? DepartmentId { get; set; }
         public Department Department { get; set; }

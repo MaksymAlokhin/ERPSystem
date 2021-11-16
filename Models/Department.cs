@@ -21,7 +21,7 @@ namespace ERPSystem.Models
 
         //Navigation Properties
         [Display(Name = "Department Head")]
-        public DepartmentHead DepartmentHead { get; set; }
+        public Employee DepartmentHead { get; set; }
         public int? CompanyId { get; set; }
         public Company Company { get; set; }
         public ICollection<Project> Projects { get; set; }

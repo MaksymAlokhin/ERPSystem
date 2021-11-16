@@ -146,12 +146,19 @@ namespace ERPSystem.Migrations
                     b.Property<int?>("BranchId")
                         .HasColumnType("int");
 
+                    b.Property<int?>("CompanyId")
+                        .HasColumnType("int");
+
                     b.Property<DateTime>("DateOfBirth")
                         .HasColumnType("datetime2");
 
-                    b.Property<string>("Discriminator")
+                    b.Property<int?>("DepartmentId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("EmployeeRole")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(16)
+                        .HasColumnType("nvarchar(16)");
 
                     b.Property<string>("EmployeeState")
                         .IsRequired()
@@ -168,13 +175,26 @@ namespace ERPSystem.Migrations
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
 
+                    b.Property<int?>("ProjectId")
+                        .HasColumnType("int");
+
                     b.HasKey("Id");
 
                     b.HasIndex("BranchId");
 
-                    b.ToTable("Employees");
+                    b.HasIndex("CompanyId")
+                        .IsUnique()
+                        .HasFilter("[CompanyId] IS NOT NULL");
 
-                    b.HasDiscriminator<string>("Discriminator").HasValue("Employee");
+                    b.HasIndex("DepartmentId")
+                        .IsUnique()
+                        .HasFilter("[DepartmentId] IS NOT NULL");
+
+                    b.HasIndex("ProjectId")
+                        .IsUnique()
+                        .HasFilter("[ProjectId] IS NOT NULL");
+
+                    b.ToTable("Employees");
                 });
 
             modelBuilder.Entity("ERPSystem.Models.Position", b =>
@@ -269,19 +289,19 @@ namespace ERPSystem.Migrations
                     b.ToTable("Reports");
                 });
 
-            modelBuilder.Entity("MentorsMentees", b =>
+            modelBuilder.Entity("EmployeeEmployee", b =>
                 {
-                    b.Property<int>("EmployeesId")
+                    b.Property<int>("MenteesId")
                         .HasColumnType("int");
 
                     b.Property<int>("MentorsId")
                         .HasColumnType("int");
 
-                    b.HasKey("EmployeesId", "MentorsId");
+                    b.HasKey("MenteesId", "MentorsId");
 
                     b.HasIndex("MentorsId");
 
-                    b.ToTable("MentorsMentees");
+                    b.ToTable("EmployeeEmployee");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
@@ -484,55 +504,6 @@ namespace ERPSystem.Migrations
                     b.ToTable("AspNetUserTokens");
                 });
 
-            modelBuilder.Entity("ERPSystem.Models.DepartmentHead", b =>
-                {
-                    b.HasBaseType("ERPSystem.Models.Employee");
-
-                    b.Property<int?>("DepartmentId")
-                        .HasColumnType("int");
-
-                    b.HasIndex("DepartmentId")
-                        .IsUnique()
-                        .HasFilter("[DepartmentId] IS NOT NULL");
-
-                    b.HasDiscriminator().HasValue("DepartmentHead");
-                });
-
-            modelBuilder.Entity("ERPSystem.Models.GeneralManager", b =>
-                {
-                    b.HasBaseType("ERPSystem.Models.Employee");
-
-                    b.Property<int?>("CompanyId")
-                        .HasColumnType("int");
-
-                    b.HasIndex("CompanyId")
-                        .IsUnique()
-                        .HasFilter("[CompanyId] IS NOT NULL");
-
-                    b.HasDiscriminator().HasValue("GeneralManager");
-                });
-
-            modelBuilder.Entity("ERPSystem.Models.Mentor", b =>
-                {
-                    b.HasBaseType("ERPSystem.Models.Employee");
-
-                    b.HasDiscriminator().HasValue("Mentor");
-                });
-
-            modelBuilder.Entity("ERPSystem.Models.ProjectManager", b =>
-                {
-                    b.HasBaseType("ERPSystem.Models.Employee");
-
-                    b.Property<int?>("ProjectId")
-                        .HasColumnType("int");
-
-                    b.HasIndex("ProjectId")
-                        .IsUnique()
-                        .HasFilter("[ProjectId] IS NOT NULL");
-
-                    b.HasDiscriminator().HasValue("ProjectManager");
-                });
-
             modelBuilder.Entity("ERPSystem.Models.Assignment", b =>
                 {
                     b.HasOne("ERPSystem.Models.Employee", "Employee")
@@ -572,7 +543,25 @@ namespace ERPSystem.Migrations
                         .WithMany("Employees")
                         .HasForeignKey("BranchId");
 
+                    b.HasOne("ERPSystem.Models.Company", "Company")
+                        .WithOne("GeneralManager")
+                        .HasForeignKey("ERPSystem.Models.Employee", "CompanyId");
+
+                    b.HasOne("ERPSystem.Models.Department", "Department")
+                        .WithOne("DepartmentHead")
+                        .HasForeignKey("ERPSystem.Models.Employee", "DepartmentId");
+
+                    b.HasOne("ERPSystem.Models.Project", "Project")
+                        .WithOne("ProjectManager")
+                        .HasForeignKey("ERPSystem.Models.Employee", "ProjectId");
+
                     b.Navigation("Branch");
+
+                    b.Navigation("Company");
+
+                    b.Navigation("Department");
+
+                    b.Navigation("Project");
                 });
 
             modelBuilder.Entity("ERPSystem.Models.Position", b =>
@@ -602,16 +591,18 @@ namespace ERPSystem.Migrations
                     b.Navigation("Assignment");
                 });
 
-            modelBuilder.Entity("MentorsMentees", b =>
+            modelBuilder.Entity("EmployeeEmployee", b =>
                 {
                     b.HasOne("ERPSystem.Models.Employee", null)
                         .WithMany()
-                        .HasForeignKey("EmployeesId")
+                        .HasForeignKey("MenteesId")
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("ERPSystem.Models.Mentor", null)
+                    b.HasOne("ERPSystem.Models.Employee", null)
                         .WithMany()
                         .HasForeignKey("MentorsId")
+                        .OnDelete(DeleteBehavior.ClientCascade)
                         .IsRequired();
                 });
 
@@ -664,33 +655,6 @@ namespace ERPSystem.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-                });
-
-            modelBuilder.Entity("ERPSystem.Models.DepartmentHead", b =>
-                {
-                    b.HasOne("ERPSystem.Models.Department", "Department")
-                        .WithOne("DepartmentHead")
-                        .HasForeignKey("ERPSystem.Models.DepartmentHead", "DepartmentId");
-
-                    b.Navigation("Department");
-                });
-
-            modelBuilder.Entity("ERPSystem.Models.GeneralManager", b =>
-                {
-                    b.HasOne("ERPSystem.Models.Company", "Company")
-                        .WithOne("GeneralManager")
-                        .HasForeignKey("ERPSystem.Models.GeneralManager", "CompanyId");
-
-                    b.Navigation("Company");
-                });
-
-            modelBuilder.Entity("ERPSystem.Models.ProjectManager", b =>
-                {
-                    b.HasOne("ERPSystem.Models.Project", "Project")
-                        .WithOne("ProjectManager")
-                        .HasForeignKey("ERPSystem.Models.ProjectManager", "ProjectId");
-
-                    b.Navigation("Project");
                 });
 
             modelBuilder.Entity("ERPSystem.Models.Assignment", b =>

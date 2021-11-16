@@ -25,25 +25,13 @@ namespace ERPSystem.Data
             {
                 context.AddRange(SeedProject.data);
             }
-            if (!context.DepartmentHeads.Any())
-            {
-                context.AddRange(SeedDepartmentHead.data);
-            }
-            if (!context.Mentors.Any())
-            {
-                context.AddRange(SeedMentor.data);
-            }
             if (!context.Employees.Any())
             {
-                context.AddRange(SeedEmployee.data);
-            }
-            if (!context.ProjectManagers.Any())
-            {
-                context.AddRange(SeedProjectManager.data);
-            }
-            if (!context.GeneralManagers.Any())
-            {
                 context.AddRange(SeedGeneralManager.data);
+                context.AddRange(SeedMentor.data); 
+                context.AddRange(SeedDepartmentHead.data);
+                context.AddRange(SeedProjectManager.data);
+                context.AddRange(SeedEmployee.data);
             }
             if (!context.Positions.Any())
             {

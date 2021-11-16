@@ -43,6 +43,11 @@ namespace ERPSystem.Data
                 .HasConversion<string>()
                 .HasMaxLength(16);
             modelBuilder
+                .Entity<Employee>()
+                .Property(e => e.EmployeeRole)
+                .HasConversion<string>()
+                .HasMaxLength(16);
+            modelBuilder
                 .Entity<Position>()
                 .Property(e => e.PositionState)
                 .HasConversion<string>()
@@ -58,30 +63,15 @@ namespace ERPSystem.Data
                 .HasConversion<string>()
                 .HasMaxLength(16);
             #endregion
-            #region Many-to-many cycles of cascade deletes fix
-            //https://github.com/dotnet/efcore/issues/22803#issuecomment-729221687
-            //https://docs.microsoft.com/en-us/ef/core/saving/cascade-delete#optional-relationship-with-dependentschildren-loaded
-            modelBuilder.Entity<Employee>()
-                        .HasMany(m => m.Mentors)
-                        .WithMany(e => e.Employees)
-                        .UsingEntity<Dictionary<string, object>>(
-                            "MentorsMentees",
-                            j => j.HasOne<Mentor>().WithMany().OnDelete(DeleteBehavior.ClientSetNull),
-                            j => j.HasOne<Employee>().WithMany().OnDelete(DeleteBehavior.ClientSetNull));
-            #endregion
         }
         #region DBSet
         public DbSet<Assignment> Assignments { get; set; }
         public DbSet<Branch> Branches { get; set; }
         public DbSet<Company> Companies { get; set; }
         public DbSet<Department> Departments { get; set; }
-        public DbSet<DepartmentHead> DepartmentHeads { get; set; }
         public DbSet<Employee> Employees { get; set; }
-        public DbSet<GeneralManager> GeneralManagers { get; set; }
-        public DbSet<Mentor> Mentors { get; set; }
         public DbSet<Position> Positions { get; set; }
         public DbSet<Project> Projects { get; set; }
-        public DbSet<ProjectManager> ProjectManagers { get; set; }
         public DbSet<Report> Reports { get; set; }
         #endregion
     }
