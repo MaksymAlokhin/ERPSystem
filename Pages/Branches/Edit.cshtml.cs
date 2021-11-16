@@ -19,6 +19,7 @@ namespace ERPSystem.Pages.Branches
         public string CurrentSort { get; set; }
         public List<int> SelectedEmployees { get; set; }
         public SelectList EmployeesSelectList { get; set; }
+        public SelectList CompaniesSelectList { get; set; }
         public EditModel(ERPSystem.Data.ApplicationDbContext context)
         {
             _context = context;
@@ -63,7 +64,8 @@ namespace ERPSystem.Pages.Branches
                 SelectedEmployees.Add(employee.Id);
             }
 
-            ViewData["CompanyId"] = new SelectList(_context.Companies, "Id", "Name");
+            var CompaniesQuery = _context.Companies.OrderBy(c => c.Name);
+            CompaniesSelectList = new SelectList(CompaniesQuery.AsNoTracking(), "Id", "Name"); //list, id, value
             return Page();
         }
 
