@@ -31,7 +31,9 @@ namespace ERPSystem.Pages.Companies
         public IActionResult OnGet()
         {
             GeneralManagerList = new List<SelectListItem>();
-            foreach (GeneralManager gm in _context.GeneralManagers.OrderBy(gm => gm.LastName).ThenBy(gm => gm.FirstName))
+            foreach (Employee gm in _context.Employees
+                .Where(e => e.EmployeeRole == EmployeeRole.GeneralManager)
+                .OrderBy(gm => gm.LastName).ThenBy(gm => gm.FirstName))
             {
                 GeneralManagerList.Add(new SelectListItem { Value = $"{gm.Id}", Text = $"{gm.FullName}" });
             }
@@ -96,9 +98,11 @@ namespace ERPSystem.Pages.Companies
                                             "Company",
                                             c => c.Name, c => c.CompanyState))
             {
-                if (GeneralManagerId != 0)
+                if (GeneralManagerId != null)
                 {
-                    GeneralManager gm = await _context.GeneralManagers.FindAsync(GeneralManagerId);
+                    Employee gm = await _context.Employees
+                        .Where(e => e.EmployeeRole == EmployeeRole.GeneralManager && e.Id == GeneralManagerId)
+                        .FirstOrDefaultAsync();
                     if(gm.CompanyId != null)
                     {
                         var oldCompany = await _context.Companies.FindAsync(gm.CompanyId);

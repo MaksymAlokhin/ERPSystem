@@ -16,7 +16,7 @@ namespace ERPSystem.Data
             StartDate = DateTime.Parse("2020-12-30"),
             EndDate = DateTime.Parse("2023-03-05"),
             ProjectState = ProjectState.Active,
-            Department = WalmartMarketing
+            Department = AlphabetAccountingAndFinance
         };
         public static Project p002 = new Project
         {
@@ -24,7 +24,7 @@ namespace ERPSystem.Data
             StartDate = DateTime.Parse("2020-07-10"),
             EndDate = DateTime.Parse("2022-09-09"),
             ProjectState = ProjectState.Active,
-            Department = WalmartMarketing
+            Department = AlphabetAccountingAndFinance
         };
         public static Project p003 = new Project
         {
@@ -32,7 +32,7 @@ namespace ERPSystem.Data
             StartDate = DateTime.Parse("2021-05-10"),
             EndDate = DateTime.Parse("2023-10-09"),
             ProjectState = ProjectState.Active,
-            Department = WalmartMarketing
+            Department = AlphabetAccountingAndFinance
         };
         public static Project p004 = new Project
         {
@@ -40,7 +40,7 @@ namespace ERPSystem.Data
             StartDate = DateTime.Parse("2021-06-03"),
             EndDate = DateTime.Parse("2022-03-14"),
             ProjectState = ProjectState.Active,
-            Department = WalmartMarketing
+            Department = AlphabetAccountingAndFinance
         };
         public static Project p005 = new Project
         {
@@ -48,7 +48,7 @@ namespace ERPSystem.Data
             StartDate = DateTime.Parse("2020-09-23"),
             EndDate = DateTime.Parse("2022-05-28"),
             ProjectState = ProjectState.Active,
-            Department = WalmartMarketing
+            Department = AlphabetAccountingAndFinance
         };
         public static Project p006 = new Project
         {
@@ -56,7 +56,7 @@ namespace ERPSystem.Data
             StartDate = DateTime.Parse("2020-07-28"),
             EndDate = DateTime.Parse("2022-08-03"),
             ProjectState = ProjectState.Active,
-            Department = WalmartMarketing
+            Department = AlphabetAccountingAndFinance
         };
         public static Project p007 = new Project
         {
@@ -64,7 +64,7 @@ namespace ERPSystem.Data
             StartDate = DateTime.Parse("2020-04-29"),
             EndDate = DateTime.Parse("2022-11-04"),
             ProjectState = ProjectState.Active,
-            Department = WalmartMarketing
+            Department = AlphabetAccountingAndFinance
         };
         public static Project p008 = new Project
         {
@@ -72,7 +72,7 @@ namespace ERPSystem.Data
             StartDate = DateTime.Parse("2020-02-13"),
             EndDate = DateTime.Parse("2022-02-10"),
             ProjectState = ProjectState.Active,
-            Department = WalmartMarketing
+            Department = AlphabetAccountingAndFinance
         };
         public static Project p009 = new Project
         {
@@ -80,7 +80,7 @@ namespace ERPSystem.Data
             StartDate = DateTime.Parse("2021-08-18"),
             EndDate = DateTime.Parse("2022-04-01"),
             ProjectState = ProjectState.Active,
-            Department = WalmartMarketing
+            Department = AlphabetAccountingAndFinance
         };
         public static Project p010 = new Project
         {
@@ -88,7 +88,7 @@ namespace ERPSystem.Data
             StartDate = DateTime.Parse("2019-11-13"),
             EndDate = DateTime.Parse("2023-07-01"),
             ProjectState = ProjectState.Active,
-            Department = WalmartMarketing
+            Department = AlphabetAccountingAndFinance
         };
         public static Project p011 = new Project
         {
@@ -96,7 +96,7 @@ namespace ERPSystem.Data
             StartDate = DateTime.Parse("2020-01-07"),
             EndDate = DateTime.Parse("2022-03-05"),
             ProjectState = ProjectState.Active,
-            Department = WalmartMarketing
+            Department = AlphabetAccountingAndFinance
         };
         public static Project p012 = new Project
         {
@@ -104,7 +104,7 @@ namespace ERPSystem.Data
             StartDate = DateTime.Parse("2020-01-13"),
             EndDate = DateTime.Parse("2022-05-29"),
             ProjectState = ProjectState.Active,
-            Department = WalmartMarketing
+            Department = AlphabetAccountingAndFinance
         };
         #endregion
         public static List<Project> data;

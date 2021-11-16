@@ -14,6 +14,9 @@ namespace ERPSystem.Pages.Branches
     public class EditModel : PageModel
     {
         private readonly ERPSystem.Data.ApplicationDbContext _context;
+        public int? PageIndex { get; set; }
+        public string CurrentFilter { get; set; }
+        public string CurrentSort { get; set; }
         public List<int> SelectedEmployees { get; set; }
         public SelectList EmployeesSelectList { get; set; }
         public EditModel(ERPSystem.Data.ApplicationDbContext context)
@@ -24,8 +27,13 @@ namespace ERPSystem.Pages.Branches
         [BindProperty]
         public Branch Branch { get; set; }
 
-        public async Task<IActionResult> OnGetAsync(int? id)
+        public async Task<IActionResult> OnGetAsync(string sortOrder,
+            string currentFilter, int? pageIndex, int? id)
         {
+            PageIndex = pageIndex;
+            CurrentSort = sortOrder;
+            CurrentFilter = currentFilter;
+
             if (id == null)
             {
                 return NotFound();

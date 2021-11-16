@@ -56,11 +56,13 @@ namespace ERPSystem.Pages.Companies
             }
 
             GeneralManagerList = new List<SelectListItem>();
-            foreach (GeneralManager gm in _context.GeneralManagers.OrderBy(gm => gm.LastName).ThenBy(gm => gm.FirstName))
+            foreach (Employee gm in _context.Employees
+                .Where(e => e.EmployeeRole == EmployeeRole.GeneralManager)
+                .OrderBy(gm => gm.LastName).ThenBy(gm => gm.FirstName))
             {
                 GeneralManagerList.Add(new SelectListItem { Value = $"{gm.Id}", Text = $"{gm.FullName}" });
             }
-            if(Company.GeneralManager != null)
+            if (Company.GeneralManager != null)
             {
                 GeneralManagerId = FormerGeneralManagerId = Company.GeneralManager.Id;
             }
@@ -104,7 +106,10 @@ namespace ERPSystem.Pages.Companies
                             "Company",
                             c => c.Name, c => c.CompanyState))
             {
-                GeneralManager gm = await _context.GeneralManagers.FindAsync(GeneralManagerId); 
+                Employee gm = await _context.Employees
+                        .Where(e => e.EmployeeRole == EmployeeRole.GeneralManager && e.Id == GeneralManagerId)
+                        .FirstOrDefaultAsync();
+
                 if (gm != null)
                 {
                     if (gm.Id != FormerGeneralManagerId && gm.CompanyId != null)
@@ -116,9 +121,11 @@ namespace ERPSystem.Pages.Companies
                 }
                 else
                 {
-                    if(FormerGeneralManagerId != null)
+                    if (FormerGeneralManagerId != null)
                     {
-                        GeneralManager formerGm = await _context.GeneralManagers.FindAsync(FormerGeneralManagerId);
+                        Employee formerGm = await _context.Employees
+                            .Where(e => e.EmployeeRole == EmployeeRole.GeneralManager && e.Id == FormerGeneralManagerId)
+                            .FirstOrDefaultAsync();
                         formerGm.CompanyId = null;
                         CompanyToUpdate.CompanyState = CompanyState.Inactive;
                     }

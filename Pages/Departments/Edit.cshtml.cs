@@ -55,7 +55,10 @@ namespace ERPSystem.Pages.Departments
             }
 
             DepartmentHeadList = new List<SelectListItem>();
-            foreach (DepartmentHead dh in _context.DepartmentHeads.OrderBy(dh => dh.LastName).ThenBy(dh => dh.FirstName))
+            foreach (Employee dh in _context.Employees
+                    .Where(e => e.EmployeeRole == EmployeeRole.DepartmentHead)
+                    .OrderBy(dh => dh.LastName)
+                    .ThenBy(dh => dh.FirstName))
             {
                 DepartmentHeadList.Add(new SelectListItem { Value = $"{dh.Id}", Text = $"{dh.FullName}" });
             }
@@ -98,7 +101,9 @@ namespace ERPSystem.Pages.Departments
                 "Department",
                 d => d.Name, d => d.DepartmentState, d => d.CompanyId))
             {
-                DepartmentHead dh = await _context.DepartmentHeads.FindAsync(DepartmentHeadId);
+                Employee dh = await _context.Employees
+                        .Where(e => e.EmployeeRole == EmployeeRole.DepartmentHead && e.Id == DepartmentHeadId)
+                        .FirstOrDefaultAsync();
                 if (dh != null)
                 {
                     if (dh.Id != FormerDepartmentHeadId && dh.DepartmentId != null)
@@ -112,7 +117,9 @@ namespace ERPSystem.Pages.Departments
                 {
                     if (FormerDepartmentHeadId != null)
                     {
-                        DepartmentHead formerHh = await _context.DepartmentHeads.FindAsync(FormerDepartmentHeadId);
+                        Employee formerHh = await _context.Employees
+                                .Where(e => e.EmployeeRole == EmployeeRole.DepartmentHead && e.Id == FormerDepartmentHeadId)
+                                .FirstOrDefaultAsync();
                         formerHh.DepartmentId = null;
                         DepartmentToUpdate.DepartmentState = DepartmentState.Inactive;
                     }

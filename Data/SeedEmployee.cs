@@ -18,7 +18,8 @@ namespace ERPSystem.Data
             DateOfBirth = DateTime.Parse("1993-09-27"),
             EmployeeState = EmployeeState.Active,
             Branch = WalmartNorthAmerica,
-            Mentors = new List<Mentor>
+            EmployeeRole = EmployeeRole.Employee,
+            Mentors = new List<Employee>
             {
                 m001
             }
@@ -30,10 +31,7 @@ namespace ERPSystem.Data
             DateOfBirth = DateTime.Parse("1987-09-27"),
             EmployeeState = EmployeeState.Active,
             Branch = WalmartNorthAmerica,
-            Mentors = new List<Mentor>
-            {
-                m002
-            }
+            EmployeeRole = EmployeeRole.Employee
         };
         public static Employee e003 = new Employee
         {
@@ -42,10 +40,7 @@ namespace ERPSystem.Data
             DateOfBirth = DateTime.Parse("1990-11-18"),
             EmployeeState = EmployeeState.Active,
             Branch = WalmartNorthAmerica,
-            Mentors = new List<Mentor>
-            {
-                m003
-            }
+            EmployeeRole = EmployeeRole.Employee
         };
         public static Employee e004 = new Employee
         {
@@ -54,10 +49,7 @@ namespace ERPSystem.Data
             DateOfBirth = DateTime.Parse("1995-09-11"),
             EmployeeState = EmployeeState.Active,
             Branch = WalmartNorthAmerica,
-            Mentors = new List<Mentor>
-            {
-                m004
-            }
+            EmployeeRole = EmployeeRole.Employee
         };
         public static Employee e005 = new Employee
         {
@@ -66,10 +58,7 @@ namespace ERPSystem.Data
             DateOfBirth = DateTime.Parse("1984-07-19"),
             EmployeeState = EmployeeState.Active,
             Branch = WalmartNorthAmerica,
-            Mentors = new List<Mentor>
-            {
-                m005
-            }
+            EmployeeRole = EmployeeRole.Employee
         };
         public static Employee e006 = new Employee
         {
@@ -78,10 +67,7 @@ namespace ERPSystem.Data
             DateOfBirth = DateTime.Parse("1994-10-04"),
             EmployeeState = EmployeeState.Active,
             Branch = WalmartNorthAmerica,
-            Mentors = new List<Mentor>
-            {
-                m006
-            }
+            EmployeeRole = EmployeeRole.Employee
         };
         public static Employee e007 = new Employee
         {
@@ -90,10 +76,7 @@ namespace ERPSystem.Data
             DateOfBirth = DateTime.Parse("1996-04-22"),
             EmployeeState = EmployeeState.Active,
             Branch = WalmartNorthAmerica,
-            Mentors = new List<Mentor>
-            {
-                m007
-            }
+            EmployeeRole = EmployeeRole.Employee
         };
         public static Employee e008 = new Employee
         {
@@ -102,10 +85,7 @@ namespace ERPSystem.Data
             DateOfBirth = DateTime.Parse("1993-04-16"),
             EmployeeState = EmployeeState.Active,
             Branch = WalmartNorthAmerica,
-            Mentors = new List<Mentor>
-            {
-                m008
-            }
+            EmployeeRole = EmployeeRole.Employee
         };
         public static Employee e009 = new Employee
         {
@@ -113,10 +93,11 @@ namespace ERPSystem.Data
             LastName = "Morrow",
             DateOfBirth = DateTime.Parse("1988-03-15"),
             EmployeeState = EmployeeState.Active,
-            Branch = WalmartNorthAmerica,
-            Mentors = new List<Mentor>
+            Branch = WalmartEurope,
+            EmployeeRole = EmployeeRole.Employee,
+            Mentors = new List<Employee>
             {
-                m009
+                m002
             }
         };
         public static Employee e010 = new Employee
@@ -125,11 +106,8 @@ namespace ERPSystem.Data
             LastName = "Conrad",
             DateOfBirth = DateTime.Parse("1997-07-30"),
             EmployeeState = EmployeeState.Active,
-            Branch = WalmartNorthAmerica,
-            Mentors = new List<Mentor>
-            {
-                m010
-            }
+            Branch = WalmartEurope,
+            EmployeeRole = EmployeeRole.Employee
         };
         public static Employee e011 = new Employee
         {
@@ -137,7 +115,8 @@ namespace ERPSystem.Data
             LastName = "Whitley",
             DateOfBirth = DateTime.Parse("1980-11-28"),
             EmployeeState = EmployeeState.Active,
-            Branch = WalmartNorthAmerica,
+            Branch = WalmartEurope,
+            EmployeeRole = EmployeeRole.Employee
         };
         public static Employee e012 = new Employee
         {
@@ -145,7 +124,8 @@ namespace ERPSystem.Data
             LastName = "Mueller",
             DateOfBirth = DateTime.Parse("1995-01-20"),
             EmployeeState = EmployeeState.Active,
-            Branch = WalmartNorthAmerica,
+            Branch = WalmartEurope,
+            EmployeeRole = EmployeeRole.Employee
         };
         public static Employee e013 = new Employee
         {
@@ -153,7 +133,8 @@ namespace ERPSystem.Data
             LastName = "Travis",
             DateOfBirth = DateTime.Parse("1987-07-31"),
             EmployeeState = EmployeeState.Active,
-            Branch = WalmartNorthAmerica,
+            Branch = WalmartEurope,
+            EmployeeRole = EmployeeRole.Employee
         };
         public static Employee e014 = new Employee
         {
@@ -161,7 +142,8 @@ namespace ERPSystem.Data
             LastName = "Brock",
             DateOfBirth = DateTime.Parse("1982-05-08"),
             EmployeeState = EmployeeState.Active,
-            Branch = WalmartNorthAmerica,
+            Branch = WalmartEurope,
+            EmployeeRole = EmployeeRole.Employee
         };
         public static Employee e015 = new Employee
         {
@@ -169,7 +151,8 @@ namespace ERPSystem.Data
             LastName = "Richmond",
             DateOfBirth = DateTime.Parse("1983-03-02"),
             EmployeeState = EmployeeState.Active,
-            Branch = WalmartNorthAmerica,
+            Branch = WalmartEurope,
+            EmployeeRole = EmployeeRole.Employee
         };
         public static Employee e016 = new Employee
         {
@@ -177,7 +160,8 @@ namespace ERPSystem.Data
             LastName = "Randolph",
             DateOfBirth = DateTime.Parse("1993-10-25"),
             EmployeeState = EmployeeState.Active,
-            Branch = WalmartNorthAmerica,
+            Branch = WalmartEurope,
+            EmployeeRole = EmployeeRole.Employee
         };
         public static Employee e017 = new Employee
         {
@@ -185,7 +169,12 @@ namespace ERPSystem.Data
             LastName = "Glenn",
             DateOfBirth = DateTime.Parse("1992-10-22"),
             EmployeeState = EmployeeState.Active,
-            Branch = WalmartNorthAmerica,
+            Branch = AmazonNorthAmerica,
+            EmployeeRole = EmployeeRole.Employee,
+            Mentors = new List<Employee>
+            {
+                m003
+            }
         };
         public static Employee e018 = new Employee
         {
@@ -193,7 +182,8 @@ namespace ERPSystem.Data
             LastName = "Vance",
             DateOfBirth = DateTime.Parse("1984-05-05"),
             EmployeeState = EmployeeState.Active,
-            Branch = WalmartNorthAmerica,
+            Branch = AmazonNorthAmerica,
+            EmployeeRole = EmployeeRole.Employee
         };
         public static Employee e019 = new Employee
         {
@@ -201,7 +191,8 @@ namespace ERPSystem.Data
             LastName = "Lawrence",
             DateOfBirth = DateTime.Parse("1990-02-05"),
             EmployeeState = EmployeeState.Active,
-            Branch = WalmartNorthAmerica,
+            Branch = AmazonNorthAmerica,
+            EmployeeRole = EmployeeRole.Employee
         };
         public static Employee e020 = new Employee
         {
@@ -209,7 +200,8 @@ namespace ERPSystem.Data
             LastName = "Kirk",
             DateOfBirth = DateTime.Parse("1990-10-01"),
             EmployeeState = EmployeeState.Active,
-            Branch = WalmartNorthAmerica,
+            Branch = AmazonNorthAmerica,
+            EmployeeRole = EmployeeRole.Employee
         };
         public static Employee e021 = new Employee
         {
@@ -217,7 +209,8 @@ namespace ERPSystem.Data
             LastName = "Conner",
             DateOfBirth = DateTime.Parse("1998-12-03"),
             EmployeeState = EmployeeState.Active,
-            Branch = WalmartNorthAmerica,
+            Branch = AmazonNorthAmerica,
+            EmployeeRole = EmployeeRole.Employee
         };
         public static Employee e022 = new Employee
         {
@@ -225,7 +218,8 @@ namespace ERPSystem.Data
             LastName = "Sandoval",
             DateOfBirth = DateTime.Parse("1983-05-03"),
             EmployeeState = EmployeeState.Active,
-            Branch = WalmartNorthAmerica,
+            Branch = AmazonNorthAmerica,
+            EmployeeRole = EmployeeRole.Employee
         };
         public static Employee e023 = new Employee
         {
@@ -233,7 +227,8 @@ namespace ERPSystem.Data
             LastName = "Lawrence",
             DateOfBirth = DateTime.Parse("1989-07-20"),
             EmployeeState = EmployeeState.Active,
-            Branch = WalmartNorthAmerica,
+            Branch = AmazonNorthAmerica,
+            EmployeeRole = EmployeeRole.Employee
         };
         public static Employee e024 = new Employee
         {
@@ -241,7 +236,8 @@ namespace ERPSystem.Data
             LastName = "Miles",
             DateOfBirth = DateTime.Parse("1984-08-05"),
             EmployeeState = EmployeeState.Active,
-            Branch = WalmartNorthAmerica,
+            Branch = AmazonNorthAmerica,
+            EmployeeRole = EmployeeRole.Employee
         };
         public static Employee e025 = new Employee
         {
@@ -249,7 +245,12 @@ namespace ERPSystem.Data
             LastName = "Hull",
             DateOfBirth = DateTime.Parse("1993-09-01"),
             EmployeeState = EmployeeState.Active,
-            Branch = WalmartNorthAmerica,
+            Branch = AmazonEurope,
+            EmployeeRole = EmployeeRole.Employee,
+            Mentors = new List<Employee>
+            {
+                m004
+            }
         };
         public static Employee e026 = new Employee
         {
@@ -257,7 +258,8 @@ namespace ERPSystem.Data
             LastName = "Bradley",
             DateOfBirth = DateTime.Parse("1995-03-29"),
             EmployeeState = EmployeeState.Active,
-            Branch = WalmartNorthAmerica,
+            Branch = AmazonEurope,
+            EmployeeRole = EmployeeRole.Employee
         };
         public static Employee e027 = new Employee
         {
@@ -265,7 +267,8 @@ namespace ERPSystem.Data
             LastName = "Carlson",
             DateOfBirth = DateTime.Parse("1985-11-15"),
             EmployeeState = EmployeeState.Active,
-            Branch = WalmartNorthAmerica,
+            Branch = AmazonEurope,
+            EmployeeRole = EmployeeRole.Employee
         };
         public static Employee e028 = new Employee
         {
@@ -273,7 +276,8 @@ namespace ERPSystem.Data
             LastName = "Buckley",
             DateOfBirth = DateTime.Parse("1989-04-30"),
             EmployeeState = EmployeeState.Active,
-            Branch = WalmartNorthAmerica,
+            Branch = AmazonEurope,
+            EmployeeRole = EmployeeRole.Employee
         };
         public static Employee e029 = new Employee
         {
@@ -281,7 +285,8 @@ namespace ERPSystem.Data
             LastName = "Frank",
             DateOfBirth = DateTime.Parse("1993-06-11"),
             EmployeeState = EmployeeState.Active,
-            Branch = WalmartNorthAmerica,
+            Branch = AmazonEurope,
+            EmployeeRole = EmployeeRole.Employee
         };
         public static Employee e030 = new Employee
         {
@@ -289,7 +294,8 @@ namespace ERPSystem.Data
             LastName = "Chen",
             DateOfBirth = DateTime.Parse("1985-01-28"),
             EmployeeState = EmployeeState.Active,
-            Branch = WalmartNorthAmerica,
+            Branch = AmazonEurope,
+            EmployeeRole = EmployeeRole.Employee
         };
         public static Employee e031 = new Employee
         {
@@ -297,7 +303,8 @@ namespace ERPSystem.Data
             LastName = "Savage",
             DateOfBirth = DateTime.Parse("1982-01-19"),
             EmployeeState = EmployeeState.Active,
-            Branch = WalmartNorthAmerica,
+            Branch = AmazonEurope,
+            EmployeeRole = EmployeeRole.Employee
         };
         public static Employee e032 = new Employee
         {
@@ -305,7 +312,8 @@ namespace ERPSystem.Data
             LastName = "Kelly",
             DateOfBirth = DateTime.Parse("1999-06-27"),
             EmployeeState = EmployeeState.Active,
-            Branch = WalmartNorthAmerica,
+            Branch = AmazonEurope,
+            EmployeeRole = EmployeeRole.Employee
         };
         public static Employee e033 = new Employee
         {
@@ -313,7 +321,12 @@ namespace ERPSystem.Data
             LastName = "Cruz",
             DateOfBirth = DateTime.Parse("1981-09-05"),
             EmployeeState = EmployeeState.Active,
-            Branch = WalmartNorthAmerica,
+            Branch = AppleNorthAmerica,
+            EmployeeRole = EmployeeRole.Employee,
+            Mentors = new List<Employee>
+            {
+                m005
+            }
         };
         public static Employee e034 = new Employee
         {
@@ -321,7 +334,8 @@ namespace ERPSystem.Data
             LastName = "Fuller",
             DateOfBirth = DateTime.Parse("1985-11-29"),
             EmployeeState = EmployeeState.Active,
-            Branch = WalmartNorthAmerica,
+            Branch = AppleNorthAmerica,
+            EmployeeRole = EmployeeRole.Employee
         };
         public static Employee e035 = new Employee
         {
@@ -329,7 +343,8 @@ namespace ERPSystem.Data
             LastName = "Estes",
             DateOfBirth = DateTime.Parse("2000-09-01"),
             EmployeeState = EmployeeState.Active,
-            Branch = WalmartNorthAmerica,
+            Branch = AppleNorthAmerica,
+            EmployeeRole = EmployeeRole.Employee
         };
         public static Employee e036 = new Employee
         {
@@ -337,7 +352,8 @@ namespace ERPSystem.Data
             LastName = "Nixon",
             DateOfBirth = DateTime.Parse("1983-10-28"),
             EmployeeState = EmployeeState.Active,
-            Branch = WalmartNorthAmerica,
+            Branch = AppleNorthAmerica,
+            EmployeeRole = EmployeeRole.Employee
         };
         public static Employee e037 = new Employee
         {
@@ -345,7 +361,8 @@ namespace ERPSystem.Data
             LastName = "Carson",
             DateOfBirth = DateTime.Parse("2001-05-23"),
             EmployeeState = EmployeeState.Active,
-            Branch = WalmartNorthAmerica,
+            Branch = AppleNorthAmerica,
+            EmployeeRole = EmployeeRole.Employee
         };
         public static Employee e038 = new Employee
         {
@@ -353,7 +370,8 @@ namespace ERPSystem.Data
             LastName = "Benson",
             DateOfBirth = DateTime.Parse("1984-10-16"),
             EmployeeState = EmployeeState.Active,
-            Branch = WalmartNorthAmerica,
+            Branch = AppleNorthAmerica,
+            EmployeeRole = EmployeeRole.Employee
         };
         public static Employee e039 = new Employee
         {
@@ -361,7 +379,8 @@ namespace ERPSystem.Data
             LastName = "Carpenter",
             DateOfBirth = DateTime.Parse("1990-04-28"),
             EmployeeState = EmployeeState.Active,
-            Branch = WalmartNorthAmerica,
+            Branch = AppleNorthAmerica,
+            EmployeeRole = EmployeeRole.Employee
         };
         public static Employee e040 = new Employee
         {
@@ -369,7 +388,8 @@ namespace ERPSystem.Data
             LastName = "Moore",
             DateOfBirth = DateTime.Parse("1983-09-08"),
             EmployeeState = EmployeeState.Active,
-            Branch = WalmartNorthAmerica,
+            Branch = AppleNorthAmerica,
+            EmployeeRole = EmployeeRole.Employee
         };
         public static Employee e041 = new Employee
         {
@@ -377,7 +397,12 @@ namespace ERPSystem.Data
             LastName = "Aguirre",
             DateOfBirth = DateTime.Parse("1997-05-20"),
             EmployeeState = EmployeeState.Active,
-            Branch = WalmartNorthAmerica,
+            Branch = AppleEurope,
+            EmployeeRole = EmployeeRole.Employee,
+            Mentors = new List<Employee>
+            {
+                m006
+            }
         };
         public static Employee e042 = new Employee
         {
@@ -385,7 +410,8 @@ namespace ERPSystem.Data
             LastName = "Barrera",
             DateOfBirth = DateTime.Parse("1987-04-14"),
             EmployeeState = EmployeeState.Active,
-            Branch = WalmartNorthAmerica,
+            Branch = AppleEurope,
+            EmployeeRole = EmployeeRole.Employee
         };
         public static Employee e043 = new Employee
         {
@@ -393,7 +419,8 @@ namespace ERPSystem.Data
             LastName = "Mueller",
             DateOfBirth = DateTime.Parse("1986-01-10"),
             EmployeeState = EmployeeState.Active,
-            Branch = WalmartNorthAmerica,
+            Branch = AppleEurope,
+            EmployeeRole = EmployeeRole.Employee
         };
         public static Employee e044 = new Employee
         {
@@ -401,7 +428,8 @@ namespace ERPSystem.Data
             LastName = "Malone",
             DateOfBirth = DateTime.Parse("2000-07-29"),
             EmployeeState = EmployeeState.Active,
-            Branch = WalmartNorthAmerica,
+            Branch = AppleEurope,
+            EmployeeRole = EmployeeRole.Employee
         };
         public static Employee e045 = new Employee
         {
@@ -409,7 +437,8 @@ namespace ERPSystem.Data
             LastName = "Mooney",
             DateOfBirth = DateTime.Parse("1997-08-26"),
             EmployeeState = EmployeeState.Active,
-            Branch = WalmartNorthAmerica,
+            Branch = AppleEurope,
+            EmployeeRole = EmployeeRole.Employee
         };
         public static Employee e046 = new Employee
         {
@@ -417,7 +446,8 @@ namespace ERPSystem.Data
             LastName = "Boyd",
             DateOfBirth = DateTime.Parse("1984-07-19"),
             EmployeeState = EmployeeState.Active,
-            Branch = WalmartNorthAmerica,
+            Branch = AppleEurope,
+            EmployeeRole = EmployeeRole.Employee
         };
         public static Employee e047 = new Employee
         {
@@ -425,7 +455,8 @@ namespace ERPSystem.Data
             LastName = "Harrington",
             DateOfBirth = DateTime.Parse("1991-04-28"),
             EmployeeState = EmployeeState.Active,
-            Branch = WalmartNorthAmerica,
+            Branch = AppleEurope,
+            EmployeeRole = EmployeeRole.Employee
         };
         public static Employee e048 = new Employee
         {
@@ -433,7 +464,8 @@ namespace ERPSystem.Data
             LastName = "Good",
             DateOfBirth = DateTime.Parse("1998-10-13"),
             EmployeeState = EmployeeState.Active,
-            Branch = WalmartNorthAmerica,
+            Branch = AppleEurope,
+            EmployeeRole = EmployeeRole.Employee
         };
         public static Employee e049 = new Employee
         {
@@ -441,7 +473,12 @@ namespace ERPSystem.Data
             LastName = "Adams",
             DateOfBirth = DateTime.Parse("1997-03-26"),
             EmployeeState = EmployeeState.Active,
-            Branch = WalmartNorthAmerica,
+            Branch = FordMotorNorthAmerica,
+            EmployeeRole = EmployeeRole.Employee,
+            Mentors = new List<Employee>
+            {
+                m007
+            }
         };
         public static Employee e050 = new Employee
         {
@@ -449,7 +486,8 @@ namespace ERPSystem.Data
             LastName = "Dillon",
             DateOfBirth = DateTime.Parse("1989-08-04"),
             EmployeeState = EmployeeState.Active,
-            Branch = WalmartNorthAmerica,
+            Branch = FordMotorNorthAmerica,
+            EmployeeRole = EmployeeRole.Employee
         };
         public static Employee e051 = new Employee
         {
@@ -457,7 +495,8 @@ namespace ERPSystem.Data
             LastName = "Sanders",
             DateOfBirth = DateTime.Parse("1995-05-26"),
             EmployeeState = EmployeeState.Active,
-            Branch = WalmartNorthAmerica,
+            Branch = FordMotorNorthAmerica,
+            EmployeeRole = EmployeeRole.Employee
         };
         public static Employee e052 = new Employee
         {
@@ -465,7 +504,8 @@ namespace ERPSystem.Data
             LastName = "Smith",
             DateOfBirth = DateTime.Parse("1999-05-10"),
             EmployeeState = EmployeeState.Active,
-            Branch = WalmartNorthAmerica,
+            Branch = FordMotorNorthAmerica,
+            EmployeeRole = EmployeeRole.Employee
         };
         public static Employee e053 = new Employee
         {
@@ -473,7 +513,8 @@ namespace ERPSystem.Data
             LastName = "Lara",
             DateOfBirth = DateTime.Parse("1982-08-31"),
             EmployeeState = EmployeeState.Active,
-            Branch = WalmartNorthAmerica,
+            Branch = FordMotorNorthAmerica,
+            EmployeeRole = EmployeeRole.Employee
         };
         public static Employee e054 = new Employee
         {
@@ -481,7 +522,8 @@ namespace ERPSystem.Data
             LastName = "Tate",
             DateOfBirth = DateTime.Parse("1990-05-25"),
             EmployeeState = EmployeeState.Active,
-            Branch = WalmartNorthAmerica,
+            Branch = FordMotorNorthAmerica,
+            EmployeeRole = EmployeeRole.Employee
         };
         public static Employee e055 = new Employee
         {
@@ -489,7 +531,8 @@ namespace ERPSystem.Data
             LastName = "Trevino",
             DateOfBirth = DateTime.Parse("1986-04-16"),
             EmployeeState = EmployeeState.Active,
-            Branch = WalmartNorthAmerica,
+            Branch = FordMotorNorthAmerica,
+            EmployeeRole = EmployeeRole.Employee
         };
         public static Employee e056 = new Employee
         {
@@ -497,7 +540,8 @@ namespace ERPSystem.Data
             LastName = "Padilla",
             DateOfBirth = DateTime.Parse("1996-07-21"),
             EmployeeState = EmployeeState.Active,
-            Branch = WalmartNorthAmerica,
+            Branch = FordMotorNorthAmerica,
+            EmployeeRole = EmployeeRole.Employee
         };
         public static Employee e057 = new Employee
         {
@@ -505,7 +549,12 @@ namespace ERPSystem.Data
             LastName = "Castro",
             DateOfBirth = DateTime.Parse("1983-10-21"),
             EmployeeState = EmployeeState.Active,
-            Branch = WalmartNorthAmerica,
+            Branch = FordMotorEurope,
+            EmployeeRole = EmployeeRole.Employee,
+            Mentors = new List<Employee>
+            {
+                m008
+            }
         };
         public static Employee e058 = new Employee
         {
@@ -513,7 +562,8 @@ namespace ERPSystem.Data
             LastName = "Keith",
             DateOfBirth = DateTime.Parse("1994-08-13"),
             EmployeeState = EmployeeState.Active,
-            Branch = WalmartNorthAmerica,
+            Branch = FordMotorEurope,
+            EmployeeRole = EmployeeRole.Employee
         };
         public static Employee e059 = new Employee
         {
@@ -521,7 +571,8 @@ namespace ERPSystem.Data
             LastName = "Le",
             DateOfBirth = DateTime.Parse("1991-04-24"),
             EmployeeState = EmployeeState.Active,
-            Branch = WalmartNorthAmerica,
+            Branch = FordMotorEurope,
+            EmployeeRole = EmployeeRole.Employee
         };
         public static Employee e060 = new Employee
         {
@@ -529,7 +580,8 @@ namespace ERPSystem.Data
             LastName = "Key",
             DateOfBirth = DateTime.Parse("1982-02-25"),
             EmployeeState = EmployeeState.Active,
-            Branch = WalmartNorthAmerica,
+            Branch = FordMotorEurope,
+            EmployeeRole = EmployeeRole.Employee
         };
         public static Employee e061 = new Employee
         {
@@ -537,7 +589,8 @@ namespace ERPSystem.Data
             LastName = "Scott",
             DateOfBirth = DateTime.Parse("1994-12-11"),
             EmployeeState = EmployeeState.Active,
-            Branch = WalmartNorthAmerica,
+            Branch = FordMotorEurope,
+            EmployeeRole = EmployeeRole.Employee
         };
         public static Employee e062 = new Employee
         {
@@ -545,7 +598,8 @@ namespace ERPSystem.Data
             LastName = "Britt",
             DateOfBirth = DateTime.Parse("1998-05-24"),
             EmployeeState = EmployeeState.Active,
-            Branch = WalmartNorthAmerica,
+            Branch = FordMotorEurope,
+            EmployeeRole = EmployeeRole.Employee
         };
         public static Employee e063 = new Employee
         {
@@ -553,7 +607,8 @@ namespace ERPSystem.Data
             LastName = "Richardson",
             DateOfBirth = DateTime.Parse("1993-03-07"),
             EmployeeState = EmployeeState.Active,
-            Branch = WalmartNorthAmerica,
+            Branch = FordMotorEurope,
+            EmployeeRole = EmployeeRole.Employee
         };
         public static Employee e064 = new Employee
         {
@@ -561,7 +616,8 @@ namespace ERPSystem.Data
             LastName = "Stewart",
             DateOfBirth = DateTime.Parse("1995-10-26"),
             EmployeeState = EmployeeState.Active,
-            Branch = WalmartNorthAmerica,
+            Branch = FordMotorEurope,
+            EmployeeRole = EmployeeRole.Employee
         };
         public static Employee e065 = new Employee
         {
@@ -569,7 +625,12 @@ namespace ERPSystem.Data
             LastName = "Atkinson",
             DateOfBirth = DateTime.Parse("1984-12-30"),
             EmployeeState = EmployeeState.Active,
-            Branch = WalmartNorthAmerica,
+            Branch = FedExNorthAmerica,
+            EmployeeRole = EmployeeRole.Employee,
+            Mentors = new List<Employee>
+            {
+                m009
+            }
         };
         public static Employee e066 = new Employee
         {
@@ -577,7 +638,8 @@ namespace ERPSystem.Data
             LastName = "Mccormick",
             DateOfBirth = DateTime.Parse("1991-04-10"),
             EmployeeState = EmployeeState.Active,
-            Branch = WalmartNorthAmerica,
+            Branch = FedExNorthAmerica,
+            EmployeeRole = EmployeeRole.Employee
         };
         public static Employee e067 = new Employee
         {
@@ -585,7 +647,8 @@ namespace ERPSystem.Data
             LastName = "Mayer",
             DateOfBirth = DateTime.Parse("1994-11-21"),
             EmployeeState = EmployeeState.Active,
-            Branch = WalmartNorthAmerica,
+            Branch = FedExNorthAmerica,
+            EmployeeRole = EmployeeRole.Employee
         };
         public static Employee e068 = new Employee
         {
@@ -593,7 +656,8 @@ namespace ERPSystem.Data
             LastName = "Lang",
             DateOfBirth = DateTime.Parse("1996-02-14"),
             EmployeeState = EmployeeState.Active,
-            Branch = WalmartNorthAmerica,
+            Branch = FedExNorthAmerica,
+            EmployeeRole = EmployeeRole.Employee
         };
         public static Employee e069 = new Employee
         {
@@ -601,7 +665,8 @@ namespace ERPSystem.Data
             LastName = "Quinn",
             DateOfBirth = DateTime.Parse("2001-08-18"),
             EmployeeState = EmployeeState.Active,
-            Branch = WalmartNorthAmerica,
+            Branch = FedExNorthAmerica,
+            EmployeeRole = EmployeeRole.Employee
         };
         public static Employee e070 = new Employee
         {
@@ -609,7 +674,8 @@ namespace ERPSystem.Data
             LastName = "Donovan",
             DateOfBirth = DateTime.Parse("1990-01-16"),
             EmployeeState = EmployeeState.Active,
-            Branch = WalmartNorthAmerica,
+            Branch = FedExNorthAmerica,
+            EmployeeRole = EmployeeRole.Employee
         };
         public static Employee e071 = new Employee
         {
@@ -617,7 +683,8 @@ namespace ERPSystem.Data
             LastName = "Crane",
             DateOfBirth = DateTime.Parse("1986-09-14"),
             EmployeeState = EmployeeState.Active,
-            Branch = WalmartNorthAmerica,
+            Branch = FedExNorthAmerica,
+            EmployeeRole = EmployeeRole.Employee
         };
         public static Employee e072 = new Employee
         {
@@ -625,7 +692,8 @@ namespace ERPSystem.Data
             LastName = "Price",
             DateOfBirth = DateTime.Parse("1998-01-23"),
             EmployeeState = EmployeeState.Active,
-            Branch = WalmartNorthAmerica,
+            Branch = FedExNorthAmerica,
+            EmployeeRole = EmployeeRole.Employee
         };
         public static Employee e073 = new Employee
         {
@@ -633,7 +701,12 @@ namespace ERPSystem.Data
             LastName = "Kirby",
             DateOfBirth = DateTime.Parse("1986-11-11"),
             EmployeeState = EmployeeState.Active,
-            Branch = WalmartNorthAmerica,
+            Branch = FedExEurope,
+            EmployeeRole = EmployeeRole.Employee,
+            Mentors = new List<Employee>
+            {
+                m010
+            }
         };
         public static Employee e074 = new Employee
         {
@@ -641,7 +714,8 @@ namespace ERPSystem.Data
             LastName = "Riddle",
             DateOfBirth = DateTime.Parse("1985-07-08"),
             EmployeeState = EmployeeState.Active,
-            Branch = WalmartNorthAmerica,
+            Branch = FedExEurope,
+            EmployeeRole = EmployeeRole.Employee
         };
         public static Employee e075 = new Employee
         {
@@ -649,7 +723,8 @@ namespace ERPSystem.Data
             LastName = "Harrell",
             DateOfBirth = DateTime.Parse("1990-02-25"),
             EmployeeState = EmployeeState.Active,
-            Branch = WalmartNorthAmerica,
+            Branch = FedExEurope,
+            EmployeeRole = EmployeeRole.Employee
         };
         public static Employee e076 = new Employee
         {
@@ -657,7 +732,8 @@ namespace ERPSystem.Data
             LastName = "Cantrell",
             DateOfBirth = DateTime.Parse("1986-06-27"),
             EmployeeState = EmployeeState.Active,
-            Branch = WalmartNorthAmerica,
+            Branch = FedExEurope,
+            EmployeeRole = EmployeeRole.Employee
         };
         public static Employee e077 = new Employee
         {
@@ -665,7 +741,8 @@ namespace ERPSystem.Data
             LastName = "Larsen",
             DateOfBirth = DateTime.Parse("1999-09-22"),
             EmployeeState = EmployeeState.Active,
-            Branch = WalmartNorthAmerica,
+            Branch = FedExEurope,
+            EmployeeRole = EmployeeRole.Employee
         };
         public static Employee e078 = new Employee
         {
@@ -673,7 +750,8 @@ namespace ERPSystem.Data
             LastName = "Bell",
             DateOfBirth = DateTime.Parse("1987-01-21"),
             EmployeeState = EmployeeState.Active,
-            Branch = WalmartNorthAmerica,
+            Branch = FedExEurope,
+            EmployeeRole = EmployeeRole.Employee
         };
         public static Employee e079 = new Employee
         {
@@ -681,7 +759,8 @@ namespace ERPSystem.Data
             LastName = "Atkins",
             DateOfBirth = DateTime.Parse("1997-02-21"),
             EmployeeState = EmployeeState.Active,
-            Branch = WalmartNorthAmerica,
+            Branch = FedExEurope,
+            EmployeeRole = EmployeeRole.Employee
         };
         public static Employee e080 = new Employee
         {
@@ -689,7 +768,8 @@ namespace ERPSystem.Data
             LastName = "Cameron",
             DateOfBirth = DateTime.Parse("1997-12-22"),
             EmployeeState = EmployeeState.Active,
-            Branch = WalmartNorthAmerica,
+            Branch = FedExEurope,
+            EmployeeRole = EmployeeRole.Employee
         };
         public static Employee e081 = new Employee
         {
@@ -697,7 +777,12 @@ namespace ERPSystem.Data
             LastName = "Hurley",
             DateOfBirth = DateTime.Parse("1997-04-13"),
             EmployeeState = EmployeeState.Active,
-            Branch = WalmartNorthAmerica,
+            Branch = BankOfAmericaNorthAmerica,
+            EmployeeRole = EmployeeRole.Employee,
+            Mentors = new List<Employee>
+            {
+                m011
+            }
         };
         public static Employee e082 = new Employee
         {
@@ -705,7 +790,8 @@ namespace ERPSystem.Data
             LastName = "Houston",
             DateOfBirth = DateTime.Parse("1981-04-17"),
             EmployeeState = EmployeeState.Active,
-            Branch = WalmartNorthAmerica,
+            Branch = BankOfAmericaNorthAmerica,
+            EmployeeRole = EmployeeRole.Employee
         };
         public static Employee e083 = new Employee
         {
@@ -713,7 +799,8 @@ namespace ERPSystem.Data
             LastName = "Patrick",
             DateOfBirth = DateTime.Parse("1993-02-28"),
             EmployeeState = EmployeeState.Active,
-            Branch = WalmartNorthAmerica,
+            Branch = BankOfAmericaNorthAmerica,
+            EmployeeRole = EmployeeRole.Employee
         };
         public static Employee e084 = new Employee
         {
@@ -721,7 +808,8 @@ namespace ERPSystem.Data
             LastName = "Mendez",
             DateOfBirth = DateTime.Parse("1982-05-16"),
             EmployeeState = EmployeeState.Active,
-            Branch = WalmartNorthAmerica,
+            Branch = BankOfAmericaNorthAmerica,
+            EmployeeRole = EmployeeRole.Employee
         };
         public static Employee e085 = new Employee
         {
@@ -729,7 +817,8 @@ namespace ERPSystem.Data
             LastName = "Kidd",
             DateOfBirth = DateTime.Parse("1981-03-06"),
             EmployeeState = EmployeeState.Active,
-            Branch = WalmartNorthAmerica,
+            Branch = BankOfAmericaNorthAmerica,
+            EmployeeRole = EmployeeRole.Employee
         };
         public static Employee e086 = new Employee
         {
@@ -737,7 +826,8 @@ namespace ERPSystem.Data
             LastName = "Burnett",
             DateOfBirth = DateTime.Parse("1999-02-17"),
             EmployeeState = EmployeeState.Active,
-            Branch = WalmartNorthAmerica,
+            Branch = BankOfAmericaNorthAmerica,
+            EmployeeRole = EmployeeRole.Employee
         };
         public static Employee e087 = new Employee
         {
@@ -745,7 +835,8 @@ namespace ERPSystem.Data
             LastName = "Berger",
             DateOfBirth = DateTime.Parse("1989-04-28"),
             EmployeeState = EmployeeState.Active,
-            Branch = WalmartNorthAmerica,
+            Branch = BankOfAmericaNorthAmerica,
+            EmployeeRole = EmployeeRole.Employee
         };
         public static Employee e088 = new Employee
         {
@@ -753,7 +844,8 @@ namespace ERPSystem.Data
             LastName = "Griffin",
             DateOfBirth = DateTime.Parse("1995-04-29"),
             EmployeeState = EmployeeState.Active,
-            Branch = WalmartNorthAmerica,
+            Branch = BankOfAmericaNorthAmerica,
+            EmployeeRole = EmployeeRole.Employee
         };
         public static Employee e089 = new Employee
         {
@@ -761,7 +853,12 @@ namespace ERPSystem.Data
             LastName = "Mckinney",
             DateOfBirth = DateTime.Parse("1987-09-03"),
             EmployeeState = EmployeeState.Active,
-            Branch = WalmartNorthAmerica,
+            Branch = BankOfAmericaEurope,
+            EmployeeRole = EmployeeRole.Employee,
+            Mentors = new List<Employee>
+            {
+                m012
+            }
         };
         public static Employee e090 = new Employee
         {
@@ -769,7 +866,8 @@ namespace ERPSystem.Data
             LastName = "Burt",
             DateOfBirth = DateTime.Parse("1999-10-18"),
             EmployeeState = EmployeeState.Active,
-            Branch = WalmartNorthAmerica,
+            Branch = BankOfAmericaEurope,
+            EmployeeRole = EmployeeRole.Employee
         };
         public static Employee e091 = new Employee
         {
@@ -777,7 +875,8 @@ namespace ERPSystem.Data
             LastName = "Stevenson",
             DateOfBirth = DateTime.Parse("2001-07-19"),
             EmployeeState = EmployeeState.Active,
-            Branch = WalmartNorthAmerica,
+            Branch = BankOfAmericaEurope,
+            EmployeeRole = EmployeeRole.Employee
         };
         public static Employee e092 = new Employee
         {
@@ -785,7 +884,8 @@ namespace ERPSystem.Data
             LastName = "Gibbs",
             DateOfBirth = DateTime.Parse("1984-05-09"),
             EmployeeState = EmployeeState.Active,
-            Branch = WalmartNorthAmerica,
+            Branch = BankOfAmericaEurope,
+            EmployeeRole = EmployeeRole.Employee
         };
         public static Employee e093 = new Employee
         {
@@ -793,7 +893,8 @@ namespace ERPSystem.Data
             LastName = "Hancock",
             DateOfBirth = DateTime.Parse("2001-10-03"),
             EmployeeState = EmployeeState.Active,
-            Branch = WalmartNorthAmerica,
+            Branch = BankOfAmericaEurope,
+            EmployeeRole = EmployeeRole.Employee
         };
         public static Employee e094 = new Employee
         {
@@ -801,7 +902,8 @@ namespace ERPSystem.Data
             LastName = "Boyd",
             DateOfBirth = DateTime.Parse("2001-09-08"),
             EmployeeState = EmployeeState.Active,
-            Branch = WalmartNorthAmerica,
+            Branch = BankOfAmericaEurope,
+            EmployeeRole = EmployeeRole.Employee
         };
         public static Employee e095 = new Employee
         {
@@ -809,7 +911,8 @@ namespace ERPSystem.Data
             LastName = "Merritt",
             DateOfBirth = DateTime.Parse("1988-04-30"),
             EmployeeState = EmployeeState.Active,
-            Branch = WalmartNorthAmerica,
+            Branch = BankOfAmericaEurope,
+            EmployeeRole = EmployeeRole.Employee
         };
         public static Employee e096 = new Employee
         {
@@ -817,7 +920,8 @@ namespace ERPSystem.Data
             LastName = "Finley",
             DateOfBirth = DateTime.Parse("1985-03-14"),
             EmployeeState = EmployeeState.Active,
-            Branch = WalmartNorthAmerica,
+            Branch = BankOfAmericaEurope,
+            EmployeeRole = EmployeeRole.Employee
         };
         public static Employee e097 = new Employee
         {
@@ -825,7 +929,12 @@ namespace ERPSystem.Data
             LastName = "Chang",
             DateOfBirth = DateTime.Parse("1993-04-08"),
             EmployeeState = EmployeeState.Active,
-            Branch = WalmartNorthAmerica,
+            Branch = JohnsonAndJohnsonNorthAmerica,
+            EmployeeRole = EmployeeRole.Employee,
+            Mentors = new List<Employee>
+            {
+                m013
+            }
         };
         public static Employee e098 = new Employee
         {
@@ -833,7 +942,8 @@ namespace ERPSystem.Data
             LastName = "Dotson",
             DateOfBirth = DateTime.Parse("1986-08-26"),
             EmployeeState = EmployeeState.Active,
-            Branch = WalmartNorthAmerica,
+            Branch = JohnsonAndJohnsonNorthAmerica,
+            EmployeeRole = EmployeeRole.Employee
         };
         public static Employee e099 = new Employee
         {
@@ -841,7 +951,8 @@ namespace ERPSystem.Data
             LastName = "Woodward",
             DateOfBirth = DateTime.Parse("1990-02-21"),
             EmployeeState = EmployeeState.Active,
-            Branch = WalmartNorthAmerica,
+            Branch = JohnsonAndJohnsonNorthAmerica,
+            EmployeeRole = EmployeeRole.Employee
         };
         public static Employee e100 = new Employee
         {
@@ -849,7 +960,8 @@ namespace ERPSystem.Data
             LastName = "Douglas",
             DateOfBirth = DateTime.Parse("1984-09-29"),
             EmployeeState = EmployeeState.Active,
-            Branch = WalmartNorthAmerica,
+            Branch = JohnsonAndJohnsonNorthAmerica,
+            EmployeeRole = EmployeeRole.Employee
         };
         public static Employee e101 = new Employee
         {
@@ -857,7 +969,8 @@ namespace ERPSystem.Data
             LastName = "Sampson",
             DateOfBirth = DateTime.Parse("2000-07-27"),
             EmployeeState = EmployeeState.Active,
-            Branch = WalmartNorthAmerica,
+            Branch = JohnsonAndJohnsonNorthAmerica,
+            EmployeeRole = EmployeeRole.Employee
         };
         public static Employee e102 = new Employee
         {
@@ -865,7 +978,8 @@ namespace ERPSystem.Data
             LastName = "Gutierrez",
             DateOfBirth = DateTime.Parse("1984-01-30"),
             EmployeeState = EmployeeState.Active,
-            Branch = WalmartNorthAmerica,
+            Branch = JohnsonAndJohnsonNorthAmerica,
+            EmployeeRole = EmployeeRole.Employee
         };
         public static Employee e103 = new Employee
         {
@@ -873,7 +987,8 @@ namespace ERPSystem.Data
             LastName = "Atkinson",
             DateOfBirth = DateTime.Parse("1986-11-25"),
             EmployeeState = EmployeeState.Active,
-            Branch = WalmartNorthAmerica,
+            Branch = JohnsonAndJohnsonNorthAmerica,
+            EmployeeRole = EmployeeRole.Employee
         };
         public static Employee e104 = new Employee
         {
@@ -881,7 +996,8 @@ namespace ERPSystem.Data
             LastName = "Delgado",
             DateOfBirth = DateTime.Parse("1987-01-20"),
             EmployeeState = EmployeeState.Active,
-            Branch = WalmartNorthAmerica,
+            Branch = JohnsonAndJohnsonNorthAmerica,
+            EmployeeRole = EmployeeRole.Employee
         };
         public static Employee e105 = new Employee
         {
@@ -889,7 +1005,12 @@ namespace ERPSystem.Data
             LastName = "Rose",
             DateOfBirth = DateTime.Parse("1994-07-22"),
             EmployeeState = EmployeeState.Active,
-            Branch = WalmartNorthAmerica,
+            Branch = JohnsonAndJohnsonEurope,
+            EmployeeRole = EmployeeRole.Employee,
+            Mentors = new List<Employee>
+            {
+                m014
+            }
         };
         public static Employee e106 = new Employee
         {
@@ -897,7 +1018,8 @@ namespace ERPSystem.Data
             LastName = "Snow",
             DateOfBirth = DateTime.Parse("1984-06-21"),
             EmployeeState = EmployeeState.Active,
-            Branch = WalmartNorthAmerica,
+            Branch = JohnsonAndJohnsonEurope,
+            EmployeeRole = EmployeeRole.Employee
         };
         public static Employee e107 = new Employee
         {
@@ -905,7 +1027,8 @@ namespace ERPSystem.Data
             LastName = "Thornton",
             DateOfBirth = DateTime.Parse("1990-04-30"),
             EmployeeState = EmployeeState.Active,
-            Branch = WalmartNorthAmerica,
+            Branch = JohnsonAndJohnsonEurope,
+            EmployeeRole = EmployeeRole.Employee
         };
         public static Employee e108 = new Employee
         {
@@ -913,7 +1036,8 @@ namespace ERPSystem.Data
             LastName = "Gray",
             DateOfBirth = DateTime.Parse("1981-02-25"),
             EmployeeState = EmployeeState.Active,
-            Branch = WalmartNorthAmerica,
+            Branch = JohnsonAndJohnsonEurope,
+            EmployeeRole = EmployeeRole.Employee
         };
         public static Employee e109 = new Employee
         {
@@ -921,7 +1045,8 @@ namespace ERPSystem.Data
             LastName = "Orr",
             DateOfBirth = DateTime.Parse("1985-01-24"),
             EmployeeState = EmployeeState.Active,
-            Branch = WalmartNorthAmerica,
+            Branch = JohnsonAndJohnsonEurope,
+            EmployeeRole = EmployeeRole.Employee
         };
         public static Employee e110 = new Employee
         {
@@ -929,7 +1054,8 @@ namespace ERPSystem.Data
             LastName = "Stark",
             DateOfBirth = DateTime.Parse("1983-01-28"),
             EmployeeState = EmployeeState.Active,
-            Branch = WalmartNorthAmerica,
+            Branch = JohnsonAndJohnsonEurope,
+            EmployeeRole = EmployeeRole.Employee
         };
         public static Employee e111 = new Employee
         {
@@ -937,7 +1063,8 @@ namespace ERPSystem.Data
             LastName = "Mcintyre",
             DateOfBirth = DateTime.Parse("1999-10-21"),
             EmployeeState = EmployeeState.Active,
-            Branch = WalmartNorthAmerica,
+            Branch = JohnsonAndJohnsonEurope,
+            EmployeeRole = EmployeeRole.Employee
         };
         public static Employee e112 = new Employee
         {
@@ -945,7 +1072,8 @@ namespace ERPSystem.Data
             LastName = "Lamb",
             DateOfBirth = DateTime.Parse("2001-09-09"),
             EmployeeState = EmployeeState.Active,
-            Branch = WalmartNorthAmerica,
+            Branch = JohnsonAndJohnsonEurope,
+            EmployeeRole = EmployeeRole.Employee
         };
         public static Employee e113 = new Employee
         {
@@ -953,7 +1081,12 @@ namespace ERPSystem.Data
             LastName = "Garrison",
             DateOfBirth = DateTime.Parse("1984-04-06"),
             EmployeeState = EmployeeState.Active,
-            Branch = WalmartNorthAmerica,
+            Branch = FacebookNorthAmerica,
+            EmployeeRole = EmployeeRole.Employee,
+            Mentors = new List<Employee>
+            {
+                m015
+            }
         };
         public static Employee e114 = new Employee
         {
@@ -961,7 +1094,8 @@ namespace ERPSystem.Data
             LastName = "Wolfe",
             DateOfBirth = DateTime.Parse("1982-12-04"),
             EmployeeState = EmployeeState.Active,
-            Branch = WalmartNorthAmerica,
+            Branch = FacebookNorthAmerica,
+            EmployeeRole = EmployeeRole.Employee
         };
         public static Employee e115 = new Employee
         {
@@ -969,7 +1103,8 @@ namespace ERPSystem.Data
             LastName = "Baxter",
             DateOfBirth = DateTime.Parse("1983-08-31"),
             EmployeeState = EmployeeState.Active,
-            Branch = WalmartNorthAmerica,
+            Branch = FacebookNorthAmerica,
+            EmployeeRole = EmployeeRole.Employee
         };
         public static Employee e116 = new Employee
         {
@@ -977,7 +1112,8 @@ namespace ERPSystem.Data
             LastName = "Fischer",
             DateOfBirth = DateTime.Parse("2001-05-09"),
             EmployeeState = EmployeeState.Active,
-            Branch = WalmartNorthAmerica,
+            Branch = FacebookNorthAmerica,
+            EmployeeRole = EmployeeRole.Employee
         };
         public static Employee e117 = new Employee
         {
@@ -985,7 +1121,8 @@ namespace ERPSystem.Data
             LastName = "Mcintosh",
             DateOfBirth = DateTime.Parse("1980-12-04"),
             EmployeeState = EmployeeState.Active,
-            Branch = WalmartNorthAmerica,
+            Branch = FacebookNorthAmerica,
+            EmployeeRole = EmployeeRole.Employee
         };
         public static Employee e118 = new Employee
         {
@@ -993,7 +1130,8 @@ namespace ERPSystem.Data
             LastName = "Rutledge",
             DateOfBirth = DateTime.Parse("2001-01-02"),
             EmployeeState = EmployeeState.Active,
-            Branch = WalmartNorthAmerica,
+            Branch = FacebookNorthAmerica,
+            EmployeeRole = EmployeeRole.Employee
         };
         public static Employee e119 = new Employee
         {
@@ -1001,7 +1139,8 @@ namespace ERPSystem.Data
             LastName = "Robbins",
             DateOfBirth = DateTime.Parse("1996-07-02"),
             EmployeeState = EmployeeState.Active,
-            Branch = WalmartNorthAmerica,
+            Branch = FacebookNorthAmerica,
+            EmployeeRole = EmployeeRole.Employee
         };
         public static Employee e120 = new Employee
         {
@@ -1009,7 +1148,388 @@ namespace ERPSystem.Data
             LastName = "Talley",
             DateOfBirth = DateTime.Parse("1985-05-23"),
             EmployeeState = EmployeeState.Active,
-            Branch = WalmartNorthAmerica,
+            Branch = FacebookNorthAmerica,
+            EmployeeRole = EmployeeRole.Employee
+        };
+        public static Employee e121 = new Employee
+        {
+            FirstName = "Orlando",
+            LastName = "Odom",
+            DateOfBirth = DateTime.Parse("1995-02-20"),
+            EmployeeState = EmployeeState.Active,
+            Branch = FacebookEurope,
+            EmployeeRole = EmployeeRole.Employee,
+            Mentors = new List<Employee>
+            {
+                m016
+            }
+        };
+        public static Employee e122 = new Employee
+        {
+            FirstName = "Renee",
+            LastName = "Harper",
+            DateOfBirth = DateTime.Parse("1998-04-14"),
+            EmployeeState = EmployeeState.Active,
+            Branch = FacebookEurope,
+            EmployeeRole = EmployeeRole.Employee
+        };
+        public static Employee e123 = new Employee
+        {
+            FirstName = "Dominic",
+            LastName = "Powers",
+            DateOfBirth = DateTime.Parse("1996-09-07"),
+            EmployeeState = EmployeeState.Active,
+            Branch = FacebookEurope,
+            EmployeeRole = EmployeeRole.Employee
+        };
+        public static Employee e124 = new Employee
+        {
+            FirstName = "Petra",
+            LastName = "Kinney",
+            DateOfBirth = DateTime.Parse("1987-08-15"),
+            EmployeeState = EmployeeState.Active,
+            Branch = FacebookEurope,
+            EmployeeRole = EmployeeRole.Employee
+        };
+        public static Employee e125 = new Employee
+        {
+            FirstName = "Ramona",
+            LastName = "Cannon",
+            DateOfBirth = DateTime.Parse("1990-12-01"),
+            EmployeeState = EmployeeState.Active,
+            Branch = FacebookEurope,
+            EmployeeRole = EmployeeRole.Employee
+        };
+        public static Employee e126 = new Employee
+        {
+            FirstName = "Naida",
+            LastName = "Vance",
+            DateOfBirth = DateTime.Parse("1984-01-27"),
+            EmployeeState = EmployeeState.Active,
+            Branch = FacebookEurope,
+            EmployeeRole = EmployeeRole.Employee
+        };
+        public static Employee e127 = new Employee
+        {
+            FirstName = "Jin",
+            LastName = "Garrett",
+            DateOfBirth = DateTime.Parse("1982-08-23"),
+            EmployeeState = EmployeeState.Active,
+            Branch = FacebookEurope,
+            EmployeeRole = EmployeeRole.Employee
+        };
+        public static Employee e128 = new Employee
+        {
+            FirstName = "Brenden",
+            LastName = "Emerson",
+            DateOfBirth = DateTime.Parse("1984-10-03"),
+            EmployeeState = EmployeeState.Active,
+            Branch = FacebookEurope,
+            EmployeeRole = EmployeeRole.Employee
+        };
+        public static Employee e129 = new Employee
+        {
+            FirstName = "Walter",
+            LastName = "Ashley",
+            DateOfBirth = DateTime.Parse("1995-11-30"),
+            EmployeeState = EmployeeState.Active,
+            Branch = AlphabetNorthAmerica,
+            EmployeeRole = EmployeeRole.Employee,
+            Mentors = new List<Employee>
+            {
+                m017
+            }
+        };
+        public static Employee e130 = new Employee
+        {
+            FirstName = "Vanna",
+            LastName = "Stafford",
+            DateOfBirth = DateTime.Parse("1984-08-04"),
+            EmployeeState = EmployeeState.Active,
+            Branch = AlphabetNorthAmerica,
+            EmployeeRole = EmployeeRole.Employee
+        };
+        public static Employee e131 = new Employee
+        {
+            FirstName = "Yen",
+            LastName = "Jennings",
+            DateOfBirth = DateTime.Parse("1993-02-07"),
+            EmployeeState = EmployeeState.Active,
+            Branch = AlphabetNorthAmerica,
+            EmployeeRole = EmployeeRole.Employee
+        };
+        public static Employee e132 = new Employee
+        {
+            FirstName = "Elliott",
+            LastName = "Moran",
+            DateOfBirth = DateTime.Parse("1998-12-03"),
+            EmployeeState = EmployeeState.Active,
+            Branch = AlphabetNorthAmerica,
+            EmployeeRole = EmployeeRole.Employee
+        };
+        public static Employee e133 = new Employee
+        {
+            FirstName = "Hannah",
+            LastName = "Garza",
+            DateOfBirth = DateTime.Parse("1986-09-15"),
+            EmployeeState = EmployeeState.Active,
+            Branch = AlphabetNorthAmerica,
+            EmployeeRole = EmployeeRole.Employee
+        };
+        public static Employee e134 = new Employee
+        {
+            FirstName = "Bree",
+            LastName = "Coleman",
+            DateOfBirth = DateTime.Parse("1990-05-17"),
+            EmployeeState = EmployeeState.Active,
+            Branch = AlphabetNorthAmerica,
+            EmployeeRole = EmployeeRole.Employee
+        };
+        public static Employee e135 = new Employee
+        {
+            FirstName = "Dalton",
+            LastName = "Christensen",
+            DateOfBirth = DateTime.Parse("1994-03-10"),
+            EmployeeState = EmployeeState.Active,
+            Branch = AlphabetNorthAmerica,
+            EmployeeRole = EmployeeRole.Employee
+        };
+        public static Employee e136 = new Employee
+        {
+            FirstName = "Dieter",
+            LastName = "Grant",
+            DateOfBirth = DateTime.Parse("1997-05-01"),
+            EmployeeState = EmployeeState.Active,
+            Branch = AlphabetNorthAmerica,
+            EmployeeRole = EmployeeRole.Employee
+        };
+        public static Employee e137 = new Employee
+        {
+            FirstName = "Rahim",
+            LastName = "Butler",
+            DateOfBirth = DateTime.Parse("1990-10-20"),
+            EmployeeState = EmployeeState.Active,
+            Branch = AlphabetEurope,
+            EmployeeRole = EmployeeRole.Employee,
+            Mentors = new List<Employee>
+            {
+                m018
+            }
+        };
+        public static Employee e138 = new Employee
+        {
+            FirstName = "Dorothy",
+            LastName = "Burt",
+            DateOfBirth = DateTime.Parse("2000-04-29"),
+            EmployeeState = EmployeeState.Active,
+            Branch = AlphabetEurope,
+            EmployeeRole = EmployeeRole.Employee
+        };
+        public static Employee e139 = new Employee
+        {
+            FirstName = "Daquan",
+            LastName = "Mack",
+            DateOfBirth = DateTime.Parse("1981-07-19"),
+            EmployeeState = EmployeeState.Active,
+            Branch = AlphabetEurope,
+            EmployeeRole = EmployeeRole.Employee
+        };
+        public static Employee e140 = new Employee
+        {
+            FirstName = "Giselle",
+            LastName = "Knight",
+            DateOfBirth = DateTime.Parse("1984-05-29"),
+            EmployeeState = EmployeeState.Active,
+            Branch = AlphabetEurope,
+            EmployeeRole = EmployeeRole.Employee
+        };
+        public static Employee e141 = new Employee
+        {
+            FirstName = "Winter",
+            LastName = "Guy",
+            DateOfBirth = DateTime.Parse("1989-03-25"),
+            EmployeeState = EmployeeState.Active,
+            Branch = AlphabetEurope,
+            EmployeeRole = EmployeeRole.Employee
+        };
+        public static Employee e142 = new Employee
+        {
+            FirstName = "Ocean",
+            LastName = "Malone",
+            DateOfBirth = DateTime.Parse("2001-06-20"),
+            EmployeeState = EmployeeState.Active,
+            Branch = AlphabetEurope,
+            EmployeeRole = EmployeeRole.Employee
+        };
+        public static Employee e143 = new Employee
+        {
+            FirstName = "Lavinia",
+            LastName = "Hubbard",
+            DateOfBirth = DateTime.Parse("1981-02-06"),
+            EmployeeState = EmployeeState.Active,
+            Branch = AlphabetEurope,
+            EmployeeRole = EmployeeRole.Employee
+        };
+        public static Employee e144 = new Employee
+        {
+            FirstName = "Anastasia",
+            LastName = "Gibbs",
+            DateOfBirth = DateTime.Parse("1997-10-09"),
+            EmployeeState = EmployeeState.Active,
+            Branch = AlphabetEurope,
+            EmployeeRole = EmployeeRole.Employee
+        };
+        public static Employee e145 = new Employee
+        {
+            FirstName = "Laith",
+            LastName = "Vargas",
+            DateOfBirth = DateTime.Parse("1994-08-24"),
+            EmployeeState = EmployeeState.Active,
+            Branch = ExxonMobilNorthAmerica,
+            EmployeeRole = EmployeeRole.Employee,
+            Mentors = new List<Employee>
+            {
+                m019
+            }
+        };
+        public static Employee e146 = new Employee
+        {
+            FirstName = "Dylan",
+            LastName = "Mcbride",
+            DateOfBirth = DateTime.Parse("1981-05-16"),
+            EmployeeState = EmployeeState.Active,
+            Branch = ExxonMobilNorthAmerica,
+            EmployeeRole = EmployeeRole.Employee
+        };
+        public static Employee e147 = new Employee
+        {
+            FirstName = "Hadley",
+            LastName = "Fisher",
+            DateOfBirth = DateTime.Parse("1987-08-19"),
+            EmployeeState = EmployeeState.Active,
+            Branch = ExxonMobilNorthAmerica,
+            EmployeeRole = EmployeeRole.Employee
+        };
+        public static Employee e148 = new Employee
+        {
+            FirstName = "Lynn",
+            LastName = "Huffman",
+            DateOfBirth = DateTime.Parse("1991-09-18"),
+            EmployeeState = EmployeeState.Active,
+            Branch = ExxonMobilNorthAmerica,
+            EmployeeRole = EmployeeRole.Employee
+        };
+        public static Employee e149 = new Employee
+        {
+            FirstName = "Jordan",
+            LastName = "Tate",
+            DateOfBirth = DateTime.Parse("1987-09-26"),
+            EmployeeState = EmployeeState.Active,
+            Branch = ExxonMobilNorthAmerica,
+            EmployeeRole = EmployeeRole.Employee
+        };
+        public static Employee e150 = new Employee
+        {
+            FirstName = "Jeanette",
+            LastName = "Estes",
+            DateOfBirth = DateTime.Parse("1996-03-18"),
+            EmployeeState = EmployeeState.Active,
+            Branch = ExxonMobilNorthAmerica,
+            EmployeeRole = EmployeeRole.Employee
+        };
+        public static Employee e151 = new Employee
+        {
+            FirstName = "Montana",
+            LastName = "Battle",
+            DateOfBirth = DateTime.Parse("1992-12-25"),
+            EmployeeState = EmployeeState.Active,
+            Branch = ExxonMobilNorthAmerica,
+            EmployeeRole = EmployeeRole.Employee
+        };
+        public static Employee e152 = new Employee
+        {
+            FirstName = "Otto",
+            LastName = "Clements",
+            DateOfBirth = DateTime.Parse("1997-09-04"),
+            EmployeeState = EmployeeState.Active,
+            Branch = ExxonMobilNorthAmerica,
+            EmployeeRole = EmployeeRole.Employee
+        };
+        public static Employee e153 = new Employee
+        {
+            FirstName = "Karyn",
+            LastName = "Montoya",
+            DateOfBirth = DateTime.Parse("1996-12-27"),
+            EmployeeState = EmployeeState.Active,
+            Branch = ExxonMobilEurope,
+            EmployeeRole = EmployeeRole.Employee,
+            Mentors = new List<Employee>
+            {
+                m020
+            }
+        };
+        public static Employee e154 = new Employee
+        {
+            FirstName = "Amber",
+            LastName = "Albert",
+            DateOfBirth = DateTime.Parse("1981-04-26"),
+            EmployeeState = EmployeeState.Active,
+            Branch = ExxonMobilEurope,
+            EmployeeRole = EmployeeRole.Employee
+        };
+        public static Employee e155 = new Employee
+        {
+            FirstName = "Harlan",
+            LastName = "Suarez",
+            DateOfBirth = DateTime.Parse("1991-01-09"),
+            EmployeeState = EmployeeState.Active,
+            Branch = ExxonMobilEurope,
+            EmployeeRole = EmployeeRole.Employee
+        };
+        public static Employee e156 = new Employee
+        {
+            FirstName = "Rigel",
+            LastName = "Walls",
+            DateOfBirth = DateTime.Parse("1992-04-30"),
+            EmployeeState = EmployeeState.Active,
+            Branch = ExxonMobilEurope,
+            EmployeeRole = EmployeeRole.Employee
+        };
+        public static Employee e157 = new Employee
+        {
+            FirstName = "Lydia",
+            LastName = "Vincent",
+            DateOfBirth = DateTime.Parse("1989-10-17"),
+            EmployeeState = EmployeeState.Active,
+            Branch = ExxonMobilEurope,
+            EmployeeRole = EmployeeRole.Employee
+        };
+        public static Employee e158 = new Employee
+        {
+            FirstName = "Florence",
+            LastName = "Hutchinson",
+            DateOfBirth = DateTime.Parse("1985-07-07"),
+            EmployeeState = EmployeeState.Active,
+            Branch = ExxonMobilEurope,
+            EmployeeRole = EmployeeRole.Employee
+        };
+        public static Employee e159 = new Employee
+        {
+            FirstName = "Hayden",
+            LastName = "Walton",
+            DateOfBirth = DateTime.Parse("2000-10-15"),
+            EmployeeState = EmployeeState.Active,
+            Branch = ExxonMobilEurope,
+            EmployeeRole = EmployeeRole.Employee
+        };
+        public static Employee e160 = new Employee
+        {
+            FirstName = "Orson",
+            LastName = "Morton",
+            DateOfBirth = DateTime.Parse("1997-11-30"),
+            EmployeeState = EmployeeState.Active,
+            Branch = ExxonMobilEurope,
+            EmployeeRole = EmployeeRole.Employee
         };
         #endregion
         public static List<Employee> data;
@@ -1136,6 +1656,46 @@ namespace ERPSystem.Data
             data.Add(e118);
             data.Add(e119);
             data.Add(e120);
+            data.Add(e121);
+            data.Add(e122);
+            data.Add(e123);
+            data.Add(e124);
+            data.Add(e125);
+            data.Add(e126);
+            data.Add(e127);
+            data.Add(e128);
+            data.Add(e129);
+            data.Add(e130);
+            data.Add(e131);
+            data.Add(e132);
+            data.Add(e133);
+            data.Add(e134);
+            data.Add(e135);
+            data.Add(e136);
+            data.Add(e137);
+            data.Add(e138);
+            data.Add(e139);
+            data.Add(e140);
+            data.Add(e141);
+            data.Add(e142);
+            data.Add(e143);
+            data.Add(e144);
+            data.Add(e145);
+            data.Add(e146);
+            data.Add(e147);
+            data.Add(e148);
+            data.Add(e149);
+            data.Add(e150);
+            data.Add(e151);
+            data.Add(e152);
+            data.Add(e153);
+            data.Add(e154);
+            data.Add(e155);
+            data.Add(e156);
+            data.Add(e157);
+            data.Add(e158);
+            data.Add(e159);
+            data.Add(e160);
         }
     }
 }
