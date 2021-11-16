@@ -16,6 +16,7 @@ namespace ERPSystem.Pages.Branches
         private readonly ERPSystem.Data.ApplicationDbContext _context;
         public List<int> SelectedEmployees { get; set; }
         public SelectList EmployeesSelectList { get; set; }
+        public SelectList CompaniesSelectList { get; set; }
 
         public CreateModel(ERPSystem.Data.ApplicationDbContext context)
         {
@@ -37,7 +38,8 @@ namespace ERPSystem.Pages.Branches
             Branch = new Branch();
             Branch.BranchState = BranchState.Inactive;
 
-            ViewData["CompanyId"] = new SelectList(_context.Companies, "Id", "Name");
+            var CompaniesQuery = _context.Companies.OrderBy(c => c.Name);
+            CompaniesSelectList = new SelectList(CompaniesQuery.AsNoTracking(), "Id", "Name"); //list, id, value
             return Page();
         }
 

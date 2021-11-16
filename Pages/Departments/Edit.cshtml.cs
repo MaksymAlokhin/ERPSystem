@@ -19,6 +19,7 @@ namespace ERPSystem.Pages.Departments
         public string CurrentSort { get; set; }
         public List<int> SelectedProjects { get; set; }
         public SelectList ProjectsSelectList { get; set; }
+        public SelectList CompaniesSelectList { get; set; }
         public List<SelectListItem> DepartmentHeadList { get; set; }
         public int? DepartmentHeadId;
         public int? FormerDepartmentHeadId;
@@ -76,7 +77,9 @@ namespace ERPSystem.Pages.Departments
                 SelectedProjects.Add(project.Id);
             }
 
-            ViewData["CompanyId"] = new SelectList(_context.Companies, "Id", "Name");
+            var CompaniesQuery = _context.Companies.OrderBy(c => c.Name);
+            CompaniesSelectList = new SelectList(CompaniesQuery.AsNoTracking(), "Id", "Name"); //list, id, value
+
             return Page();
         }
 

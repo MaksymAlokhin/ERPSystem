@@ -16,6 +16,7 @@ namespace ERPSystem.Pages.Departments
         private readonly ERPSystem.Data.ApplicationDbContext _context;
         public List<int> SelectedProjects { get; set; }
         public SelectList ProjectsSelectList { get; set; }
+        public SelectList CompaniesSelectList { get; set; }
         public List<SelectListItem> DepartmentHeadList { get; set; }
         public int? DepartmentHeadId;
 
@@ -39,7 +40,9 @@ namespace ERPSystem.Pages.Departments
             ProjectsSelectList = new SelectList(ProjectsQuery.AsNoTracking(), "Id", "Name"); //list, id, value
 
             SelectedProjects = new List<int>();
-            ViewData["CompanyId"] = new SelectList(_context.Companies, "Id", "Name");
+
+            var CompaniesQuery = _context.Companies.OrderBy(c => c.Name);
+            CompaniesSelectList = new SelectList(CompaniesQuery.AsNoTracking(), "Id", "Name"); //list, id, value
 
             Department = new Department();
             Department.DepartmentState = DepartmentState.Inactive;

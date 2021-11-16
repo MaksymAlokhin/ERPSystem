@@ -32,7 +32,7 @@
         <div class="col-sm-4">
             <div class="form-group">
                 <label asp-for="Company.GeneralManager" class="control-label"></label>
-                <select asp-for="@Model.GeneralManagerId" asp-items="@Model.GeneralManagerList" class="form-control" onchange="toggleActive()"><option value="">--none--</option></select>
+                <select asp-for="GeneralManagerId" asp-items="Model.GeneralManagerList" class="form-control" onchange="toggleActive()"><option value="">--none--</option></select>
             </div>
         </div>
     </div>
