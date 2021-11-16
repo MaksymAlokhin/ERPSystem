@@ -31,13 +31,19 @@ namespace ERPSystem.Pages.Employees
             }
 
             Employee = await _context.Employees
-                .Include(e => e.Branch).FirstOrDefaultAsync(m => m.Id == id);
+                .Include(e => e.Branch)
+                .Include(e => e.Company)
+                .Include(e => e.Department)
+                .Include(e => e.Project).FirstOrDefaultAsync(m => m.Id == id);
 
             if (Employee == null)
             {
                 return NotFound();
             }
            ViewData["BranchId"] = new SelectList(_context.Branches, "Id", "Name");
+           ViewData["CompanyId"] = new SelectList(_context.Companies, "Id", "Name");
+           ViewData["DepartmentId"] = new SelectList(_context.Departments, "Id", "Name");
+           ViewData["ProjectId"] = new SelectList(_context.Projects, "Id", "Id");
             return Page();
         }
 

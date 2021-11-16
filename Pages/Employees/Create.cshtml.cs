@@ -22,6 +22,9 @@ namespace ERPSystem.Pages.Employees
         public IActionResult OnGet()
         {
         ViewData["BranchId"] = new SelectList(_context.Branches, "Id", "Name");
+        ViewData["CompanyId"] = new SelectList(_context.Companies, "Id", "Name");
+        ViewData["DepartmentId"] = new SelectList(_context.Departments, "Id", "Name");
+        ViewData["ProjectId"] = new SelectList(_context.Projects, "Id", "Id");
             return Page();
         }
 

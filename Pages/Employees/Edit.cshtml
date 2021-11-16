@@ -36,9 +36,29 @@
                 <span asp-validation-for="Employee.EmployeeState" class="text-danger"></span>
             </div>
             <div class="form-group">
+                <label asp-for="Employee.EmployeeRole" class="control-label"></label>
+                <select asp-for="Employee.EmployeeRole" class="form-control"></select>
+                <span asp-validation-for="Employee.EmployeeRole" class="text-danger"></span>
+            </div>
+            <div class="form-group">
                 <label asp-for="Employee.BranchId" class="control-label"></label>
                 <select asp-for="Employee.BranchId" class="form-control" asp-items="ViewBag.BranchId"></select>
                 <span asp-validation-for="Employee.BranchId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Employee.ProjectId" class="control-label"></label>
+                <select asp-for="Employee.ProjectId" class="form-control" asp-items="ViewBag.ProjectId"></select>
+                <span asp-validation-for="Employee.ProjectId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Employee.CompanyId" class="control-label"></label>
+                <select asp-for="Employee.CompanyId" class="form-control" asp-items="ViewBag.CompanyId"></select>
+                <span asp-validation-for="Employee.CompanyId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Employee.DepartmentId" class="control-label"></label>
+                <select asp-for="Employee.DepartmentId" class="form-control" asp-items="ViewBag.DepartmentId"></select>
+                <span asp-validation-for="Employee.DepartmentId" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <input type="submit" value="Save" class="btn btn-primary" />

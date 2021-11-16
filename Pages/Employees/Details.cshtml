@@ -37,10 +37,34 @@
             @Html.DisplayFor(model => model.Employee.EmployeeState)
         </dd>
         <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Employee.EmployeeRole)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Employee.EmployeeRole)
+        </dd>
+        <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.Employee.Branch)
         </dt>
         <dd class="col-sm-10">
             @Html.DisplayFor(model => model.Employee.Branch.Name)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Employee.Project)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Employee.Project.Id)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Employee.Company)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Employee.Company.Name)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Employee.Department)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Employee.Department.Name)
         </dd>
     </dl>
 </div>

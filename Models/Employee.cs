@@ -52,7 +52,6 @@ namespace ERPSystem.Models
         public Department Department { get; set; }
         public ICollection<Assignment> Assignments { get; set; }
         public ICollection<Employee> Mentors { get; set; }
-        public ICollection<Employee> Mentees { get; set; }
     }
     public enum EmployeeState
     {

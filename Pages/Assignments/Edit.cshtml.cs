@@ -38,7 +38,7 @@ namespace ERPSystem.Pages.Assignments
             {
                 return NotFound();
             }
-           ViewData["EmployeeId"] = new SelectList(_context.Employees, "Id", "Discriminator");
+           ViewData["EmployeeId"] = new SelectList(_context.Employees, "Id", "FirstName");
            ViewData["PositionId"] = new SelectList(_context.Positions, "Id", "Name");
             return Page();
         }
