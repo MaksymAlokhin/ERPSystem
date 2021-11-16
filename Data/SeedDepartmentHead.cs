@@ -5,6 +5,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using static ERPSystem.Data.SeedDepartment;
 
+
 namespace ERPSystem.Data
 {
     public static class SeedDepartmentHead

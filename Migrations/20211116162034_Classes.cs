@@ -245,7 +245,8 @@ namespace ERPSystem.Migrations
                     BranchId = table.Column<int>(type: "int", nullable: true),
                     ProjectId = table.Column<int>(type: "int", nullable: true),
                     CompanyId = table.Column<int>(type: "int", nullable: true),
-                    DepartmentId = table.Column<int>(type: "int", nullable: true)
+                    DepartmentId = table.Column<int>(type: "int", nullable: true),
+                    EmployeeId = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -266,6 +267,12 @@ namespace ERPSystem.Migrations
                         name: "FK_Employees_Departments_DepartmentId",
                         column: x => x.DepartmentId,
                         principalTable: "Departments",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_Employees_Employees_EmployeeId",
+                        column: x => x.EmployeeId,
+                        principalTable: "Employees",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
@@ -295,30 +302,6 @@ namespace ERPSystem.Migrations
                         name: "FK_Positions_Projects_ProjectId",
                         column: x => x.ProjectId,
                         principalTable: "Projects",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "EmployeeEmployee",
-                columns: table => new
-                {
-                    MenteesId = table.Column<int>(type: "int", nullable: false),
-                    MentorsId = table.Column<int>(type: "int", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_EmployeeEmployee", x => new { x.MenteesId, x.MentorsId });
-                    table.ForeignKey(
-                        name: "FK_EmployeeEmployee_Employees_MenteesId",
-                        column: x => x.MenteesId,
-                        principalTable: "Employees",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_EmployeeEmployee_Employees_MentorsId",
-                        column: x => x.MentorsId,
-                        principalTable: "Employees",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                 });
@@ -435,11 +418,6 @@ namespace ERPSystem.Migrations
                 column: "CompanyId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_EmployeeEmployee_MentorsId",
-                table: "EmployeeEmployee",
-                column: "MentorsId");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_Employees_BranchId",
                 table: "Employees",
                 column: "BranchId");
@@ -457,6 +435,11 @@ namespace ERPSystem.Migrations
                 column: "DepartmentId",
                 unique: true,
                 filter: "[DepartmentId] IS NOT NULL");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Employees_EmployeeId",
+                table: "Employees",
+                column: "EmployeeId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Employees_ProjectId",
@@ -499,9 +482,6 @@ namespace ERPSystem.Migrations
 
             migrationBuilder.DropTable(
                 name: "AspNetUserTokens");
-
-            migrationBuilder.DropTable(
-                name: "EmployeeEmployee");
 
             migrationBuilder.DropTable(
                 name: "Reports");

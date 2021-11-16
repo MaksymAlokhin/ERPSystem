@@ -21,7 +21,7 @@ namespace ERPSystem.Pages.Assignments
 
         public IActionResult OnGet()
         {
-        ViewData["EmployeeId"] = new SelectList(_context.Employees, "Id", "Discriminator");
+        ViewData["EmployeeId"] = new SelectList(_context.Employees, "Id", "FirstName");
         ViewData["PositionId"] = new SelectList(_context.Positions, "Id", "Name");
             return Page();
         }

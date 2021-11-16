@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ERPSystem.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20211116142858_Classes")]
+    [Migration("20211116162034_Classes")]
     partial class Classes
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -157,6 +157,9 @@ namespace ERPSystem.Migrations
                     b.Property<int?>("DepartmentId")
                         .HasColumnType("int");
 
+                    b.Property<int?>("EmployeeId")
+                        .HasColumnType("int");
+
                     b.Property<string>("EmployeeRole")
                         .IsRequired()
                         .HasMaxLength(16)
@@ -191,6 +194,8 @@ namespace ERPSystem.Migrations
                     b.HasIndex("DepartmentId")
                         .IsUnique()
                         .HasFilter("[DepartmentId] IS NOT NULL");
+
+                    b.HasIndex("EmployeeId");
 
                     b.HasIndex("ProjectId")
                         .IsUnique()
@@ -289,21 +294,6 @@ namespace ERPSystem.Migrations
                         .HasFilter("[AssignmentId] IS NOT NULL");
 
                     b.ToTable("Reports");
-                });
-
-            modelBuilder.Entity("EmployeeEmployee", b =>
-                {
-                    b.Property<int>("MenteesId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("MentorsId")
-                        .HasColumnType("int");
-
-                    b.HasKey("MenteesId", "MentorsId");
-
-                    b.HasIndex("MentorsId");
-
-                    b.ToTable("EmployeeEmployee");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
@@ -553,6 +543,10 @@ namespace ERPSystem.Migrations
                         .WithOne("DepartmentHead")
                         .HasForeignKey("ERPSystem.Models.Employee", "DepartmentId");
 
+                    b.HasOne("ERPSystem.Models.Employee", null)
+                        .WithMany("Mentors")
+                        .HasForeignKey("EmployeeId");
+
                     b.HasOne("ERPSystem.Models.Project", "Project")
                         .WithOne("ProjectManager")
                         .HasForeignKey("ERPSystem.Models.Employee", "ProjectId");
@@ -591,21 +585,6 @@ namespace ERPSystem.Migrations
                         .HasForeignKey("ERPSystem.Models.Report", "AssignmentId");
 
                     b.Navigation("Assignment");
-                });
-
-            modelBuilder.Entity("EmployeeEmployee", b =>
-                {
-                    b.HasOne("ERPSystem.Models.Employee", null)
-                        .WithMany()
-                        .HasForeignKey("MenteesId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("ERPSystem.Models.Employee", null)
-                        .WithMany()
-                        .HasForeignKey("MentorsId")
-                        .OnDelete(DeleteBehavior.ClientCascade)
-                        .IsRequired();
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -688,6 +667,8 @@ namespace ERPSystem.Migrations
             modelBuilder.Entity("ERPSystem.Models.Employee", b =>
                 {
                     b.Navigation("Assignments");
+
+                    b.Navigation("Mentors");
                 });
 
             modelBuilder.Entity("ERPSystem.Models.Position", b =>

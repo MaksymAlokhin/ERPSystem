@@ -29,7 +29,10 @@ namespace ERPSystem.Pages.Employees
             }
 
             Employee = await _context.Employees
-                .Include(e => e.Branch).FirstOrDefaultAsync(m => m.Id == id);
+                .Include(e => e.Branch)
+                .Include(e => e.Company)
+                .Include(e => e.Department)
+                .Include(e => e.Project).FirstOrDefaultAsync(m => m.Id == id);
 
             if (Employee == null)
             {

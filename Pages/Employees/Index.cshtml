@@ -27,7 +27,19 @@
                 @Html.DisplayNameFor(model => model.Employee[0].EmployeeState)
             </th>
             <th>
+                @Html.DisplayNameFor(model => model.Employee[0].EmployeeRole)
+            </th>
+            <th>
                 @Html.DisplayNameFor(model => model.Employee[0].Branch)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Employee[0].Project)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Employee[0].Company)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Employee[0].Department)
             </th>
             <th></th>
         </tr>
@@ -48,7 +60,19 @@
                 @Html.DisplayFor(modelItem => item.EmployeeState)
             </td>
             <td>
+                @Html.DisplayFor(modelItem => item.EmployeeRole)
+            </td>
+            <td>
                 @Html.DisplayFor(modelItem => item.Branch.Name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Project.Id)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Company.Name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Department.Name)
             </td>
             <td>
                 <a asp-page="./Edit" asp-route-id="@item.Id">Edit</a> |

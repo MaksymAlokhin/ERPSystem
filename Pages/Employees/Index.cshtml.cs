@@ -24,7 +24,10 @@ namespace ERPSystem.Pages.Employees
         public async Task OnGetAsync()
         {
             Employee = await _context.Employees
-                .Include(e => e.Branch).ToListAsync();
+                .Include(e => e.Branch)
+                .Include(e => e.Company)
+                .Include(e => e.Department)
+                .Include(e => e.Project).ToListAsync();
         }
     }
 }
