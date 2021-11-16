@@ -29,17 +29,13 @@ namespace ERPSystem.Data
             {
                 context.AddRange(SeedDepartmentHead.data);
             }
-            if (!context.Workers.Any())
-            {
-                context.AddRange(SeedWorker.data);
-            }
             if (!context.Mentors.Any())
             {
                 context.AddRange(SeedMentor.data);
             }
-            if (!context.Mentors.Any())
+            if (!context.Employees.Any())
             {
-                context.AddRange(SeedMentor.data);
+                context.AddRange(SeedEmployee.data);
             }
             if (!context.ProjectManagers.Any())
             {

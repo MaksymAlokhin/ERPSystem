@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using ERPSystem.Data;
 using ERPSystem.Models;
 
-namespace ERPSystem.Pages.Workers
+namespace ERPSystem.Pages.Employees
 {
     public class DetailsModel : PageModel
     {
@@ -19,7 +19,7 @@ namespace ERPSystem.Pages.Workers
             _context = context;
         }
 
-        public Worker Worker { get; set; }
+        public Employee Employee { get; set; }
 
         public async Task<IActionResult> OnGetAsync(int? id)
         {
@@ -28,10 +28,10 @@ namespace ERPSystem.Pages.Workers
                 return NotFound();
             }
 
-            Worker = await _context.Workers
-                .Include(w => w.Branch).FirstOrDefaultAsync(m => m.Id == id);
+            Employee = await _context.Employees
+                .Include(e => e.Branch).FirstOrDefaultAsync(m => m.Id == id);
 
-            if (Worker == null)
+            if (Employee == null)
             {
                 return NotFound();
             }

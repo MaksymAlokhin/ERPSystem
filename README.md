@@ -14,19 +14,16 @@ Entities Implemented:<br />
 --------------------
 - Company
 - Department
+- Branch
 
 Entities WIP:<br />
 ------------
-- Branch
+- Employee
 - Project
 - Position
 - Assignment
-- Employee
-- General Manager
-- Department Head
-- Project Manager
-- Worker
-- Mentor
+- Report
+
 
 Screenshots:<br />
 -----------

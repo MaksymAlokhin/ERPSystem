@@ -49,7 +49,7 @@ namespace ERPSystem.Pages.Departments
         public Department Department { get; set; }
 
         // To protect from overposting attacks, see https://aka.ms/RazorPagesCRUD
-        public async Task<IActionResult> OnPostAsync(int? id, int? DepartmentHeadId, int[] SelectedProjects)
+        public async Task<IActionResult> OnPostAsync(int? DepartmentHeadId, int[] SelectedProjects)
         {
             if (!ModelState.IsValid)
             {

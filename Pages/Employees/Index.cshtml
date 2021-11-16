@@ -1,5 +1,5 @@
 ﻿@page
-@model ERPSystem.Pages.Workers.IndexModel
+@model ERPSystem.Pages.Employees.IndexModel
 
 @{
     ViewData["Title"] = "Index";
@@ -15,25 +15,25 @@
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.Worker[0].FirstName)
+                @Html.DisplayNameFor(model => model.Employee[0].FirstName)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Worker[0].LastName)
+                @Html.DisplayNameFor(model => model.Employee[0].LastName)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Worker[0].DateOfBirth)
+                @Html.DisplayNameFor(model => model.Employee[0].DateOfBirth)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Worker[0].EmployeeState)
+                @Html.DisplayNameFor(model => model.Employee[0].EmployeeState)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Worker[0].Branch)
+                @Html.DisplayNameFor(model => model.Employee[0].Branch)
             </th>
             <th></th>
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model.Worker) {
+@foreach (var item in Model.Employee) {
         <tr>
             <td>
                 @Html.DisplayFor(modelItem => item.FirstName)
