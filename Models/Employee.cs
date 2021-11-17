@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
@@ -39,6 +40,7 @@ namespace ERPSystem.Models
         [Required]
         [Display(Name = "State")]
         public EmployeeState EmployeeState { get; set; }
+        [Display(Name = "Role")]
         public EmployeeRole EmployeeRole { get; set; }
 
         //Navigation properties
@@ -60,8 +62,11 @@ namespace ERPSystem.Models
     }
     public enum EmployeeRole
     {
+        [Display(Name = "General Manager")]
         GeneralManager,
+        [Display(Name = "Project Manager")]
         ProjectManager,
+        [Display(Name = "Department Head")]
         DepartmentHead,
         Mentor,
         Employee

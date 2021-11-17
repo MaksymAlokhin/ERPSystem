@@ -24,7 +24,7 @@ namespace ERPSystem.Data
             StartDate = DateTime.Parse("2020-07-10"),
             EndDate = DateTime.Parse("2022-09-09"),
             ProjectState = ProjectState.Active,
-            Department = AlphabetAccountingAndFinance
+            Department = AlphabetMarketing
         };
         public static Project p003 = new Project
         {
@@ -40,7 +40,7 @@ namespace ERPSystem.Data
             StartDate = DateTime.Parse("2021-06-03"),
             EndDate = DateTime.Parse("2022-03-14"),
             ProjectState = ProjectState.Active,
-            Department = AlphabetAccountingAndFinance
+            Department = AlphabetMarketing
         };
         public static Project p005 = new Project
         {
@@ -56,7 +56,7 @@ namespace ERPSystem.Data
             StartDate = DateTime.Parse("2020-07-28"),
             EndDate = DateTime.Parse("2022-08-03"),
             ProjectState = ProjectState.Active,
-            Department = AlphabetAccountingAndFinance
+            Department = AlphabetMarketing
         };
         public static Project p007 = new Project
         {
@@ -72,7 +72,7 @@ namespace ERPSystem.Data
             StartDate = DateTime.Parse("2020-02-13"),
             EndDate = DateTime.Parse("2022-02-10"),
             ProjectState = ProjectState.Active,
-            Department = AlphabetAccountingAndFinance
+            Department = AlphabetMarketing
         };
         public static Project p009 = new Project
         {
@@ -88,7 +88,7 @@ namespace ERPSystem.Data
             StartDate = DateTime.Parse("2019-11-13"),
             EndDate = DateTime.Parse("2023-07-01"),
             ProjectState = ProjectState.Active,
-            Department = AlphabetAccountingAndFinance
+            Department = AlphabetMarketing
         };
         public static Project p011 = new Project
         {
@@ -104,7 +104,7 @@ namespace ERPSystem.Data
             StartDate = DateTime.Parse("2020-01-13"),
             EndDate = DateTime.Parse("2022-05-29"),
             ProjectState = ProjectState.Active,
-            Department = AlphabetAccountingAndFinance
+            Department = AlphabetMarketing
         };
         #endregion
         public static List<Project> data;

@@ -23,7 +23,10 @@
             @Html.DisplayNameFor(model => model.Branch.Company)
         </dt>
         <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Branch.Company.Name)
+            <a asp-page="../Companies/Edit"
+               asp-route-id="@Model.Branch.Company.Id">
+                @Html.DisplayFor(model => model.Branch.Company.Name)
+            </a>
         </dd>
         <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.Branch.BranchState)
@@ -31,34 +34,37 @@
         <dd class="col-sm-10">
             @Html.DisplayFor(model => model.Branch.BranchState)
         </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Branch.Employees)
-        </dt>
-        <dd class="col-sm-auto" style="overflow-y: auto; max-height: 400px;">
-            <table class="table-striped">
-                <thead style="text-align: center">
-                    <tr>
-                        <th class="col-sm-auto">#</th>
-                        <th class="col-sm-auto">@Html.DisplayNameFor(model => model.EmployeeList[0].FullName)</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @{
-                        int i = 1;
-                        @foreach (var item in Model.EmployeeList)
-                        {
-                            <tr>
-                                <td style="text-align: center">@i</td>
-                                <td>
-                                    @Html.DisplayFor(modelItem => item.FullName)
-                                </td>
-                            </tr>
-                            i++;
+        @if (Model.EmployeeList.Any())
+        {
+            <dd class="col-sm-auto" style="overflow-y: auto; max-height: 400px;">
+                <table class="table-striped table-bordered">
+                    <thead style="text-align: center">
+                        <tr>
+                            <th class="col-sm-auto">#</th>
+                            <th class="col-sm-auto">@Html.DisplayNameFor(model => model.Branch.Employees)</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @{
+                            int i = 1;
+                            @foreach (var item in Model.EmployeeList)
+                            {
+                                <tr>
+                                    <td style="text-align: center">@i</td>
+                                    <td>
+                                        <a asp-page="../Employees/Edit"
+                                           asp-route-id="@item.Id">
+                                            @Html.DisplayFor(modelItem => item.FullName)
+                                        </a>
+                                    </td>
+                                </tr>
+                                i++;
+                            }
                         }
-                    }
-                </tbody>
-            </table>
-        </dd>
+                    </tbody>
+                </table>
+            </dd>
+        }
     </dl>
     <form method="post">
         <input type="hidden" asp-for="Branch.Id" />

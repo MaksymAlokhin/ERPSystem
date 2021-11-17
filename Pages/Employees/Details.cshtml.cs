@@ -13,6 +13,9 @@ namespace ERPSystem.Pages.Employees
     public class DetailsModel : PageModel
     {
         private readonly ERPSystem.Data.ApplicationDbContext _context;
+        public int? PageIndex { get; set; }
+        public string CurrentFilter { get; set; }
+        public string CurrentSort { get; set; }
 
         public DetailsModel(ERPSystem.Data.ApplicationDbContext context)
         {
@@ -21,8 +24,13 @@ namespace ERPSystem.Pages.Employees
 
         public Employee Employee { get; set; }
 
-        public async Task<IActionResult> OnGetAsync(int? id)
+        public async Task<IActionResult> OnGetAsync(string sortOrder,
+            string currentFilter, int? pageIndex, int? id)
         {
+            PageIndex = pageIndex;
+            CurrentSort = sortOrder;
+            CurrentFilter = currentFilter;
+
             if (id == null)
             {
                 return NotFound();
@@ -30,9 +38,11 @@ namespace ERPSystem.Pages.Employees
 
             Employee = await _context.Employees
                 .Include(e => e.Branch)
-                .Include(e => e.Company)
-                .Include(e => e.Department)
-                .Include(e => e.Project).FirstOrDefaultAsync(m => m.Id == id);
+                .Include(e => e.Assignments)
+                .Include(e => e.Mentors)
+                .Include(e => e.Project)
+                .AsNoTracking()
+                .FirstOrDefaultAsync(m => m.Id == id);
 
             if (Employee == null)
             {

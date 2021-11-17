@@ -47,11 +47,13 @@ namespace ERPSystem.Pages.Companies
             DepartmentsList = await _context.Departments
                 .Where(e => e.CompanyId == id)
                 .OrderBy(e => e.Name)
+                .AsNoTracking()
                 .ToListAsync();
 
             BranchesList = await _context.Branches
                 .Where(e => e.CompanyId == id)
                 .OrderBy(e => e.Name)
+                .AsNoTracking()
                 .ToListAsync();
 
 

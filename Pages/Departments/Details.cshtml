@@ -22,7 +22,10 @@
             @Html.DisplayNameFor(model => model.Department.DepartmentHead)
         </dt>
         <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Department.DepartmentHead.FullName)
+            <a asp-page="../Employees/Edit"
+               asp-route-id="@Model.Department.DepartmentHead.Id">
+                @Html.DisplayFor(model => model.Department.DepartmentHead.FullName)
+            </a>
         </dd>
         <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.Department.DepartmentState)
@@ -34,36 +37,46 @@
             @Html.DisplayNameFor(model => model.Department.Company)
         </dt>
         <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Department.Company.Name)
+            <a asp-page="../Companies/Edit"
+               asp-route-id="@Model.Department.Company.Id">
+                @Html.DisplayFor(model => model.Department.Company.Name)
+            </a>
         </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Department.Projects.First().Name)
-        </dt>
-        <dd class="col-sm-auto" style="overflow-y: auto; max-height: 400px;">
-            <table class="table-striped">
-                <thead style="text-align: center">
-                    <tr>
-                        <th class="col-sm-auto">#</th>
-                        <th class="col-sm-auto">@Html.DisplayNameFor(model => model.ProjectsList[0].Name)</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @{
-                        int i = 1;
-                        @foreach (var item in Model.ProjectsList)
-                        {
-                            <tr>
-                                <td style="text-align: center">@i</td>
-                                <td>
-                                    @Html.DisplayFor(modelItem => item.Name)
-                                </td>
-                            </tr>
-                            i++;
+        @if (Model.ProjectsList.Any())
+        {
+            <dd class="col-sm-auto" style="overflow-y: auto; max-height: 400px;">
+                <table class="table-striped table-bordered">
+                    <thead style="text-align: center">
+                        <tr>
+                            <th class="col-sm-auto">#</th>
+                            <th class="col-sm-auto">@Html.DisplayNameFor(model => model.Department.Projects.First().Name)</th>
+                            <th class="col-sm-auto">@Html.DisplayNameFor(model => model.Department.Projects.First().StartDate)</th>
+                            <th class="col-sm-auto">@Html.DisplayNameFor(model => model.Department.Projects.First().EndDate)</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @{
+                            int i = 1;
+                            @foreach (var item in Model.ProjectsList)
+                            {
+                                <tr>
+                                    <td style="text-align: center">@i</td>
+                                    <td>
+                                        <a asp-page="../Projects/Edit"
+                                           asp-route-id="@item.Id">
+                                            @Html.DisplayFor(modelItem => item.Name)
+                                        </a>
+                                    </td>
+                                    <td>@item.StartDate.ToString("d")</td>
+                                    <td>@item.EndDate.ToString("d")</td>
+                                </tr>
+                                i++;
+                            }
                         }
-                    }
-                </tbody>
-            </table>
-        </dd>
+                    </tbody>
+                </table>
+            </dd>
+        }
     </dl>
 </div>
 <div>

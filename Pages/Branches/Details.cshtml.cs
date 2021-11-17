@@ -46,6 +46,7 @@ namespace ERPSystem.Pages.Branches
                 .Where(e => e.BranchId == id)
                 .OrderBy(e => e.LastName)
                 .ThenBy(e => e.FirstName)
+                .AsNoTracking()
                 .ToListAsync();
 
             if (Branch == null)
