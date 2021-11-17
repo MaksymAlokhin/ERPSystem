@@ -38,7 +38,7 @@
                     @Html.DisplayNameFor(model => model.Branch[0].Company.Name)
                 </a>
             </th>
-            <th>
+            <th style="text-align: center">
                 <a asp-page="./Index"
                    asp-route-sortOrder="@Model.NumberOfEmployyesSort"
                    asp-route-currentFilter="@Model.CurrentFilter">
@@ -70,7 +70,7 @@
                     <td>
                         @Html.DisplayFor(modelItem => item.Company.Name)
                     </td>
-                    <td>
+                    <td style="text-align: center">
                         @item.Employees.Count()
                     </td>
                     <td>

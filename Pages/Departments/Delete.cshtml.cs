@@ -16,7 +16,7 @@ namespace ERPSystem.Pages.Departments
         public int? PageIndex { get; set; }
         public string CurrentFilter { get; set; }
         public string CurrentSort { get; set; }
-        public List<Project> ProjectsList { get; set; }
+        public IEnumerable<Project> ProjectsList { get; set; }
 
         public DeleteModel(ERPSystem.Data.ApplicationDbContext context)
         {
@@ -47,6 +47,7 @@ namespace ERPSystem.Pages.Departments
             ProjectsList = await _context.Projects
                 .Where(e => e.DepartmentId == id)
                 .OrderBy(e => e.Name)
+                .AsNoTracking()
                 .ToListAsync();
 
             if (Department == null)
