@@ -56,6 +56,7 @@ namespace ERPSystem.Pages.Employees
             {
                 return NotFound();
             }
+
             ViewData["BranchId"] = new SelectList(_context.Branches, "Id", "Name");
             ViewData["CompanyId"] = new SelectList(_context.Companies, "Id", "Name");
             ViewData["DepartmentId"] = new SelectList(_context.Departments, "Id", "Name");
@@ -100,12 +101,29 @@ namespace ERPSystem.Pages.Employees
                 .Include(e => e.Mentors)
                 .FirstOrDefaultAsync(m => m.Id == id);
 
+            if (EmployeeToUpdate.DepartmentId != null && Employee.EmployeeRole != EmployeeRole.DepartmentHead) {
+                var department = await _context.Departments.FindAsync(EmployeeToUpdate.DepartmentId);
+                department.DepartmentState = DepartmentState.Inactive;
+                EmployeeToUpdate.DepartmentId = null;
+            }
+            if (EmployeeToUpdate.CompanyId != null && Employee.EmployeeRole != EmployeeRole.GeneralManager) {
+                var company = await _context.Companies.FindAsync(EmployeeToUpdate.CompanyId);
+                company.CompanyState = CompanyState.Inactive;
+                EmployeeToUpdate.CompanyId = null;
+            }
+            if (EmployeeToUpdate.ProjectId != null && Employee.EmployeeRole != EmployeeRole.ProjectManager) {
+                var project = await _context.Projects.FindAsync(EmployeeToUpdate.ProjectId);
+                project.ProjectState = ProjectState.Inactive;
+                EmployeeToUpdate.ProjectId = null;
+            }
+
             if (await TryUpdateModelAsync<Employee>(
                             EmployeeToUpdate,
                             "Employee",
                             e => e.FirstName, e => e.LastName, e => e.EmployeeRole, e => e.EmployeeState,
                             e => e.DateOfBirth))
             {
+
                 switch (Employee.EmployeeRole)
                 {
                     case EmployeeRole.Employee:

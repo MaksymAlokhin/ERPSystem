@@ -106,9 +106,7 @@ namespace ERPSystem.Pages.Companies
                             "Company",
                             c => c.Name, c => c.CompanyState))
             {
-                Employee gm = await _context.Employees
-                        .Where(e => e.EmployeeRole == EmployeeRole.GeneralManager && e.Id == GeneralManagerId)
-                        .FirstOrDefaultAsync();
+                Employee gm = await _context.Employees.FindAsync(GeneralManagerId);
 
                 if (gm != null)
                 {
@@ -123,9 +121,7 @@ namespace ERPSystem.Pages.Companies
                 {
                     if (FormerGeneralManagerId != null)
                     {
-                        Employee formerGm = await _context.Employees
-                            .Where(e => e.EmployeeRole == EmployeeRole.GeneralManager && e.Id == FormerGeneralManagerId)
-                            .FirstOrDefaultAsync();
+                        Employee formerGm = await _context.Employees.FindAsync(FormerGeneralManagerId);
                         formerGm.CompanyId = null;
                         CompanyToUpdate.CompanyState = CompanyState.Inactive;
                     }
