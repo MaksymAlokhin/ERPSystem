@@ -62,13 +62,13 @@ namespace ERPSystem.Models
     }
     public enum EmployeeRole
     {
+        Employee,
+        Mentor,
         [Display(Name = "General Manager")]
         GeneralManager,
         [Display(Name = "Project Manager")]
         ProjectManager,
         [Display(Name = "Department Head")]
         DepartmentHead,
-        Mentor,
-        Employee
     }
 }
