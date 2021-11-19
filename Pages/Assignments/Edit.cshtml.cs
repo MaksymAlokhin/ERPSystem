@@ -38,8 +38,8 @@ namespace ERPSystem.Pages.Assignments
             {
                 return NotFound();
             }
-           ViewData["EmployeeId"] = new SelectList(_context.Employees, "Id", "FirstName");
-           ViewData["PositionId"] = new SelectList(_context.Positions, "Id", "Name");
+           ViewData["EmployeeId"] = new SelectList(_context.Employees.OrderBy(e => e.LastName).ThenBy(e => e.FirstName), "Id", "FullName");
+           ViewData["PositionId"] = new SelectList(_context.Positions.OrderBy(e => e.Name), "Id", "Name");
             return Page();
         }
 
