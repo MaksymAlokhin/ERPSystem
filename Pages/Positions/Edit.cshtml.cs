@@ -37,7 +37,7 @@ namespace ERPSystem.Pages.Positions
             {
                 return NotFound();
             }
-           ViewData["ProjectId"] = new SelectList(_context.Projects, "Id", "Id");
+           ViewData["ProjectId"] = new SelectList(_context.Projects.OrderBy(p => p.Name), "Id", "Name");
             return Page();
         }
 

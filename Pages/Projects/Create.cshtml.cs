@@ -21,7 +21,7 @@ namespace ERPSystem.Pages.Projects
 
         public IActionResult OnGet()
         {
-        ViewData["DepartmentId"] = new SelectList(_context.Departments, "Id", "Name");
+        ViewData["DepartmentId"] = new SelectList(_context.Departments.OrderBy(d => d.Name), "Id", "Name");
             return Page();
         }
 
