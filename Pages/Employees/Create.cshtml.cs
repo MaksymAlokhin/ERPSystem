@@ -39,13 +39,13 @@ namespace ERPSystem.Pages.Employees
             ViewData["DepartmentId"] = new SelectList(_context.Departments.OrderBy(d => d.Name), "Id", "Name");
             ViewData["ProjectId"] = new SelectList(_context.Projects.OrderBy(p => p.Name), "Id", "Id");
 
-            var MenteesQuery = _context.Employees.OrderBy(e => e.LastName).ThenBy(e => e.FirstName);
-            MentorsSelectList = new SelectList(MenteesQuery.AsNoTracking(), "Id", "FullName"); //list, id, value
+            var MenteesQuery = _context.Employees.OrderBy(e => e.LastName).ThenBy(e => e.FirstName).AsNoTracking();
+            MentorsSelectList = new SelectList(MenteesQuery, "Id", "FullName"); //list, id, value
 
             SelectedMentors = new List<int>();
 
-            var AssignmentsQuery = _context.Assignments.OrderBy(e => e.Name);
-            AssignmentsSelectList = new SelectList(AssignmentsQuery.AsNoTracking(), "Id", "Name"); //list, id, value
+            var AssignmentsQuery = _context.Assignments.OrderBy(e => e.Name).AsNoTracking();
+            AssignmentsSelectList = new SelectList(AssignmentsQuery, "Id", "Name"); //list, id, value
 
             SelectedAssignments = new List<int>();
 
@@ -156,7 +156,12 @@ namespace ERPSystem.Pages.Employees
 
                 _context.Employees.Add(NewEmployee);
                 await _context.SaveChangesAsync();
-                return RedirectToPage("./Index");
+                return RedirectToPage("./Index", new
+                {
+                    pageIndex = $"{pageIndex}",
+                    sortOrder = $"{sortOrder}",
+                    currentFilter = $"{currentFilter}"
+                });
             }
             return Page();
         }

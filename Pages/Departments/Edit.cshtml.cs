@@ -68,8 +68,8 @@ namespace ERPSystem.Pages.Departments
                 DepartmentHeadId = FormerDepartmentHeadId = Department.DepartmentHead.Id;
             }
 
-            var ProjectsQuery = _context.Projects.OrderBy(p => p.Name);
-            ProjectsSelectList = new SelectList(ProjectsQuery.AsNoTracking(), "Id", "Name"); //list, id, value
+            var ProjectsQuery = _context.Projects.OrderBy(p => p.Name).AsNoTracking();
+            ProjectsSelectList = new SelectList(ProjectsQuery, "Id", "Name"); //list, id, value
 
             SelectedProjects = new List<int>();
             foreach (var project in Department.Projects)
@@ -77,8 +77,8 @@ namespace ERPSystem.Pages.Departments
                 SelectedProjects.Add(project.Id);
             }
 
-            var CompaniesQuery = _context.Companies.OrderBy(c => c.Name);
-            CompaniesSelectList = new SelectList(CompaniesQuery.AsNoTracking(), "Id", "Name"); //list, id, value
+            var CompaniesQuery = _context.Companies.OrderBy(c => c.Name).AsNoTracking();
+            CompaniesSelectList = new SelectList(CompaniesQuery, "Id", "Name"); //list, id, value
 
             return Page();
         }

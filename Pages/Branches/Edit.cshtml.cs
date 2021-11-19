@@ -43,14 +43,14 @@ namespace ERPSystem.Pages.Branches
             var EmployeesQuery = _context.Employees
                 .OrderBy(e => e.LastName)
                 .ThenBy(e => e.FirstName)
-                .ToList()
-                .Where(e => !e.GetType().IsSubclassOf(typeof(Employee)));
+                .AsNoTracking();
 
             EmployeesSelectList = new SelectList(EmployeesQuery, "Id", "FullName"); //list, id, value
            
             Branch = await _context.Branches
                 .Include(b => b.Company)
                 .Include(b => b.Employees)
+                .AsNoTracking()
                 .FirstOrDefaultAsync(m => m.Id == id);
             
             if (Branch == null)
@@ -64,8 +64,8 @@ namespace ERPSystem.Pages.Branches
                 SelectedEmployees.Add(employee.Id);
             }
 
-            var CompaniesQuery = _context.Companies.OrderBy(c => c.Name);
-            CompaniesSelectList = new SelectList(CompaniesQuery.AsNoTracking(), "Id", "Name"); //list, id, value
+            var CompaniesQuery = _context.Companies.OrderBy(c => c.Name).AsNoTracking();
+            CompaniesSelectList = new SelectList(CompaniesQuery, "Id", "Name"); //list, id, value
             return Page();
         }
 
