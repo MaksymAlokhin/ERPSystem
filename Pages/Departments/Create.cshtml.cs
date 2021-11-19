@@ -14,6 +14,9 @@ namespace ERPSystem.Pages.Departments
     public class CreateModel : PageModel
     {
         private readonly ERPSystem.Data.ApplicationDbContext _context;
+        public int? PageIndex { get; set; }
+        public string CurrentFilter { get; set; }
+        public string CurrentSort { get; set; }
         public List<int> SelectedProjects { get; set; }
         public SelectList ProjectsSelectList { get; set; }
         public SelectList CompaniesSelectList { get; set; }
@@ -26,8 +29,13 @@ namespace ERPSystem.Pages.Departments
             _context = context;
         }
 
-        public IActionResult OnGet()
+        public IActionResult OnGet(string sortOrder,
+            string currentFilter, int? pageIndex)
         {
+            PageIndex = pageIndex;
+            CurrentSort = sortOrder;
+            CurrentFilter = currentFilter;
+
             DepartmentHeadList = new List<SelectListItem>();
             foreach (Employee dh in _context.Employees
                 .Where(e => e.EmployeeRole == EmployeeRole.DepartmentHead)
@@ -36,13 +44,13 @@ namespace ERPSystem.Pages.Departments
                 DepartmentHeadList.Add(new SelectListItem { Value = $"{dh.Id}", Text = $"{dh.FullName}" });
             }
 
-            var ProjectsQuery = _context.Projects.OrderBy(p => p.Name);
-            ProjectsSelectList = new SelectList(ProjectsQuery.AsNoTracking(), "Id", "Name"); //list, id, value
+            var ProjectsQuery = _context.Projects.OrderBy(p => p.Name).AsNoTracking();
+            ProjectsSelectList = new SelectList(ProjectsQuery, "Id", "Name"); //list, id, value
 
             SelectedProjects = new List<int>();
 
-            var CompaniesQuery = _context.Companies.OrderBy(c => c.Name);
-            CompaniesSelectList = new SelectList(CompaniesQuery.AsNoTracking(), "Id", "Name"); //list, id, value
+            var CompaniesQuery = _context.Companies.OrderBy(c => c.Name).AsNoTracking();
+            CompaniesSelectList = new SelectList(CompaniesQuery, "Id", "Name"); //list, id, value
 
             Department = new Department();
             Department.DepartmentState = DepartmentState.Inactive;
@@ -54,7 +62,8 @@ namespace ERPSystem.Pages.Departments
         public Department Department { get; set; }
 
         // To protect from overposting attacks, see https://aka.ms/RazorPagesCRUD
-        public async Task<IActionResult> OnPostAsync(int? DepartmentHeadId, int[] SelectedProjects)
+        public async Task<IActionResult> OnPostAsync(string sortOrder,
+            string currentFilter, int? pageIndex, int? DepartmentHeadId, int[] SelectedProjects)
         {
             if (!ModelState.IsValid)
             {
@@ -102,7 +111,12 @@ namespace ERPSystem.Pages.Departments
                 }
                 _context.Departments.Add(NewDepartment);
                 await _context.SaveChangesAsync();
-                return RedirectToPage("./Index");
+                return RedirectToPage("./Index", new
+                {
+                    pageIndex = $"{pageIndex}",
+                    sortOrder = $"{sortOrder}",
+                    currentFilter = $"{currentFilter}"
+                });
             }
             return Page();
         }

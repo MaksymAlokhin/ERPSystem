@@ -14,6 +14,9 @@ namespace ERPSystem.Pages.Branches
     public class CreateModel : PageModel
     {
         private readonly ERPSystem.Data.ApplicationDbContext _context;
+        public int? PageIndex { get; set; }
+        public string CurrentFilter { get; set; }
+        public string CurrentSort { get; set; }
         public List<int> SelectedEmployees { get; set; }
         public SelectList EmployeesSelectList { get; set; }
         public SelectList CompaniesSelectList { get; set; }
@@ -22,14 +25,17 @@ namespace ERPSystem.Pages.Branches
         {
             _context = context;
         }
-
-        public IActionResult OnGet()
+        public IActionResult OnGet(string sortOrder,
+            string currentFilter, int? pageIndex)
         {
+            PageIndex = pageIndex;
+            CurrentSort = sortOrder;
+            CurrentFilter = currentFilter;
+
             var EmployeesQuery = _context.Employees
                 .OrderBy(e => e.LastName)
                 .ThenBy(e => e.FirstName)
-                .ToList()
-                .Where(e => !e.GetType().IsSubclassOf(typeof(Employee)));
+                .AsNoTracking();
 
             EmployeesSelectList = new SelectList(EmployeesQuery, "Id", "FullName"); //list, id, value
 
@@ -38,8 +44,8 @@ namespace ERPSystem.Pages.Branches
             Branch = new Branch();
             Branch.BranchState = BranchState.Inactive;
 
-            var CompaniesQuery = _context.Companies.OrderBy(c => c.Name);
-            CompaniesSelectList = new SelectList(CompaniesQuery.AsNoTracking(), "Id", "Name"); //list, id, value
+            var CompaniesQuery = _context.Companies.OrderBy(c => c.Name).AsNoTracking();
+            CompaniesSelectList = new SelectList(CompaniesQuery, "Id", "Name"); //list, id, value
             return Page();
         }
 
@@ -47,7 +53,8 @@ namespace ERPSystem.Pages.Branches
         public Branch Branch { get; set; }
 
         // To protect from overposting attacks, see https://aka.ms/RazorPagesCRUD
-        public async Task<IActionResult> OnPostAsync(int[] SelectedEmployees)
+        public async Task<IActionResult> OnPostAsync(string sortOrder,
+            string currentFilter, int? pageIndex, int[] SelectedEmployees)
         {
             if (!ModelState.IsValid)
             {
@@ -77,7 +84,12 @@ namespace ERPSystem.Pages.Branches
             {
                 _context.Branches.Add(NewBranch);
                 await _context.SaveChangesAsync();
-                return RedirectToPage("./Index");
+                return RedirectToPage("./Index", new
+                {
+                    pageIndex = $"{pageIndex}",
+                    sortOrder = $"{sortOrder}",
+                    currentFilter = $"{currentFilter}"
+                });
             }
             return Page();
         }

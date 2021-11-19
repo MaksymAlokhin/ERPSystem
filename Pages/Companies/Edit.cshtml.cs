@@ -67,10 +67,10 @@ namespace ERPSystem.Pages.Companies
                 GeneralManagerId = FormerGeneralManagerId = Company.GeneralManager.Id;
             }
 
-            var BranchesQuery = _context.Branches.OrderBy(b => b.Name);
-            BranchesSelectList = new SelectList(BranchesQuery.AsNoTracking(), "Id", "Name"); //list, id, value
-            var DepartmentsQuery = _context.Departments.OrderBy(b => b.Name);
-            DepartmentsSelectList = new SelectList(DepartmentsQuery.AsNoTracking(), "Id", "Name"); //list, id, value
+            var BranchesQuery = _context.Branches.OrderBy(b => b.Name).AsNoTracking();
+            BranchesSelectList = new SelectList(BranchesQuery, "Id", "Name"); //list, id, value
+            var DepartmentsQuery = _context.Departments.OrderBy(b => b.Name).AsNoTracking();
+            DepartmentsSelectList = new SelectList(DepartmentsQuery, "Id", "Name"); //list, id, value
 
             SelectedBranches = new List<int>();
             foreach (var branch in Company.Branches)

@@ -62,8 +62,8 @@ namespace ERPSystem.Pages.Employees
             ViewData["DepartmentId"] = new SelectList(_context.Departments.OrderBy(d => d.Name), "Id", "Name");
             ViewData["ProjectId"] = new SelectList(_context.Projects.OrderBy(p => p.Name), "Id", "Name");
 
-            var MenteesQuery = _context.Employees.OrderBy(e => e.LastName).ThenBy(e => e.FirstName);
-            MentorsSelectList = new SelectList(MenteesQuery.AsNoTracking(), "Id", "FullName"); //list, id, value
+            var MenteesQuery = _context.Employees.OrderBy(e => e.LastName).ThenBy(e => e.FirstName).AsNoTracking();
+            MentorsSelectList = new SelectList(MenteesQuery, "Id", "FullName"); //list, id, value
 
             SelectedMentors = new List<int>();
             foreach (var mentor in Employee.Mentors)
@@ -71,8 +71,8 @@ namespace ERPSystem.Pages.Employees
                 SelectedMentors.Add(mentor.Id);
             }
 
-            var AssignmentsQuery = _context.Assignments.OrderBy(e => e.Name);
-            AssignmentsSelectList = new SelectList(AssignmentsQuery.AsNoTracking(), "Id", "Name"); //list, id, value
+            var AssignmentsQuery = _context.Assignments.OrderBy(e => e.Name).AsNoTracking();
+            AssignmentsSelectList = new SelectList(AssignmentsQuery, "Id", "Name"); //list, id, value
 
             SelectedAssignments = new List<int>();
             foreach (var assignment in Employee.Assignments.OrderBy(a => a.Name))

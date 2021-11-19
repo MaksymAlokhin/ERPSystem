@@ -10,62 +10,286 @@
 
 <h4>Employee</h4>
 <hr />
-<div class="row">
-    <div class="col-md-4">
-        <form method="post">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+<form method="post" onload="populateOptionalSelectLists">
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+    <input type="hidden" asp-for="Employee.Id" />
+    <div class="row">
+        <div class="col-sm-4">
             <div class="form-group">
                 <label asp-for="Employee.FirstName" class="control-label"></label>
                 <input asp-for="Employee.FirstName" class="form-control" />
                 <span asp-validation-for="Employee.FirstName" class="text-danger"></span>
             </div>
+        </div>
+        <div class="col-sm-4">
             <div class="form-group">
                 <label asp-for="Employee.LastName" class="control-label"></label>
                 <input asp-for="Employee.LastName" class="form-control" />
                 <span asp-validation-for="Employee.LastName" class="text-danger"></span>
             </div>
+        </div>
+        <div class="col-sm-4">
             <div class="form-group">
                 <label asp-for="Employee.DateOfBirth" class="control-label"></label>
                 <input asp-for="Employee.DateOfBirth" class="form-control" />
                 <span asp-validation-for="Employee.DateOfBirth" class="text-danger"></span>
             </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-4">
             <div class="form-group">
                 <label asp-for="Employee.EmployeeState" class="control-label"></label>
-                <select asp-for="Employee.EmployeeState" class="form-control"></select>
+                <select asp-for="Employee.EmployeeState" class="form-control" asp-items="Html.GetEnumSelectList<Models.EmployeeState>()"></select>
                 <span asp-validation-for="Employee.EmployeeState" class="text-danger"></span>
             </div>
+        </div>
+        <div class="col-sm-4">
             <div class="form-group">
                 <label asp-for="Employee.EmployeeRole" class="control-label"></label>
-                <select asp-for="Employee.EmployeeRole" class="form-control"></select>
+                <select asp-for="Employee.EmployeeRole" class="form-control" asp-items="Html.GetEnumSelectList<Models.EmployeeRole>()" onchange="checkCompatibleFields()"></select>
                 <span asp-validation-for="Employee.EmployeeRole" class="text-danger"></span>
             </div>
-            <div class="form-group">
-                <label asp-for="Employee.BranchId" class="control-label"></label>
-                <select asp-for="Employee.BranchId" class ="form-control" asp-items="ViewBag.BranchId"></select>
+        </div>
+        <div class="col-sm-4" id="selectList">
+            <div id="selectListAnchor"></div>
+            <div class="form-group" id="company">
+                <label asp-for="Employee.Company" class="control-label"></label>
+                <select asp-for="Employee.CompanyId" class="form-control" asp-items="ViewBag.CompanyId" onchange="checkRoleForCompany()"><option value="">--none--</option></select>
+                <span asp-validation-for="Employee.CompanyId" class="text-danger"></span>
             </div>
-            <div class="form-group">
-                <label asp-for="Employee.ProjectId" class="control-label"></label>
-                <select asp-for="Employee.ProjectId" class ="form-control" asp-items="ViewBag.ProjectId"></select>
+            <div class="form-group" id="project">
+                <label asp-for="Employee.Project" class="control-label"></label>
+                <select asp-for="Employee.ProjectId" class="form-control" asp-items="ViewBag.ProjectId" onchange="checkRoleForProject()"><option value="">--none--</option></select>
+                <span asp-validation-for="Employee.ProjectId" class="text-danger"></span>
             </div>
-            <div class="form-group">
-                <label asp-for="Employee.CompanyId" class="control-label"></label>
-                <select asp-for="Employee.CompanyId" class ="form-control" asp-items="ViewBag.CompanyId"></select>
+            <div class="form-group" id="department">
+                <label asp-for="Employee.Department" class="control-label"></label>
+                <select asp-for="Employee.DepartmentId" class="form-control" asp-items="ViewBag.DepartmentId" onchange="checkRoleForDepartment()"><option value="">--none--</option></select>
+                <span asp-validation-for="Employee.DepartmentId" class="text-danger"></span>
             </div>
-            <div class="form-group">
-                <label asp-for="Employee.DepartmentId" class="control-label"></label>
-                <select asp-for="Employee.DepartmentId" class ="form-control" asp-items="ViewBag.DepartmentId"></select>
+            <div class="form-group" id="branch">
+                <label asp-for="Employee.Branch" class="control-label"></label>
+                <select asp-for="Employee.BranchId" class="form-control" asp-items="ViewBag.BranchId" onchange="checkRoleForBranch()"><option value="">--none--</option></select>
+                <span asp-validation-for="Employee.BranchId" class="text-danger"></span>
             </div>
-            <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
-            </div>
-        </form>
+        </div>
     </div>
-</div>
+    <hr />
+    <div class="row" id="multipleSelectList">
+        <div id="multipleSelectListAnchor"></div>
+        <div class="col-sm-auto" id="assignments">
+            <div class="form-group">
+                <label asp-for="Employee.Assignments" class="control-label"></label><br />
+                <select asp-for="SelectedAssignments" asp-items="Model.AssignmentsSelectList" size="10">
+                </select>
+            </div>
+        </div>
+        <div class="col-sm-auto" id="mentors">
+            <div class="form-group">
+                <label asp-for="Employee.Mentors" class="control-label"></label><br />
+                <select asp-for="SelectedMentors" asp-items="Model.MentorsSelectList" size="10">
+                </select>
+            </div>
+        </div>
+    </div>
+    <div class="form-group">
+        <input type="submit" value="Create" class="btn btn-primary" />
+    </div>
+</form>
 
 <div>
-    <a asp-page="Index">Back to List</a>
+    <a asp-page="./Index"
+       asp-route-pageIndex="@Model.PageIndex"
+       asp-route-sortOrder="@Model.CurrentSort"
+       asp-route-currentFilter="@Model.CurrentFilter">
+        Back to List
+    </a>
 </div>
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    <script>
+        window.onload = function () {
+            var role = document.getElementById("Employee_EmployeeRole");
+            var roleSelection = role.options[role.selectedIndex].text;
+            switch (roleSelection) {
+                case 'General Manager':
+                    hideElement('branch');
+                    hideElement('project');
+                    hideElement('department');
+                    hideElement('assignments');
+                    hideElement('mentors');
+                    break;
+                case 'Project Manager':
+                    hideElement('branch');
+                    hideElement('department');
+                    hideElement('company');
+                    hideElement('assignments');
+                    break;
+                case 'Department Head':
+                    hideElement('branch');
+                    hideElement('project');
+                    hideElement('company');
+                    hideElement('assignments');
+                    break;
+                case 'Mentor':
+                    hideElement('department');
+                    hideElement('project');
+                    hideElement('company');
+                    hideElement('mentors');
+                    break;
+                case 'Employee':
+                    hideElement('department');
+                    hideElement('project');
+                    hideElement('company');
+                    break;
+            }
+        }
+        function addAssignments() {
+            document.getElementById("multipleSelectListAnchor").insertAdjacentHTML("afterend",
+                ``);
+        }
+        function addMentors() {
+            document.getElementById("multipleSelectListAnchor").insertAdjacentHTML("afterend",
+                ``);
+        }
+        function checkRoleForCompany() {
+            var role = document.getElementById("Employee_EmployeeRole");
+            var company = document.getElementById('Employee_CompanyId');
+            if (role.options[role.selectedIndex].text !== 'General Manager') {
+                for (var i = 0; i < company.options.length; i++) {
+                    if (company.options[i].value === '') {
+                        company.selectedIndex = i;
+                        break;
+                    }
+                }
+            }
+        }
+        function checkRoleForBranch() {
+            var role = document.getElementById("Employee_EmployeeRole");
+            var branch = document.getElementById('Employee_BranchId');
+            if (role.options[role.selectedIndex].text === 'General Manager'
+                || role.options[role.selectedIndex].text === 'Department Head'
+                || role.options[role.selectedIndex].text === 'Project Manager') {
+                for (var i = 0; i < branch.options.length; i++) {
+                    if (branch.options[i].value === '') {
+                        branch.selectedIndex = i;
+                        break;
+                    }
+                }
+            }
+        }
+        function checkRoleForDepartment() {
+            var role = document.getElementById("Employee_EmployeeRole");
+            var department = document.getElementById('Employee_DepartmentId');
+            if (role.options[role.selectedIndex].text !== 'Department Head') {
+                for (var i = 0; i < department.options.length; i++) {
+                    if (department.options[i].value === '') {
+                        department.selectedIndex = i;
+                        break;
+                    }
+                }
+            }
+        }
+        function checkRoleForProject() {
+            var role = document.getElementById("Employee_EmployeeRole");
+            var project = document.getElementById('Employee_ProjectId');
+            if (role.options[role.selectedIndex].text !== 'Project Manager') {
+                for (var i = 0; i < project.options.length; i++) {
+                    if (project.options[i].value === '') {
+                        project.selectedIndex = i;
+                        break;
+                    }
+                }
+            }
+        }
+        function checkCompatibleFields() {
+            var role = document.getElementById("Employee_EmployeeRole");
+            var roleSelection = role.options[role.selectedIndex].text;
+            switch (roleSelection) {
+                case 'General Manager':
+                    selectElement('Employee_BranchId', '');
+                    selectElement('Employee_ProjectId', '');
+                    selectElement('Employee_DepartmentId', '');
+
+                    hideElement('branch');
+                    hideElement('project');
+                    hideElement('department');
+
+                    hideElement('assignments');
+                    hideElement('mentors');
+
+                    showElement('company');
+                    break;
+                case 'Project Manager':
+                    selectElement('Employee_BranchId', '');
+                    selectElement('Employee_DepartmentId', '');
+                    selectElement('Employee_CompanyId', '');
+
+                    hideElement('branch');
+                    hideElement('department');
+                    hideElement('company');
+
+                    hideElement('assignments');
+
+                    showElement('project');
+                    showElement('mentors');
+                    break;
+                case 'Department Head':
+                    selectElement('Employee_BranchId', '');
+                    selectElement('Employee_ProjectId', '');
+                    selectElement('Employee_CompanyId', '');
+
+                    hideElement('branch');
+                    hideElement('project');
+                    hideElement('company');
+
+                    hideElement('assignments');
+
+                    showElement('department');
+                    showElement('mentors');
+                    break;
+                case 'Mentor':
+                    selectElement('Employee_DepartmentId', '');
+                    selectElement('Employee_ProjectId', '');
+                    selectElement('Employee_CompanyId', '');
+
+                    hideElement('department');
+                    hideElement('project');
+                    hideElement('company');
+
+                    hideElement('mentors');
+
+                    showElement('branch');
+                    showElement('assignments');
+                    break;
+                case 'Employee':
+                    selectElement('Employee_DepartmentId', '');
+                    selectElement('Employee_ProjectId', '');
+                    selectElement('Employee_CompanyId', '');
+
+                    hideElement('department');
+                    hideElement('project');
+                    hideElement('company');
+
+                    showElement('branch');
+                    showElement('assignments');
+                    showElement('mentors');
+                    break;
+            }
+        }
+        function selectElement(id, valueToSelect) {
+            let element = document.getElementById(id);
+            element.value = valueToSelect;
+        }
+        function hideElement(id) {
+            var x = document.getElementById(id);
+            x.style.display = "none";
+        }
+        function showElement(id) {
+            var x = document.getElementById(id);
+            x.style.display = "block";
+        }
+    </script>
 }

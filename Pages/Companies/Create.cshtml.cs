@@ -14,6 +14,9 @@ namespace ERPSystem.Pages.Companies
     public class CreateModel : PageModel
     {
         private readonly ERPSystem.Data.ApplicationDbContext _context;
+        public int? PageIndex { get; set; }
+        public string CurrentFilter { get; set; }
+        public string CurrentSort { get; set; }
         public List<SelectListItem> GeneralManagerList { get; set; }
         public int? GeneralManagerId;
         public List<int> SelectedBranches { get; set; }
@@ -28,8 +31,13 @@ namespace ERPSystem.Pages.Companies
             _context = context;
         }
 
-        public IActionResult OnGet()
+        public IActionResult OnGet(string sortOrder,
+            string currentFilter, int? pageIndex)
         {
+            PageIndex = pageIndex;
+            CurrentSort = sortOrder;
+            CurrentFilter = currentFilter;
+
             GeneralManagerList = new List<SelectListItem>();
             foreach (Employee gm in _context.Employees
                 .Where(e => e.EmployeeRole == EmployeeRole.GeneralManager)
@@ -38,10 +46,10 @@ namespace ERPSystem.Pages.Companies
                 GeneralManagerList.Add(new SelectListItem { Value = $"{gm.Id}", Text = $"{gm.FullName}" });
             }
 
-            var BranchesQuery = _context.Branches.OrderBy(b => b.Name);
-            BranchesSelectList = new SelectList(BranchesQuery.AsNoTracking(), "Id", "Name"); //list, id, value
-            var DepartmentsQuery = _context.Departments.OrderBy(b => b.Name);
-            DepartmentsSelectList = new SelectList(DepartmentsQuery.AsNoTracking(), "Id", "Name"); //list, id, value
+            var BranchesQuery = _context.Branches.OrderBy(b => b.Name).AsNoTracking();
+            BranchesSelectList = new SelectList(BranchesQuery, "Id", "Name"); //list, id, value
+            var DepartmentsQuery = _context.Departments.OrderBy(b => b.Name).AsNoTracking();
+            DepartmentsSelectList = new SelectList(DepartmentsQuery, "Id", "Name"); //list, id, value
 
             SelectedBranches = new List<int>();
             SelectedDepartments = new List<int>();
@@ -55,7 +63,8 @@ namespace ERPSystem.Pages.Companies
         public Company Company { get; set; }
 
         // To protect from overposting attacks, see https://aka.ms/RazorPagesCRUD
-        public async Task<IActionResult> OnPostAsync(int? GeneralManagerId, int[] SelectedBranches, int[] SelectedDepartments)
+        public async Task<IActionResult> OnPostAsync(string sortOrder,
+            string currentFilter, int? pageIndex, int? GeneralManagerId, int[] SelectedBranches, int[] SelectedDepartments)
         {
             if (!ModelState.IsValid)
             {
@@ -117,7 +126,12 @@ namespace ERPSystem.Pages.Companies
                 }
                 _context.Companies.Add(NewCompany);
                 await _context.SaveChangesAsync();
-                return RedirectToPage("./Index");
+                return RedirectToPage("./Index", new
+                {
+                    pageIndex = $"{pageIndex}",
+                    sortOrder = $"{sortOrder}",
+                    currentFilter = $"{currentFilter}"
+                });
             }
             return Page();
         }
