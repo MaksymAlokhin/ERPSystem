@@ -123,13 +123,15 @@
        asp-route-id="@Model.Employee.Id"
        asp-route-pageIndex="@Model.PageIndex"
        asp-route-sortOrder="@Model.CurrentSort"
-       asp-route-currentFilter="@Model.CurrentFilter">
+       asp-route-currentFilter="@Model.CurrentFilter"
+       asp-route-Role="@Model.Role">
         Edit
     </a> |
     <a asp-page="./Index"
        asp-route-pageIndex="@Model.PageIndex"
        asp-route-sortOrder="@Model.CurrentSort"
-       asp-route-currentFilter="@Model.CurrentFilter">
+       asp-route-currentFilter="@Model.CurrentFilter"
+       asp-route-Role="@Model.Role">
         Back to List
     </a>
 </div>

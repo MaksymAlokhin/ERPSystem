@@ -22,6 +22,7 @@ namespace ERPSystem.Pages.Employees
         public string AssignmentSort { get; set; }
         public string CurrentFilter { get; set; }
         public string CurrentSort { get; set; }
+        public EmployeeRole Role { get; set; }
         public PaginatedList<Employee> Employee { get; set; }
 
         public IndexModel(ERPSystem.Data.ApplicationDbContext context, IConfiguration configuration)
@@ -30,9 +31,10 @@ namespace ERPSystem.Pages.Employees
             Configuration = configuration;
         }
 
-        public async Task OnGetAsync(string sortOrder,
+        public async Task OnGetAsync(EmployeeRole Role, string sortOrder,
             string currentFilter, string searchString, int? pageIndex)
         {
+            this.Role = Role;
             CurrentSort = sortOrder;
             NameSort = String.IsNullOrEmpty(sortOrder) ? "name_desc" : "";
             RoleSort = sortOrder == "role" ? "role_desc" : "role";
@@ -53,6 +55,7 @@ namespace ERPSystem.Pages.Employees
                 .Include(e => e.Branch)
                 .Include(e => e.Assignments)
                 .Include(e => e.Mentors)
+                .Where(e => e.EmployeeRole == Role)
                 .AsNoTracking();
 
             if (!String.IsNullOrEmpty(searchString))

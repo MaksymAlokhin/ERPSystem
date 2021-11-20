@@ -16,6 +16,7 @@ namespace ERPSystem.Pages.Employees
         public int? PageIndex { get; set; }
         public string CurrentFilter { get; set; }
         public string CurrentSort { get; set; }
+        public EmployeeRole Role { get; set; }
 
         public DeleteModel(ERPSystem.Data.ApplicationDbContext context)
         {
@@ -25,9 +26,10 @@ namespace ERPSystem.Pages.Employees
         [BindProperty]
         public Employee Employee { get; set; }
 
-        public async Task<IActionResult> OnGetAsync(string sortOrder,
+        public async Task<IActionResult> OnGetAsync(EmployeeRole Role, string sortOrder,
             string currentFilter, int? pageIndex, int? id)
         {
+            this.Role = Role; 
             PageIndex = pageIndex;
             CurrentSort = sortOrder;
             CurrentFilter = currentFilter;
@@ -52,7 +54,7 @@ namespace ERPSystem.Pages.Employees
             return Page();
         }
 
-        public async Task<IActionResult> OnPostAsync(string sortOrder,
+        public async Task<IActionResult> OnPostAsync(EmployeeRole Role, string sortOrder,
             string currentFilter, int? pageIndex, int? id)
         {
             if (id == null)
@@ -72,7 +74,8 @@ namespace ERPSystem.Pages.Employees
             {
                 pageIndex = $"{pageIndex}",
                 sortOrder = $"{sortOrder}",
-                currentFilter = $"{currentFilter}"
+                currentFilter = $"{currentFilter}",
+                Role = $"{Role}"
             });
         }
     }

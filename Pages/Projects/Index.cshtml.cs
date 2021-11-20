@@ -64,7 +64,8 @@ namespace ERPSystem.Pages.Projects
             {
                 projectsIQ = projectsIQ.Where(s => s.Name.Contains(searchString)
                                        || s.Department.Name.Contains(searchString)
-                                       || s.ProjectManager.FullName.Contains(searchString));
+                                       || s.ProjectManager.LastName.Contains(searchString)
+                                       || s.ProjectManager.FirstName.Contains(searchString));
             }
             switch (sortOrder)
             {

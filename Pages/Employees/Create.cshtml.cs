@@ -21,15 +21,17 @@ namespace ERPSystem.Pages.Employees
         public SelectList MentorsSelectList { get; set; }
         public List<int> SelectedAssignments { get; set; }
         public SelectList AssignmentsSelectList { get; set; }
+        public EmployeeRole Role { get; set; }
 
         public CreateModel(ERPSystem.Data.ApplicationDbContext context)
         {
             _context = context;
         }
 
-        public IActionResult OnGet(string sortOrder,
+        public IActionResult OnGet(EmployeeRole Role, string sortOrder,
             string currentFilter, int? pageIndex)
         {
+            this.Role = Role; 
             PageIndex = pageIndex;
             CurrentSort = sortOrder;
             CurrentFilter = currentFilter;
@@ -61,7 +63,7 @@ namespace ERPSystem.Pages.Employees
         public Employee Employee { get; set; }
 
         // To protect from overposting attacks, see https://aka.ms/RazorPagesCRUD
-        public async Task<IActionResult> OnPostAsync(string sortOrder,
+        public async Task<IActionResult> OnPostAsync(EmployeeRole Role, string sortOrder,
             string currentFilter, int? pageIndex, int[] SelectedMentors, int[] SelectedAssignments)
         {
             if (!ModelState.IsValid)
@@ -163,7 +165,8 @@ namespace ERPSystem.Pages.Employees
                 {
                     pageIndex = $"{pageIndex}",
                     sortOrder = $"{sortOrder}",
-                    currentFilter = $"{currentFilter}"
+                    currentFilter = $"{currentFilter}",
+                    Role = $"{Role}"
                 });
             }
             return Page();

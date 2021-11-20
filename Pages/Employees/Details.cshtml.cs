@@ -16,6 +16,7 @@ namespace ERPSystem.Pages.Employees
         public int? PageIndex { get; set; }
         public string CurrentFilter { get; set; }
         public string CurrentSort { get; set; }
+        public EmployeeRole Role { get; set; }
 
         public DetailsModel(ERPSystem.Data.ApplicationDbContext context)
         {
@@ -24,9 +25,10 @@ namespace ERPSystem.Pages.Employees
 
         public Employee Employee { get; set; }
 
-        public async Task<IActionResult> OnGetAsync(string sortOrder,
+        public async Task<IActionResult> OnGetAsync(EmployeeRole Role, string sortOrder,
             string currentFilter, int? pageIndex, int? id)
         {
+            this.Role = Role; 
             PageIndex = pageIndex;
             CurrentSort = sortOrder;
             CurrentFilter = currentFilter;

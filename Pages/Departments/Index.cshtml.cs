@@ -46,7 +46,7 @@ namespace ERPSystem.Pages.Departments
             }
             CurrentFilter = searchString;
             IQueryable<Department> departmentsIQ = _context.Departments
-                .Include(i => i.DepartmentHead).Include(i => i.Company);
+                .Include(i => i.DepartmentHead).Include(i => i.Company).AsNoTracking();
             if (!String.IsNullOrEmpty(searchString))
             {
                 departmentsIQ = departmentsIQ.Where(s => s.Name.Contains(searchString)
