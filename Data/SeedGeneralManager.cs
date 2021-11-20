@@ -15,6 +15,7 @@ namespace ERPSystem.Data
             FirstName = "Xyla",
             LastName = "Garza",
             DateOfBirth = DateTime.Parse("1988-02-18"),
+            ProfilePicture = "female_064.jpg",
             Company = Walmart,
             EmployeeState = EmployeeState.Active,
             EmployeeRole = EmployeeRole.GeneralManager
@@ -24,6 +25,7 @@ namespace ERPSystem.Data
             FirstName = "Nash",
             LastName = "Stokes",
             DateOfBirth = DateTime.Parse("1984-03-15"),
+            ProfilePicture = "male_098.jpg",
             Company = Amazon,
             EmployeeState = EmployeeState.Active,
             EmployeeRole = EmployeeRole.GeneralManager
@@ -33,6 +35,7 @@ namespace ERPSystem.Data
             FirstName = "Isaiah",
             LastName = "Hoffman",
             DateOfBirth = DateTime.Parse("1995-11-03"),
+            ProfilePicture = "female_065.jpg",
             Company = Apple,
             EmployeeState = EmployeeState.Active,
             EmployeeRole = EmployeeRole.GeneralManager
@@ -42,6 +45,7 @@ namespace ERPSystem.Data
             FirstName = "Orlando",
             LastName = "Reese",
             DateOfBirth = DateTime.Parse("1986-01-23"),
+            ProfilePicture = "male_099.jpg",
             Company = FordMotor,
             EmployeeState = EmployeeState.Active,
             EmployeeRole = EmployeeRole.GeneralManager
@@ -51,6 +55,7 @@ namespace ERPSystem.Data
             FirstName = "Simon",
             LastName = "Cummings",
             DateOfBirth = DateTime.Parse("2000-12-20"),
+            ProfilePicture = "male_100.jpg",
             Company = FedEx,
             EmployeeState = EmployeeState.Active,
             EmployeeRole = EmployeeRole.GeneralManager
@@ -60,6 +65,7 @@ namespace ERPSystem.Data
             FirstName = "Briar",
             LastName = "Monroe",
             DateOfBirth = DateTime.Parse("2001-04-27"),
+            ProfilePicture = "male_101.jpg",
             Company = BankOfAmerica,
             EmployeeState = EmployeeState.Active,
             EmployeeRole = EmployeeRole.GeneralManager
@@ -69,6 +75,7 @@ namespace ERPSystem.Data
             FirstName = "Celeste",
             LastName = "Bartlett",
             DateOfBirth = DateTime.Parse("1987-12-21"),
+            ProfilePicture = "female_066.jpg",
             Company = JohnsonAndJohnson,
             EmployeeState = EmployeeState.Active,
             EmployeeRole = EmployeeRole.GeneralManager
@@ -78,6 +85,7 @@ namespace ERPSystem.Data
             FirstName = "Christen",
             LastName = "Osborne",
             DateOfBirth = DateTime.Parse("1993-08-13"),
+            ProfilePicture = "female_067.jpg",
             Company = Facebook,
             EmployeeState = EmployeeState.Active,
             EmployeeRole = EmployeeRole.GeneralManager
@@ -87,6 +95,7 @@ namespace ERPSystem.Data
             FirstName = "Gail",
             LastName = "Raymond",
             DateOfBirth = DateTime.Parse("1993-04-06"),
+            ProfilePicture = "male_102.jpg",
             Company = Alphabet,
             EmployeeState = EmployeeState.Active,
             EmployeeRole = EmployeeRole.GeneralManager
@@ -96,6 +105,7 @@ namespace ERPSystem.Data
             FirstName = "Melvin",
             LastName = "Brewer",
             DateOfBirth = DateTime.Parse("1992-04-25"),
+            ProfilePicture = "male_103.jpg",
             Company = ExxonMobil,
             EmployeeState = EmployeeState.Active,
             EmployeeRole = EmployeeRole.GeneralManager

@@ -178,6 +178,10 @@ namespace ERPSystem.Migrations
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
 
+                    b.Property<string>("ProfilePicture")
+                        .HasMaxLength(70)
+                        .HasColumnType("nvarchar(70)");
+
                     b.Property<int?>("ProjectId")
                         .HasColumnType("int");
 

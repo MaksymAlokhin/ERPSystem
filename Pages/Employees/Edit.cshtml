@@ -9,7 +9,18 @@
 <h1>Edit</h1>
 <h4>Employee</h4>
 <hr />
-<form method="post" onload="populateOptionalSelectLists">
+<div class="row">
+    <div class="col-sm-4">
+        @if (!string.IsNullOrEmpty(@Model.Employee.ProfilePicture))
+        {
+            <div class="img-fluid mw-100 h-auto">
+                <img src="~/images/avatars/@Model.Employee.ProfilePicture" />
+            </div>
+        }
+    </div>
+</div>
+
+<form enctype="multipart/form-data" method="post" onload="populateOptionalSelectLists">
     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
     <input type="hidden" asp-for="Employee.Id" />
     <div class="row">
@@ -71,6 +82,18 @@
                 <label asp-for="Employee.Branch" class="control-label"></label>
                 <select asp-for="Employee.BranchId" class="form-control" asp-items="ViewBag.BranchId" onchange="checkRoleForBranch()"><option value="">--none--</option></select>
                 <span asp-validation-for="Employee.BranchId" class="text-danger"></span>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-auto">
+            <div class="form-group">
+                <label asp-for="Employee.ProfilePicture" class="control-label"></label>
+                <div class="custom-file">
+                    <input asp-for="FormFile" class="custom-file-input" id="customFile">
+                    <label class="custom-file-label" for="customFile">Choose a File</label>
+                </div>
+                <span asp-validation-for="FormFile" class="text-danger"></span>
             </div>
         </div>
     </div>
@@ -145,14 +168,6 @@
                     hideElement('company');
                     break;
             }
-        }
-        function addAssignments() {
-            document.getElementById("multipleSelectListAnchor").insertAdjacentHTML("afterend",
-                ``);
-        }
-        function addMentors() {
-            document.getElementById("multipleSelectListAnchor").insertAdjacentHTML("afterend",
-                ``);
         }
         function checkRoleForCompany() {
             var role = document.getElementById("Employee_EmployeeRole");
@@ -291,5 +306,11 @@
             var x = document.getElementById(id);
             x.style.display = "block";
         }
+
+        @*Display the filename of the selected photo*@
+        $(".custom-file-input").on("change", function () {
+            var fileName = $(this).val().split("\\").pop();
+            $(this).siblings(".custom-file-label").addClass("selected").html(fileName);
+        });
     </script>
 }

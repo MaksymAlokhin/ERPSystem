@@ -15,6 +15,7 @@ namespace ERPSystem.Data
             FirstName = "Channing",
             LastName = "Fuentes",
             DateOfBirth = DateTime.Parse("1981-11-25"),
+            ProfilePicture = "male_014.jpg",
             Project = p001,
             EmployeeState = EmployeeState.Active,
             EmployeeRole = EmployeeRole.ProjectManager
@@ -24,6 +25,7 @@ namespace ERPSystem.Data
             FirstName = "Cooper",
             LastName = "Jacobson",
             DateOfBirth = DateTime.Parse("1989-07-21"),
+            ProfilePicture = "male_015.jpg",
             Project = p002,
             EmployeeState = EmployeeState.Active,
             EmployeeRole = EmployeeRole.ProjectManager
@@ -33,6 +35,7 @@ namespace ERPSystem.Data
             FirstName = "Preston",
             LastName = "Holman",
             DateOfBirth = DateTime.Parse("1996-08-05"),
+            ProfilePicture = "male_016.jpg",
             Project = p003,
             EmployeeState = EmployeeState.Active,
             EmployeeRole = EmployeeRole.ProjectManager
@@ -42,6 +45,7 @@ namespace ERPSystem.Data
             FirstName = "Judah",
             LastName = "Bush",
             DateOfBirth = DateTime.Parse("2000-10-01"),
+            ProfilePicture = "male_017.jpg",
             Project = p004,
             EmployeeState = EmployeeState.Active,
             EmployeeRole = EmployeeRole.ProjectManager
@@ -51,6 +55,7 @@ namespace ERPSystem.Data
             FirstName = "Lesley",
             LastName = "Evans",
             DateOfBirth = DateTime.Parse("2001-07-13"),
+            ProfilePicture = "female_074.jpg",
             Project = p005,
             EmployeeState = EmployeeState.Active,
             EmployeeRole = EmployeeRole.ProjectManager
@@ -60,6 +65,7 @@ namespace ERPSystem.Data
             FirstName = "Astra",
             LastName = "Robbins",
             DateOfBirth = DateTime.Parse("1985-10-04"),
+            ProfilePicture = "female_075.jpg",
             Project = p006,
             EmployeeState = EmployeeState.Active,
             EmployeeRole = EmployeeRole.ProjectManager
@@ -69,6 +75,7 @@ namespace ERPSystem.Data
             FirstName = "Jade",
             LastName = "Aguilar",
             DateOfBirth = DateTime.Parse("1989-06-08"),
+            ProfilePicture = "female_076.jpg",
             Project = p007,
             EmployeeState = EmployeeState.Active,
             EmployeeRole = EmployeeRole.ProjectManager
@@ -78,6 +85,7 @@ namespace ERPSystem.Data
             FirstName = "James",
             LastName = "Gonzalez",
             DateOfBirth = DateTime.Parse("2001-09-06"),
+            ProfilePicture = "male_018.jpg",
             Project = p008,
             EmployeeState = EmployeeState.Active,
             EmployeeRole = EmployeeRole.ProjectManager
@@ -87,6 +95,7 @@ namespace ERPSystem.Data
             FirstName = "Brianna",
             LastName = "Cook",
             DateOfBirth = DateTime.Parse("1993-10-30"),
+            ProfilePicture = "female_077.jpg",
             Project = p009,
             EmployeeState = EmployeeState.Active,
             EmployeeRole = EmployeeRole.ProjectManager
@@ -96,6 +105,7 @@ namespace ERPSystem.Data
             FirstName = "Rosalyn",
             LastName = "Melton",
             DateOfBirth = DateTime.Parse("2001-06-04"),
+            ProfilePicture = "female_078.jpg",
             Project = p010,
             EmployeeState = EmployeeState.Active,
             EmployeeRole = EmployeeRole.ProjectManager
@@ -105,6 +115,7 @@ namespace ERPSystem.Data
             FirstName = "Jonah",
             LastName = "Robertson",
             DateOfBirth = DateTime.Parse("1986-05-29"),
+            ProfilePicture = "female_079.jpg",
             Project = p011,
             EmployeeState = EmployeeState.Active,
             EmployeeRole = EmployeeRole.ProjectManager
@@ -114,6 +125,7 @@ namespace ERPSystem.Data
             FirstName = "Nigel",
             LastName = "Mckinney",
             DateOfBirth = DateTime.Parse("1995-09-14"),
+            ProfilePicture = "male_019.jpg",
             Project = p012,
             EmployeeState = EmployeeState.Active,
             EmployeeRole = EmployeeRole.ProjectManager

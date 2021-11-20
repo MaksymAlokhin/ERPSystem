@@ -26,10 +26,11 @@
         </div>
     </div>
 </form>
-<table class="table">
+<table class="table table-responsive text-nowrap">
     <thead>
         <tr>
             <th>#</th>
+            <th>Photo</th>
             <th>
                 <a asp-page="./Index"
                    asp-route-sortOrder="@Model.NameSort"
@@ -73,6 +74,14 @@
                     <th scope="row">
                         @Model.Employee.SeqNum[i]
                     </th>
+                    <td>
+                        @if (!string.IsNullOrEmpty(item.ProfilePicture))
+                        {<img src="~/images/avatars/@item.ProfilePicture"
+                              class="rounded-circle"
+                              height="40" width:auto
+                              asp-append-version="true" />
+                        }
+                    </td>
                     <td>
                         @Html.DisplayFor(modelItem => item.FullName)
                     </td>

@@ -12,6 +12,16 @@
 <div>
     <h4>Employee</h4>
     <hr />
+    @if (!string.IsNullOrEmpty(@Model.Employee.ProfilePicture))
+    {
+        <div class="row">
+            <div class="col-md-4">
+                <div class="img-fluid mw-100 h-auto">
+                    <img src="~/images/avatars/@Model.Employee.ProfilePicture" />
+                </div>
+            </div>
+        </div>
+    }
     <dl class="row">
         <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.Employee.FirstName)

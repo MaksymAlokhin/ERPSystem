@@ -242,6 +242,7 @@ namespace ERPSystem.Migrations
                     DateOfBirth = table.Column<DateTime>(type: "datetime2", nullable: false),
                     EmployeeState = table.Column<string>(type: "nvarchar(16)", maxLength: 16, nullable: false),
                     EmployeeRole = table.Column<string>(type: "nvarchar(16)", maxLength: 16, nullable: false),
+                    ProfilePicture = table.Column<string>(type: "nvarchar(70)", maxLength: 70, nullable: true),
                     BranchId = table.Column<int>(type: "int", nullable: true),
                     ProjectId = table.Column<int>(type: "int", nullable: true),
                     CompanyId = table.Column<int>(type: "int", nullable: true),

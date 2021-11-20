@@ -43,6 +43,10 @@ namespace ERPSystem.Models
         [Display(Name = "Role")]
         public EmployeeRole EmployeeRole { get; set; }
 
+        [StringLength(70, ErrorMessage = "The {0} must be at max {1} characters long.")]
+        [Display(Name = "Photo")]
+        public string ProfilePicture { get; set; }
+
         //Navigation properties
         public int? BranchId { get; set; }
         public Branch Branch { get; set; }

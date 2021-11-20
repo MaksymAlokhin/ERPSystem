@@ -75,6 +75,18 @@
             </div>
         </div>
     </div>
+    <div class="row">
+        <div class="col-sm-auto">
+            <div class="form-group">
+                <label asp-for="Employee.ProfilePicture" class="control-label"></label>
+                <div class="custom-file">
+                    <input asp-for="FormFile" class="custom-file-input" id="customFile">
+                    <label class="custom-file-label" for="customFile">Choose a File</label>
+                </div>
+                <span asp-validation-for="FormFile" class="text-danger"></span>
+            </div>
+        </div>
+    </div>
     <hr />
     <div class="row" id="multipleSelectList">
         <div id="multipleSelectListAnchor"></div>
@@ -146,14 +158,6 @@
                     hideElement('company');
                     break;
             }
-        }
-        function addAssignments() {
-            document.getElementById("multipleSelectListAnchor").insertAdjacentHTML("afterend",
-                ``);
-        }
-        function addMentors() {
-            document.getElementById("multipleSelectListAnchor").insertAdjacentHTML("afterend",
-                ``);
         }
         function checkRoleForCompany() {
             var role = document.getElementById("Employee_EmployeeRole");
@@ -292,5 +296,11 @@
             var x = document.getElementById(id);
             x.style.display = "block";
         }
+
+        @* Display the filename of the selected photo *@
+        $(".custom-file-input").on("change", function () {
+            var fileName = $(this).val().split("\\").pop();
+            $(this).siblings(".custom-file-label").addClass("selected").html(fileName);
+        });
     </script>
 }

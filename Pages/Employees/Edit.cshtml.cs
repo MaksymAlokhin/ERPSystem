@@ -8,12 +8,16 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using ERPSystem.Data;
 using ERPSystem.Models;
+using Microsoft.AspNetCore.Http;
+using System.IO;
+using Microsoft.AspNetCore.Hosting;
 
 namespace ERPSystem.Pages.Employees
 {
     public class EditModel : PageModel
     {
         private readonly ERPSystem.Data.ApplicationDbContext _context;
+        private readonly IWebHostEnvironment webHostEnvironment;
         public int? PageIndex { get; set; }
         public string CurrentFilter { get; set; }
         public string CurrentSort { get; set; }
@@ -22,10 +26,14 @@ namespace ERPSystem.Pages.Employees
         public List<int> SelectedAssignments { get; set; }
         public SelectList AssignmentsSelectList { get; set; }
         public EmployeeRole Role { get; set; }
+        public IFormFile FormFile { get; set; }
+        private readonly string[] permittedExtensions = { ".jpg", ".jpeg", ".png", ".gif", ".bmp", ".tif", ".tiff" };
 
-        public EditModel(ERPSystem.Data.ApplicationDbContext context)
+
+        public EditModel(ERPSystem.Data.ApplicationDbContext context, IWebHostEnvironment hostEnvironment)
         {
             _context = context;
+            webHostEnvironment = hostEnvironment;
         }
 
         [BindProperty]
@@ -201,6 +209,44 @@ namespace ERPSystem.Pages.Employees
                         EmployeeToUpdate.ProjectId = Employee.ProjectId;
                         UpdateMentors(SelectedMentors, EmployeeToUpdate);
                         break;
+                }
+            }
+
+            if (FormFile != null)
+            {
+                //Check permitted extensions for photo
+                var ext = Path.GetExtension(FormFile.FileName).ToLowerInvariant();
+                if (!string.IsNullOrEmpty(ext) || permittedExtensions.Contains(ext))
+                {
+                    //Get random filename for server storage
+                    string uploadsFolder = Path.Combine(webHostEnvironment.WebRootPath, @"images\avatars"); //webHost adds 'wwwroot'
+                    var trustedFileNameForFileStorage = Path.GetRandomFileName();
+                    trustedFileNameForFileStorage = trustedFileNameForFileStorage.Substring(0, 8)
+                        + trustedFileNameForFileStorage.Substring(9) + ext;
+                    var filePath = Path.Combine(uploadsFolder, trustedFileNameForFileStorage);
+
+                    //Copy data to a new file
+                    using (var fileStream = System.IO.File.Create(filePath))
+                    {
+                        await FormFile.CopyToAsync(fileStream);
+                    }
+
+                    #region Delete old photo file
+                    //var oldFile = EmployeeToUpdate.ProfilePicture;
+                    //var fileToDelete = string.Empty;
+                    //if (!string.IsNullOrEmpty(oldFile))
+                    //{
+                    //    fileToDelete = Path.Combine(uploadsFolder, oldFile);
+                    //}
+
+                    //if (System.IO.File.Exists(fileToDelete))
+                    //{
+                    //    System.IO.File.Delete(fileToDelete);
+                    //}
+                    #endregion
+
+                    //Update photo
+                    EmployeeToUpdate.ProfilePicture = trustedFileNameForFileStorage;
                 }
             }
 
