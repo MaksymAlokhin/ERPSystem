@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using ERPSystem.Data;
 using ERPSystem.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace ERPSystem.Pages.Projects
 {
@@ -16,6 +17,10 @@ namespace ERPSystem.Pages.Projects
         public int? PageIndex { get; set; }
         public string CurrentFilter { get; set; }
         public string CurrentSort { get; set; }
+        public List<int> SelectedPositions { get; set; }
+        public SelectList PositionsSelectList { get; set; }
+        public List<SelectListItem> ProjectManagerList { get; set; }
+        public int? ProjectManagerId;
 
         public CreateModel(ERPSystem.Data.ApplicationDbContext context)
         {
@@ -29,7 +34,25 @@ namespace ERPSystem.Pages.Projects
             CurrentSort = sortOrder;
             CurrentFilter = currentFilter;
 
+            ProjectManagerList = new List<SelectListItem>();
+            foreach (Employee pm in _context.Employees
+                    .Where(e => e.EmployeeRole == EmployeeRole.ProjectManager)
+                    .OrderBy(e => e.LastName)
+                    .ThenBy(e => e.FirstName))
+            {
+                ProjectManagerList.Add(new SelectListItem { Value = $"{pm.Id}", Text = $"{pm.FullName}" });
+            }
+
+            var PositionsQuery = _context.Positions.OrderBy(p => p.Name).AsNoTracking();
+            PositionsSelectList = new SelectList(PositionsQuery, "Id", "Name"); //list, id, value
+
+            SelectedPositions = new List<int>();
             ViewData["DepartmentId"] = new SelectList(_context.Departments.OrderBy(d => d.Name), "Id", "Name");
+
+            Project = new Project();
+            Project.ProjectState = ProjectState.Inactive;
+            Project.StartDate = Utility.GetRandomDate(-2, 0);
+            Project.EndDate = Utility.GetRandomDate(0, 2);
             return Page();
         }
 
@@ -38,22 +61,63 @@ namespace ERPSystem.Pages.Projects
 
         // To protect from overposting attacks, see https://aka.ms/RazorPagesCRUD
         public async Task<IActionResult> OnPostAsync(string sortOrder,
-            string currentFilter, int? pageIndex)
+            string currentFilter, int? pageIndex, int? ProjectManagerId, int[] SelectedPositions)
         {
             if (!ModelState.IsValid)
             {
                 return Page();
             }
 
-            _context.Projects.Add(Project);
-            await _context.SaveChangesAsync();
+            var NewProject = new Project();
 
-            return RedirectToPage("./Index", new
+            if (SelectedPositions.Length > 0)
             {
-                pageIndex = $"{pageIndex}",
-                sortOrder = $"{sortOrder}",
-                currentFilter = $"{currentFilter}"
-            });
+                NewProject.Positions = new List<Position>();
+                _context.Positions.Load();
+            }
+
+            foreach (var position in SelectedPositions)
+            {
+                var foundPosition = await _context.Positions.FindAsync(position);
+                if (foundPosition != null)
+                {
+                    NewProject.Positions.Add(foundPosition);
+                }
+            }
+
+            if (await TryUpdateModelAsync<Project>(
+                NewProject,
+                "Project",
+                p => p.Name, p => p.ProjectState, p => p.StartDate, p => p.EndDate, p => p.DepartmentId))
+            {
+                if (ProjectManagerId != null)
+                {
+                    Employee pm = await _context.Employees
+                        .Where(e => e.EmployeeRole == EmployeeRole.ProjectManager && e.Id == ProjectManagerId)
+                        .FirstOrDefaultAsync();
+                    if (pm.ProjectId != null)
+                    {
+                        var oldProject = await _context.Projects.FindAsync(pm.ProjectId);
+                        oldProject.ProjectState = ProjectState.Inactive;
+                    }
+                    pm.ProjectId = null;
+                    NewProject.ProjectManager = pm;
+                }
+                else
+                {
+                    NewProject.ProjectState = ProjectState.Inactive;
+                }
+                _context.Projects.Add(NewProject);
+                await _context.SaveChangesAsync();
+
+                return RedirectToPage("./Index", new
+                {
+                    pageIndex = $"{pageIndex}",
+                    sortOrder = $"{sortOrder}",
+                    currentFilter = $"{currentFilter}"
+                });
+            }
+            return Page();
         }
     }
 }

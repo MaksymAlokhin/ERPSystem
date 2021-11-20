@@ -55,7 +55,7 @@ namespace ERPSystem.Pages.Employees
             SelectedAssignments = new List<int>();
 
             Employee = new Employee();
-
+            Employee.DateOfBirth = Utility.GetRandomDate(-60, -20);
             return Page();
         }
 

@@ -92,7 +92,7 @@ namespace ERPSystem.Pages.Departments
                     "Department",
                     d => d.Name, d => d.DepartmentState, d => d.CompanyId))
             {
-                if (DepartmentHeadId != 0)
+                if (DepartmentHeadId != null)
                 {
                     Employee dh = await _context.Employees
                         .Where(e => e.EmployeeRole == EmployeeRole.DepartmentHead && e.Id == DepartmentHeadId)
