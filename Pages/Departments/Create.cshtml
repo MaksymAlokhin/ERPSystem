@@ -10,46 +10,52 @@
 
 <h4>Department</h4>
 <hr />
-<div class="row">
-    <div class="col-md-4">
-        <form method="post">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="row">
-                <div class="col-sm-auto">
-                    <div class="form-group">
-                        <label asp-for="Department.Name" class="control-label"></label>
-                        <input asp-for="Department.Name" class="form-control" />
-                        <span asp-validation-for="Department.Name" class="text-danger"></span>
-                    </div>
-                    <div class="form-group">
-                        <label asp-for="Department.DepartmentState" class="control-label"></label>
-                        <select asp-for="Department.DepartmentState" asp-items="Html.GetEnumSelectList<Models.DepartmentState>()" class="form-control" onchange="checkHead()"></select>
-                        <span asp-validation-for="Department.DepartmentState" class="text-danger"></span>
-                    </div>
-                    <div class="form-group">
-                        <label asp-for="Department.DepartmentHead" class="control-label"></label>
-                        <select asp-for="DepartmentHeadId" asp-items="Model.DepartmentHeadList" class="form-control" onchange="toggleActive()"><option value="0">--none--</option></select>
-                    </div>
-                    <div class="form-group">
-                        <label asp-for="Department.Company" class="control-label"></label>
-                        <select asp-for="Department.CompanyId" class="form-control" asp-items="Model.CompaniesSelectList"><option value="">--none--</option></select>
-                        <span asp-validation-for="Department.CompanyId" class="text-danger"></span>
-                    </div>
-                </div>
-                <div class="col-sm-auto">
-                    <div class="form-group">
-                        <label asp-for="Department.Projects" class="control-label"></label><br />
-                        <select asp-for="SelectedProjects" asp-items="Model.ProjectsSelectList" size="13">
-                        </select>
-                    </div>
-                </div>
-            </div>
+<form method="post">
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+    <div class="row">
+        <div class="col-sm-4">
             <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
+                <label asp-for="Department.Name" class="control-label"></label>
+                <input asp-for="Department.Name" class="form-control" />
+                <span asp-validation-for="Department.Name" class="text-danger"></span>
             </div>
-        </form>
+        </div>
+        <div class="col-sm-4">
+            <div class="form-group">
+                <label asp-for="Department.Company" class="control-label"></label>
+                <select asp-for="Department.CompanyId" class="form-control" asp-items="Model.CompaniesSelectList"><option value="">--none--</option></select>
+                <span asp-validation-for="Department.CompanyId" class="text-danger"></span>
+            </div>
+        </div>
     </div>
-</div>
+    <div class="row">
+        <div class="col-sm-4">
+            <div class="form-group">
+                <label asp-for="Department.DepartmentHead" class="control-label"></label>
+                <select asp-for="DepartmentHeadId" asp-items="Model.DepartmentHeadList" class="form-control" onchange="toggleActive()"><option value="">--none--</option></select>
+            </div>
+        </div>
+        <div class="col-sm-4">
+            <div class="form-group">
+                <label asp-for="Department.DepartmentState" class="control-label"></label>
+                <select asp-for="Department.DepartmentState" asp-items="Html.GetEnumSelectList<Models.DepartmentState>()" class="form-control" onchange="checkHead()"></select>
+                <span asp-validation-for="Department.DepartmentState" class="text-danger"></span>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-4">
+            <div class="form-group">
+                <label asp-for="Department.Projects" class="control-label"></label><br />
+                <select asp-for="SelectedProjects" asp-items="Model.ProjectsSelectList" size="10">
+                </select>
+            </div>
+        </div>
+    </div>
+    <div class="form-group">
+        <input type="submit" value="Create" class="btn btn-primary" />
+    </div>
+</form>
 
 <div>
     <a asp-page="./Index"
@@ -66,7 +72,7 @@
         function toggleActive() {
             var gm = document.getElementById("DepartmentHeadId");
             var state = document.getElementById('Department_DepartmentState');
-            if (gm.options[gm.selectedIndex].value == '0') {
+            if (gm.options[gm.selectedIndex].value === '') {
                 for (var i = 0; i < state.options.length; i++) {
                     if (state.options[i].text === 'Inactive') {
                         state.selectedIndex = i;
@@ -86,7 +92,7 @@
         function checkHead() {
             var gm = document.getElementById("DepartmentHeadId");
             var state = document.getElementById('Department_DepartmentState');
-            if (gm.options[gm.selectedIndex].value == '0') {
+            if (gm.options[gm.selectedIndex].value === '') {
                 for (var i = 0; i < state.options.length; i++) {
                     if (state.options[i].text === 'Inactive') {
                         state.selectedIndex = i;

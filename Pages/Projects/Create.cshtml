@@ -10,40 +10,66 @@
 
 <h4>Project</h4>
 <hr />
-<div class="row">
-    <div class="col-md-4">
-        <form method="post">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+<form method="post">
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+    <div class="row">
+        <div class="col-sm-4">
             <div class="form-group">
                 <label asp-for="Project.Name" class="control-label"></label>
                 <input asp-for="Project.Name" class="form-control" />
                 <span asp-validation-for="Project.Name" class="text-danger"></span>
             </div>
+        </div>
+        <div class="col-sm-4">
             <div class="form-group">
                 <label asp-for="Project.StartDate" class="control-label"></label>
                 <input asp-for="Project.StartDate" class="form-control" />
                 <span asp-validation-for="Project.StartDate" class="text-danger"></span>
             </div>
+        </div>
+        <div class="col-sm-4">
             <div class="form-group">
                 <label asp-for="Project.EndDate" class="control-label"></label>
                 <input asp-for="Project.EndDate" class="form-control" />
                 <span asp-validation-for="Project.EndDate" class="text-danger"></span>
             </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-4">
+            <div class="form-group">
+                <label asp-for="Project.Department" class="control-label"></label>
+                <select asp-for="Project.DepartmentId" class="form-control" asp-items="ViewBag.DepartmentId"><option value="">--none--</option></select>
+                <span asp-validation-for="Project.DepartmentId" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="col-sm-4">
             <div class="form-group">
                 <label asp-for="Project.ProjectState" class="control-label"></label>
-                <select asp-for="Project.ProjectState" class="form-control" asp-items="Html.GetEnumSelectList<Models.EmployeeState>()"></select>
+                <select asp-for="Project.ProjectState" asp-items="Html.GetEnumSelectList<Models.DepartmentState>()" class="form-control" onchange="checkManager()"></select>
                 <span asp-validation-for="Project.ProjectState" class="text-danger"></span>
             </div>
+        </div>
+        <div class="col-sm-4">
             <div class="form-group">
-                <label asp-for="Project.DepartmentId" class="control-label"></label>
-                <select asp-for="Project.DepartmentId" class ="form-control" asp-items="ViewBag.DepartmentId"></select>
+                <label asp-for="Project.ProjectManager" class="control-label"></label>
+                <select asp-for="ProjectManagerId" asp-items="Model.ProjectManagerList" class="form-control" onchange="toggleActive()"><option value="">--none--</option></select>
             </div>
-            <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
-            </div>
-        </form>
+        </div>
     </div>
-</div>
+    <div class="row">
+        <div class="col-sm-4">
+            <div class="form-group">
+                <label asp-for="Project.Positions" class="control-label"></label><br />
+                <select asp-for="SelectedPositions" asp-items="Model.PositionsSelectList" size="10">
+                </select>
+            </div>
+        </div>
+    </div>
+    <div class="form-group">
+        <input type="submit" value="Create" class="btn btn-primary" />
+    </div>
+</form>
 
 <div>
     <a asp-page="./Index"
@@ -56,4 +82,38 @@
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+<script>
+    function toggleActive() {
+        var pm = document.getElementById("ProjectManagerId");
+        var state = document.getElementById('Project_ProjectState');
+        if (pm.options[pm.selectedIndex].value === '') {
+            for (var i = 0; i < state.options.length; i++) {
+                if (state.options[i].text === 'Inactive') {
+                    state.selectedIndex = i;
+                    break;
+                }
+            }
+        }
+        else {
+            for (var i = 0; i < state.options.length; i++) {
+                if (state.options[i].text === 'Active') {
+                    state.selectedIndex = i;
+                    break;
+                }
+            }
+        }
+    }
+    function checkManager() {
+        var pm = document.getElementById("ProjectManagerId");
+        var state = document.getElementById('Project_ProjectState');
+        if (pm.options[pm.selectedIndex].value === '') {
+            for (var i = 0; i < state.options.length; i++) {
+                if (state.options[i].text === 'Inactive') {
+                    state.selectedIndex = i;
+                    break;
+                }
+            }
+        }
+    }
+</script>
 }

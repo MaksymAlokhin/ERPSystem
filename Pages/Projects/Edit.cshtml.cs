@@ -100,7 +100,7 @@ namespace ERPSystem.Pages.Projects
             if (await TryUpdateModelAsync<Project>(
                 ProjectToUpdate,
                 "Project",
-                p => p.Name, p => p.ProjectState, p => p.StartDate, p => p.EndDate, p => p.Department))
+                p => p.Name, p => p.ProjectState, p => p.StartDate, p => p.EndDate, p => p.DepartmentId))
             {
                 Employee pm = await _context.Employees
                         .Where(e => e.EmployeeRole == EmployeeRole.ProjectManager && e.Id == ProjectManagerId)
@@ -108,22 +108,22 @@ namespace ERPSystem.Pages.Projects
                 
                 if (pm != null)
                 {
-                    if (pm.Id != FormerProjectManagerId && pm.DepartmentId != null)
+                    if (pm.Id != FormerProjectManagerId && pm.ProjectId != null)
                     {
-                        var oldDepartment = await _context.Departments.FindAsync(pm.DepartmentId);
-                        oldDepartment.DepartmentState = DepartmentState.Inactive;
+                        var oldProject = await _context.Projects.FindAsync(pm.ProjectId);
+                        oldProject.ProjectState = ProjectState.Inactive;
                     }
-                    pm.DepartmentId = Department.Id;
+                    pm.ProjectId = Project.Id;
                 }
                 else
                 {
                     if (FormerProjectManagerId != null)
                     {
-                        Employee formerHh = await _context.Employees
-                                .Where(e => e.EmployeeRole == EmployeeRole.DepartmentHead && e.Id == FormerProjectManagerId)
+                        Employee formerPm = await _context.Employees
+                                .Where(e => e.EmployeeRole == EmployeeRole.ProjectManager && e.Id == FormerProjectManagerId)
                                 .FirstOrDefaultAsync();
-                        formerHh.DepartmentId = null;
-                        DepartmentToUpdate.DepartmentState = DepartmentState.Inactive;
+                        formerPm.ProjectId = null;
+                        ProjectToUpdate.ProjectState = ProjectState.Inactive;
                     }
                 }
 
@@ -158,7 +158,7 @@ namespace ERPSystem.Pages.Projects
         {
             return _context.Projects.Any(e => e.Id == id);
         }
-        private void UpdatePositions(int[] SelectedPositions, Department Department)
+        private void UpdatePositions(int[] SelectedPositions, Project Project)
         {
             {
                 if (SelectedPositions.Length == 0)
