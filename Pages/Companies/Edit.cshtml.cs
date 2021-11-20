@@ -162,7 +162,7 @@ namespace ERPSystem.Pages.Companies
         private void UpdateDepartments(int[] SelectedDepartments, Company Company)
         {
             {
-                if (SelectedDepartments == null)
+                if (SelectedDepartments.Length == 0)
                 {
                     Company.Departments = new List<Department>();
                     return;
@@ -198,7 +198,7 @@ namespace ERPSystem.Pages.Companies
         private void UpdateBrances(int[] SelectedBranches, Company Company)
         {
             {
-                if (SelectedBranches == null)
+                if (SelectedBranches.Length == 0)
                 {
                     Company.Branches = new List<Branch>();
                     return;

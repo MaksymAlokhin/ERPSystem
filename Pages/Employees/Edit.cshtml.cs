@@ -237,7 +237,7 @@ namespace ERPSystem.Pages.Employees
         private void UpdateMentors(int[] SelectedMentors, Employee Employee)
         {
             {
-                if (SelectedMentors == null)
+                if (SelectedMentors.Length == 0)
                 {
                     Employee.Mentors = new List<Employee>();
                     return;
@@ -273,7 +273,7 @@ namespace ERPSystem.Pages.Employees
         private void UpdateAssignments(int[] SelectedAssignments, Employee Employee)
         {
             {
-                if (SelectedAssignments == null)
+                if (SelectedAssignments.Length == 0)
                 {
                     Employee.Assignments = new List<Assignment>();
                     return;

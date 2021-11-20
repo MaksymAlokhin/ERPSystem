@@ -13,6 +13,9 @@ namespace ERPSystem.Pages.Projects
     public class DeleteModel : PageModel
     {
         private readonly ERPSystem.Data.ApplicationDbContext _context;
+        public int? PageIndex { get; set; }
+        public string CurrentFilter { get; set; }
+        public string CurrentSort { get; set; }
 
         public DeleteModel(ERPSystem.Data.ApplicationDbContext context)
         {
@@ -22,15 +25,24 @@ namespace ERPSystem.Pages.Projects
         [BindProperty]
         public Project Project { get; set; }
 
-        public async Task<IActionResult> OnGetAsync(int? id)
+        public async Task<IActionResult> OnGetAsync(string sortOrder,
+            string currentFilter, int? pageIndex, int? id)
         {
+            PageIndex = pageIndex;
+            CurrentSort = sortOrder;
+            CurrentFilter = currentFilter;
+
             if (id == null)
             {
                 return NotFound();
             }
 
             Project = await _context.Projects
-                .Include(p => p.Department).FirstOrDefaultAsync(m => m.Id == id);
+                .Include(p => p.Department)
+                .Include(p => p.Positions)
+                .Include(p => p.ProjectManager)
+                .AsNoTracking()
+                .FirstOrDefaultAsync(m => m.Id == id);
 
             if (Project == null)
             {
@@ -39,7 +51,8 @@ namespace ERPSystem.Pages.Projects
             return Page();
         }
 
-        public async Task<IActionResult> OnPostAsync(int? id)
+        public async Task<IActionResult> OnPostAsync(string sortOrder,
+            string currentFilter, int? pageIndex, int? id)
         {
             if (id == null)
             {
@@ -54,7 +67,12 @@ namespace ERPSystem.Pages.Projects
                 await _context.SaveChangesAsync();
             }
 
-            return RedirectToPage("./Index");
+            return RedirectToPage("./Index", new
+            {
+                pageIndex = $"{pageIndex}",
+                sortOrder = $"{sortOrder}",
+                currentFilter = $"{currentFilter}"
+            });
         }
     }
 }

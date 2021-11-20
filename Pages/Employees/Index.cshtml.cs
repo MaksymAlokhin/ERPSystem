@@ -16,7 +16,6 @@ namespace ERPSystem.Pages.Employees
         private readonly ERPSystem.Data.ApplicationDbContext _context;
         private readonly IConfiguration Configuration;
         public string NameSort { get; set; }
-        public string RoleSort { get; set; }
         public string BranchSort { get; set; }
         public string StateSort { get; set; }
         public string AssignmentSort { get; set; }
@@ -37,7 +36,6 @@ namespace ERPSystem.Pages.Employees
             this.Role = Role;
             CurrentSort = sortOrder;
             NameSort = String.IsNullOrEmpty(sortOrder) ? "name_desc" : "";
-            RoleSort = sortOrder == "role" ? "role_desc" : "role";
             BranchSort = sortOrder == "branch" ? "branch_desc" : "branch";
             StateSort = sortOrder == "state" ? "state_desc" : "state";
             AssignmentSort = sortOrder == "assignment" ? "assignment_desc" : "assignment";
@@ -67,12 +65,6 @@ namespace ERPSystem.Pages.Employees
             {
                 case "name_desc":
                     employeesIQ = employeesIQ.OrderByDescending(s => s.LastName).ThenBy(s => s.FirstName);
-                    break;
-                case "role":
-                    employeesIQ = employeesIQ.OrderBy(s => s.EmployeeRole).ThenBy(s => s.LastName).ThenBy(s => s.FirstName);
-                    break;
-                case "role_desc":
-                    employeesIQ = employeesIQ.OrderByDescending(s => s.EmployeeRole).ThenBy(s => s.LastName).ThenBy(s => s.FirstName);
                     break;
                 case "branch":
                     employeesIQ = employeesIQ.OrderBy(s => s.Branch.Name).ThenBy(s => s.LastName).ThenBy(s => s.FirstName); ;

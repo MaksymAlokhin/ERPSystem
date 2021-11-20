@@ -164,7 +164,7 @@ namespace ERPSystem.Pages.Departments
         private void UpdateProjects(int[] SelectedProjects, Department Department)
         {
             {
-                if (SelectedProjects == null)
+                if (SelectedProjects.Length == 0)
                 {
                     Department.Projects = new List<Project>();
                     return;
