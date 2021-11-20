@@ -22,10 +22,17 @@
             @Html.DisplayNameFor(model => model.Department.DepartmentHead)
         </dt>
         <dd class="col-sm-10">
-            <a asp-page="../Employees/Edit"
-               asp-route-id="@Model.Department.DepartmentHead.Id">
+            @if (@Model.Department.DepartmentHead != null)
+            {
+                <a asp-page="../Employees/Edit"
+                   asp-route-id="@Model.Department.DepartmentHead.Id">
+                    @Html.DisplayFor(model => model.Department.DepartmentHead.FullName)
+                </a>
+            }
+            else
+            {
                 @Html.DisplayFor(model => model.Department.DepartmentHead.FullName)
-            </a>
+            }
         </dd>
         <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.Department.DepartmentState)
@@ -37,10 +44,17 @@
             @Html.DisplayNameFor(model => model.Department.Company)
         </dt>
         <dd class="col-sm-10">
-            <a asp-page="../Companies/Edit"
-               asp-route-id="@Model.Department.Company.Id">
+            @if (@Model.Department.Company != null)
+            {
+                <a asp-page="../Companies/Edit"
+                   asp-route-id="@Model.Department.Company.Id">
+                    @Html.DisplayFor(model => model.Department.Company.Name)
+                </a>
+            }
+            else
+            {
                 @Html.DisplayFor(model => model.Department.Company.Name)
-            </a>
+            }
         </dd>
         @if (Model.ProjectsList.Any())
         {

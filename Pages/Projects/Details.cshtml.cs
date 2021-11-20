@@ -13,6 +13,9 @@ namespace ERPSystem.Pages.Projects
     public class DetailsModel : PageModel
     {
         private readonly ERPSystem.Data.ApplicationDbContext _context;
+        public int? PageIndex { get; set; }
+        public string CurrentFilter { get; set; }
+        public string CurrentSort { get; set; }
 
         public DetailsModel(ERPSystem.Data.ApplicationDbContext context)
         {
@@ -21,15 +24,24 @@ namespace ERPSystem.Pages.Projects
 
         public Project Project { get; set; }
 
-        public async Task<IActionResult> OnGetAsync(int? id)
+        public async Task<IActionResult> OnGetAsync(string sortOrder,
+            string currentFilter, int? pageIndex, int? id)
         {
+            PageIndex = pageIndex;
+            CurrentSort = sortOrder;
+            CurrentFilter = currentFilter;
+
             if (id == null)
             {
                 return NotFound();
             }
 
             Project = await _context.Projects
-                .Include(p => p.Department).FirstOrDefaultAsync(m => m.Id == id);
+                .Include(p => p.Department)
+                .Include(p => p.Positions)
+                .Include(p => p.ProjectManager)
+                .AsNoTracking()
+                .FirstOrDefaultAsync(m => m.Id == id);
 
             if (Project == null)
             {

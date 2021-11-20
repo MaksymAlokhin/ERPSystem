@@ -122,7 +122,7 @@ namespace ERPSystem.Pages.Branches
         private void UpdateProjects(int[] SelectedEmployees, Branch Branch)
         {
             {
-                if (SelectedEmployees == null)
+                if (SelectedEmployees.Length == 0)
                 {
                     Branch.Employees = new List<Employee>();
                     return;

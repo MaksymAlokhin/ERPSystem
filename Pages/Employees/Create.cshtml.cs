@@ -106,19 +106,11 @@ namespace ERPSystem.Pages.Employees
                             NewEmployee,
                             "Employee",
                             e => e.FirstName, e => e.LastName, e => e.EmployeeRole, e => e.EmployeeState,
-                            e => e.DateOfBirth))
+                            e => e.DateOfBirth, e => e.ProjectId, e => e.CompanyId, e => e.DepartmentId,
+                            e => e.BranchId))
             {
                 switch (Employee.EmployeeRole)
                 {
-                    case EmployeeRole.Employee:
-                        NewEmployee.BranchId = Employee.BranchId;
-                        UpdateAssignments(SelectedAssignments, NewEmployee);
-                        UpdateMentors(SelectedMentors, NewEmployee);
-                        break;
-                    case EmployeeRole.Mentor:
-                        NewEmployee.BranchId = Employee.BranchId;
-                        UpdateAssignments(SelectedAssignments, NewEmployee);
-                        break;
                     case EmployeeRole.DepartmentHead:
                         if (Employee.DepartmentId != null)
                         {
@@ -129,8 +121,6 @@ namespace ERPSystem.Pages.Employees
                                 department.DepartmentHead.DepartmentId = null;
                             }
                         }
-                        NewEmployee.DepartmentId = Employee.DepartmentId;
-                        UpdateMentors(SelectedMentors, NewEmployee);
                         break;
                     case EmployeeRole.GeneralManager:
                         if (Employee.CompanyId != null)
@@ -142,7 +132,6 @@ namespace ERPSystem.Pages.Employees
                                 company.GeneralManager.CompanyId = null;
                             }
                         }
-                        NewEmployee.CompanyId = Employee.CompanyId;
                         break;
                     case EmployeeRole.ProjectManager:
                         if (Employee.ProjectId != null)
@@ -154,8 +143,6 @@ namespace ERPSystem.Pages.Employees
                                 project.ProjectManager.ProjectId = null;
                             }
                         }
-                        NewEmployee.ProjectId = Employee.ProjectId;
-                        UpdateMentors(SelectedMentors, NewEmployee);
                         break;
                 }
 
@@ -166,82 +153,10 @@ namespace ERPSystem.Pages.Employees
                     pageIndex = $"{pageIndex}",
                     sortOrder = $"{sortOrder}",
                     currentFilter = $"{currentFilter}",
-                    Role = $"{Role}"
+                    Role = $"{NewEmployee.EmployeeRole}"
                 });
             }
             return Page();
-        }
-        private void UpdateMentors(int[] SelectedMentors, Employee Employee)
-        {
-            {
-                if (SelectedMentors == null)
-                {
-                    Employee.Mentors = new List<Employee>();
-                    return;
-                }
-
-                var SelectedMentorsHS = new HashSet<int>(SelectedMentors);
-                var EmployeeMentorsHS = new HashSet<int>
-                    (Employee.Mentors.Select(s => s.Id));
-                foreach (var mentor in _context.Employees)
-                {
-                    //If items are selected
-                    if (SelectedMentorsHS.Contains(mentor.Id))
-                    {
-                        //If item not present
-                        if (!EmployeeMentorsHS.Contains(mentor.Id))
-                        {
-                            Employee.Mentors.Add(mentor);
-                        }
-                    }
-                    //If items are not selected
-                    else
-                    {
-                        //If item is present
-                        if (EmployeeMentorsHS.Contains(mentor.Id))
-                        {
-                            var toRemove = Employee.Mentors.Single(s => s.Id == mentor.Id);
-                            Employee.Mentors.Remove(toRemove);
-                        }
-                    }
-                }
-            }
-        }
-        private void UpdateAssignments(int[] SelectedAssignments, Employee Employee)
-        {
-            {
-                if (SelectedAssignments == null)
-                {
-                    Employee.Assignments = new List<Assignment>();
-                    return;
-                }
-
-                var SelectedAssignmentsHS = new HashSet<int>(SelectedAssignments);
-                var EmployeeAssignmentsHS = new HashSet<int>
-                    (Employee.Assignments.Select(s => s.Id));
-                foreach (var assignment in _context.Assignments)
-                {
-                    //If items are selected
-                    if (SelectedAssignmentsHS.Contains(assignment.Id))
-                    {
-                        //If item not present
-                        if (!EmployeeAssignmentsHS.Contains(assignment.Id))
-                        {
-                            Employee.Assignments.Add(assignment);
-                        }
-                    }
-                    //If items are not selected
-                    else
-                    {
-                        //If item is present
-                        if (EmployeeAssignmentsHS.Contains(assignment.Id))
-                        {
-                            var toRemove = Employee.Assignments.Single(s => s.Id == assignment.Id);
-                            Employee.Assignments.Remove(toRemove);
-                        }
-                    }
-                }
-            }
         }
     }
 }
