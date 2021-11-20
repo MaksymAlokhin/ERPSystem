@@ -93,11 +93,11 @@ namespace ERPSystem.Pages.Departments
                 return Page();
             }
 
-            var DepartmentToUpdate = _context.Departments
+            var DepartmentToUpdate = await _context.Departments
                 .Include(d => d.DepartmentHead)
                 .Include(p => p.Projects)
                 .Include(c => c.Company)
-                .Single(m => m.Id == id);
+                .FirstOrDefaultAsync(m => m.Id == id);
 
             if (await TryUpdateModelAsync<Department>(
                 DepartmentToUpdate,
@@ -107,6 +107,7 @@ namespace ERPSystem.Pages.Departments
                 Employee dh = await _context.Employees
                         .Where(e => e.EmployeeRole == EmployeeRole.DepartmentHead && e.Id == DepartmentHeadId)
                         .FirstOrDefaultAsync();
+                
                 if (dh != null)
                 {
                     if (dh.Id != FormerDepartmentHeadId && dh.DepartmentId != null)
