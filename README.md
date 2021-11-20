@@ -15,10 +15,10 @@ Entities Implemented:<br />
 - Company
 - Department
 - Branch
+- Employee
 
 Entities WIP:<br />
 ------------
-- Employee
 - Project
 - Position
 - Assignment
