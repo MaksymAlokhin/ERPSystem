@@ -39,8 +39,11 @@ namespace ERPSystem.Pages.Employees
             ViewData["DepartmentId"] = new SelectList(_context.Departments.OrderBy(d => d.Name), "Id", "Name");
             ViewData["ProjectId"] = new SelectList(_context.Projects.OrderBy(p => p.Name), "Id", "Id");
 
-            var MenteesQuery = _context.Employees.OrderBy(e => e.LastName).ThenBy(e => e.FirstName).AsNoTracking();
-            MentorsSelectList = new SelectList(MenteesQuery, "Id", "FullName"); //list, id, value
+            var MentorsQuery = _context.Employees
+                .OrderBy(e => e.LastName)
+                .ThenBy(e => e.FirstName)
+                .AsNoTracking();
+            MentorsSelectList = new SelectList(MentorsQuery, "Id", "FullName"); //list, id, value
 
             SelectedMentors = new List<int>();
 
