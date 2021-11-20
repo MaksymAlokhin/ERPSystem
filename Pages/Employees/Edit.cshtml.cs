@@ -21,6 +21,7 @@ namespace ERPSystem.Pages.Employees
         public SelectList MentorsSelectList { get; set; }
         public List<int> SelectedAssignments { get; set; }
         public SelectList AssignmentsSelectList { get; set; }
+        public EmployeeRole Role { get; set; }
 
         public EditModel(ERPSystem.Data.ApplicationDbContext context)
         {
@@ -30,9 +31,10 @@ namespace ERPSystem.Pages.Employees
         [BindProperty]
         public Employee Employee { get; set; }
 
-        public async Task<IActionResult> OnGetAsync(string sortOrder,
+        public async Task<IActionResult> OnGetAsync(EmployeeRole Role, string sortOrder,
             string currentFilter, int? pageIndex, int? id)
         {
+            this.Role = Role;            
             PageIndex = pageIndex;
             CurrentSort = sortOrder;
             CurrentFilter = currentFilter;
@@ -88,7 +90,7 @@ namespace ERPSystem.Pages.Employees
 
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see https://aka.ms/RazorPagesCRUD.
-        public async Task<IActionResult> OnPostAsync(int? id, string sortOrder,
+        public async Task<IActionResult> OnPostAsync(int? id, EmployeeRole Role, string sortOrder,
             string currentFilter, int? pageIndex, int[] SelectedMentors, int[] SelectedAssignments)
         {
             if (!ModelState.IsValid)
@@ -222,7 +224,8 @@ namespace ERPSystem.Pages.Employees
             {
                 pageIndex = $"{pageIndex}",
                 sortOrder = $"{sortOrder}",
-                currentFilter = $"{currentFilter}"
+                currentFilter = $"{currentFilter}",
+                Role = $"{Role}"
             });
         }
 
