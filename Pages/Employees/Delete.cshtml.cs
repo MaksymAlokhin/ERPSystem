@@ -7,20 +7,24 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 using ERPSystem.Data;
 using ERPSystem.Models;
+using System.IO;
+using Microsoft.AspNetCore.Hosting;
 
 namespace ERPSystem.Pages.Employees
 {
     public class DeleteModel : PageModel
     {
         private readonly ERPSystem.Data.ApplicationDbContext _context;
+        private readonly IWebHostEnvironment webHostEnvironment;
         public int? PageIndex { get; set; }
         public string CurrentFilter { get; set; }
         public string CurrentSort { get; set; }
         public EmployeeRole Role { get; set; }
 
-        public DeleteModel(ERPSystem.Data.ApplicationDbContext context)
+        public DeleteModel(ERPSystem.Data.ApplicationDbContext context, IWebHostEnvironment hostEnvironment)
         {
             _context = context;
+            webHostEnvironment = hostEnvironment;
         }
 
         [BindProperty]
@@ -64,10 +68,25 @@ namespace ERPSystem.Pages.Employees
 
             Employee = await _context.Employees.FindAsync(id);
 
+            //Delete photo file
+            //string uploadsFolder = Path.Combine(webHostEnvironment.WebRootPath, @"images/avatars"); //webHost adds 'wwwroot'
+            //var oldFile = Employee.ProfilePicture;
+            //var fileToDelete = string.Empty;
+            //if (!string.IsNullOrEmpty(oldFile))
+            //{
+            //    fileToDelete = Path.Combine(uploadsFolder, oldFile);
+            //}
+
             if (Employee != null)
             {
                 _context.Employees.Remove(Employee);
                 await _context.SaveChangesAsync();
+
+                //Delete photo file
+                //if (System.IO.File.Exists(fileToDelete))
+                //{
+                //    System.IO.File.Delete(fileToDelete);
+                //}
             }
 
             return RedirectToPage("./Index", new
