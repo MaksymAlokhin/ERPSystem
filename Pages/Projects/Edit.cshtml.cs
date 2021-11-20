@@ -14,6 +14,14 @@ namespace ERPSystem.Pages.Projects
     public class EditModel : PageModel
     {
         private readonly ERPSystem.Data.ApplicationDbContext _context;
+        public int? PageIndex { get; set; }
+        public string CurrentFilter { get; set; }
+        public string CurrentSort { get; set; }
+        public List<int> SelectedPositions { get; set; }
+        public SelectList PositionsSelectList { get; set; }
+        public List<SelectListItem> ProjectManagerList { get; set; }
+        public int? ProjectManagerId;
+        public int? FormerProjectManagerId;
 
         public EditModel(ERPSystem.Data.ApplicationDbContext context)
         {
@@ -23,34 +31,104 @@ namespace ERPSystem.Pages.Projects
         [BindProperty]
         public Project Project { get; set; }
 
-        public async Task<IActionResult> OnGetAsync(int? id)
+        public async Task<IActionResult> OnGetAsync(string sortOrder,
+            string currentFilter, int? pageIndex, int? id)
         {
+            PageIndex = pageIndex;
+            CurrentSort = sortOrder;
+            CurrentFilter = currentFilter;
+
             if (id == null)
             {
                 return NotFound();
             }
 
             Project = await _context.Projects
-                .Include(p => p.Department).FirstOrDefaultAsync(m => m.Id == id);
+                .Include(p => p.Department)
+                .Include(p => p.ProjectManager)
+                .Include(p => p.Positions)
+                .AsNoTracking()
+                .FirstOrDefaultAsync(m => m.Id == id);
 
             if (Project == null)
             {
                 return NotFound();
             }
-           ViewData["DepartmentId"] = new SelectList(_context.Departments.OrderBy(d => d.Name), "Id", "Name");
+
+            ProjectManagerList = new List<SelectListItem>();
+            foreach (Employee pm in _context.Employees
+                    .Where(e => e.EmployeeRole == EmployeeRole.ProjectManager)
+                    .OrderBy(e => e.LastName)
+                    .ThenBy(e => e.FirstName))
+            {
+                ProjectManagerList.Add(new SelectListItem { Value = $"{pm.Id}", Text = $"{pm.FullName}" });
+            }
+            if (Project.ProjectManager != null)
+            {
+                ProjectManagerId = FormerProjectManagerId = Project.ProjectManager.Id;
+            }
+
+            var PositionsQuery = _context.Positions.OrderBy(p => p.Name).AsNoTracking();
+            PositionsSelectList = new SelectList(PositionsQuery, "Id", "Name"); //list, id, value
+
+            SelectedPositions = new List<int>();
+            foreach (var position in Project.Positions)
+            {
+                SelectedPositions.Add(position.Id);
+            }
+
+            ViewData["DepartmentId"] = new SelectList(_context.Departments.OrderBy(d => d.Name), "Id", "Name");
             return Page();
         }
 
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see https://aka.ms/RazorPagesCRUD.
-        public async Task<IActionResult> OnPostAsync()
+        public async Task<IActionResult> OnPostAsync(int? id, int? ProjectManagerId, int? FormerProjectManagerId, 
+            string sortOrder, string currentFilter, int? pageIndex, int[] SelectedPositions)
         {
             if (!ModelState.IsValid)
             {
                 return Page();
             }
 
-            _context.Attach(Project).State = EntityState.Modified;
+            Project ProjectToUpdate = await _context.Projects
+                .Include(p => p.Department)
+                .Include(p => p.ProjectManager)
+                .Include(p => p.Positions)
+                .FirstOrDefaultAsync(m => m.Id == id);
+
+            if (await TryUpdateModelAsync<Project>(
+                ProjectToUpdate,
+                "Project",
+                p => p.Name, p => p.ProjectState, p => p.StartDate, p => p.EndDate, p => p.Department))
+            {
+                Employee pm = await _context.Employees
+                        .Where(e => e.EmployeeRole == EmployeeRole.ProjectManager && e.Id == ProjectManagerId)
+                        .FirstOrDefaultAsync();
+                
+                if (pm != null)
+                {
+                    if (pm.Id != FormerProjectManagerId && pm.DepartmentId != null)
+                    {
+                        var oldDepartment = await _context.Departments.FindAsync(pm.DepartmentId);
+                        oldDepartment.DepartmentState = DepartmentState.Inactive;
+                    }
+                    pm.DepartmentId = Department.Id;
+                }
+                else
+                {
+                    if (FormerProjectManagerId != null)
+                    {
+                        Employee formerHh = await _context.Employees
+                                .Where(e => e.EmployeeRole == EmployeeRole.DepartmentHead && e.Id == FormerProjectManagerId)
+                                .FirstOrDefaultAsync();
+                        formerHh.DepartmentId = null;
+                        DepartmentToUpdate.DepartmentState = DepartmentState.Inactive;
+                    }
+                }
+
+                UpdatePositions(SelectedPositions, ProjectToUpdate);
+            }
 
             try
             {
@@ -68,12 +146,53 @@ namespace ERPSystem.Pages.Projects
                 }
             }
 
-            return RedirectToPage("./Index");
+            return RedirectToPage("./Index", new
+            {
+                pageIndex = $"{pageIndex}",
+                sortOrder = $"{sortOrder}",
+                currentFilter = $"{currentFilter}"
+            });
         }
 
         private bool ProjectExists(int id)
         {
             return _context.Projects.Any(e => e.Id == id);
+        }
+        private void UpdatePositions(int[] SelectedPositions, Department Department)
+        {
+            {
+                if (SelectedPositions.Length == 0)
+                {
+                    Project.Positions = new List<Position>();
+                    return;
+                }
+
+                var SelectedPositionsHS = new HashSet<int>(SelectedPositions);
+                var ProjectPositionsHS = new HashSet<int>
+                    (Project.Positions.Select(p => p.Id));
+                foreach (var position in _context.Positions)
+                {
+                    //If items are selected
+                    if (SelectedPositionsHS.Contains(position.Id))
+                    {
+                        //If item not present
+                        if (!ProjectPositionsHS.Contains(position.Id))
+                        {
+                            Project.Positions.Add(position);
+                        }
+                    }
+                    //If items are not selected
+                    else
+                    {
+                        //If item is present
+                        if (ProjectPositionsHS.Contains(position.Id))
+                        {
+                            var toRemove = Project.Positions.Single(s => s.Id == position.Id);
+                            Project.Positions.Remove(toRemove);
+                        }
+                    }
+                }
+            }
         }
     }
 }
