@@ -34,3 +34,4 @@ Screenshots:<br />
 ![CompanyEdit](Screenshots/CompanyEdit.png)<br /><br />
 ![EmployeeIndex](Screenshots/EmployeeIndex.png)<br /><br />
 ![EmployeeDetails](Screenshots/EmployeeDetails.png)<br /><br />
+![EmployeeEdit](Screenshots/EmployeeEdit.png)<br /><br />

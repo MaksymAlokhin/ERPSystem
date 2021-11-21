@@ -19,7 +19,6 @@ namespace ERPSystem.Pages.Positions
         public string CurrentSort { get; set; }
         public List<int> SelectedAssignments { get; set; }
         public SelectList AssignmentsSelectList { get; set; }
-        public List<SelectListItem> InactiveState { get; set; }
 
         public EditModel(ERPSystem.Data.ApplicationDbContext context)
         {
@@ -53,11 +52,6 @@ namespace ERPSystem.Pages.Positions
             }
 
             ViewData["ProjectId"] = new SelectList(_context.Projects.OrderBy(p => p.Name), "Id", "Name");
-
-            InactiveState = new List<SelectListItem>
-            {
-                new SelectListItem { Value = "2", Text = "Inactive" }
-            };
 
             var AssignmentsQuery = _context.Assignments.OrderBy(e => e.Name).AsNoTracking();
             AssignmentsSelectList = new SelectList(AssignmentsQuery, "Id", "Name"); //list, id, value
@@ -118,6 +112,8 @@ namespace ERPSystem.Pages.Positions
                     throw;
                 }
             }
+
+            await Utility.UpdateStateAsync(_context);
 
             return RedirectToPage("./Index", new
             {

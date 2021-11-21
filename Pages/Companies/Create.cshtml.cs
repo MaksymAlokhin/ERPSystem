@@ -126,6 +126,7 @@ namespace ERPSystem.Pages.Companies
                 }
                 _context.Companies.Add(NewCompany);
                 await _context.SaveChangesAsync();
+                await Utility.UpdateStateAsync(_context);
                 return RedirectToPage("./Index", new
                 {
                     pageIndex = $"{pageIndex}",

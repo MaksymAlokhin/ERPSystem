@@ -107,6 +107,7 @@ namespace ERPSystem.Pages.Branches
                     throw;
                 }
             }
+            await Utility.UpdateStateAsync(_context);
             return RedirectToPage("./Index", new
             {
                 pageIndex = $"{pageIndex}",

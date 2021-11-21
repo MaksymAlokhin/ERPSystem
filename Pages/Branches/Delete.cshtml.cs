@@ -76,7 +76,7 @@ namespace ERPSystem.Pages.Branches
                 _context.Branches.Remove(Branch);
                 await _context.SaveChangesAsync();
             }
-
+            await Utility.UpdateStateAsync(_context);
             return RedirectToPage("./Index", new
             {
                 pageIndex = $"{pageIndex}",

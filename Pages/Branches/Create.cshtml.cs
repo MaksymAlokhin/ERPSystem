@@ -84,6 +84,7 @@ namespace ERPSystem.Pages.Branches
             {
                 _context.Branches.Add(NewBranch);
                 await _context.SaveChangesAsync();
+                await Utility.UpdateStateAsync(_context);
                 return RedirectToPage("./Index", new
                 {
                     pageIndex = $"{pageIndex}",
