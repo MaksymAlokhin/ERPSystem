@@ -88,7 +88,7 @@ namespace ERPSystem.Pages.Employees
                 //    System.IO.File.Delete(fileToDelete);
                 //}
             }
-
+            await Utility.UpdateStateAsync(_context);
             return RedirectToPage("./Index", new
             {
                 pageIndex = $"{pageIndex}",

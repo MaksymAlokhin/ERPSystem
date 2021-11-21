@@ -46,7 +46,7 @@ namespace ERPSystem.Pages.Employees
             ViewData["BranchId"] = new SelectList(_context.Branches.OrderBy(b => b.Name), "Id", "Name");
             ViewData["CompanyId"] = new SelectList(_context.Companies.OrderBy(c => c.Name), "Id", "Name");
             ViewData["DepartmentId"] = new SelectList(_context.Departments.OrderBy(d => d.Name), "Id", "Name");
-            ViewData["ProjectId"] = new SelectList(_context.Projects.OrderBy(p => p.Name), "Id", "Id");
+            ViewData["ProjectId"] = new SelectList(_context.Projects.OrderBy(p => p.Name), "Id", "Name");
 
             var MentorsQuery = _context.Employees
                 .OrderBy(e => e.LastName)
@@ -62,7 +62,7 @@ namespace ERPSystem.Pages.Employees
             SelectedAssignments = new List<int>();
 
             Employee = new Employee();
-            Employee.DateOfBirth = Utility.GetRandomDate(-60, -20);
+            Employee.DateOfBirth = Utility.GetRandomDate(DateTime.Now.AddYears(-60), DateTime.Now.AddYears(-20));
             return Page();
         }
 
@@ -179,6 +179,7 @@ namespace ERPSystem.Pages.Employees
 
                 _context.Employees.Add(NewEmployee);
                 await _context.SaveChangesAsync();
+                await Utility.UpdateStateAsync(_context);
                 return RedirectToPage("./Index", new
                 {
                     pageIndex = $"{pageIndex}",

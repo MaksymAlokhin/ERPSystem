@@ -83,7 +83,7 @@ namespace ERPSystem.Pages.Companies
                 _context.Companies.Remove(Company);
                 await _context.SaveChangesAsync();
             }
-
+            await Utility.UpdateStateAsync(_context);
             return RedirectToPage("./Index", new
             {
                 pageIndex = $"{pageIndex}",

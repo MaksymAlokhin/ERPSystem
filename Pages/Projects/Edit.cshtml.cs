@@ -146,6 +146,7 @@ namespace ERPSystem.Pages.Projects
                 }
             }
 
+            await Utility.UpdateStateAsync(_context);
             return RedirectToPage("./Index", new
             {
                 pageIndex = $"{pageIndex}",

@@ -19,8 +19,6 @@ namespace ERPSystem.Pages.Positions
         public string CurrentSort { get; set; }
         public List<int> SelectedAssignments { get; set; }
         public SelectList AssignmentsSelectList { get; set; }
-        public List<SelectListItem> InactiveState { get; set; }
-
 
         public CreateModel(ERPSystem.Data.ApplicationDbContext context)
         {
@@ -37,11 +35,8 @@ namespace ERPSystem.Pages.Positions
             SelectedAssignments = new List<int>();
             Position = new Position();
             Position.PositionState = PositionState.Inactive;
-
-            InactiveState = new List<SelectListItem>
-            {
-                new SelectListItem { Value = "2", Text = "Inactive" }
-            };
+            Position.StartDate = DateTime.Now;
+            Position.EndDate = Utility.GetRandomDate(DateTime.Now, DateTime.Now.AddYears(2));
 
             var AssignmentsQuery = _context.Assignments.OrderBy(e => e.Name).AsNoTracking();
             AssignmentsSelectList = new SelectList(AssignmentsQuery, "Id", "Name"); //list, id, value
@@ -97,6 +92,7 @@ namespace ERPSystem.Pages.Positions
 
                 _context.Positions.Add(NewPosition);
                 await _context.SaveChangesAsync();
+                await Utility.UpdateStateAsync(_context);
                 return RedirectToPage("./Index", new
                 {
                     pageIndex = $"{pageIndex}",

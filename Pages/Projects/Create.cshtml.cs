@@ -51,8 +51,8 @@ namespace ERPSystem.Pages.Projects
 
             Project = new Project();
             Project.ProjectState = ProjectState.Inactive;
-            Project.StartDate = Utility.GetRandomDate(-2, 0);
-            Project.EndDate = Utility.GetRandomDate(0, 2);
+            Project.StartDate = Utility.GetRandomDate(DateTime.Now.AddYears(-2), DateTime.Now);
+            Project.EndDate = Utility.GetRandomDate(DateTime.Now, DateTime.Now.AddYears(2));
             return Page();
         }
 
@@ -109,7 +109,7 @@ namespace ERPSystem.Pages.Projects
                 }
                 _context.Projects.Add(NewProject);
                 await _context.SaveChangesAsync();
-
+                await Utility.UpdateStateAsync(_context);
                 return RedirectToPage("./Index", new
                 {
                     pageIndex = $"{pageIndex}",

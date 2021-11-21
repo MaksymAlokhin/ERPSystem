@@ -265,7 +265,7 @@ namespace ERPSystem.Pages.Employees
                     throw;
                 }
             }
-
+            await Utility.UpdateStateAsync(_context);
             return RedirectToPage("./Index", new
             {
                 pageIndex = $"{pageIndex}",

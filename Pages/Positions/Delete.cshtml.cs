@@ -76,7 +76,7 @@ namespace ERPSystem.Pages.Positions
                 _context.Positions.Remove(Position);
                 await _context.SaveChangesAsync();
             }
-
+            await Utility.UpdateStateAsync(_context);
             return RedirectToPage("./Index", new
             {
                 pageIndex = $"{pageIndex}",
