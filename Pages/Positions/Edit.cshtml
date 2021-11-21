@@ -10,47 +10,105 @@
 
 <h4>Position</h4>
 <hr />
-<div class="row">
-    <div class="col-md-4">
-        <form method="post">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <input type="hidden" asp-for="Position.Id" />
+<form enctype="multipart/form-data" method="post" onload="populateOptionalSelectLists">
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+    <input type="hidden" asp-for="Position.Id" />
+    <div class="row">
+        <div class="col-sm-4">
             <div class="form-group">
                 <label asp-for="Position.Name" class="control-label"></label>
                 <input asp-for="Position.Name" class="form-control" />
                 <span asp-validation-for="Position.Name" class="text-danger"></span>
             </div>
+        </div>
+        <div class="col-sm-4">
             <div class="form-group">
                 <label asp-for="Position.StartDate" class="control-label"></label>
                 <input asp-for="Position.StartDate" class="form-control" />
                 <span asp-validation-for="Position.StartDate" class="text-danger"></span>
             </div>
+        </div>
+        <div class="col-sm-4">
             <div class="form-group">
                 <label asp-for="Position.EndDate" class="control-label"></label>
                 <input asp-for="Position.EndDate" class="form-control" />
                 <span asp-validation-for="Position.EndDate" class="text-danger"></span>
             </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-4">
             <div class="form-group">
                 <label asp-for="Position.PositionState" class="control-label"></label>
-                <select asp-for="Position.PositionState" class="form-control"></select>
+                <select asp-for="Position.PositionState" asp-items="Html.GetEnumSelectList<Models.PositionState>()" class="form-control" onchange="checkProject()"></select>
                 <span asp-validation-for="Position.PositionState" class="text-danger"></span>
             </div>
+        </div>
+        <div class="col-sm-4">
             <div class="form-group">
-                <label asp-for="Position.ProjectId" class="control-label"></label>
-                <select asp-for="Position.ProjectId" class="form-control" asp-items="ViewBag.ProjectId"></select>
+                <label asp-for="Position.Project" class="control-label"></label>
+                <select asp-for="Position.ProjectId" class="form-control" asp-items="ViewBag.ProjectId"><option value="">--none--</option></select>
                 <span asp-validation-for="Position.ProjectId" class="text-danger"></span>
             </div>
-            <div class="form-group">
-                <input type="submit" value="Save" class="btn btn-primary" />
-            </div>
-        </form>
+        </div>
     </div>
-</div>
+    <hr />
+    <div class="row" id="multipleSelectList">
+        <div id="multipleSelectListAnchor"></div>
+        <div class="col-sm-auto" id="assignments">
+            <div class="form-group">
+                <label asp-for="Position.Assignments" class="control-label"></label><br />
+                <select asp-for="SelectedAssignments" asp-items="Model.AssignmentsSelectList" size="10">
+                </select>
+            </div>
+        </div>
+    </div>
+    <div class="form-group">
+        <input type="submit" value="Save" class="btn btn-primary" />
+    </div>
+</form>
 
 <div>
-    <a asp-page="./Index">Back to List</a>
+    <a asp-page="./Index"
+       asp-route-pageIndex="@Model.PageIndex"
+       asp-route-sortOrder="@Model.CurrentSort"
+       asp-route-currentFilter="@Model.CurrentFilter">
+        Back to List
+    </a>
 </div>
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    <script>
+        $(function () {
+            $("#Position_ProjectId").on("change", function () {
+                var projectId = $(this).val();
+                $.getJSON(`?handler=Project&projectId=${projectId}`, function (response) {
+                    var state = document.getElementById('Position_PositionState');
+                    for (var i = 0; i < state.options.length; i++) {
+                        if (state.options[i].text === response) {
+                            state.selectedIndex = i;
+                            break;
+                        }
+                    }
+                });
+            });
+        });
+        $(function () {
+            $("#Position_PositionState").on("change", function () {
+                var projectId = $("#Position_ProjectId").val();
+                $.getJSON(`?handler=Project&projectId=${projectId}`, function (response) {
+                    if (response === "Inactive") {
+                        var state = document.getElementById('Position_PositionState');
+                        for (var i = 0; i < state.options.length; i++) {
+                            if (state.options[i].text === response) {
+                                state.selectedIndex = i;
+                                break;
+                            }
+                        }
+                    }
+                });
+            });
+        });
+    </script>
 }

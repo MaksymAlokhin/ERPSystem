@@ -31,15 +31,15 @@
     <div class="row">
         <div class="col-sm-4">
             <div class="form-group">
-                <label asp-for="Department.DepartmentHead" class="control-label"></label>
-                <select asp-for="DepartmentHeadId" asp-items="Model.DepartmentHeadList" class="form-control" onchange="toggleActive()"><option value="">--none--</option></select>
+                <label asp-for="Department.DepartmentState" class="control-label"></label>
+                <select asp-for="Department.DepartmentState" asp-items="Html.GetEnumSelectList<Models.DepartmentState>()" class="form-control" onchange="checkHead()"></select>
+                <span asp-validation-for="Department.DepartmentState" class="text-danger"></span>
             </div>
         </div>
         <div class="col-sm-4">
             <div class="form-group">
-                <label asp-for="Department.DepartmentState" class="control-label"></label>
-                <select asp-for="Department.DepartmentState" asp-items="Html.GetEnumSelectList<Models.DepartmentState>()" class="form-control" onchange="checkHead()"></select>
-                <span asp-validation-for="Department.DepartmentState" class="text-danger"></span>
+                <label asp-for="Department.DepartmentHead" class="control-label"></label>
+                <select asp-for="DepartmentHeadId" asp-items="Model.DepartmentHeadList" class="form-control" onchange="toggleActive()"><option value="">--none--</option></select>
             </div>
         </div>
     </div>

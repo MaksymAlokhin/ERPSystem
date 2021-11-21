@@ -24,8 +24,8 @@ namespace ERPSystem.Data
         public static Assignment as0102 = new Assignment
         {
             Name = "Quality Control",
-            StartDate = DateTime.Parse("2020-12-30"),
-            EndDate = DateTime.Parse("2023-03-05"),
+            StartDate = DateTime.Parse("2020-07-10"),
+            EndDate = DateTime.Parse("2022-09-09"),
             FTE = 0.5,
             Employee = e002,
             AssignmentState = AssignmentState.Active,
@@ -34,8 +34,8 @@ namespace ERPSystem.Data
         public static Assignment as0103 = new Assignment
         {
             Name = "Accountant",
-            StartDate = DateTime.Parse("2020-12-30"),
-            EndDate = DateTime.Parse("2023-03-05"),
+            StartDate = DateTime.Parse("2021-05-10"),
+            EndDate = DateTime.Parse("2023-10-09"),
             FTE = 0.5,
             Employee = e003,
             AssignmentState = AssignmentState.Active,
@@ -44,8 +44,8 @@ namespace ERPSystem.Data
         public static Assignment as0104 = new Assignment
         {
             Name = "Office Manager",
-            StartDate = DateTime.Parse("2020-12-30"),
-            EndDate = DateTime.Parse("2023-03-05"),
+            StartDate = DateTime.Parse("2021-06-03"),
+            EndDate = DateTime.Parse("2022-03-14"),
             FTE = 0.5,
             Employee = e004,
             AssignmentState = AssignmentState.Active,
@@ -54,8 +54,8 @@ namespace ERPSystem.Data
         public static Assignment as0105 = new Assignment
         {
             Name = "Receptionist",
-            StartDate = DateTime.Parse("2020-12-30"),
-            EndDate = DateTime.Parse("2023-03-05"),
+            StartDate = DateTime.Parse("2020-09-23"),
+            EndDate = DateTime.Parse("2022-05-28"),
             FTE = 0.5,
             Employee = e005,
             AssignmentState = AssignmentState.Active,
@@ -64,8 +64,8 @@ namespace ERPSystem.Data
         public static Assignment as0106 = new Assignment
         {
             Name = "Supervisor",
-            StartDate = DateTime.Parse("2020-12-30"),
-            EndDate = DateTime.Parse("2023-03-05"),
+            StartDate = DateTime.Parse("2020-07-28"),
+            EndDate = DateTime.Parse("2022-08-03"),
             FTE = 0.5,
             Employee = e006,
             AssignmentState = AssignmentState.Active,
@@ -74,8 +74,8 @@ namespace ERPSystem.Data
         public static Assignment as0107 = new Assignment
         {
             Name = "Marketing Manager",
-            StartDate = DateTime.Parse("2020-12-30"),
-            EndDate = DateTime.Parse("2023-03-05"),
+            StartDate = DateTime.Parse("2020-04-29"),
+            EndDate = DateTime.Parse("2022-11-04"),
             FTE = 0.5,
             Employee = e007,
             AssignmentState = AssignmentState.Active,
@@ -84,8 +84,8 @@ namespace ERPSystem.Data
         public static Assignment as0108 = new Assignment
         {
             Name = "Purchasing Manager",
-            StartDate = DateTime.Parse("2020-12-30"),
-            EndDate = DateTime.Parse("2023-03-05"),
+            StartDate = DateTime.Parse("2020-02-13"),
+            EndDate = DateTime.Parse("2022-02-10"),
             FTE = 0.5,
             Employee = e008,
             AssignmentState = AssignmentState.Active,
@@ -94,8 +94,8 @@ namespace ERPSystem.Data
         public static Assignment as0109 = new Assignment
         {
             Name = "Shipping Manager",
-            StartDate = DateTime.Parse("2020-12-30"),
-            EndDate = DateTime.Parse("2023-03-05"),
+            StartDate = DateTime.Parse("2021-08-18"),
+            EndDate = DateTime.Parse("2022-04-01"),
             FTE = 0.5,
             Employee = e009,
             AssignmentState = AssignmentState.Active,

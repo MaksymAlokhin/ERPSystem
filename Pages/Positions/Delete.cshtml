@@ -41,13 +41,63 @@
             @Html.DisplayNameFor(model => model.Position.Project)
         </dt>
         <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Position.Project.Id)
+            @if (@Model.Position.Project != null)
+            {
+                <a asp-page="../Projects/Edit"
+                   asp-route-id="@Model.Position.Project.Id">
+                    @Html.DisplayFor(model => model.Position.Project.Name)
+                </a>
+            }
+            else
+            {
+                @Html.DisplayFor(model => model.Position.Project.Name)
+            }
         </dd>
+        @if (Model.AssignmentsList.Any())
+        {
+            <dd class="col-sm-auto" style="overflow-y: auto; max-height: 400px;">
+                <table class="table-striped table-bordered">
+                    <thead style="text-align: center">
+                        <tr>
+                            <th class="col-sm-auto">#</th>
+                            <th class="col-sm-auto">@Html.DisplayNameFor(model => model.Position.Assignments.First().Name)</th>
+                            <th class="col-sm-auto">@Html.DisplayNameFor(model => model.Position.Assignments.First().StartDate)</th>
+                            <th class="col-sm-auto">@Html.DisplayNameFor(model => model.Position.Assignments.First().EndDate)</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @{
+                            int i = 1;
+                            @foreach (var item in Model.AssignmentsList)
+                            {
+                                <tr>
+                                    <td style="text-align: center">@i</td>
+                                    <td>
+                                        <a asp-page="../Assignments/Edit"
+                                           asp-route-id="@item.Id">
+                                            @Html.DisplayFor(modelItem => item.Name)
+                                        </a>
+                                    </td>
+                                    <td>@item.StartDate.ToString("yyyy-MM-dd")</td>
+                                    <td>@item.EndDate.ToString("yyyy-MM-dd")</td>
+                                </tr>
+                                i++;
+                            }
+                        }
+                    </tbody>
+                </table>
+            </dd>
+        }
     </dl>
-    
+
     <form method="post">
         <input type="hidden" asp-for="Position.Id" />
         <input type="submit" value="Delete" class="btn btn-danger" /> |
-        <a asp-page="./Index">Back to List</a>
+        <a asp-page="./Index"
+           asp-route-pageIndex="@Model.PageIndex"
+           asp-route-sortOrder="@Model.CurrentSort"
+           asp-route-currentFilter="@Model.CurrentFilter">
+            Back to List
+        </a>
     </form>
 </div>
