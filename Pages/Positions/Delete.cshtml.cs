@@ -13,6 +13,11 @@ namespace ERPSystem.Pages.Positions
     public class DeleteModel : PageModel
     {
         private readonly ERPSystem.Data.ApplicationDbContext _context;
+        public int? PageIndex { get; set; }
+        public string CurrentFilter { get; set; }
+        public string CurrentSort { get; set; }
+        public IEnumerable<Assignment> AssignmentsList { get; set; }
+
 
         public DeleteModel(ERPSystem.Data.ApplicationDbContext context)
         {
@@ -22,15 +27,29 @@ namespace ERPSystem.Pages.Positions
         [BindProperty]
         public Position Position { get; set; }
 
-        public async Task<IActionResult> OnGetAsync(int? id)
+        public async Task<IActionResult> OnGetAsync(string sortOrder,
+            string currentFilter, int? pageIndex, int? id)
         {
+            PageIndex = pageIndex;
+            CurrentSort = sortOrder;
+            CurrentFilter = currentFilter;
+            
             if (id == null)
             {
                 return NotFound();
             }
 
+            AssignmentsList = await _context.Assignments
+                .Where(e => e.PositionId == id)
+                .OrderBy(e => e.Name)
+                .AsNoTracking()
+                .ToListAsync();
+
             Position = await _context.Positions
-                .Include(p => p.Project).FirstOrDefaultAsync(m => m.Id == id);
+                .Include(p => p.Project)
+                .Include(p => p.Assignments)
+                .AsNoTracking()
+                .FirstOrDefaultAsync(m => m.Id == id);
 
             if (Position == null)
             {
@@ -39,14 +58,18 @@ namespace ERPSystem.Pages.Positions
             return Page();
         }
 
-        public async Task<IActionResult> OnPostAsync(int? id)
+        public async Task<IActionResult> OnPostAsync(string sortOrder,
+            string currentFilter, int? pageIndex, int? id)
         {
             if (id == null)
             {
                 return NotFound();
             }
 
-            Position = await _context.Positions.FindAsync(id);
+            Position = await _context.Positions
+                .Include(p => p.Project)
+                .Include(p => p.Assignments)
+                .FirstOrDefaultAsync(m => m.Id == id);
 
             if (Position != null)
             {
@@ -54,7 +77,12 @@ namespace ERPSystem.Pages.Positions
                 await _context.SaveChangesAsync();
             }
 
-            return RedirectToPage("./Index");
+            return RedirectToPage("./Index", new
+            {
+                pageIndex = $"{pageIndex}",
+                sortOrder = $"{sortOrder}",
+                currentFilter = $"{currentFilter}"
+            });
         }
     }
 }
