@@ -17,10 +17,10 @@ Entities Implemented:<br />
 - Branch
 - Employee
 - Project
+- Position
 
 Entities WIP:<br />
 ------------
-- Position
 - Assignment
 - Report
 
