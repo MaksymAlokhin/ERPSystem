@@ -23,6 +23,7 @@ namespace ERPSystem.Pages.Departments
         public List<SelectListItem> DepartmentHeadList { get; set; }
         public int? DepartmentHeadId;
         public int? FormerDepartmentHeadId;
+
         public EditModel(ERPSystem.Data.ApplicationDbContext context)
         {
             _context = context;
@@ -197,6 +198,16 @@ namespace ERPSystem.Pages.Departments
                     }
                 }
             }
+        }
+        public async Task<JsonResult> OnGetCompanyAsync(string companyId)
+        {
+            Utility utility = new Utility(_context);
+            return await utility.GetCompanyStateAsync(companyId);
+        }
+        public async Task<JsonResult> OnGetEmployeeAsync(string employeeId)
+        {
+            Utility utility = new Utility(_context);
+            return await utility.GetEmployeeStateAsync(employeeId);
         }
     }
 }

@@ -38,6 +38,13 @@
     <div class="row">
         <div class="col-sm-4">
             <div class="form-group">
+                <label asp-for="Project.ProjectState" class="control-label"></label>
+                <select asp-for="Project.ProjectState" asp-items="Html.GetEnumSelectList<Models.DepartmentState>()" class="form-control"></select>
+                <span asp-validation-for="Project.ProjectState" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="col-sm-4">
+            <div class="form-group">
                 <label asp-for="Project.Department" class="control-label"></label>
                 <select asp-for="Project.DepartmentId" class="form-control" asp-items="ViewBag.DepartmentId"><option value="">--none--</option></select>
                 <span asp-validation-for="Project.DepartmentId" class="text-danger"></span>
@@ -45,15 +52,8 @@
         </div>
         <div class="col-sm-4">
             <div class="form-group">
-                <label asp-for="Project.ProjectState" class="control-label"></label>
-                <select asp-for="Project.ProjectState" asp-items="Html.GetEnumSelectList<Models.DepartmentState>()" class="form-control" onchange="checkManager()"></select>
-                <span asp-validation-for="Project.ProjectState" class="text-danger"></span>
-            </div>
-        </div>
-        <div class="col-sm-4">
-            <div class="form-group">
                 <label asp-for="Project.ProjectManager" class="control-label"></label>
-                <select asp-for="ProjectManagerId" asp-items="Model.ProjectManagerList" class="form-control" onchange="toggleActive()"><option value="">--none--</option></select>
+                <select asp-for="ProjectManagerId" asp-items="Model.ProjectManagerList" class="form-control"><option value="">--none--</option></select>
             </div>
         </div>
     </div>
@@ -82,38 +82,61 @@
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
-<script>
-    function toggleActive() {
-        var pm = document.getElementById("ProjectManagerId");
-        var state = document.getElementById('Project_ProjectState');
-        if (pm.options[pm.selectedIndex].value === '') {
-            for (var i = 0; i < state.options.length; i++) {
-                if (state.options[i].text === 'Inactive') {
-                    state.selectedIndex = i;
-                    break;
-                }
-            }
-        }
-        else {
-            for (var i = 0; i < state.options.length; i++) {
-                if (state.options[i].text === 'Active') {
-                    state.selectedIndex = i;
-                    break;
-                }
-            }
-        }
-    }
-    function checkManager() {
-        var pm = document.getElementById("ProjectManagerId");
-        var state = document.getElementById('Project_ProjectState');
-        if (pm.options[pm.selectedIndex].value === '') {
-            for (var i = 0; i < state.options.length; i++) {
-                if (state.options[i].text === 'Inactive') {
-                    state.selectedIndex = i;
-                    break;
-                }
-            }
-        }
-    }
-</script>
+    <script>
+        $(function () {
+            $("#ProjectManagerId").on("change", function () {
+                var employeeId = $(this).val();
+                $.getJSON(`?handler=Employee&employeeId=${employeeId}`, function (response) {
+                    var state = document.getElementById('Project_ProjectState');
+                    for (var i = 0; i < state.options.length; i++) {
+                        if (state.options[i].text === response) {
+                            state.selectedIndex = i;
+                            break;
+                        }
+                    }
+                });
+            });
+        });
+        $(function () {
+            $("#Project_DepartmentId").on("change", function () {
+                var departmentId = $(this).val();
+                $.getJSON(`?handler=Department&departmentId=${departmentId}`, function (response) {
+                    var state = document.getElementById('Project_ProjectState');
+                    for (var i = 0; i < state.options.length; i++) {
+                        if (state.options[i].text === response) {
+                            state.selectedIndex = i;
+                            break;
+                        }
+                    }
+                });
+            });
+        });
+        $(function () {
+            $("#Project_ProjectState").on("change", function () {
+                var employeeId = $("#ProjectManagerId").val();
+                var departmentId = $("#Project_DepartmentId").val();
+                var state = document.getElementById('Project_ProjectState');
+                $.getJSON(`?handler=Employee&employeeId=${employeeId}`, function (response) {
+                    if (response === "Inactive") {
+                        for (var i = 0; i < state.options.length; i++) {
+                            if (state.options[i].text === response) {
+                                state.selectedIndex = i;
+                                break;
+                            }
+                        }
+                    }
+                });
+                $.getJSON(`?handler=Department&departmentId=${departmentId}`, function (response) {
+                    if (response === "Inactive") {
+                        for (var i = 0; i < state.options.length; i++) {
+                            if (state.options[i].text === response) {
+                                state.selectedIndex = i;
+                                break;
+                            }
+                        }
+                    }
+                });
+            });
+        });
+    </script>
 }

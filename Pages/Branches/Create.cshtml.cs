@@ -94,5 +94,10 @@ namespace ERPSystem.Pages.Branches
             }
             return Page();
         }
+        public async Task<JsonResult> OnGetCompanyAsync(string companyId)
+        {
+            Utility utility = new Utility(_context);
+            return await utility.GetCompanyStateAsync(companyId);
+        }
     }
 }

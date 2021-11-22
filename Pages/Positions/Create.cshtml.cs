@@ -28,6 +28,7 @@ namespace ERPSystem.Pages.Positions
         public IActionResult OnGet(string sortOrder,
             string currentFilter, int? pageIndex)
         {
+
             PageIndex = pageIndex;
             CurrentSort = sortOrder;
             CurrentFilter = currentFilter;
@@ -102,28 +103,11 @@ namespace ERPSystem.Pages.Positions
             }
             return Page();
         }
+
         public async Task<JsonResult> OnGetProjectAsync(string projectId)
         {
-            if (!string.IsNullOrWhiteSpace(projectId))
-            {
-                if (Int32.TryParse(projectId, out int id))
-                {
-                    var project = await _context.Projects.FindAsync(id);
-                    if(project != null)
-                    {
-                        if (project.ProjectState == ProjectState.Active)
-                            return new JsonResult("Active");
-                        else
-                            return new JsonResult("Inactive");
-                    }
-                    else return new JsonResult("Inactive");
-                }
-                else
-                {
-                    return new JsonResult("Inactive");
-                }
-            }
-            return new JsonResult("Inactive");
+            Utility utility = new Utility(_context);
+            return await utility.GetProjectStateAsync(projectId);
         }
     }
 }

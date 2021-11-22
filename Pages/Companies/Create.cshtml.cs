@@ -136,5 +136,10 @@ namespace ERPSystem.Pages.Companies
             }
             return Page();
         }
+        public async Task<JsonResult> OnGetEmployeeAsync(string employeeId)
+        {
+            Utility utility = new Utility(_context);
+            return await utility.GetEmployeeStateAsync(employeeId);
+        }
     }
 }

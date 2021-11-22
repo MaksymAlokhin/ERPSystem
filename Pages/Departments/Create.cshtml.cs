@@ -23,7 +23,6 @@ namespace ERPSystem.Pages.Departments
         public List<SelectListItem> DepartmentHeadList { get; set; }
         public int? DepartmentHeadId;
 
-
         public CreateModel(ERPSystem.Data.ApplicationDbContext context)
         {
             _context = context;
@@ -32,6 +31,7 @@ namespace ERPSystem.Pages.Departments
         public IActionResult OnGet(string sortOrder,
             string currentFilter, int? pageIndex)
         {
+
             PageIndex = pageIndex;
             CurrentSort = sortOrder;
             CurrentFilter = currentFilter;
@@ -120,6 +120,16 @@ namespace ERPSystem.Pages.Departments
                 });
             }
             return Page();
+        }
+        public async Task<JsonResult> OnGetCompanyAsync(string companyId)
+        {
+            Utility utility = new Utility(_context);
+            return await utility.GetCompanyStateAsync(companyId);
+        }
+        public async Task<JsonResult> OnGetEmployeeAsync(string employeeId)
+        {
+            Utility utility = new Utility(_context);
+            return await utility.GetEmployeeStateAsync(employeeId);
         }
     }
 }

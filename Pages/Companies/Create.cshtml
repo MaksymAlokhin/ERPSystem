@@ -23,14 +23,14 @@
         <div class="col-sm-4">
             <div class="form-group">
                 <label asp-for="Company.CompanyState" class="control-label"></label>
-                <select asp-for="Company.CompanyState" asp-items="Html.GetEnumSelectList<Models.CompanyState>()" class="form-control" onchange="checkHead()"></select>
+                <select asp-for="Company.CompanyState" asp-items="Html.GetEnumSelectList<Models.CompanyState>()" class="form-control"></select>
                 <span asp-validation-for="Company.CompanyState" class="text-danger"></span>
             </div>
         </div>
         <div class="col-sm-4">
             <div class="form-group">
                 <label asp-for="Company.GeneralManager" class="control-label"></label>
-                <select asp-for="GeneralManagerId" asp-items="Model.GeneralManagerList" class="form-control" onchange="toggleActive()"><option value="">--none--</option></select>
+                <select asp-for="GeneralManagerId" asp-items="Model.GeneralManagerList" class="form-control"><option value="">--none--</option></select>
             </div>
         </div>
     </div>
@@ -67,37 +67,35 @@
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
     <script>
-        function toggleActive() {
-            var gm = document.getElementById("GeneralManagerId");
-            var state = document.getElementById('Company_CompanyState');
-            if (gm.options[gm.selectedIndex].value === '') {
-                for (var i = 0; i < state.options.length; i++) {
-                    if (state.options[i].text === 'Inactive') {
-                        state.selectedIndex = i;
-                        break;
+        $(function () {
+            $("#GeneralManagerId").on("change", function () {
+                var employeeId = $(this).val();
+                $.getJSON(`?handler=Employee&employeeId=${employeeId}`, function (response) {
+                    var state = document.getElementById('Company_CompanyState');
+                    for (var i = 0; i < state.options.length; i++) {
+                        if (state.options[i].text === response) {
+                            state.selectedIndex = i;
+                            break;
+                        }
                     }
-                }
-            }
-            else {
-                for (var i = 0; i < state.options.length; i++) {
-                    if (state.options[i].text === 'Active') {
-                        state.selectedIndex = i;
-                        break;
+                });
+            });
+        });
+        $(function () {
+            $("#Company_CompanyState").on("change", function () {
+                var employeeId = $("#GeneralManagerId").val();
+                $.getJSON(`?handler=Employee&employeeId=${employeeId}`, function (response) {
+                    if (response === "Inactive") {
+                        var state = document.getElementById('Company_CompanyState');
+                        for (var i = 0; i < state.options.length; i++) {
+                            if (state.options[i].text === response) {
+                                state.selectedIndex = i;
+                                break;
+                            }
+                        }
                     }
-                }
-            }
-        }
-        function checkHead() {
-            var gm = document.getElementById("GeneralManagerId");
-            var state = document.getElementById('Company_CompanyState');
-            if (gm.options[gm.selectedIndex].value === '') {
-                for (var i = 0; i < state.options.length; i++) {
-                    if (state.options[i].text === 'Inactive') {
-                        state.selectedIndex = i;
-                        break;
-                    }
-                }
-            }
-        }
+                });
+            });
+        });
     </script>
 }
