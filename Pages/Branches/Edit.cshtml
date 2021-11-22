@@ -24,14 +24,14 @@
         <div class="col-sm-4">
             <div class="form-group">
                 <label asp-for="Branch.BranchState" class="control-label"></label>
-                <select asp-for="Branch.BranchState" asp-items="Html.GetEnumSelectList<Models.BranchState>()" class="form-control" onchange="checkCompany()"></select>
+                <select asp-for="Branch.BranchState" asp-items="Html.GetEnumSelectList<Models.BranchState>()" class="form-control"></select>
                 <span asp-validation-for="Branch.BranchState" class="text-danger"></span>
             </div>
         </div>
         <div class="col-sm-4">
             <div class="form-group">
                 <label asp-for="Branch.Company" class="control-label"></label>
-                <select asp-for="Branch.CompanyId" class="form-control" asp-items="Model.CompaniesSelectList" onchange="toggleActive()"><option value="">--none--</option></select>
+                <select asp-for="Branch.CompanyId" class="form-control" asp-items="Model.CompaniesSelectList"><option value="">--none--</option></select>
             </div>
         </div>
     </div>
@@ -61,37 +61,35 @@
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
     <script>
-        function toggleActive() {
-            var company = document.getElementById("Branch_CompanyId");
-            var state = document.getElementById('Branch_BranchState');
-            if (company.options[company.selectedIndex].value === '') {
-                for (var i = 0; i < state.options.length; i++) {
-                    if (state.options[i].text === 'Inactive') {
-                        state.selectedIndex = i;
-                        break;
+        $(function () {
+            $("#Branch_CompanyId").on("change", function () {
+                var companyId = $(this).val();
+                $.getJSON(`?handler=Company&companyId=${companyId}`, function (response) {
+                    var state = document.getElementById('Branch_BranchState');
+                    for (var i = 0; i < state.options.length; i++) {
+                        if (state.options[i].text === response) {
+                            state.selectedIndex = i;
+                            break;
+                        }
                     }
-                }
-            }
-            else {
-                for (var i = 0; i < state.options.length; i++) {
-                    if (state.options[i].text === 'Active') {
-                        state.selectedIndex = i;
-                        break;
+                });
+            });
+        });
+        $(function () {
+            $("#Position_PositionState").on("change", function () {
+                var companyId = $("#Branch_CompanyId").val();
+                $.getJSON(`?handler=Company&companyId=${companyId}`, function (response) {
+                    if (response === "Inactive") {
+                        var state = document.getElementById('Branch_BranchState');
+                        for (var i = 0; i < state.options.length; i++) {
+                            if (state.options[i].text === response) {
+                                state.selectedIndex = i;
+                                break;
+                            }
+                        }
                     }
-                }
-            }
-        }
-        function checkCompany() {
-            var company = document.getElementById("Branch_CompanyId");
-            var state = document.getElementById('Branch_BranchState');
-            if (company.options[company.selectedIndex].value === '') {
-                for (var i = 0; i < state.options.length; i++) {
-                    if (state.options[i].text === 'Inactive') {
-                        state.selectedIndex = i;
-                        break;
-                    }
-                }
-            }
-        }
+                });
+            });
+        });
     </script>
 }

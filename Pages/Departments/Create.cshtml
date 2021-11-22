@@ -22,6 +22,12 @@
         </div>
         <div class="col-sm-4">
             <div class="form-group">
+                <label asp-for="Department.DepartmentHead" class="control-label"></label>
+                <select asp-for="DepartmentHeadId" asp-items="Model.DepartmentHeadList" class="form-control"><option value="">--none--</option></select>
+            </div>
+        </div>
+        <div class="col-sm-4">
+            <div class="form-group">
                 <label asp-for="Department.Company" class="control-label"></label>
                 <select asp-for="Department.CompanyId" class="form-control" asp-items="Model.CompaniesSelectList"><option value="">--none--</option></select>
                 <span asp-validation-for="Department.CompanyId" class="text-danger"></span>
@@ -32,14 +38,8 @@
         <div class="col-sm-4">
             <div class="form-group">
                 <label asp-for="Department.DepartmentState" class="control-label"></label>
-                <select asp-for="Department.DepartmentState" asp-items="Html.GetEnumSelectList<Models.DepartmentState>()" class="form-control" onchange="checkHead()"></select>
+                <select asp-for="Department.DepartmentState" asp-items="Html.GetEnumSelectList<Models.DepartmentState>()" class="form-control"></select>
                 <span asp-validation-for="Department.DepartmentState" class="text-danger"></span>
-            </div>
-        </div>
-        <div class="col-sm-4">
-            <div class="form-group">
-                <label asp-for="Department.DepartmentHead" class="control-label"></label>
-                <select asp-for="DepartmentHeadId" asp-items="Model.DepartmentHeadList" class="form-control" onchange="toggleActive()"><option value="">--none--</option></select>
             </div>
         </div>
     </div>
@@ -69,37 +69,60 @@
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
     <script>
-        function toggleActive() {
-            var gm = document.getElementById("DepartmentHeadId");
-            var state = document.getElementById('Department_DepartmentState');
-            if (gm.options[gm.selectedIndex].value === '') {
-                for (var i = 0; i < state.options.length; i++) {
-                    if (state.options[i].text === 'Inactive') {
-                        state.selectedIndex = i;
-                        break;
+        $(function () {
+            $("#DepartmentHeadId").on("change", function () {
+                var employeeId = $(this).val();
+                $.getJSON(`?handler=Employee&employeeId=${employeeId}`, function (response) {
+                    var state = document.getElementById('Department_DepartmentState');
+                    for (var i = 0; i < state.options.length; i++) {
+                        if (state.options[i].text === response) {
+                            state.selectedIndex = i;
+                            break;
+                        }
                     }
-                }
-            }
-            else {
-                for (var i = 0; i < state.options.length; i++) {
-                    if (state.options[i].text === 'Active') {
-                        state.selectedIndex = i;
-                        break;
+                });
+            });
+        });
+        $(function () {
+            $("#Department_CompanyId").on("change", function () {
+                var companyId = $(this).val();
+                $.getJSON(`?handler=Company&companyId=${companyId}`, function (response) {
+                    var state = document.getElementById('Department_DepartmentState');
+                    for (var i = 0; i < state.options.length; i++) {
+                        if (state.options[i].text === response) {
+                            state.selectedIndex = i;
+                            break;
+                        }
                     }
-                }
-            }
-        }
-        function checkHead() {
-            var gm = document.getElementById("DepartmentHeadId");
-            var state = document.getElementById('Department_DepartmentState');
-            if (gm.options[gm.selectedIndex].value === '') {
-                for (var i = 0; i < state.options.length; i++) {
-                    if (state.options[i].text === 'Inactive') {
-                        state.selectedIndex = i;
-                        break;
+                });
+            });
+        });
+        $(function () {
+            $("#Department_DepartmentState").on("change", function () {
+                var employeeId = $("#DepartmentHeadId").val();
+                var companyId = $("#Department_CompanyId").val();
+                var state = document.getElementById('Department_DepartmentState');
+                $.getJSON(`?handler=Employee&employeeId=${employeeId}`, function (response) {
+                    if (response === "Inactive") {
+                        for (var i = 0; i < state.options.length; i++) {
+                            if (state.options[i].text === response) {
+                                state.selectedIndex = i;
+                                break;
+                            }
+                        }
                     }
-                }
-            }
-        }
+                });
+                $.getJSON(`?handler=Company&companyId=${companyId}`, function (response) {
+                    if (response === "Inactive") {
+                        for (var i = 0; i < state.options.length; i++) {
+                            if (state.options[i].text === response) {
+                                state.selectedIndex = i;
+                                break;
+                            }
+                        }
+                    }
+                });
+            });
+        });
     </script>
 }

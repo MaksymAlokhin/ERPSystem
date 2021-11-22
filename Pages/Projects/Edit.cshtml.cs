@@ -195,5 +195,15 @@ namespace ERPSystem.Pages.Projects
                 }
             }
         }
+        public async Task<JsonResult> OnGetDepartmentAsync(string departmentId)
+        {
+            Utility utility = new Utility(_context);
+            return await utility.GetDepartmentStateAsync(departmentId);
+        }
+        public async Task<JsonResult> OnGetEmployeeAsync(string employeeId)
+        {
+            Utility utility = new Utility(_context);
+            return await utility.GetEmployeeStateAsync(employeeId);
+        }
     }
 }

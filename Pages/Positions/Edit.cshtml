@@ -40,7 +40,7 @@
         <div class="col-sm-4">
             <div class="form-group">
                 <label asp-for="Position.PositionState" class="control-label"></label>
-                <select asp-for="Position.PositionState" asp-items="Html.GetEnumSelectList<Models.PositionState>()" class="form-control" onchange="checkProject()"></select>
+                <select asp-for="Position.PositionState" asp-items="Html.GetEnumSelectList<Models.PositionState>()" class="form-control"></select>
                 <span asp-validation-for="Position.PositionState" class="text-danger"></span>
             </div>
         </div>
