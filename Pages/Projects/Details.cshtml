@@ -37,7 +37,8 @@
             @if (@Model.Project.ProjectManager != null)
             {
                 <a asp-page="../Employees/Edit"
-                   asp-route-id="@Model.Project.ProjectManager.Id">
+                   asp-route-id="@Model.Project.ProjectManager.Id"
+                   asp-route-Role="ProjectManager">
                     @Html.DisplayFor(model => model.Project.ProjectManager.FullName)
                 </a>
             }

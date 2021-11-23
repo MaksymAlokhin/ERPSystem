@@ -165,131 +165,191 @@
                     break;
             }
         }
-        function checkRoleForCompany() {
-            var role = document.getElementById("Employee_EmployeeRole");
-            var company = document.getElementById('Employee_CompanyId');
-            if (role.options[role.selectedIndex].text !== 'General Manager') {
-                for (var i = 0; i < company.options.length; i++) {
-                    if (company.options[i].value === '') {
-                        company.selectedIndex = i;
+        $(function () {
+            $("#Employee_EmployeeState").on("change", function () {
+                var role = document.getElementById("Employee_EmployeeRole");
+                var state = document.getElementById("Employee_EmployeeState");
+                var roleSelection = role.options[role.selectedIndex].text;
+                switch (roleSelection) {
+                    case 'General Manager':
+                        var companyId = $("#Employee_CompanyId").val();
+                        $.getJSON(`?handler=Company&companyId=${companyId}`, function (response) {
+                            if (response === 'Inactive') {
+                                for (var i = 0; i < state.options.length; i++) {
+                                    if (state.options[i].text === response) {
+                                        state.selectedIndex = i;
+                                        break;
+                                    }
+                                }
+                            }
+                        });
                         break;
-                    }
-                }
-            }
-        }
-        function checkRoleForBranch() {
-            var role = document.getElementById("Employee_EmployeeRole");
-            var branch = document.getElementById('Employee_BranchId');
-            if (role.options[role.selectedIndex].text === 'General Manager'
-                || role.options[role.selectedIndex].text === 'Department Head'
-                || role.options[role.selectedIndex].text === 'Project Manager') {
-                for (var i = 0; i < branch.options.length; i++) {
-                    if (branch.options[i].value === '') {
-                        branch.selectedIndex = i;
+                    case 'Project Manager':
+                        var projectId = $("#Employee_ProjectId").val();
+                        $.getJSON(`?handler=Project&projectId=${projectId}`, function (response) {
+                            if (response === 'Inactive') {
+                                for (var i = 0; i < state.options.length; i++) {
+                                    if (state.options[i].text === response) {
+                                        state.selectedIndex = i;
+                                        break;
+                                    }
+                                }
+                            }
+                        });
                         break;
-                    }
-                }
-            }
-        }
-        function checkRoleForDepartment() {
-            var role = document.getElementById("Employee_EmployeeRole");
-            var department = document.getElementById('Employee_DepartmentId');
-            if (role.options[role.selectedIndex].text !== 'Department Head') {
-                for (var i = 0; i < department.options.length; i++) {
-                    if (department.options[i].value === '') {
-                        department.selectedIndex = i;
+                    case 'Department Head':
+                        var departmentId = $("#Employee_DepartmentId").val();
+                        $.getJSON(`?handler=Department&departmentId=${departmentId}`, function (response) {
+                            if (response === 'Inactive') {
+                                for (var i = 0; i < state.options.length; i++) {
+                                    if (state.options[i].text === response) {
+                                        state.selectedIndex = i;
+                                        break;
+                                    }
+                                }
+                            }
+                        });
                         break;
-                    }
-                }
-            }
-        }
-        function checkRoleForProject() {
-            var role = document.getElementById("Employee_EmployeeRole");
-            var project = document.getElementById('Employee_ProjectId');
-            if (role.options[role.selectedIndex].text !== 'Project Manager') {
-                for (var i = 0; i < project.options.length; i++) {
-                    if (project.options[i].value === '') {
-                        project.selectedIndex = i;
+                    case 'Mentor':
+                    case 'Employee':
+                        var branchId = $("#Employee_BranchId").val();
+                        $.getJSON(`?handler=Branch&branchId=${branchId}`, function (response) {
+                            if (response === 'Inactive') {
+                                for (var i = 0; i < state.options.length; i++) {
+                                    if (state.options[i].text === response) {
+                                        state.selectedIndex = i;
+                                        break;
+                                    }
+                                }
+                            }
+                        });
                         break;
-                    }
                 }
-            }
-        }
-        function checkCompatibleFields() {
-            var role = document.getElementById("Employee_EmployeeRole");
-            var roleSelection = role.options[role.selectedIndex].text;
-            switch (roleSelection) {
-                case 'General Manager':
-                    selectElement('Employee_BranchId', '');
-                    selectElement('Employee_ProjectId', '');
-                    selectElement('Employee_DepartmentId', '');
+            });
+        });
 
-                    hideElement('branch');
-                    hideElement('project');
-                    hideElement('department');
+        $(function () {
+            $("#Employee_EmployeeRole, #Employee_DepartmentId, #Employee_ProjectId, #Employee_CompanyId, #Employee_BranchId").on("change", function () {
+                var role = document.getElementById("Employee_EmployeeRole");
+                var state = document.getElementById("Employee_EmployeeState");
+                var roleSelection = role.options[role.selectedIndex].text;
+                switch (roleSelection) {
+                    case 'General Manager':
+                        selectElement('Employee_BranchId', '');
+                        selectElement('Employee_ProjectId', '');
+                        selectElement('Employee_DepartmentId', '');
 
-                    hideElement('assignments');
-                    hideElement('mentors');
+                        hideElement('branch');
+                        hideElement('project');
+                        hideElement('department');
 
-                    showElement('company');
-                    break;
-                case 'Project Manager':
-                    selectElement('Employee_BranchId', '');
-                    selectElement('Employee_DepartmentId', '');
-                    selectElement('Employee_CompanyId', '');
+                        hideElement('assignments');
+                        hideElement('mentors');
 
-                    hideElement('branch');
-                    hideElement('department');
-                    hideElement('company');
+                        showElement('company');
 
-                    hideElement('assignments');
+                        var companyId = $("#Employee_CompanyId").val();
+                        $.getJSON(`?handler=Company&companyId=${companyId}`, function (response) {
+                                for (var i = 0; i < state.options.length; i++) {
+                                    if (state.options[i].text === response) {
+                                        state.selectedIndex = i;
+                                        break;
+                                    }
+                                }
+                        });
 
-                    showElement('project');
-                    showElement('mentors');
-                    break;
-                case 'Department Head':
-                    selectElement('Employee_BranchId', '');
-                    selectElement('Employee_ProjectId', '');
-                    selectElement('Employee_CompanyId', '');
+                        break;
+                    case 'Project Manager':
+                        selectElement('Employee_BranchId', '');
+                        selectElement('Employee_DepartmentId', '');
+                        selectElement('Employee_CompanyId', '');
 
-                    hideElement('branch');
-                    hideElement('project');
-                    hideElement('company');
+                        hideElement('branch');
+                        hideElement('department');
+                        hideElement('company');
 
-                    hideElement('assignments');
+                        hideElement('assignments');
 
-                    showElement('department');
-                    showElement('mentors');
-                    break;
-                case 'Mentor':
-                    selectElement('Employee_DepartmentId', '');
-                    selectElement('Employee_ProjectId', '');
-                    selectElement('Employee_CompanyId', '');
+                        showElement('project');
+                        showElement('mentors');
 
-                    hideElement('department');
-                    hideElement('project');
-                    hideElement('company');
+                        var projectId = $("#Employee_ProjectId").val();
+                        $.getJSON(`?handler=Project&projectId=${projectId}`, function (response) {
+                            for (var i = 0; i < state.options.length; i++) {
+                                if (state.options[i].text === response) {
+                                    state.selectedIndex = i;
+                                    break;
+                                }
+                            }
+                        });
 
-                    hideElement('mentors');
+                        break;
+                    case 'Department Head':
+                        selectElement('Employee_BranchId', '');
+                        selectElement('Employee_ProjectId', '');
+                        selectElement('Employee_CompanyId', '');
 
-                    showElement('branch');
-                    showElement('assignments');
-                    break;
-                case 'Employee':
-                    selectElement('Employee_DepartmentId', '');
-                    selectElement('Employee_ProjectId', '');
-                    selectElement('Employee_CompanyId', '');
+                        hideElement('branch');
+                        hideElement('project');
+                        hideElement('company');
 
-                    hideElement('department');
-                    hideElement('project');
-                    hideElement('company');
+                        hideElement('assignments');
 
-                    showElement('branch');
-                    showElement('assignments');
-                    showElement('mentors');
-                    break;
-            }
-        }
+                        showElement('department');
+                        showElement('mentors');
+
+                        var departmentId = $("#Employee_DepartmentId").val();
+                        $.getJSON(`?handler=Department&departmentId=${departmentId}`, function (response) {
+                            for (var i = 0; i < state.options.length; i++) {
+                                if (state.options[i].text === response) {
+                                    state.selectedIndex = i;
+                                    break;
+                                }
+                            }
+                        });
+
+                        break;
+                    case 'Mentor':
+                        selectElement('Employee_DepartmentId', '');
+                        selectElement('Employee_ProjectId', '');
+                        selectElement('Employee_CompanyId', '');
+
+                        hideElement('department');
+                        hideElement('project');
+                        hideElement('company');
+
+                        hideElement('mentors');
+
+                        showElement('branch');
+                        showElement('assignments');
+
+                        var branchId = $("#Employee_BranchId").val();
+                        $.getJSON(`?handler=Branch&branchId=${branchId}`, function (response) {
+                            for (var i = 0; i < state.options.length; i++) {
+                                if (state.options[i].text === response) {
+                                    state.selectedIndex = i;
+                                    break;
+                                }
+                            }
+                        });
+
+                        break;
+                    case 'Employee':
+                        selectElement('Employee_DepartmentId', '');
+                        selectElement('Employee_ProjectId', '');
+                        selectElement('Employee_CompanyId', '');
+
+                        hideElement('department');
+                        hideElement('project');
+                        hideElement('company');
+
+                        showElement('branch');
+                        showElement('assignments');
+                        showElement('mentors');
+                        break;
+                }
+            });
+        });
         function selectElement(id, valueToSelect) {
             let element = document.getElementById(id);
             element.value = valueToSelect;
@@ -303,7 +363,7 @@
             x.style.display = "block";
         }
 
-        @*Display the filename of the selected photo*@
+        @* Display the filename of the selected photo *@
         $(".custom-file-input").on("change", function () {
             var fileName = $(this).val().split("\\").pop();
             $(this).siblings(".custom-file-label").addClass("selected").html(fileName);

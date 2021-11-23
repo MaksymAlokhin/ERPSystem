@@ -62,6 +62,7 @@ namespace ERPSystem.Pages.Employees
             SelectedAssignments = new List<int>();
 
             Employee = new Employee();
+            Employee.EmployeeState = EmployeeState.Inactive;
             Employee.DateOfBirth = Utility.GetRandomDate(DateTime.Now.AddYears(-60), DateTime.Now.AddYears(-20));
             return Page();
         }
@@ -189,6 +190,26 @@ namespace ERPSystem.Pages.Employees
                 });
             }
             return Page();
+        }
+        public async Task<JsonResult> OnGetCompanyAsync(string companyId)
+        {
+            Utility utility = new Utility(_context);
+            return await utility.GetCompanyStateAsync(companyId);
+        }
+        public async Task<JsonResult> OnGetProjectAsync(string projectId)
+        {
+            Utility utility = new Utility(_context);
+            return await utility.GetProjectStateAsync(projectId);
+        }
+        public async Task<JsonResult> OnGetDepartmentAsync(string departmentId)
+        {
+            Utility utility = new Utility(_context);
+            return await utility.GetDepartmentStateAsync(departmentId);
+        }
+        public async Task<JsonResult> OnGetBranchAsync(string branchId)
+        {
+            Utility utility = new Utility(_context);
+            return await utility.GetBranchStateAsync(branchId);
         }
     }
 }

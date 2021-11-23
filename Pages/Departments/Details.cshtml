@@ -25,7 +25,8 @@
             @if (@Model.Department.DepartmentHead != null)
             {
                 <a asp-page="../Employees/Edit"
-                   asp-route-id="@Model.Department.DepartmentHead.Id">
+                   asp-route-id="@Model.Department.DepartmentHead.Id"
+                   asp-route-Role="DepartmentHead">
                     @Html.DisplayFor(model => model.Department.DepartmentHead.FullName)
                 </a>
             }
