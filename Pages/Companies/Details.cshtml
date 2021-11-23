@@ -25,7 +25,8 @@
             @if (@Model.Company.GeneralManager != null)
             {
                 <a asp-page="../Employees/Edit"
-                   asp-route-id="@Model.Company.GeneralManager.Id">
+                   asp-route-id="@Model.Company.GeneralManager.Id"
+                   asp-route-Role="GeneralManager">
                     @Html.DisplayFor(model => model.Company.GeneralManager.FullName)
                 </a>
             }
