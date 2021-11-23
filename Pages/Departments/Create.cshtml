@@ -70,30 +70,27 @@
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
     <script>
         $(function () {
-            $("#DepartmentHeadId").on("change", function () {
-                var employeeId = $(this).val();
+            $("#DepartmentHeadId, #Department_CompanyId").on("change", function () {
+                var response1;
+                var response2;
+                var employeeId = $("#DepartmentHeadId").val();
+                var companyId = $("#Department_CompanyId").val();
+                var state = document.getElementById('Department_DepartmentState');
                 $.getJSON(`?handler=Employee&employeeId=${employeeId}`, function (response) {
-                    var state = document.getElementById('Department_DepartmentState');
-                    for (var i = 0; i < state.options.length; i++) {
-                        if (state.options[i].text === response) {
-                            state.selectedIndex = i;
-                            break;
+                    if (response === "Active") response1 = true;
+                    else response1 = false;
+                    $.getJSON(`?handler=Company&companyId=${companyId}`, function (response) {
+                        if (response === "Active") response2 = true;
+                        else response2 = false;
+                        if (response1 && response2) response = "Active";
+                        else response = "Inactive";
+                        for (var i = 0; i < state.options.length; i++) {
+                            if (state.options[i].text === response) {
+                                state.selectedIndex = i;
+                                break;
+                            }
                         }
-                    }
-                });
-            });
-        });
-        $(function () {
-            $("#Department_CompanyId").on("change", function () {
-                var companyId = $(this).val();
-                $.getJSON(`?handler=Company&companyId=${companyId}`, function (response) {
-                    var state = document.getElementById('Department_DepartmentState');
-                    for (var i = 0; i < state.options.length; i++) {
-                        if (state.options[i].text === response) {
-                            state.selectedIndex = i;
-                            break;
-                        }
-                    }
+                    });
                 });
             });
         });
