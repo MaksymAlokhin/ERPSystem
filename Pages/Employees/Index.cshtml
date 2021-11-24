@@ -26,7 +26,7 @@
         </div>
     </div>
 </form>
-<table class="table table-responsive text-nowrap">
+<table class="table table-responsive text-nowrap table-hover">
     <thead>
         <tr>
             <th>#</th>
@@ -70,98 +70,98 @@
             int i = 0;
             @foreach (var item in Model.Employee)
             {
-                <tr>
-                    <th scope="row">
-                        @Model.Employee.SeqNum[i]
-                    </th>
-                    <td>
-                        @if (!string.IsNullOrEmpty(item.ProfilePicture))
-                        {<img src="~/images/avatars/@item.ProfilePicture"
-                              class="rounded-circle"
-                              height="40" width:auto
-                              asp-append-version="true" />
-                        }
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.FullName)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.EmployeeRole)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Branch.Name)
-                    </td>
-                    <td style="text-align: center">
-                        @item.Assignments.Count()
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.EmployeeState)
-                    </td>
-                    <td style="text-align: center">
-                        <a asp-page="./Edit"
-                           asp-route-id="@item.Id"
-                           asp-route-pageIndex="@Model.Employee.PageIndex"
-                           asp-route-sortOrder="@Model.CurrentSort"
-                           asp-route-currentFilter="@Model.CurrentFilter"
-                           asp-route-Role="@Model.Role">
-                            <i class="fas fa-pencil-alt fa-lg"></i>
-                        </a> |
-                        <a asp-page="./Details"
-                           asp-route-id="@item.Id"
-                           asp-route-pageIndex="@Model.Employee.PageIndex"
-                           asp-route-sortOrder="@Model.CurrentSort"
-                           asp-route-currentFilter="@Model.CurrentFilter"
-                           asp-route-Role="@Model.Role">
-                            <i class="fas fa-eye fa-lg"></i>
-                        </a> |
-                        <a asp-page="./Delete"
-                           asp-route-id="@item.Id"
-                           asp-route-pageIndex="@Model.Employee.PageIndex"
-                           asp-route-sortOrder="@Model.CurrentSort"
-                           asp-route-currentFilter="@Model.CurrentFilter"
-                           asp-route-Role="@Model.Role">
-                            <i class="fas fa-trash fa-lg text-danger"></i>
-                        </a>
-                    </td>
-                </tr>
-                i++;
+                    <tr style="@(item.EmployeeState == Models.EmployeeState.Inactive? "color:gray;" : "")">
+                        <th scope="row">
+                            @Model.Employee.SeqNum[i]
+                        </th>
+                        <td>
+                            @if (!string.IsNullOrEmpty(item.ProfilePicture))
+                            {<img src="~/images/avatars/@item.ProfilePicture"
+                                  class="rounded-circle"
+                                  height="40" width:auto
+                                  asp-append-version="true" />
+                            }
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.FullName)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.EmployeeRole)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Branch.Name)
+                        </td>
+                        <td style="text-align: center">
+                            @item.Assignments.Count()
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.EmployeeState)
+                        </td>
+                        <td style="text-align: center">
+                            <a asp-page="./Edit"
+                               asp-route-id="@item.Id"
+                               asp-route-pageIndex="@Model.Employee.PageIndex"
+                               asp-route-sortOrder="@Model.CurrentSort"
+                               asp-route-currentFilter="@Model.CurrentFilter"
+                               asp-route-Role="@Model.Role">
+                                <i class="fas fa-pencil-alt fa-lg"></i>
+                            </a> |
+                            <a asp-page="./Details"
+                               asp-route-id="@item.Id"
+                               asp-route-pageIndex="@Model.Employee.PageIndex"
+                               asp-route-sortOrder="@Model.CurrentSort"
+                               asp-route-currentFilter="@Model.CurrentFilter"
+                               asp-route-Role="@Model.Role">
+                                <i class="fas fa-eye fa-lg"></i>
+                            </a> |
+                            <a asp-page="./Delete"
+                               asp-route-id="@item.Id"
+                               asp-route-pageIndex="@Model.Employee.PageIndex"
+                               asp-route-sortOrder="@Model.CurrentSort"
+                               asp-route-currentFilter="@Model.CurrentFilter"
+                               asp-route-Role="@Model.Role">
+                                <i class="fas fa-trash fa-lg text-danger"></i>
+                            </a>
+                        </td>
+                    </tr>
+                    i++;
+                    }
+                    }
+                </tbody>
+            </table>
+            @{
+                var prevDisabled = !Model.Employee.HasPreviousPage ? "disabled" : "";
+                var nextDisabled = !Model.Employee.HasNextPage ? "disabled" : "";
             }
-        }
-    </tbody>
-</table>
-@{
-    var prevDisabled = !Model.Employee.HasPreviousPage ? "disabled" : "";
-    var nextDisabled = !Model.Employee.HasNextPage ? "disabled" : "";
-}
-<a asp-page="./Index"
-   asp-route-sortOrder="@Model.CurrentSort"
-   asp-route-pageIndex="1"
-   asp-route-currentFilter="@Model.CurrentFilter"
-   asp-route-Role="@Model.Role"
-   class="btn btn-primary @prevDisabled">
-    <i class="fas fa-fast-backward"></i>
-</a>
-<a asp-page="./Index"
-   asp-route-sortOrder="@Model.CurrentSort"
-   asp-route-pageIndex="@(Model.Employee.PageIndex - 1)"
-   asp-route-currentFilter="@Model.CurrentFilter"
-   asp-route-Role="@Model.Role"
-   class="btn btn-primary @prevDisabled">
-    <i class="fas fa-arrow-alt-circle-left fa-lg"></i>
-</a>
-<a asp-page="./Index"
-   asp-route-sortOrder="@Model.CurrentSort"
-   asp-route-pageIndex="@(Model.Employee.PageIndex + 1)"
-   asp-route-currentFilter="@Model.CurrentFilter"
-   asp-route-Role="@Model.Role"
-   class="btn btn-primary @nextDisabled">
-    <i class="fas fa-arrow-alt-circle-right fa-lg"></i>
-</a>
-<a asp-page="./Index"
-   asp-route-sortOrder="@Model.CurrentSort"
-   asp-route-pageIndex="@(Model.Employee.TotalPages)"
-   asp-route-currentFilter="@Model.CurrentFilter"
-   asp-route-Role="@Model.Role"
-   class="btn btn-primary @nextDisabled">
-    <i class="fas fa-fast-forward"></i>
-</a>
+            <a asp-page="./Index"
+               asp-route-sortOrder="@Model.CurrentSort"
+               asp-route-pageIndex="1"
+               asp-route-currentFilter="@Model.CurrentFilter"
+               asp-route-Role="@Model.Role"
+               class="btn btn-primary @prevDisabled">
+                <i class="fas fa-fast-backward"></i>
+            </a>
+            <a asp-page="./Index"
+               asp-route-sortOrder="@Model.CurrentSort"
+               asp-route-pageIndex="@(Model.Employee.PageIndex - 1)"
+               asp-route-currentFilter="@Model.CurrentFilter"
+               asp-route-Role="@Model.Role"
+               class="btn btn-primary @prevDisabled">
+                <i class="fas fa-arrow-alt-circle-left fa-lg"></i>
+            </a>
+            <a asp-page="./Index"
+               asp-route-sortOrder="@Model.CurrentSort"
+               asp-route-pageIndex="@(Model.Employee.PageIndex + 1)"
+               asp-route-currentFilter="@Model.CurrentFilter"
+               asp-route-Role="@Model.Role"
+               class="btn btn-primary @nextDisabled">
+                <i class="fas fa-arrow-alt-circle-right fa-lg"></i>
+            </a>
+            <a asp-page="./Index"
+               asp-route-sortOrder="@Model.CurrentSort"
+               asp-route-pageIndex="@(Model.Employee.TotalPages)"
+               asp-route-currentFilter="@Model.CurrentFilter"
+               asp-route-Role="@Model.Role"
+               class="btn btn-primary @nextDisabled">
+                <i class="fas fa-fast-forward"></i>
+            </a>

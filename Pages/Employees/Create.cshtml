@@ -10,9 +10,33 @@
 
 <h4>Employee</h4>
 <hr />
-<form method="post" onload="populateOptionalSelectLists">
+<div class="row">
+    <div class="col-sm-auto">
+        <div id="photo" class="img-fluid mw-100 h-auto">
+            @if (!string.IsNullOrEmpty(@Model.Employee.ProfilePicture))
+            {
+                <img id="upload" src="~/images/avatars/@Model.Employee.ProfilePicture" />
+            }
+        </div>
+    </div>
+    <div class="col-sm-auto" id="assignments">
+        <div class="form-group">
+            <label asp-for="Employee.Assignments" class="control-label"></label><br />
+            <select asp-for="SelectedAssignments" asp-items="Model.AssignmentsSelectList" size="8">
+            </select>
+        </div>
+    </div>
+    <div class="col-sm-auto" id="mentors">
+        <div class="form-group">
+            <label asp-for="Employee.Mentors" class="control-label"></label><br />
+            <select asp-for="SelectedMentors" asp-items="Model.MentorsSelectList" size="8">
+            </select>
+        </div>
+    </div>
+</div>
+
+<form enctype="multipart/form-data" method="post" onload="populateOptionalSelectLists">
     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-    <input type="hidden" asp-for="Employee.Id" />
     <div class="row">
         <div class="col-sm-4">
             <div class="form-group">
@@ -87,23 +111,6 @@
             </div>
         </div>
     </div>
-    <hr />
-    <div class="row">
-        <div class="col-sm-auto" id="assignments">
-            <div class="form-group">
-                <label asp-for="Employee.Assignments" class="control-label"></label><br />
-                <select asp-for="SelectedAssignments" asp-items="Model.AssignmentsSelectList" size="10">
-                </select>
-            </div>
-        </div>
-        <div class="col-sm-auto" id="mentors">
-            <div class="form-group">
-                <label asp-for="Employee.Mentors" class="control-label"></label><br />
-                <select asp-for="SelectedMentors" asp-items="Model.MentorsSelectList" size="10">
-                </select>
-            </div>
-        </div>
-    </div>
     <div class="form-group">
         <input type="submit" value="Create" class="btn btn-primary" />
     </div>
@@ -158,73 +165,10 @@
                     break;
             }
         }
+        @* Change dropdowns according to role *@
         $(function () {
-            $("#Employee_EmployeeState").on("change", function () {
+            $("#Employee_EmployeeRole").on("change", function () {
                 var role = document.getElementById("Employee_EmployeeRole");
-                var state = document.getElementById("Employee_EmployeeState");
-                var roleSelection = role.options[role.selectedIndex].text;
-                switch (roleSelection) {
-                    case 'General Manager':
-                        var companyId = $("#Employee_CompanyId").val();
-                        $.getJSON(`?handler=Company&companyId=${companyId}`, function (response) {
-                            if (response === 'Inactive') {
-                                for (var i = 0; i < state.options.length; i++) {
-                                    if (state.options[i].text === response) {
-                                        state.selectedIndex = i;
-                                        break;
-                                    }
-                                }
-                            }
-                        });
-                        break;
-                    case 'Project Manager':
-                        var projectId = $("#Employee_ProjectId").val();
-                        $.getJSON(`?handler=Project&projectId=${projectId}`, function (response) {
-                            if (response === 'Inactive') {
-                                for (var i = 0; i < state.options.length; i++) {
-                                    if (state.options[i].text === response) {
-                                        state.selectedIndex = i;
-                                        break;
-                                    }
-                                }
-                            }
-                        });
-                        break;
-                    case 'Department Head':
-                        var departmentId = $("#Employee_DepartmentId").val();
-                        $.getJSON(`?handler=Department&departmentId=${departmentId}`, function (response) {
-                            if (response === 'Inactive') {
-                                for (var i = 0; i < state.options.length; i++) {
-                                    if (state.options[i].text === response) {
-                                        state.selectedIndex = i;
-                                        break;
-                                    }
-                                }
-                            }
-                        });
-                        break;
-                    case 'Mentor':
-                    case 'Employee':
-                        var branchId = $("#Employee_BranchId").val();
-                        $.getJSON(`?handler=Branch&branchId=${branchId}`, function (response) {
-                            if (response === 'Inactive') {
-                                for (var i = 0; i < state.options.length; i++) {
-                                    if (state.options[i].text === response) {
-                                        state.selectedIndex = i;
-                                        break;
-                                    }
-                                }
-                            }
-                        });
-                        break;
-                }
-            });
-        });
-
-        $(function () {
-            $("#Employee_EmployeeRole, #Employee_DepartmentId, #Employee_ProjectId, #Employee_CompanyId, #Employee_BranchId").on("change", function () {
-                var role = document.getElementById("Employee_EmployeeRole");
-                var state = document.getElementById("Employee_EmployeeState");
                 var roleSelection = role.options[role.selectedIndex].text;
                 switch (roleSelection) {
                     case 'General Manager':
@@ -241,17 +185,8 @@
 
                         showElement('company');
 
-                        var companyId = $("#Employee_CompanyId").val();
-                        $.getJSON(`?handler=Company&companyId=${companyId}`, function (response) {
-                                for (var i = 0; i < state.options.length; i++) {
-                                    if (state.options[i].text === response) {
-                                        state.selectedIndex = i;
-                                        break;
-                                    }
-                                }
-                        });
-
                         break;
+
                     case 'Project Manager':
                         selectElement('Employee_BranchId', '');
                         selectElement('Employee_DepartmentId', '');
@@ -266,17 +201,8 @@
                         showElement('project');
                         showElement('mentors');
 
-                        var projectId = $("#Employee_ProjectId").val();
-                        $.getJSON(`?handler=Project&projectId=${projectId}`, function (response) {
-                            for (var i = 0; i < state.options.length; i++) {
-                                if (state.options[i].text === response) {
-                                    state.selectedIndex = i;
-                                    break;
-                                }
-                            }
-                        });
-
                         break;
+
                     case 'Department Head':
                         selectElement('Employee_BranchId', '');
                         selectElement('Employee_ProjectId', '');
@@ -291,17 +217,8 @@
                         showElement('department');
                         showElement('mentors');
 
-                        var departmentId = $("#Employee_DepartmentId").val();
-                        $.getJSON(`?handler=Department&departmentId=${departmentId}`, function (response) {
-                            for (var i = 0; i < state.options.length; i++) {
-                                if (state.options[i].text === response) {
-                                    state.selectedIndex = i;
-                                    break;
-                                }
-                            }
-                        });
-
                         break;
+
                     case 'Mentor':
                         selectElement('Employee_DepartmentId', '');
                         selectElement('Employee_ProjectId', '');
@@ -316,17 +233,8 @@
                         showElement('branch');
                         showElement('assignments');
 
-                        var branchId = $("#Employee_BranchId").val();
-                        $.getJSON(`?handler=Branch&branchId=${branchId}`, function (response) {
-                            for (var i = 0; i < state.options.length; i++) {
-                                if (state.options[i].text === response) {
-                                    state.selectedIndex = i;
-                                    break;
-                                }
-                            }
-                        });
-
                         break;
+
                     case 'Employee':
                         selectElement('Employee_DepartmentId', '');
                         selectElement('Employee_ProjectId', '');
@@ -360,6 +268,24 @@
         $(".custom-file-input").on("change", function () {
             var fileName = $(this).val().split("\\").pop();
             $(this).siblings(".custom-file-label").addClass("selected").html(fileName);
+        });
+        @* Display image of the selected photo *@
+        $("#customFile").change(function (e) {
+
+            for (var i = 0; i < e.originalEvent.srcElement.files.length; i++) {
+
+                var file = e.originalEvent.srcElement.files[i];
+
+                var img = document.createElement("img");
+                img.setAttribute("id", "upload");
+                var reader = new FileReader();
+                reader.onloadend = function () {
+                    img.src = reader.result;
+                }
+                reader.readAsDataURL(file);
+                $('#upload').remove();
+                $("#photo").after(img);
+            }
         });
     </script>
 }

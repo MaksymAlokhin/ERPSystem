@@ -20,7 +20,7 @@
         </p>
     </div>
 </form>
-<table class="table table-responsive text-nowrap">
+<table class="table table-responsive text-nowrap table-hover">
     <thead>
         <tr>
             <th>#</th>
@@ -75,7 +75,7 @@
             int i = 0;
             @foreach (var item in Model.Position)
             {
-                <tr>
+                <tr style="@(item.PositionState == Models.PositionState.Inactive? "color:gray;" : "")">
                     <th scope="row">
                         @Model.Position.SeqNum[i]
                     </th>

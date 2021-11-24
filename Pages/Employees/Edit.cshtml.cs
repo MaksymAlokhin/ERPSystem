@@ -352,25 +352,5 @@ namespace ERPSystem.Pages.Employees
                 }
             }
         }
-        public async Task<JsonResult> OnGetCompanyAsync(string companyId)
-        {
-            Utility utility = new Utility(_context);
-            return await utility.GetCompanyStateAsync(companyId);
-        }
-        public async Task<JsonResult> OnGetProjectAsync(string projectId)
-        {
-            Utility utility = new Utility(_context);
-            return await utility.GetProjectStateAsync(projectId);
-        }
-        public async Task<JsonResult> OnGetDepartmentAsync(string departmentId)
-        {
-            Utility utility = new Utility(_context);
-            return await utility.GetDepartmentStateAsync(departmentId);
-        }
-        public async Task<JsonResult> OnGetBranchAsync(string branchId)
-        {
-            Utility utility = new Utility(_context);
-            return await utility.GetBranchStateAsync(branchId);
-        }
     }
 }

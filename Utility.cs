@@ -204,45 +204,45 @@ namespace ERPSystem
                 else
                     assignment.AssignmentState = AssignmentState.Inactive;
             }
-            foreach (var employee in _context.Employees)
-            {
-                switch (employee.EmployeeRole)
-                {
-                    case EmployeeRole.Employee:
-                    case EmployeeRole.Mentor:
-                        if (employee.BranchId == null)
-                            employee.EmployeeState = EmployeeState.Inactive;
-                        else if (employee.Branch.BranchState == BranchState.Active)
-                            employee.EmployeeState = EmployeeState.Active;
-                        else
-                            employee.EmployeeState = EmployeeState.Inactive;
-                        break;
-                    case EmployeeRole.DepartmentHead:
-                        if (employee.DepartmentId == null)
-                            employee.EmployeeState = EmployeeState.Inactive;
-                        else if (employee.Department.DepartmentState == DepartmentState.Active)
-                            employee.EmployeeState = EmployeeState.Active;
-                        else
-                            employee.EmployeeState = EmployeeState.Inactive;
-                        break;
-                    case EmployeeRole.GeneralManager:
-                        if (employee.CompanyId == null)
-                            employee.EmployeeState = EmployeeState.Inactive;
-                        else if (employee.Company.CompanyState == CompanyState.Active)
-                            employee.EmployeeState = EmployeeState.Active;
-                        else
-                            employee.EmployeeState = EmployeeState.Inactive;
-                        break;
-                    case EmployeeRole.ProjectManager:
-                        if (employee.ProjectId == null)
-                            employee.EmployeeState = EmployeeState.Inactive;
-                        else if (employee.Project.ProjectState == ProjectState.Active)
-                            employee.EmployeeState = EmployeeState.Active;
-                        else
-                            employee.EmployeeState = EmployeeState.Inactive;
-                        break;
-                }
-            }
+            //foreach (var employee in _context.Employees)
+            //{
+            //    switch (employee.EmployeeRole)
+            //    {
+            //        case EmployeeRole.Employee:
+            //        case EmployeeRole.Mentor:
+            //            if (employee.BranchId == null)
+            //                employee.EmployeeState = EmployeeState.Inactive;
+            //            else if (employee.Branch.BranchState == BranchState.Active)
+            //                employee.EmployeeState = EmployeeState.Active;
+            //            else
+            //                employee.EmployeeState = EmployeeState.Inactive;
+            //            break;
+            //        case EmployeeRole.DepartmentHead:
+            //            if (employee.DepartmentId == null)
+            //                employee.EmployeeState = EmployeeState.Inactive;
+            //            else if (employee.Department.DepartmentState == DepartmentState.Active)
+            //                employee.EmployeeState = EmployeeState.Active;
+            //            else
+            //                employee.EmployeeState = EmployeeState.Inactive;
+            //            break;
+            //        case EmployeeRole.GeneralManager:
+            //            if (employee.CompanyId == null)
+            //                employee.EmployeeState = EmployeeState.Inactive;
+            //            else if (employee.Company.CompanyState == CompanyState.Active)
+            //                employee.EmployeeState = EmployeeState.Active;
+            //            else
+            //                employee.EmployeeState = EmployeeState.Inactive;
+            //            break;
+            //        case EmployeeRole.ProjectManager:
+            //            if (employee.ProjectId == null)
+            //                employee.EmployeeState = EmployeeState.Inactive;
+            //            else if (employee.Project.ProjectState == ProjectState.Active)
+            //                employee.EmployeeState = EmployeeState.Active;
+            //            else
+            //                employee.EmployeeState = EmployeeState.Inactive;
+            //            break;
+            //    }
+            //}
             await _context.SaveChangesAsync();
         }
         public async Task<JsonResult> GetEmployeeStateAsync(string employeeId)
