@@ -11,12 +11,12 @@
 <hr />
 <div class="row">
     <div class="col-sm-auto">
-        @if (!string.IsNullOrEmpty(@Model.Employee.ProfilePicture))
-        {
-            <div class="img-fluid mw-100 h-auto">
-                <img src="~/images/avatars/@Model.Employee.ProfilePicture" />
-            </div>
-        }
+        <div id="photo" class="img-fluid mw-100 h-auto">
+            @if (!string.IsNullOrEmpty(@Model.Employee.ProfilePicture))
+            {
+                <img id="upload" src="~/images/avatars/@Model.Employee.ProfilePicture" />
+            }
+        </div>
     </div>
     <div class="col-sm-auto" id="assignments">
         <div class="form-group">
@@ -71,7 +71,7 @@
         <div class="col-sm-4">
             <div class="form-group">
                 <label asp-for="Employee.EmployeeRole" class="control-label"></label>
-                <select asp-for="Employee.EmployeeRole" class="form-control" asp-items="Html.GetEnumSelectList<Models.EmployeeRole>()" onchange="checkCompatibleFields()"></select>
+                <select asp-for="Employee.EmployeeRole" class="form-control" asp-items="Html.GetEnumSelectList<Models.EmployeeRole>()"></select>
                 <span asp-validation-for="Employee.EmployeeRole" class="text-danger"></span>
             </div>
         </div>
@@ -79,22 +79,22 @@
             <div id="selectListAnchor"></div>
             <div class="form-group" id="company">
                 <label asp-for="Employee.Company" class="control-label"></label>
-                <select asp-for="Employee.CompanyId" class="form-control" asp-items="ViewBag.CompanyId" onchange="checkRoleForCompany()"><option value="">--none--</option></select>
+                <select asp-for="Employee.CompanyId" class="form-control" asp-items="ViewBag.CompanyId"><option value="">--none--</option></select>
                 <span asp-validation-for="Employee.CompanyId" class="text-danger"></span>
             </div>
             <div class="form-group" id="project">
                 <label asp-for="Employee.Project" class="control-label"></label>
-                <select asp-for="Employee.ProjectId" class="form-control" asp-items="ViewBag.ProjectId" onchange="checkRoleForProject()"><option value="">--none--</option></select>
+                <select asp-for="Employee.ProjectId" class="form-control" asp-items="ViewBag.ProjectId"><option value="">--none--</option></select>
                 <span asp-validation-for="Employee.ProjectId" class="text-danger"></span>
             </div>
             <div class="form-group" id="department">
                 <label asp-for="Employee.Department" class="control-label"></label>
-                <select asp-for="Employee.DepartmentId" class="form-control" asp-items="ViewBag.DepartmentId" onchange="checkRoleForDepartment()"><option value="">--none--</option></select>
+                <select asp-for="Employee.DepartmentId" class="form-control" asp-items="ViewBag.DepartmentId"><option value="">--none--</option></select>
                 <span asp-validation-for="Employee.DepartmentId" class="text-danger"></span>
             </div>
             <div class="form-group" id="branch">
                 <label asp-for="Employee.Branch" class="control-label"></label>
-                <select asp-for="Employee.BranchId" class="form-control" asp-items="ViewBag.BranchId" onchange="checkRoleForBranch()"><option value="">--none--</option></select>
+                <select asp-for="Employee.BranchId" class="form-control" asp-items="ViewBag.BranchId"><option value="">--none--</option></select>
                 <span asp-validation-for="Employee.BranchId" class="text-danger"></span>
             </div>
         </div>
@@ -165,73 +165,10 @@
                     break;
             }
         }
+        @* Change dropdowns according to role *@
         $(function () {
-            $("#Employee_EmployeeState").on("change", function () {
+            $("#Employee_EmployeeRole").on("change", function () {
                 var role = document.getElementById("Employee_EmployeeRole");
-                var state = document.getElementById("Employee_EmployeeState");
-                var roleSelection = role.options[role.selectedIndex].text;
-                switch (roleSelection) {
-                    case 'General Manager':
-                        var companyId = $("#Employee_CompanyId").val();
-                        $.getJSON(`?handler=Company&companyId=${companyId}`, function (response) {
-                            if (response === 'Inactive') {
-                                for (var i = 0; i < state.options.length; i++) {
-                                    if (state.options[i].text === response) {
-                                        state.selectedIndex = i;
-                                        break;
-                                    }
-                                }
-                            }
-                        });
-                        break;
-                    case 'Project Manager':
-                        var projectId = $("#Employee_ProjectId").val();
-                        $.getJSON(`?handler=Project&projectId=${projectId}`, function (response) {
-                            if (response === 'Inactive') {
-                                for (var i = 0; i < state.options.length; i++) {
-                                    if (state.options[i].text === response) {
-                                        state.selectedIndex = i;
-                                        break;
-                                    }
-                                }
-                            }
-                        });
-                        break;
-                    case 'Department Head':
-                        var departmentId = $("#Employee_DepartmentId").val();
-                        $.getJSON(`?handler=Department&departmentId=${departmentId}`, function (response) {
-                            if (response === 'Inactive') {
-                                for (var i = 0; i < state.options.length; i++) {
-                                    if (state.options[i].text === response) {
-                                        state.selectedIndex = i;
-                                        break;
-                                    }
-                                }
-                            }
-                        });
-                        break;
-                    case 'Mentor':
-                    case 'Employee':
-                        var branchId = $("#Employee_BranchId").val();
-                        $.getJSON(`?handler=Branch&branchId=${branchId}`, function (response) {
-                            if (response === 'Inactive') {
-                                for (var i = 0; i < state.options.length; i++) {
-                                    if (state.options[i].text === response) {
-                                        state.selectedIndex = i;
-                                        break;
-                                    }
-                                }
-                            }
-                        });
-                        break;
-                }
-            });
-        });
-
-        $(function () {
-            $("#Employee_EmployeeRole, #Employee_DepartmentId, #Employee_ProjectId, #Employee_CompanyId, #Employee_BranchId").on("change", function () {
-                var role = document.getElementById("Employee_EmployeeRole");
-                var state = document.getElementById("Employee_EmployeeState");
                 var roleSelection = role.options[role.selectedIndex].text;
                 switch (roleSelection) {
                     case 'General Manager':
@@ -248,17 +185,8 @@
 
                         showElement('company');
 
-                        var companyId = $("#Employee_CompanyId").val();
-                        $.getJSON(`?handler=Company&companyId=${companyId}`, function (response) {
-                                for (var i = 0; i < state.options.length; i++) {
-                                    if (state.options[i].text === response) {
-                                        state.selectedIndex = i;
-                                        break;
-                                    }
-                                }
-                        });
-
                         break;
+
                     case 'Project Manager':
                         selectElement('Employee_BranchId', '');
                         selectElement('Employee_DepartmentId', '');
@@ -273,17 +201,8 @@
                         showElement('project');
                         showElement('mentors');
 
-                        var projectId = $("#Employee_ProjectId").val();
-                        $.getJSON(`?handler=Project&projectId=${projectId}`, function (response) {
-                            for (var i = 0; i < state.options.length; i++) {
-                                if (state.options[i].text === response) {
-                                    state.selectedIndex = i;
-                                    break;
-                                }
-                            }
-                        });
-
                         break;
+
                     case 'Department Head':
                         selectElement('Employee_BranchId', '');
                         selectElement('Employee_ProjectId', '');
@@ -298,17 +217,8 @@
                         showElement('department');
                         showElement('mentors');
 
-                        var departmentId = $("#Employee_DepartmentId").val();
-                        $.getJSON(`?handler=Department&departmentId=${departmentId}`, function (response) {
-                            for (var i = 0; i < state.options.length; i++) {
-                                if (state.options[i].text === response) {
-                                    state.selectedIndex = i;
-                                    break;
-                                }
-                            }
-                        });
-
                         break;
+
                     case 'Mentor':
                         selectElement('Employee_DepartmentId', '');
                         selectElement('Employee_ProjectId', '');
@@ -323,17 +233,8 @@
                         showElement('branch');
                         showElement('assignments');
 
-                        var branchId = $("#Employee_BranchId").val();
-                        $.getJSON(`?handler=Branch&branchId=${branchId}`, function (response) {
-                            for (var i = 0; i < state.options.length; i++) {
-                                if (state.options[i].text === response) {
-                                    state.selectedIndex = i;
-                                    break;
-                                }
-                            }
-                        });
-
                         break;
+
                     case 'Employee':
                         selectElement('Employee_DepartmentId', '');
                         selectElement('Employee_ProjectId', '');
@@ -367,6 +268,24 @@
         $(".custom-file-input").on("change", function () {
             var fileName = $(this).val().split("\\").pop();
             $(this).siblings(".custom-file-label").addClass("selected").html(fileName);
+        });
+        @* Display image of the selected photo *@
+        $("#customFile").change(function (e) {
+
+            for (var i = 0; i < e.originalEvent.srcElement.files.length; i++) {
+
+                var file = e.originalEvent.srcElement.files[i];
+
+                var img = document.createElement("img");
+                img.setAttribute("id", "upload");
+                var reader = new FileReader();
+                reader.onloadend = function () {
+                    img.src = reader.result;
+                }
+                reader.readAsDataURL(file);
+                $('#upload').remove();
+                $("#photo").after(img);
+            }
         });
     </script>
 }

@@ -21,7 +21,7 @@
     </div>
 </form>
 
-<table class="table table-responsive text-nowrap">
+<table class="table table-responsive text-nowrap table-hover">
     <thead>
         <tr>
             <th>#</th>
@@ -82,7 +82,7 @@
             int i = 0;
             @foreach (var item in Model.Project)
             {
-                <tr>
+                <tr style="@(item.ProjectState == Models.ProjectState.Inactive? "color:gray;" : "")">
                     <th scope="row">
                         @Model.Project.SeqNum[i]
                     </th>
