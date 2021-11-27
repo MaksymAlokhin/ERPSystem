@@ -18,10 +18,10 @@ Entities Implemented:<br />
 - Employee
 - Project
 - Position
+- Assignment
 
 Entities WIP:<br />
 ------------
-- Assignment
 - Report
 
 ToDo List:<br />

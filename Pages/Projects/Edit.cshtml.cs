@@ -123,11 +123,23 @@ namespace ERPSystem.Pages.Projects
                                 .Where(e => e.EmployeeRole == EmployeeRole.ProjectManager && e.Id == FormerProjectManagerId)
                                 .FirstOrDefaultAsync();
                         formerPm.ProjectId = null;
-                        ProjectToUpdate.ProjectState = ProjectState.Inactive;
                     }
+                    ProjectToUpdate.ProjectState = ProjectState.Inactive;
                 }
 
                 UpdatePositions(SelectedPositions, ProjectToUpdate);
+
+                if (ProjectToUpdate.ProjectState == ProjectState.Active)
+                {
+                    foreach (var position in ProjectToUpdate.Positions)
+                        position.PositionState = PositionState.Active;
+                }
+                else
+                {
+                    foreach (var position in ProjectToUpdate.Positions)
+                        position.PositionState = PositionState.Inactive;
+                }
+
             }
 
             try
@@ -146,7 +158,9 @@ namespace ERPSystem.Pages.Projects
                 }
             }
 
-            await Utility.UpdateStateAsync(_context);
+            Utility utility = new Utility(_context);
+            utility.UpdateAssignmentsState();
+
             return RedirectToPage("./Index", new
             {
                 pageIndex = $"{pageIndex}",
@@ -190,6 +204,7 @@ namespace ERPSystem.Pages.Projects
                         {
                             var toRemove = Project.Positions.Single(s => s.Id == position.Id);
                             Project.Positions.Remove(toRemove);
+                            toRemove.PositionState = PositionState.Inactive;
                         }
                     }
                 }

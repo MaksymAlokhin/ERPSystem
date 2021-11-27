@@ -108,7 +108,7 @@ namespace ERPSystem.Pages.Departments
                 Employee dh = await _context.Employees
                         .Where(e => e.EmployeeRole == EmployeeRole.DepartmentHead && e.Id == DepartmentHeadId)
                         .FirstOrDefaultAsync();
-                
+
                 if (dh != null)
                 {
                     if (dh.Id != FormerDepartmentHeadId && dh.DepartmentId != null)
@@ -122,17 +122,34 @@ namespace ERPSystem.Pages.Departments
                 {
                     if (FormerDepartmentHeadId != null)
                     {
-                        Employee formerHh = await _context.Employees
+                        Employee formerDh = await _context.Employees
                                 .Where(e => e.EmployeeRole == EmployeeRole.DepartmentHead && e.Id == FormerDepartmentHeadId)
                                 .FirstOrDefaultAsync();
-                        formerHh.DepartmentId = null;
-                        DepartmentToUpdate.DepartmentState = DepartmentState.Inactive;
+                        formerDh.DepartmentId = null;
                     }
+                    DepartmentToUpdate.DepartmentState = DepartmentState.Inactive;
                 }
 
                 UpdateProjects(SelectedProjects, DepartmentToUpdate);
-            }
 
+                if (DepartmentToUpdate.DepartmentState == DepartmentState.Active)
+                {
+                    foreach (var project in DepartmentToUpdate.Projects)
+                        if (project.ProjectManager != null)
+                        {
+                            _context.Employees.Load();
+                            if (project.ProjectManager.EmployeeState == EmployeeState.Active)
+                            {
+                                project.ProjectState = ProjectState.Active;
+                            }
+                        }
+                }
+                else
+                {
+                    foreach (var project in DepartmentToUpdate.Projects)
+                        project.ProjectState = ProjectState.Inactive;
+                }
+            }
 
             try
             {
@@ -149,7 +166,11 @@ namespace ERPSystem.Pages.Departments
                     throw;
                 }
             }
-            await Utility.UpdateStateAsync(_context);
+
+            Utility utility = new Utility(_context);
+            utility.UpdatePositionsState();
+            utility.UpdateAssignmentsState();
+
             return RedirectToPage("./Index", new
             {
                 pageIndex = $"{pageIndex}",
@@ -194,6 +215,7 @@ namespace ERPSystem.Pages.Departments
                         {
                             var toRemove = Department.Projects.Single(s => s.Id == project.Id);
                             Department.Projects.Remove(toRemove);
+                            toRemove.ProjectState = ProjectState.Inactive;
                         }
                     }
                 }

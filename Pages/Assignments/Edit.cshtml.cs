@@ -14,6 +14,9 @@ namespace ERPSystem.Pages.Assignments
     public class EditModel : PageModel
     {
         private readonly ERPSystem.Data.ApplicationDbContext _context;
+        public int? PageIndex { get; set; }
+        public string CurrentFilter { get; set; }
+        public string CurrentSort { get; set; }
 
         public EditModel(ERPSystem.Data.ApplicationDbContext context)
         {
@@ -23,8 +26,13 @@ namespace ERPSystem.Pages.Assignments
         [BindProperty]
         public Assignment Assignment { get; set; }
 
-        public async Task<IActionResult> OnGetAsync(int? id)
+        public async Task<IActionResult> OnGetAsync(string sortOrder,
+            string currentFilter, int? pageIndex, int? id)
         {
+            PageIndex = pageIndex;
+            CurrentSort = sortOrder;
+            CurrentFilter = currentFilter;
+
             if (id == null)
             {
                 return NotFound();
@@ -45,11 +53,21 @@ namespace ERPSystem.Pages.Assignments
 
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see https://aka.ms/RazorPagesCRUD.
-        public async Task<IActionResult> OnPostAsync()
+        public async Task<IActionResult> OnPostAsync(string sortOrder,
+            string currentFilter, int? pageIndex)
         {
             if (!ModelState.IsValid)
             {
                 return Page();
+            }
+
+            if (Assignment.PositionId != null)
+            {
+                _context.Positions.Load();
+                if (Assignment.StartDate < Assignment.Position.StartDate)
+                    Assignment.StartDate = Assignment.Position.StartDate;
+                if (Assignment.EndDate > Assignment.Position.EndDate)
+                    Assignment.EndDate = Assignment.Position.EndDate;
             }
 
             _context.Attach(Assignment).State = EntityState.Modified;
@@ -70,12 +88,27 @@ namespace ERPSystem.Pages.Assignments
                 }
             }
 
-            return RedirectToPage("./Index");
+            return RedirectToPage("./Index", new
+            {
+                pageIndex = $"{pageIndex}",
+                sortOrder = $"{sortOrder}",
+                currentFilter = $"{currentFilter}"
+            });
         }
 
         private bool AssignmentExists(int id)
         {
             return _context.Assignments.Any(e => e.Id == id);
+        }
+        public async Task<JsonResult> OnGetPositionAsync(string positionId)
+        {
+            Utility utility = new Utility(_context);
+            return await utility.GetPositionStateAsync(positionId);
+        }
+        public async Task<JsonResult> OnGetEmployeeAsync(string employeeId)
+        {
+            Utility utility = new Utility(_context);
+            return await utility.GetEmployeeStateAsync(employeeId);
         }
     }
 }

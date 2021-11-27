@@ -57,7 +57,17 @@
             @Html.DisplayNameFor(model => model.Employee.Branch)
         </dt>
         <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Employee.Branch.Name)
+            @if (Model.Employee.Branch != null)
+            {
+                <a asp-page="../Branches/Edit"
+                   asp-route-id="@Model.Employee.Branch.Id">
+                    @Html.DisplayFor(model => model.Employee.Branch.Name)
+                </a>
+            }
+            else
+            {
+                @Html.DisplayFor(model => model.Employee.Branch.Name)
+            }
         </dd>
         @if (Model.Employee.Assignments.Any())
         {

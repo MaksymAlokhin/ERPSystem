@@ -38,28 +38,40 @@
             @Html.DisplayFor(model => model.Assignment.EndDate)
         </dd>
         <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Assignment.AssignmentState)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Assignment.AssignmentState)
-        </dd>
-        <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.Assignment.Position)
         </dt>
         <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Assignment.Position.Name)
+            <a asp-page="../Positions/Edit"
+               asp-route-id="@Model.Assignment.PositionId">
+                @Html.DisplayFor(model => model.Assignment.Position.Name)
+            </a>
         </dd>
         <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.Assignment.Employee)
         </dt>
         <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Assignment.Employee.FirstName)
+            <a asp-page="../Employees/Edit"
+               asp-route-id="@Model.Assignment.EmployeeId"
+               asp-route-Role="Employee">
+                @Html.DisplayFor(model => model.Assignment.Employee.FullName)
+            </a>
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Assignment.AssignmentState)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Assignment.AssignmentState)
         </dd>
     </dl>
-    
+
     <form method="post">
         <input type="hidden" asp-for="Assignment.Id" />
         <input type="submit" value="Delete" class="btn btn-danger" /> |
-        <a asp-page="./Index">Back to List</a>
+        <a asp-page="./Index"
+           asp-route-pageIndex="@Model.PageIndex"
+           asp-route-sortOrder="@Model.CurrentSort"
+           asp-route-currentFilter="@Model.CurrentFilter">
+            Back to List
+        </a>
     </form>
 </div>

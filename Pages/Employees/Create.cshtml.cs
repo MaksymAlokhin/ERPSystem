@@ -152,6 +152,16 @@ namespace ERPSystem.Pages.Employees
                             }
                         }
                         break;
+                    case EmployeeRole.Employee:
+                        _context.Assignments.Load();
+                        if (Employee.Assignments != null)
+                        {
+                            foreach (Assignment assignment in Employee.Assignments)
+                            {
+                                assignment.AssignmentState = AssignmentState.Active;
+                            }
+                        }
+                        break;
                 }
 
                 if (FormFile != null)
@@ -180,7 +190,14 @@ namespace ERPSystem.Pages.Employees
 
                 _context.Employees.Add(NewEmployee);
                 await _context.SaveChangesAsync();
-                await Utility.UpdateStateAsync(_context);
+
+                Utility utility = new Utility(_context);
+                utility.UpdateDepartmentsState();
+                utility.UpdateBranchesState();
+                utility.UpdateProjectsState();
+                utility.UpdatePositionsState();
+                utility.UpdateAssignmentsState();
+
                 return RedirectToPage("./Index", new
                 {
                     pageIndex = $"{pageIndex}",

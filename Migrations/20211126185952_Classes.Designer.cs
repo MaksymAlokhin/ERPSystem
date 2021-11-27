@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ERPSystem.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20211120201835_Classes")]
+    [Migration("20211126185952_Classes")]
     partial class Classes
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -282,6 +282,9 @@ namespace ERPSystem.Migrations
 
                     b.Property<int?>("AssignmentId")
                         .HasColumnType("int");
+
+                    b.Property<DateTime>("Date")
+                        .HasColumnType("datetime2");
 
                     b.Property<double>("Hours")
                         .HasColumnType("float");

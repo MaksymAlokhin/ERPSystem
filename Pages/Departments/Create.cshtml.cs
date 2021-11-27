@@ -72,21 +72,6 @@ namespace ERPSystem.Pages.Departments
 
             var NewDepartment = new Department();
 
-            if (SelectedProjects.Length > 0)
-            {
-                NewDepartment.Projects = new List<Project>();
-                _context.Projects.Load();
-            }
-
-            foreach (var project in SelectedProjects)
-            {
-                var foundProject = await _context.Projects.FindAsync(project);
-                if (foundProject != null)
-                {
-                    NewDepartment.Projects.Add(foundProject);
-                }
-            }
-
             if (await TryUpdateModelAsync<Department>(
                     NewDepartment,
                     "Department",
@@ -109,9 +94,40 @@ namespace ERPSystem.Pages.Departments
                 {
                     NewDepartment.DepartmentState = DepartmentState.Inactive;
                 }
+
+                if (SelectedProjects.Length > 0)
+                {
+                    NewDepartment.Projects = new List<Project>();
+                    _context.Projects.Load();
+                }
+
+                foreach (var project in SelectedProjects)
+                {
+                    var foundProject = await _context.Projects.FindAsync(project);
+                    if (foundProject != null)
+                    {
+                        NewDepartment.Projects.Add(foundProject);
+                        if (NewDepartment.DepartmentState == DepartmentState.Active)
+                            if (foundProject.ProjectManager != null)
+                            {
+                                _context.Employees.Load();
+                                if (foundProject.ProjectManager.EmployeeState == EmployeeState.Active)
+                                {
+                                    foundProject.ProjectState = ProjectState.Active;
+                                }
+                            }
+                        else
+                            foundProject.ProjectState = ProjectState.Inactive;
+                    }
+                }
+
                 _context.Departments.Add(NewDepartment);
                 await _context.SaveChangesAsync();
-                await Utility.UpdateStateAsync(_context);
+
+                Utility utility = new Utility(_context);
+                utility.UpdatePositionsState();
+                utility.UpdateAssignmentsState();
+
                 return RedirectToPage("./Index", new
                 {
                     pageIndex = $"{pageIndex}",

@@ -33,6 +33,8 @@ namespace ERPSystem.Pages.Branches
             CurrentFilter = currentFilter;
 
             var EmployeesQuery = _context.Employees
+                .Where(e => e.EmployeeRole == EmployeeRole.Employee
+                        || e.EmployeeRole == EmployeeRole.Mentor)
                 .OrderBy(e => e.LastName)
                 .ThenBy(e => e.FirstName)
                 .AsNoTracking();
@@ -74,6 +76,10 @@ namespace ERPSystem.Pages.Branches
                 if (foundEmployee != null)
                 {
                     NewBranch.Employees.Add(foundEmployee);
+                    if (NewBranch.BranchState == BranchState.Active)
+                        foundEmployee.EmployeeState = EmployeeState.Active;
+                    else 
+                        foundEmployee.EmployeeState = EmployeeState.Inactive;
                 }
             }
 
@@ -84,7 +90,9 @@ namespace ERPSystem.Pages.Branches
             {
                 _context.Branches.Add(NewBranch);
                 await _context.SaveChangesAsync();
-                await Utility.UpdateStateAsync(_context);
+
+                Utility utility = new Utility(_context);
+
                 return RedirectToPage("./Index", new
                 {
                     pageIndex = $"{pageIndex}",

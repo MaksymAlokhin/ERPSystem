@@ -62,27 +62,11 @@ namespace ERPSystem.Pages.Positions
 
             var NewPosition = new Position();
 
-            if (SelectedAssignments.Length > 0)
-            {
-                NewPosition.Assignments = new List<Assignment>();
-                _context.Assignments.Load();
-            }
-
-            foreach (var assignment in SelectedAssignments)
-            {
-                var foundAssignment = await _context.Assignments.FindAsync(assignment);
-                if (foundAssignment != null)
-                {
-                    NewPosition.Assignments.Add(foundAssignment);
-                }
-            }
-
             if (await TryUpdateModelAsync<Position>(
                     NewPosition,
                     "Position",
                     d => d.Name, d => d.PositionState, d => d.StartDate, d => d.EndDate, d => d.ProjectId))
             {
-
                 if (Position.Project != null)
                 {
                     if (Position.StartDate < Position.Project.StartDate)
@@ -91,9 +75,28 @@ namespace ERPSystem.Pages.Positions
                         Position.EndDate = Position.Project.EndDate;
                 }
 
+                if (SelectedAssignments.Length > 0)
+                {
+                    NewPosition.Assignments = new List<Assignment>();
+                    _context.Assignments.Load();
+                }
+
+                foreach (var assignment in SelectedAssignments)
+                {
+                    var foundAssignment = await _context.Assignments.FindAsync(assignment);
+                    if (foundAssignment != null)
+                    {
+                        NewPosition.Assignments.Add(foundAssignment);
+                        if (NewPosition.PositionState == PositionState.Inactive)
+                            foundAssignment.AssignmentState = AssignmentState.Inactive;
+                        else
+                            foundAssignment.AssignmentState = AssignmentState.Active;
+                    }
+                }
+
                 _context.Positions.Add(NewPosition);
                 await _context.SaveChangesAsync();
-                await Utility.UpdateStateAsync(_context);
+
                 return RedirectToPage("./Index", new
                 {
                     pageIndex = $"{pageIndex}",

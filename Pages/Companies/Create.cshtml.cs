@@ -73,46 +73,18 @@ namespace ERPSystem.Pages.Companies
 
             var NewCompany = new Company();
 
-            if (SelectedDepartments.Length > 0)
-            {
-                NewCompany.Departments = new List<Department>();
-                _context.Departments.Load();
-            }
-            if (SelectedBranches.Length > 0)
-            {
-                NewCompany.Branches = new List<Branch>();
-                _context.Branches.Load();
-            }
-
-            foreach (var department in SelectedDepartments)
-            {
-                var foundDepartment = await _context.Departments.FindAsync(department);
-                if (foundDepartment != null)
-                {
-                    NewCompany.Departments.Add(foundDepartment);
-                }
-            }
-
-            foreach (var branch in SelectedBranches)
-            {
-                var foundBranch = await _context.Branches.FindAsync(branch);
-                if (foundBranch != null)
-                {
-                    NewCompany.Branches.Add(foundBranch);
-                }
-            }
-
             if (await TryUpdateModelAsync<Company>(
                                             NewCompany,
                                             "Company",
                                             c => c.Name, c => c.CompanyState))
             {
+                //Make old company inactive because its GM is now here
                 if (GeneralManagerId != null)
                 {
                     Employee gm = await _context.Employees
                         .Where(e => e.EmployeeRole == EmployeeRole.GeneralManager && e.Id == GeneralManagerId)
                         .FirstOrDefaultAsync();
-                    if(gm.CompanyId != null)
+                    if (gm.CompanyId != null)
                     {
                         var oldCompany = await _context.Companies.FindAsync(gm.CompanyId);
                         oldCompany.CompanyState = CompanyState.Inactive;
@@ -124,9 +96,61 @@ namespace ERPSystem.Pages.Companies
                 {
                     NewCompany.CompanyState = CompanyState.Inactive;
                 }
+
+                //Fill Departments and Branches and set their status.
+                if (SelectedDepartments.Length > 0)
+                {
+                    NewCompany.Departments = new List<Department>();
+                    _context.Departments.Load();
+                }
+                if (SelectedBranches.Length > 0)
+                {
+                    NewCompany.Branches = new List<Branch>();
+                    _context.Branches.Load();
+                }
+
+                foreach (var department in SelectedDepartments)
+                {
+                    var foundDepartment = await _context.Departments.FindAsync(department);
+                    if (foundDepartment != null)
+                    {
+                        NewCompany.Departments.Add(foundDepartment);
+                        if (NewCompany.CompanyState == CompanyState.Active)
+                            if (foundDepartment.DepartmentHead != null)
+                            {
+                                _context.Employees.Load();
+                                if (foundDepartment.DepartmentHead.EmployeeState == EmployeeState.Active)
+                                {
+                                    foundDepartment.DepartmentState = DepartmentState.Active;
+                                }
+                            }
+                        else
+                            foundDepartment.DepartmentState = DepartmentState.Inactive;
+                    }
+                }
+
+                foreach (var branch in SelectedBranches)
+                {
+                    var foundBranch = await _context.Branches.FindAsync(branch);
+                    if (foundBranch != null)
+                    {
+                        NewCompany.Branches.Add(foundBranch);
+                        if (NewCompany.CompanyState == CompanyState.Active)
+                            foundBranch.BranchState = BranchState.Active;
+                        else
+                            foundBranch.BranchState = BranchState.Inactive;
+
+                    }
+                }
+
                 _context.Companies.Add(NewCompany);
                 await _context.SaveChangesAsync();
-                await Utility.UpdateStateAsync(_context);
+
+                Utility utility = new Utility(_context);
+                utility.UpdateProjectsState();
+                utility.UpdatePositionsState();
+                utility.UpdateAssignmentsState();
+
                 return RedirectToPage("./Index", new
                 {
                     pageIndex = $"{pageIndex}",

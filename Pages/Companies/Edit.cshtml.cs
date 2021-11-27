@@ -121,14 +121,38 @@ namespace ERPSystem.Pages.Companies
                 {
                     if (FormerGeneralManagerId != null)
                     {
-                        Employee formerGm = await _context.Employees.FindAsync(FormerGeneralManagerId);
+                        Employee formerGm = await _context.Employees
+                            .Where(e => e.EmployeeRole == EmployeeRole.GeneralManager && e.Id == FormerGeneralManagerId)
+                            .FirstOrDefaultAsync();
                         formerGm.CompanyId = null;
-                        CompanyToUpdate.CompanyState = CompanyState.Inactive;
                     }
+                    CompanyToUpdate.CompanyState = CompanyState.Inactive;
                 }
 
                 UpdateDepartments(SelectedDepartments, CompanyToUpdate);
                 UpdateBrances(SelectedBranches, CompanyToUpdate);
+
+                if (CompanyToUpdate.CompanyState == CompanyState.Active)
+                {
+                    foreach (var department in CompanyToUpdate.Departments)
+                        if (department.DepartmentHead != null)
+                        {
+                            _context.Employees.Load();
+                            if (department.DepartmentHead.EmployeeState == EmployeeState.Active)
+                            {
+                                department.DepartmentState = DepartmentState.Active;
+                            }
+                        }
+                    foreach (var branch in CompanyToUpdate.Branches)
+                        branch.BranchState = BranchState.Active;
+                }
+                else
+                {
+                    foreach (var department in CompanyToUpdate.Departments)
+                        department.DepartmentState = DepartmentState.Inactive;
+                    foreach (var branch in CompanyToUpdate.Branches)
+                        branch.BranchState = BranchState.Inactive;
+                }
             }
 
             try
@@ -146,7 +170,12 @@ namespace ERPSystem.Pages.Companies
                     throw;
                 }
             }
-            await Utility.UpdateStateAsync(_context);
+
+            Utility utility = new Utility(_context);
+            utility.UpdateProjectsState();
+            utility.UpdatePositionsState();
+            utility.UpdateAssignmentsState();
+
             return RedirectToPage("./Index", new
             {
                 pageIndex = $"{pageIndex}",
@@ -190,6 +219,7 @@ namespace ERPSystem.Pages.Companies
                         {
                             var toRemove = Company.Departments.Single(s => s.Id == department.Id);
                             Company.Departments.Remove(toRemove);
+                            toRemove.DepartmentState = DepartmentState.Inactive;
                         }
                     }
                 }
@@ -226,6 +256,7 @@ namespace ERPSystem.Pages.Companies
                         {
                             var toRemove = Company.Branches.Single(s => s.Id == branch.Id);
                             Company.Branches.Remove(toRemove);
+                            toRemove.BranchState = BranchState.Inactive;
                         }
                     }
                 }

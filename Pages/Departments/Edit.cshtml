@@ -24,15 +24,15 @@
         </div>
         <div class="col-sm-4">
             <div class="form-group">
-                <label asp-for="Department.DepartmentHead" class="control-label"></label>
-                <select asp-for="DepartmentHeadId" asp-items="Model.DepartmentHeadList" class="form-control"><option value="">--none--</option></select>
+                <label asp-for="Department.Company" class="control-label"></label>
+                <select asp-for="Department.CompanyId" class="form-control" asp-items="Model.CompaniesSelectList"><option value="">--none--</option></select>
+                <span asp-validation-for="Department.CompanyId" class="text-danger"></span>
             </div>
         </div>
         <div class="col-sm-4">
             <div class="form-group">
-                <label asp-for="Department.Company" class="control-label"></label>
-                <select asp-for="Department.CompanyId" class="form-control" asp-items="Model.CompaniesSelectList"><option value="">--none--</option></select>
-                <span asp-validation-for="Department.CompanyId" class="text-danger"></span>
+                <label asp-for="Department.DepartmentHead" class="control-label"></label>
+                <select asp-for="DepartmentHeadId" asp-items="Model.DepartmentHeadList" class="form-control"><option value="">--none--</option></select>
             </div>
         </div>
     </div>

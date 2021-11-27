@@ -23,14 +23,14 @@
         <div class="col-sm-4">
             <div class="form-group">
                 <label asp-for="Position.StartDate" class="control-label"></label>
-                <input asp-for="Position.StartDate" class="form-control" />
+                <input asp-for="Position.StartDate" class="form-control" min="@Model.Position.Project.StartDate.ToString("yyyy-MM-dd")" max="@Model.Position.Project.EndDate.AddDays(-1).ToString("yyyy-MM-dd")" />
                 <span asp-validation-for="Position.StartDate" class="text-danger"></span>
             </div>
         </div>
         <div class="col-sm-4">
             <div class="form-group">
                 <label asp-for="Position.EndDate" class="control-label"></label>
-                <input asp-for="Position.EndDate" class="form-control" />
+                <input asp-for="Position.EndDate" class="form-control"  min="@Model.Position.Project.StartDate.AddDays(1).ToString("yyyy-MM-dd")" max="@Model.Position.Project.EndDate.ToString("yyyy-MM-dd")" />
                 <span asp-validation-for="Position.EndDate" class="text-danger"></span>
             </div>
         </div>

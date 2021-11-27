@@ -80,10 +80,30 @@ namespace ERPSystem.Pages.Companies
 
             if (Company != null)
             {
+                if (Company.Departments != null)
+                {
+                    foreach (var department in Company.Departments)
+                    {
+                        department.DepartmentState = DepartmentState.Inactive;
+                    }
+                }
+                if (Company.Branches != null)
+                {
+                    foreach (var branch in Company.Branches)
+                    {
+                        branch.BranchState = BranchState.Inactive;
+                    }
+                }
+
                 _context.Companies.Remove(Company);
                 await _context.SaveChangesAsync();
             }
-            await Utility.UpdateStateAsync(_context);
+
+            Utility utility = new Utility(_context);
+            utility.UpdateProjectsState();
+            utility.UpdatePositionsState();
+            utility.UpdateAssignmentsState();
+
             return RedirectToPage("./Index", new
             {
                 pageIndex = $"{pageIndex}",
