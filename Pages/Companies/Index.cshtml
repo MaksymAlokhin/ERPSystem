@@ -8,18 +8,29 @@
 
 <h1>Companies</h1>
 
-<form asp-page="./Index" method="get">
-    <div class="form-actions no-color">
-        <p>
-            <a asp-page="Create"><i class="fas fa-plus-circle fa-lg mr-1"></i></a>
-            <input type="text" name="SearchString" value="@Model.CurrentFilter" placeholder="Find by name" />
-            <button type="submit" class="btn btn-default">
-                <i class="fa fa-search"></i>
-            </button> |
-            <a asp-page="./Index" class="btn btn-default"><i class="fas fa-times"></i></a>
-        </p>
+<div class="row">
+    <div class="col-sm-auto">
+        <form asp-page="./Index" method="get">
+            <div class="form-actions no-color">
+                <p>
+                    <a asp-page="Create"><i class="fas fa-plus-circle fa-lg mr-1"></i></a>
+                    <input type="text" name="SearchString" value="@Model.CurrentFilter" placeholder="Find by name" />
+                    <button type="submit" class="btn btn-default">
+                        <i class="fa fa-search"></i>
+                    </button> |
+                    <a asp-page="./Index" class="btn btn-default"><i class="fas fa-times"></i></a>
+                </p>
+            </div>
+        </form>
     </div>
-</form>
+    <div class="col-sm-auto">
+        <a asp-page-handler="Activate"
+           asp-route-pageIndex="@Model.Company.PageIndex"
+           asp-route-sortOrder="@Model.CurrentSort"
+           asp-route-currentFilter="@Model.CurrentFilter"
+           class="btn btn-outline-primary" role="button" aria-pressed="true">Activate</a>
+    </div>
+</div>
 <table class="table table-responsive text-nowrap table-hover">
     <thead>
         <tr>
@@ -53,7 +64,7 @@
             int i = 0;
             @foreach (var item in Model.Company)
             {
-                <tr style="@(item.CompanyState == Models.CompanyState.Inactive? "color:gray;" : "")">
+                <tr style="@(item.CompanyState == Models.CompanyState.Inactive || item.CompanyState == Models.CompanyState.Draft? "color:gray;" : "")">
                     <th scope="row">
                         @Model.Company.SeqNum[i]
                     </th>

@@ -96,7 +96,6 @@ namespace ERPSystem.Pages.Projects
                 if (SelectedPositions.Length > 0)
                 {
                     NewProject.Positions = new List<Position>();
-                    _context.Positions.Load();
                 }
 
                 foreach (var position in SelectedPositions)

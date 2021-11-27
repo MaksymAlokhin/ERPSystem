@@ -98,7 +98,6 @@ namespace ERPSystem.Pages.Departments
                 if (SelectedProjects.Length > 0)
                 {
                     NewDepartment.Projects = new List<Project>();
-                    _context.Projects.Load();
                 }
 
                 foreach (var project in SelectedProjects)
@@ -108,16 +107,22 @@ namespace ERPSystem.Pages.Departments
                     {
                         NewDepartment.Projects.Add(foundProject);
                         if (NewDepartment.DepartmentState == DepartmentState.Active)
+                        {
+                            _context.Entry(foundProject)
+                                .Reference(p => p.ProjectManager)
+                                .Load();
                             if (foundProject.ProjectManager != null)
                             {
-                                _context.Employees.Load();
                                 if (foundProject.ProjectManager.EmployeeState == EmployeeState.Active)
                                 {
                                     foundProject.ProjectState = ProjectState.Active;
                                 }
+                                else
+                                    foundProject.ProjectState = ProjectState.Inactive;
                             }
-                        else
-                            foundProject.ProjectState = ProjectState.Inactive;
+                            else
+                                foundProject.ProjectState = ProjectState.Inactive;
+                        }
                     }
                 }
 

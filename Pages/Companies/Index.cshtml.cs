@@ -14,7 +14,7 @@ namespace ERPSystem.Pages.Companies
     public class IndexModel : PageModel
     {
         private readonly ERPSystem.Data.ApplicationDbContext _context;
-        private readonly IConfiguration Configuration; 
+        private readonly IConfiguration Configuration;
         public string NameSort { get; set; }
         public string ManagerSort { get; set; }
         public string StateSort { get; set; }
@@ -43,7 +43,7 @@ namespace ERPSystem.Pages.Companies
                 searchString = currentFilter;
             }
             CurrentFilter = searchString;
-            IQueryable<Company> companiesIQ = _context.Companies.Include(i=>i.GeneralManager);
+            IQueryable<Company> companiesIQ = _context.Companies.Include(i => i.GeneralManager);
             if (!String.IsNullOrEmpty(searchString))
             {
                 companiesIQ = companiesIQ.Where(s => s.Name.Contains(searchString)
@@ -74,6 +74,31 @@ namespace ERPSystem.Pages.Companies
             var pageSize = Configuration.GetValue("PageSize", 7);
             Company = await PaginatedList<Company>.CreateAsync(
                 companiesIQ.AsNoTracking(), pageIndex ?? 1, pageSize);
+        }
+        public async Task<IActionResult> OnGetActivateAsync(string sortOrder,
+            string currentFilter, int? pageIndex)
+        {
+            foreach (var company in _context.Companies)
+            {
+                _context.Entry(company)
+                    .Reference(p => p.GeneralManager)
+                    .Load();
+                if (company.GeneralManager != null)
+                {
+                    if (company.GeneralManager.EmployeeState == EmployeeState.Active)
+                    {
+                        company.CompanyState = CompanyState.Active;
+                    }
+                }
+            }
+            await _context.SaveChangesAsync();
+
+            return RedirectToPage("./Index", new
+            {
+                pageIndex = $"{pageIndex}",
+                sortOrder = $"{sortOrder}",
+                currentFilter = $"{currentFilter}"
+            });
         }
     }
 }

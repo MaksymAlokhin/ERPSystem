@@ -111,5 +111,28 @@ namespace ERPSystem.Pages.Assignments
             Assignment = await PaginatedList<Assignment>.CreateAsync(
                 assignmentsIQ.AsNoTracking(), pageIndex ?? 1, pageSize);
         }
+        public async Task<IActionResult> OnGetActivateAsync(string sortOrder,
+            string currentFilter, int? pageIndex)
+        {
+            foreach (var assignment in _context.Assignments)
+            {
+                if (assignment.PositionId != null)
+                {
+                    _context.Entry(assignment)
+                        .Reference(a => a.Position)
+                        .Load();
+                    if (assignment.Position.PositionState == PositionState.Active)
+                        assignment.AssignmentState = AssignmentState.Active;
+                }
+            }
+            await _context.SaveChangesAsync();
+
+            return RedirectToPage("./Index", new
+            {
+                pageIndex = $"{pageIndex}",
+                sortOrder = $"{sortOrder}",
+                currentFilter = $"{currentFilter}"
+            });
+        }
     }
 }

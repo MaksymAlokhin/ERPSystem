@@ -84,5 +84,28 @@ namespace ERPSystem.Pages.Branches
             Branch = await PaginatedList<Branch>.CreateAsync(
                 branchesIQ.AsNoTracking(), pageIndex ?? 1, pageSize);
         }
+        public async Task<IActionResult> OnGetActivateAsync(string sortOrder,
+            string currentFilter, int? pageIndex)
+        {
+            foreach (var branch in _context.Branches)
+            {
+                if (branch.CompanyId != null)
+                {
+                    _context.Entry(branch)
+                        .Reference(b => b.Company)
+                        .Load();
+                    if (branch.Company.CompanyState == CompanyState.Active)
+                        branch.BranchState = BranchState.Active;
+                }
+            }
+            await _context.SaveChangesAsync();
+
+            return RedirectToPage("./Index", new
+            {
+                pageIndex = $"{pageIndex}",
+                sortOrder = $"{sortOrder}",
+                currentFilter = $"{currentFilter}"
+            });
+        }
     }
 }

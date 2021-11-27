@@ -23,14 +23,14 @@
         <div class="col-sm-4">
             <div class="form-group">
                 <label asp-for="Position.StartDate" class="control-label"></label>
-                <input asp-for="Position.StartDate" class="form-control" min="@Model.Position.Project.StartDate.ToString("yyyy-MM-dd")" max="@Model.Position.Project.EndDate.AddDays(-1).ToString("yyyy-MM-dd")" />
+                <input asp-for="Position.StartDate" class="form-control" />
                 <span asp-validation-for="Position.StartDate" class="text-danger"></span>
             </div>
         </div>
         <div class="col-sm-4">
             <div class="form-group">
                 <label asp-for="Position.EndDate" class="control-label"></label>
-                <input asp-for="Position.EndDate" class="form-control"  min="@Model.Position.Project.StartDate.AddDays(1).ToString("yyyy-MM-dd")" max="@Model.Position.Project.EndDate.ToString("yyyy-MM-dd")" />
+                <input asp-for="Position.EndDate" class="form-control" />
                 <span asp-validation-for="Position.EndDate" class="text-danger"></span>
             </div>
         </div>
@@ -78,9 +78,16 @@
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
     <script>
+        //Get date ranges
         $(function () {
             $("#Position_ProjectId").on("change", function () {
                 var projectId = $(this).val();
+                $.getJSON(`?handler=DateRange&projectId=${projectId}`, function (response) {
+                    if (response) {
+                        $("#Position_StartDate").attr({ min: response.startmin, max: response.startmax, value: response.startmin });
+                        $("#Position_EndDate").attr({ min: response.endmin, max: response.endmax, value: response.endmax });
+                    }
+                });
                 $.getJSON(`?handler=Project&projectId=${projectId}`, function (response) {
                     var state = document.getElementById('Position_PositionState');
                     for (var i = 0; i < state.options.length; i++) {
@@ -92,6 +99,7 @@
                 });
             });
         });
+
         $(function () {
             $("#Position_PositionState").on("change", function () {
                 var projectId = $("#Position_ProjectId").val();

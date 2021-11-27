@@ -101,12 +101,10 @@ namespace ERPSystem.Pages.Companies
                 if (SelectedDepartments.Length > 0)
                 {
                     NewCompany.Departments = new List<Department>();
-                    _context.Departments.Load();
                 }
                 if (SelectedBranches.Length > 0)
                 {
                     NewCompany.Branches = new List<Branch>();
-                    _context.Branches.Load();
                 }
 
                 foreach (var department in SelectedDepartments)
@@ -116,16 +114,20 @@ namespace ERPSystem.Pages.Companies
                     {
                         NewCompany.Departments.Add(foundDepartment);
                         if (NewCompany.CompanyState == CompanyState.Active)
+                        {
+                            _context.Entry(foundDepartment)
+                                .Reference(d => d.DepartmentHead)
+                                .Load();
                             if (foundDepartment.DepartmentHead != null)
                             {
-                                _context.Employees.Load();
                                 if (foundDepartment.DepartmentHead.EmployeeState == EmployeeState.Active)
-                                {
                                     foundDepartment.DepartmentState = DepartmentState.Active;
-                                }
+                                else
+                                    foundDepartment.DepartmentState = DepartmentState.Inactive;
                             }
-                        else
-                            foundDepartment.DepartmentState = DepartmentState.Inactive;
+                            else
+                                foundDepartment.DepartmentState = DepartmentState.Inactive;
+                        }
                     }
                 }
 
@@ -139,7 +141,6 @@ namespace ERPSystem.Pages.Companies
                             foundBranch.BranchState = BranchState.Active;
                         else
                             foundBranch.BranchState = BranchState.Inactive;
-
                     }
                 }
 

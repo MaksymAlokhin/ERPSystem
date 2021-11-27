@@ -85,6 +85,19 @@
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
     <script>
+        //Get date ranges
+        $(function () {
+            $("#Assignment_PositionId").on("change", function () {
+                var positionId = $("#Assignment_PositionId").val();
+                $.getJSON(`?handler=DateRange&positionId=${positionId}`, function (response) {
+                    if (response) {
+                        $("#Assignment_StartDate").attr({ min: response.startmin, max: response.startmax, value: response.startmin });
+                        $("#Assignment_EndDate").attr({ min: response.endmin, max: response.endmax, value: response.endmax });
+                    }
+                });
+            });
+        });
+
         $(function () {
             $("#Assignment_PositionId, #Assignment_EmployeeId").on("change", function () {
                 var response1;

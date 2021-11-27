@@ -78,21 +78,25 @@ namespace ERPSystem.Pages.Positions
             var PositionToUpdate = await _context.Positions
                 .Include(p => p.Project)
                 .Include(p => p.Assignments)
-                .AsNoTracking()
                 .FirstOrDefaultAsync(m => m.Id == id);
+
+            if (Position.ProjectId != null)
+            {
+                Project project = await _context.Projects.FindAsync(Position.ProjectId);
+                if (project != null)
+                {
+                    if (Position.StartDate < project.StartDate)
+                        Position.StartDate = project.StartDate;
+                    if (Position.EndDate > project.EndDate)
+                        Position.EndDate = project.EndDate;
+                }
+            }
 
             if (await TryUpdateModelAsync<Position>(
                     PositionToUpdate,
                     "Position",
                     b => b.Name, b => b.PositionState, b => b.ProjectId, b => b.StartDate, b => b.EndDate))
             {
-                if (Position.Project != null)
-                {
-                    if (Position.StartDate < Position.Project.StartDate)
-                        Position.StartDate = Position.Project.StartDate;
-                    if (Position.EndDate > Position.Project.EndDate)
-                        Position.EndDate = Position.Project.EndDate;
-                }
 
                 UpdateAssignments(SelectedAssignments, PositionToUpdate);
 
@@ -178,6 +182,24 @@ namespace ERPSystem.Pages.Positions
         {
             Utility utility = new Utility(_context);
             return await utility.GetProjectStateAsync(projectId);
+        }
+        public async Task<JsonResult> OnGetDateRangeAsync(string projectId)
+        {
+            if (Int32.TryParse(projectId, out int id))
+            {
+                Project project = await _context.Projects.FindAsync(id);
+                if (project != null)
+                {
+                    return new JsonResult(new
+                    {
+                        startmin = project.StartDate.ToString("yyyy-MM-dd"),
+                        startmax = project.EndDate.AddDays(-1).ToString("yyyy-MM-dd"),
+                        endmin = project.StartDate.AddDays(1).ToString("yyyy-MM-dd"),
+                        endmax = project.EndDate.ToString("yyyy-MM-dd")
+                    });
+                }
+            }
+            return new JsonResult(null);
         }
     }
 }

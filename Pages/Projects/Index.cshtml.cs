@@ -116,5 +116,37 @@ namespace ERPSystem.Pages.Projects
             Project = await PaginatedList<Project>.CreateAsync(
                 projectsIQ.AsNoTracking(), pageIndex ?? 1, pageSize);
         }
+        public async Task<IActionResult> OnGetActivateAsync(string sortOrder,
+            string currentFilter, int? pageIndex)
+        {
+            foreach (var project in _context.Projects)
+            {
+                if (project.DepartmentId != null)
+                {
+                    _context.Entry(project)
+                        .Reference(p => p.Department)
+                        .Load();
+                    if (project.Department.DepartmentState == DepartmentState.Active)
+                    {
+                        _context.Entry(project)
+                        .Reference(p => p.ProjectManager)
+                        .Load();
+                        if (project.ProjectManager != null)
+                        {
+                            if (project.ProjectManager.EmployeeState == EmployeeState.Active)
+                                project.ProjectState = ProjectState.Active;
+                        }
+                    }
+                }
+            }
+            await _context.SaveChangesAsync();
+
+            return RedirectToPage("./Index", new
+            {
+                pageIndex = $"{pageIndex}",
+                sortOrder = $"{sortOrder}",
+                currentFilter = $"{currentFilter}"
+            });
+        }
     }
 }
