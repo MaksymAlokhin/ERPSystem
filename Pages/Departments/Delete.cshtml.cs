@@ -73,10 +73,22 @@ namespace ERPSystem.Pages.Departments
 
             if (Department != null)
             {
+                if (Department.Projects != null)
+                {
+                    foreach (var project in Department.Projects)
+                    {
+                        project.ProjectState = ProjectState.Inactive;
+                    }
+                }
+
                 _context.Departments.Remove(Department);
                 await _context.SaveChangesAsync();
             }
-            await Utility.UpdateStateAsync(_context);
+
+            Utility utility = new Utility(_context);
+            utility.UpdatePositionsState();
+            utility.UpdateAssignmentsState();
+
             return RedirectToPage("./Index", new
             {
                 pageIndex = $"{pageIndex}",

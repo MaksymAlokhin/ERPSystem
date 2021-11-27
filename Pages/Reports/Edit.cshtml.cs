@@ -37,7 +37,7 @@ namespace ERPSystem.Pages.Reports
             {
                 return NotFound();
             }
-           ViewData["AssignmentId"] = new SelectList(_context.Assignments.OrderBy(a => a.Name), "Id", "Name");
+           ViewData["AssignmentId"] = new SelectList(_context.Assignments, "Id", "Name");
             return Page();
         }
 

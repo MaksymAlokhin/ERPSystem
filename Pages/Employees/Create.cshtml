@@ -7,124 +7,132 @@
 }
 
 <h1>Create</h1>
-
 <h4>Employee</h4>
-<hr />
-<div class="row">
-    <div class="col-sm-auto">
-        <div id="photo" class="img-fluid mw-100 h-auto">
-            @if (!string.IsNullOrEmpty(@Model.Employee.ProfilePicture))
-            {
-                <img id="upload" src="~/images/avatars/@Model.Employee.ProfilePicture" />
-            }
-        </div>
-    </div>
-    <div class="col-sm-auto" id="assignments">
-        <div class="form-group">
-            <label asp-for="Employee.Assignments" class="control-label"></label><br />
-            <select asp-for="SelectedAssignments" asp-items="Model.AssignmentsSelectList" size="8">
-            </select>
-        </div>
-    </div>
-    <div class="col-sm-auto" id="mentors">
-        <div class="form-group">
-            <label asp-for="Employee.Mentors" class="control-label"></label><br />
-            <select asp-for="SelectedMentors" asp-items="Model.MentorsSelectList" size="8">
-            </select>
-        </div>
-    </div>
-</div>
 
+<hr />
 <form enctype="multipart/form-data" method="post" onload="populateOptionalSelectLists">
     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
     <div class="row">
-        <div class="col-sm-4">
-            <div class="form-group">
-                <label asp-for="Employee.FirstName" class="control-label"></label>
-                <input asp-for="Employee.FirstName" class="form-control" />
-                <span asp-validation-for="Employee.FirstName" class="text-danger"></span>
-            </div>
-        </div>
-        <div class="col-sm-4">
-            <div class="form-group">
-                <label asp-for="Employee.LastName" class="control-label"></label>
-                <input asp-for="Employee.LastName" class="form-control" />
-                <span asp-validation-for="Employee.LastName" class="text-danger"></span>
-            </div>
-        </div>
-        <div class="col-sm-4">
-            <div class="form-group">
-                <label asp-for="Employee.DateOfBirth" class="control-label"></label>
-                <input asp-for="Employee.DateOfBirth" class="form-control" />
-                <span asp-validation-for="Employee.DateOfBirth" class="text-danger"></span>
-            </div>
-        </div>
-    </div>
-    <div class="row">
-        <div class="col-sm-4">
-            <div class="form-group">
-                <label asp-for="Employee.EmployeeState" class="control-label"></label>
-                <select asp-for="Employee.EmployeeState" class="form-control" asp-items="Html.GetEnumSelectList<Models.EmployeeState>()"></select>
-                <span asp-validation-for="Employee.EmployeeState" class="text-danger"></span>
-            </div>
-        </div>
-        <div class="col-sm-4">
-            <div class="form-group">
-                <label asp-for="Employee.EmployeeRole" class="control-label"></label>
-                <select asp-for="Employee.EmployeeRole" class="form-control" asp-items="Html.GetEnumSelectList<Models.EmployeeRole>()"></select>
-                <span asp-validation-for="Employee.EmployeeRole" class="text-danger"></span>
-            </div>
-        </div>
-        <div class="col-sm-4" id="selectList">
-            <div id="selectListAnchor"></div>
-            <div class="form-group" id="company">
-                <label asp-for="Employee.Company" class="control-label"></label>
-                <select asp-for="Employee.CompanyId" class="form-control" asp-items="ViewBag.CompanyId"><option value="">--none--</option></select>
-                <span asp-validation-for="Employee.CompanyId" class="text-danger"></span>
-            </div>
-            <div class="form-group" id="project">
-                <label asp-for="Employee.Project" class="control-label"></label>
-                <select asp-for="Employee.ProjectId" class="form-control" asp-items="ViewBag.ProjectId"><option value="">--none--</option></select>
-                <span asp-validation-for="Employee.ProjectId" class="text-danger"></span>
-            </div>
-            <div class="form-group" id="department">
-                <label asp-for="Employee.Department" class="control-label"></label>
-                <select asp-for="Employee.DepartmentId" class="form-control" asp-items="ViewBag.DepartmentId"><option value="">--none--</option></select>
-                <span asp-validation-for="Employee.DepartmentId" class="text-danger"></span>
-            </div>
-            <div class="form-group" id="branch">
-                <label asp-for="Employee.Branch" class="control-label"></label>
-                <select asp-for="Employee.BranchId" class="form-control" asp-items="ViewBag.BranchId"><option value="">--none--</option></select>
-                <span asp-validation-for="Employee.BranchId" class="text-danger"></span>
-            </div>
-        </div>
-    </div>
-    <div class="row">
-        <div class="col-sm-auto">
-            <div class="form-group">
-                <label asp-for="Employee.ProfilePicture" class="control-label"></label>
-                <div class="custom-file">
-                    <input asp-for="FormFile" class="custom-file-input" id="customFile">
-                    <label class="custom-file-label" for="customFile">Choose a File</label>
+        <div class="col-sm-8">
+            <div class="row">
+                <div class="col-sm-6">
+                    <div class="form-group">
+                        <label asp-for="Employee.FirstName" class="control-label"></label>
+                        <input asp-for="Employee.FirstName" class="form-control" />
+                        <span asp-validation-for="Employee.FirstName" class="text-danger"></span>
+                    </div>
                 </div>
-                <span asp-validation-for="FormFile" class="text-danger"></span>
+                <div class="col-sm-6">
+                    <div class="form-group">
+                        <label asp-for="Employee.LastName" class="control-label"></label>
+                        <input asp-for="Employee.LastName" class="form-control" />
+                        <span asp-validation-for="Employee.LastName" class="text-danger"></span>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-6">
+                    <div class="form-group">
+                        <label asp-for="Employee.DateOfBirth" class="control-label"></label>
+                        <input asp-for="Employee.DateOfBirth" class="form-control" />
+                        <span asp-validation-for="Employee.DateOfBirth" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="col-sm-6">
+                    <div class="form-group">
+                        <label asp-for="Employee.EmployeeState" class="control-label"></label>
+                        <select asp-for="Employee.EmployeeState" class="form-control" asp-items="Html.GetEnumSelectList<Models.EmployeeState>()"></select>
+                        <span asp-validation-for="Employee.EmployeeState" class="text-danger"></span>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-6">
+                    <div class="form-group">
+                        <label asp-for="Employee.EmployeeRole" class="control-label"></label>
+                        <select asp-for="Employee.EmployeeRole" class="form-control" asp-items="Html.GetEnumSelectList<Models.EmployeeRole>()"></select>
+                        <span asp-validation-for="Employee.EmployeeRole" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="col-sm-6" id="selectList">
+                    <div id="selectListAnchor"></div>
+                    <div class="form-group" id="company">
+                        <label asp-for="Employee.Company" class="control-label"></label>
+                        <select asp-for="Employee.CompanyId" class="form-control" asp-items="ViewBag.CompanyId"><option value="">--none--</option></select>
+                        <span asp-validation-for="Employee.CompanyId" class="text-danger"></span>
+                    </div>
+                    <div class="form-group" id="project">
+                        <label asp-for="Employee.Project" class="control-label"></label>
+                        <select asp-for="Employee.ProjectId" class="form-control" asp-items="ViewBag.ProjectId"><option value="">--none--</option></select>
+                        <span asp-validation-for="Employee.ProjectId" class="text-danger"></span>
+                    </div>
+                    <div class="form-group" id="department">
+                        <label asp-for="Employee.Department" class="control-label"></label>
+                        <select asp-for="Employee.DepartmentId" class="form-control" asp-items="ViewBag.DepartmentId"><option value="">--none--</option></select>
+                        <span asp-validation-for="Employee.DepartmentId" class="text-danger"></span>
+                    </div>
+                    <div class="form-group" id="branch">
+                        <label asp-for="Employee.Branch" class="control-label"></label>
+                        <select asp-for="Employee.BranchId" class="form-control" asp-items="ViewBag.BranchId"><option value="">--none--</option></select>
+                        <span asp-validation-for="Employee.BranchId" class="text-danger"></span>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-6">
+                    <div class="form-group">
+                        <label asp-for="Employee.ProfilePicture" class="control-label"></label>
+                        <div class="custom-file">
+                            <input asp-for="FormFile" class="custom-file-input" id="customFile">
+                            <label class="custom-file-label" for="customFile">Choose a File</label>
+                        </div>
+                        <span asp-validation-for="FormFile" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <input type="submit" value="Create" class="btn btn-primary" />
+                    </div>
+                    <div>
+                        <a asp-page="./Index"
+                           asp-route-pageIndex="@Model.PageIndex"
+                           asp-route-sortOrder="@Model.CurrentSort"
+                           asp-route-currentFilter="@Model.CurrentFilter"
+                           asp-route-Role="@Model.Role">
+                            Back to List
+                        </a>
+                    </div>
+                </div>
+                <div class="col-sm-6">
+                    <div id="photo">
+                        @if (!string.IsNullOrEmpty(@Model.Employee.ProfilePicture))
+                        {
+                            <img id="upload" class="img-responsive" src="~/images/avatars/@Model.Employee.ProfilePicture" />
+                        }
+                    </div>
+                </div>
             </div>
         </div>
-    </div>
-    <div class="form-group">
-        <input type="submit" value="Create" class="btn btn-primary" />
+        <div class="col-sm-4">
+            <div class="row">
+                <div class="col-sm-4" id="assignments">
+                    <div class="form-group">
+                        <label asp-for="Employee.Assignments" class="control-label"></label><br />
+                        <select asp-for="SelectedAssignments" asp-items="Model.AssignmentsSelectList" size="8">
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-4" id="mentors">
+                    <div class="form-group">
+                        <label asp-for="Employee.Mentors" class="control-label"></label><br />
+                        <select asp-for="SelectedMentors" asp-items="Model.MentorsSelectList" size="8">
+                        </select>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 </form>
-
-<div>
-    <a asp-page="./Index"
-       asp-route-pageIndex="@Model.PageIndex"
-       asp-route-sortOrder="@Model.CurrentSort"
-       asp-route-currentFilter="@Model.CurrentFilter"
-       asp-route-Role="@Model.Role">
-        Back to List
-    </a>
-</div>
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
@@ -278,6 +286,7 @@
 
                 var img = document.createElement("img");
                 img.setAttribute("id", "upload");
+                img.setAttribute("class", "img-responsive");
                 var reader = new FileReader();
                 reader.onloadend = function () {
                     img.src = reader.result;

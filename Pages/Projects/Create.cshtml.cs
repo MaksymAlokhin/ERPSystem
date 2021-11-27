@@ -70,21 +70,6 @@ namespace ERPSystem.Pages.Projects
 
             var NewProject = new Project();
 
-            if (SelectedPositions.Length > 0)
-            {
-                NewProject.Positions = new List<Position>();
-                _context.Positions.Load();
-            }
-
-            foreach (var position in SelectedPositions)
-            {
-                var foundPosition = await _context.Positions.FindAsync(position);
-                if (foundPosition != null)
-                {
-                    NewProject.Positions.Add(foundPosition);
-                }
-            }
-
             if (await TryUpdateModelAsync<Project>(
                 NewProject,
                 "Project",
@@ -107,9 +92,32 @@ namespace ERPSystem.Pages.Projects
                 {
                     NewProject.ProjectState = ProjectState.Inactive;
                 }
+
+                if (SelectedPositions.Length > 0)
+                {
+                    NewProject.Positions = new List<Position>();
+                    _context.Positions.Load();
+                }
+
+                foreach (var position in SelectedPositions)
+                {
+                    var foundPosition = await _context.Positions.FindAsync(position);
+                    if (foundPosition != null)
+                    {
+                        NewProject.Positions.Add(foundPosition);
+                        if (NewProject.ProjectState == ProjectState.Active)
+                            foundPosition.PositionState = PositionState.Active;
+                        else
+                            foundPosition.PositionState = PositionState.Inactive;
+                    }
+                }
+
                 _context.Projects.Add(NewProject);
                 await _context.SaveChangesAsync();
-                await Utility.UpdateStateAsync(_context);
+
+                Utility utility = new Utility(_context);
+                utility.UpdateAssignmentsState();
+
                 return RedirectToPage("./Index", new
                 {
                     pageIndex = $"{pageIndex}",

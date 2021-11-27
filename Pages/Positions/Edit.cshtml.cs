@@ -81,20 +81,31 @@ namespace ERPSystem.Pages.Positions
                 .AsNoTracking()
                 .FirstOrDefaultAsync(m => m.Id == id);
 
-            if(Position.Project != null)
-            {
-                if (Position.StartDate < Position.Project.StartDate)
-                    Position.StartDate = Position.Project.StartDate;
-                if (Position.EndDate > Position.Project.EndDate)
-                    Position.EndDate = Position.Project.EndDate;
-            }
-
             if (await TryUpdateModelAsync<Position>(
                     PositionToUpdate,
                     "Position",
                     b => b.Name, b => b.PositionState, b => b.ProjectId, b => b.StartDate, b => b.EndDate))
             {
+                if (Position.Project != null)
+                {
+                    if (Position.StartDate < Position.Project.StartDate)
+                        Position.StartDate = Position.Project.StartDate;
+                    if (Position.EndDate > Position.Project.EndDate)
+                        Position.EndDate = Position.Project.EndDate;
+                }
+
                 UpdateAssignments(SelectedAssignments, PositionToUpdate);
+
+                if (PositionToUpdate.PositionState == PositionState.Active)
+                {
+                    foreach (var assignment in PositionToUpdate.Assignments)
+                        assignment.AssignmentState = AssignmentState.Active;
+                }
+                else
+                {
+                    foreach (var assignment in PositionToUpdate.Assignments)
+                        assignment.AssignmentState = AssignmentState.Inactive;
+                }
             }
 
             try
@@ -112,8 +123,6 @@ namespace ERPSystem.Pages.Positions
                     throw;
                 }
             }
-
-            await Utility.UpdateStateAsync(_context);
 
             return RedirectToPage("./Index", new
             {
@@ -159,6 +168,7 @@ namespace ERPSystem.Pages.Positions
                         {
                             var toRemove = Position.Assignments.Single(s => s.Id == assignment.Id);
                             Position.Assignments.Remove(toRemove);
+                            toRemove.AssignmentState = AssignmentState.Inactive;
                         }
                     }
                 }

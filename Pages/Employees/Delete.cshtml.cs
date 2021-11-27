@@ -79,6 +79,42 @@ namespace ERPSystem.Pages.Employees
 
             if (Employee != null)
             {
+                switch (Employee.EmployeeRole)
+                {
+                    case EmployeeRole.DepartmentHead:
+                        if (Employee.DepartmentId != null)
+                        {
+                            Department department = await _context.Departments.Include(d => d.DepartmentHead).FirstOrDefaultAsync(d => d.Id == Employee.DepartmentId);
+                            department.DepartmentState = DepartmentState.Inactive;
+                        }
+                        break;
+                    case EmployeeRole.GeneralManager:
+                        _context.Departments.Load();
+
+                        if (Employee.CompanyId != null)
+                        {
+                            Company company = await _context.Companies.Include(g => g.GeneralManager).FirstOrDefaultAsync(g => g.Id == Employee.CompanyId);
+                            company.CompanyState = CompanyState.Inactive;
+                        }
+                        break;
+                    case EmployeeRole.ProjectManager:
+                        if (Employee.ProjectId != null)
+                        {
+                            Project project = await _context.Projects.Include(p => p.ProjectManager).FirstOrDefaultAsync(p => p.Id == Employee.ProjectId);
+                            project.ProjectState = ProjectState.Inactive;
+                        }
+                        break;
+                    case EmployeeRole.Employee:
+                        if (Employee.Assignments != null)
+                        {
+                            foreach (Assignment assignment in Employee.Assignments)
+                            {
+                                assignment.AssignmentState = AssignmentState.Inactive;
+                            }
+                        }
+                        break;
+                }
+
                 _context.Employees.Remove(Employee);
                 await _context.SaveChangesAsync();
 
@@ -88,7 +124,6 @@ namespace ERPSystem.Pages.Employees
                 //    System.IO.File.Delete(fileToDelete);
                 //}
             }
-            await Utility.UpdateStateAsync(_context);
             return RedirectToPage("./Index", new
             {
                 pageIndex = $"{pageIndex}",

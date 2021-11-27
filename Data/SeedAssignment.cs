@@ -13,7 +13,7 @@ namespace ERPSystem.Data
         #region Create Assignments
         public static Assignment as0101 = new Assignment
         {
-            Name = "Operations Manager",
+            Name = "Operations Manager Assignment",
             StartDate = DateTime.Parse("2020-12-30"),
             EndDate = DateTime.Parse("2023-03-05"),
             FTE = 0.5,
@@ -23,7 +23,7 @@ namespace ERPSystem.Data
         };
         public static Assignment as0102 = new Assignment
         {
-            Name = "Quality Control",
+            Name = "Quality Control Assignment",
             StartDate = DateTime.Parse("2020-07-10"),
             EndDate = DateTime.Parse("2022-09-09"),
             FTE = 0.5,
@@ -33,7 +33,7 @@ namespace ERPSystem.Data
         };
         public static Assignment as0103 = new Assignment
         {
-            Name = "Accountant",
+            Name = "Accountant Assignment",
             StartDate = DateTime.Parse("2021-05-10"),
             EndDate = DateTime.Parse("2023-10-09"),
             FTE = 0.5,
@@ -43,7 +43,7 @@ namespace ERPSystem.Data
         };
         public static Assignment as0104 = new Assignment
         {
-            Name = "Office Manager",
+            Name = "Office Manager Assignment",
             StartDate = DateTime.Parse("2021-06-03"),
             EndDate = DateTime.Parse("2022-03-14"),
             FTE = 0.5,
@@ -53,7 +53,7 @@ namespace ERPSystem.Data
         };
         public static Assignment as0105 = new Assignment
         {
-            Name = "Receptionist",
+            Name = "Receptionist Assignment",
             StartDate = DateTime.Parse("2020-09-23"),
             EndDate = DateTime.Parse("2022-05-28"),
             FTE = 0.5,
@@ -63,7 +63,7 @@ namespace ERPSystem.Data
         };
         public static Assignment as0106 = new Assignment
         {
-            Name = "Supervisor",
+            Name = "Supervisor Assignment",
             StartDate = DateTime.Parse("2020-07-28"),
             EndDate = DateTime.Parse("2022-08-03"),
             FTE = 0.5,
@@ -73,7 +73,7 @@ namespace ERPSystem.Data
         };
         public static Assignment as0107 = new Assignment
         {
-            Name = "Marketing Manager",
+            Name = "Marketing Manager Assignment",
             StartDate = DateTime.Parse("2020-04-29"),
             EndDate = DateTime.Parse("2022-11-04"),
             FTE = 0.5,
@@ -83,7 +83,7 @@ namespace ERPSystem.Data
         };
         public static Assignment as0108 = new Assignment
         {
-            Name = "Purchasing Manager",
+            Name = "Purchasing Manager Assignment",
             StartDate = DateTime.Parse("2020-02-13"),
             EndDate = DateTime.Parse("2022-02-10"),
             FTE = 0.5,
@@ -93,7 +93,7 @@ namespace ERPSystem.Data
         };
         public static Assignment as0109 = new Assignment
         {
-            Name = "Shipping Manager",
+            Name = "Shipping Manager Assignment",
             StartDate = DateTime.Parse("2021-08-18"),
             EndDate = DateTime.Parse("2022-04-01"),
             FTE = 0.5,

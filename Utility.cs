@@ -23,19 +23,17 @@ namespace ERPSystem
             var range = Convert.ToInt32(endDate.Subtract(startDate).TotalDays);
             return startDate.AddDays(random.Next(range));
         }
-        public static async Task UpdateStateAsync(ERPSystem.Data.ApplicationDbContext _context)
+        public void UpdateDepartmentsState()
         {
-            _context.Employees.Load();
-            _context.Departments.Load();
+            foreach (var department in _context.Departments)
+            {
+                if (department.CompanyId == null)
+                    department.DepartmentState = DepartmentState.Inactive;
+            }
             foreach (var company in _context.Companies)
             {
-                if (company.GeneralManager == null)
-                    company.CompanyState = CompanyState.Inactive;
-                else if (company.GeneralManager.EmployeeState == EmployeeState.Inactive)
-                    company.CompanyState = CompanyState.Inactive;
-                else
-                    company.CompanyState = CompanyState.Active;
-                if (company.CompanyState == CompanyState.Inactive)
+                if (company.CompanyState == CompanyState.Inactive 
+                    || company.CompanyState == CompanyState.Draft)
                 {
                     if (company.Departments != null)
                     {
@@ -45,35 +43,19 @@ namespace ERPSystem
                         }
                     }
                 }
-                else
-                {
-                    if (company.Departments != null)
-                    {
-                        foreach (var department in company.Departments)
-                        {
-                            if (department.DepartmentHead != null)
-                            {
-                                if (department.DepartmentHead.EmployeeState == EmployeeState.Active)
-                                    department.DepartmentState = DepartmentState.Active;
-                                else
-                                    department.DepartmentState = DepartmentState.Inactive;
-                            }
-                        }
-                    }
-                }
             }
-            _context.Projects.Load();
+        }
+        public void UpdateProjectsState()
+        {
+            foreach (var project in _context.Projects)
+            {
+                if (project.DepartmentId == null)
+                    project.ProjectState = ProjectState.Inactive;
+            }
             foreach (var department in _context.Departments)
             {
-                if (department.DepartmentHead == null)
-                    department.DepartmentState = DepartmentState.Inactive;
-                else if (department.DepartmentHead.EmployeeState == EmployeeState.Inactive)
-                    department.DepartmentState = DepartmentState.Inactive;
-                else if (department.CompanyId != null && department.Company.CompanyState == CompanyState.Active)
-                    department.DepartmentState = DepartmentState.Active;
-                else
-                    department.DepartmentState = DepartmentState.Inactive;
-                if (department.DepartmentState == DepartmentState.Inactive)
+                if (department.DepartmentState == DepartmentState.Inactive 
+                    || department.DepartmentState == DepartmentState.Draft)
                 {
                     if (department.Projects != null)
                     {
@@ -83,68 +65,62 @@ namespace ERPSystem
                         }
                     }
                 }
-                else
-                {
-                    if (department.Projects != null)
-                    {
-                        foreach (var project in department.Projects)
-                        {
-                            if (project.ProjectManager != null)
-                            {
-                                if (project.ProjectManager.EmployeeState == EmployeeState.Active)
-                                    project.ProjectState = ProjectState.Active;
-                                else
-                                    project.ProjectState = ProjectState.Inactive;
-                            }
-                        }
-                    }
-
-                }
             }
+        }
+        public void UpdateBranchesState()
+        {
             foreach (var branch in _context.Branches)
             {
                 if (branch.CompanyId == null)
                     branch.BranchState = BranchState.Inactive;
-                else if (branch.Company.CompanyState == CompanyState.Active)
-                    branch.BranchState = BranchState.Active;
-                else
-                    branch.BranchState = BranchState.Inactive;
-                if (branch.BranchState == BranchState.Inactive)
+            }
+            foreach (var company in _context.Companies)
+            {
+                if (company.CompanyState == CompanyState.Inactive)
                 {
-                    if (branch.Employees != null)
+                    if (company.Branches != null)
                     {
-                        foreach (var employee in branch.Employees)
+                        foreach (var branch in company.Branches)
                         {
-                            if (employee.EmployeeRole == EmployeeRole.Employee
-                                || employee.EmployeeRole == EmployeeRole.Mentor)
-                                employee.EmployeeState = EmployeeState.Inactive;
-                        }
-                    }
-                }
-                else
-                {
-                    if (branch.Employees != null)
-                    {
-                        foreach (var employee in branch.Employees)
-                        {
-                            if (employee.EmployeeRole == EmployeeRole.Employee
-                                || employee.EmployeeRole == EmployeeRole.Mentor)
-                                employee.EmployeeState = EmployeeState.Active;
+                            branch.BranchState = BranchState.Inactive;
                         }
                     }
                 }
             }
-            _context.Positions.Load();
+        }
+        //public void UpdateEmployeesState()
+        //{
+        //    foreach (var employee in _context.Employees
+        //        .Where(e => e.EmployeeRole == EmployeeRole.Employee || e.EmployeeRole == EmployeeRole.Mentor))
+        //    {
+        //        if (employee.BranchId == null)
+        //            employee.EmployeeState = EmployeeState.Inactive;
+        //    }
+        //    foreach (var branch in _context.Branches)
+        //    {
+        //        if (branch.BranchState == BranchState.Inactive)
+        //        {
+        //            if (branch.Employees != null)
+        //            {
+        //                foreach (var employee in branch.Employees)
+        //                {
+        //                    if (employee.EmployeeRole == EmployeeRole.Employee
+        //                        || employee.EmployeeRole == EmployeeRole.Mentor)
+        //                        employee.EmployeeState = EmployeeState.Inactive;
+        //                }
+        //            }
+        //        }
+        //    }
+        //}
+        public void UpdatePositionsState()
+        {
+            foreach (var position in _context.Positions)
+            {
+                if (position.ProjectId == null)
+                    position.PositionState = PositionState.Inactive;
+            }
             foreach (var project in _context.Projects)
             {
-                if (project.ProjectManager == null)
-                    project.ProjectState = ProjectState.Inactive;
-                else if (project.ProjectManager.EmployeeState == EmployeeState.Inactive)
-                    project.ProjectState = ProjectState.Inactive;
-                else if (project.DepartmentId != null & project.Department.DepartmentState == DepartmentState.Active)
-                    project.ProjectState = ProjectState.Active;
-                else
-                    project.ProjectState = ProjectState.Inactive;
                 if (project.ProjectState == ProjectState.Inactive)
                 {
                     if (project.Positions != null)
@@ -155,25 +131,17 @@ namespace ERPSystem
                         }
                     }
                 }
-                else
-                {
-                    if (project.Positions != null)
-                    {
-                        foreach (var position in project.Positions)
-                        {
-                            position.PositionState = PositionState.Active;
-                        }
-                    }
-                }
+            }
+        }
+        public void UpdateAssignmentsState()
+        {
+            foreach (var assignment in _context.Assignments)
+            {
+                if (assignment.PositionId == null)
+                    assignment.AssignmentState = AssignmentState.Inactive;
             }
             foreach (var position in _context.Positions)
             {
-                if (position.ProjectId == null)
-                    position.PositionState = PositionState.Inactive;
-                else if (position.Project.ProjectState == ProjectState.Active)
-                    position.PositionState = PositionState.Active;
-                else
-                    position.PositionState = PositionState.Inactive;
                 if (position.PositionState == PositionState.Inactive)
                 {
                     if (position.Assignments != null)
@@ -184,67 +152,9 @@ namespace ERPSystem
                         }
                     }
                 }
-                else
-                {
-                    if (position.Assignments != null)
-                    {
-                        foreach (var assignment in position.Assignments)
-                        {
-                            assignment.AssignmentState = AssignmentState.Active;
-                        }
-                    }
-                }
             }
-            foreach (var assignment in _context.Assignments)
-            {
-                if (assignment.PositionId == null)
-                    assignment.AssignmentState = AssignmentState.Inactive;
-                else if (assignment.Position.PositionState == PositionState.Active)
-                    assignment.AssignmentState = AssignmentState.Active;
-                else
-                    assignment.AssignmentState = AssignmentState.Inactive;
-            }
-            //foreach (var employee in _context.Employees)
-            //{
-            //    switch (employee.EmployeeRole)
-            //    {
-            //        case EmployeeRole.Employee:
-            //        case EmployeeRole.Mentor:
-            //            if (employee.BranchId == null)
-            //                employee.EmployeeState = EmployeeState.Inactive;
-            //            else if (employee.Branch.BranchState == BranchState.Active)
-            //                employee.EmployeeState = EmployeeState.Active;
-            //            else
-            //                employee.EmployeeState = EmployeeState.Inactive;
-            //            break;
-            //        case EmployeeRole.DepartmentHead:
-            //            if (employee.DepartmentId == null)
-            //                employee.EmployeeState = EmployeeState.Inactive;
-            //            else if (employee.Department.DepartmentState == DepartmentState.Active)
-            //                employee.EmployeeState = EmployeeState.Active;
-            //            else
-            //                employee.EmployeeState = EmployeeState.Inactive;
-            //            break;
-            //        case EmployeeRole.GeneralManager:
-            //            if (employee.CompanyId == null)
-            //                employee.EmployeeState = EmployeeState.Inactive;
-            //            else if (employee.Company.CompanyState == CompanyState.Active)
-            //                employee.EmployeeState = EmployeeState.Active;
-            //            else
-            //                employee.EmployeeState = EmployeeState.Inactive;
-            //            break;
-            //        case EmployeeRole.ProjectManager:
-            //            if (employee.ProjectId == null)
-            //                employee.EmployeeState = EmployeeState.Inactive;
-            //            else if (employee.Project.ProjectState == ProjectState.Active)
-            //                employee.EmployeeState = EmployeeState.Active;
-            //            else
-            //                employee.EmployeeState = EmployeeState.Inactive;
-            //            break;
-            //    }
-            //}
-            await _context.SaveChangesAsync();
         }
+
         public async Task<JsonResult> GetEmployeeStateAsync(string employeeId)
         {
             if (!string.IsNullOrWhiteSpace(employeeId))

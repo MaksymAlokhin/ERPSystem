@@ -10,57 +10,132 @@
 
 <h4>Assignment</h4>
 <hr />
-<div class="row">
-    <div class="col-md-4">
-        <form method="post">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <input type="hidden" asp-for="Assignment.Id" />
+<form method="post">
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+    <input type="hidden" asp-for="Assignment.Id" />
+    <div class="row">
+        <div class="col-sm-4">
             <div class="form-group">
                 <label asp-for="Assignment.Name" class="control-label"></label>
                 <input asp-for="Assignment.Name" class="form-control" />
                 <span asp-validation-for="Assignment.Name" class="text-danger"></span>
             </div>
+        </div>
+        <div class="col-sm-4">
+            <div class="form-group">
+                <label asp-for="Assignment.StartDate" class="control-label"></label>
+                <input asp-for="Assignment.StartDate" class="form-control" min="@Model.Assignment.Position.StartDate.ToString("yyyy-MM-dd")" max="@Model.Assignment.Position.EndDate.AddDays(-1).ToString("yyyy-MM-dd")" />
+                <span asp-validation-for="Assignment.StartDate" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="col-sm-4">
+            <div class="form-group">
+                <label asp-for="Assignment.EndDate" class="control-label"></label>
+                <input asp-for="Assignment.EndDate" class="form-control" min="@Model.Assignment.Position.StartDate.AddDays(1).ToString("yyyy-MM-dd")" max="@Model.Assignment.Position.EndDate.ToString("yyyy-MM-dd")" />
+                <span asp-validation-for="Assignment.EndDate" class="text-danger"></span>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-4">
+            <div class="form-group">
+                <label asp-for="Assignment.AssignmentState" class="control-label"></label>
+                <select asp-for="Assignment.AssignmentState" class="form-control" asp-items="Html.GetEnumSelectList<Models.AssignmentState>()"></select>
+                <span asp-validation-for="Assignment.AssignmentState" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="col-sm-4">
+            <div class="form-group">
+                <label asp-for="Assignment.Position" class="control-label"></label>
+                <select asp-for="Assignment.PositionId" class="form-control" asp-items="ViewBag.PositionId"><option value="">--none--</option></select>
+                <span asp-validation-for="Assignment.PositionId" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="col-sm-4">
+            <div class="form-group">
+                <label asp-for="Assignment.Employee" class="control-label"></label>
+                <select asp-for="Assignment.EmployeeId" class="form-control" asp-items="ViewBag.EmployeeId"><option value="">--none--</option></select>
+                <span asp-validation-for="Assignment.EmployeeId" class="text-danger"></span>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-4">
             <div class="form-group">
                 <label asp-for="Assignment.FTE" class="control-label"></label>
                 <input asp-for="Assignment.FTE" class="form-control" />
                 <span asp-validation-for="Assignment.FTE" class="text-danger"></span>
             </div>
-            <div class="form-group">
-                <label asp-for="Assignment.StartDate" class="control-label"></label>
-                <input asp-for="Assignment.StartDate" class="form-control" />
-                <span asp-validation-for="Assignment.StartDate" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Assignment.EndDate" class="control-label"></label>
-                <input asp-for="Assignment.EndDate" class="form-control" />
-                <span asp-validation-for="Assignment.EndDate" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Assignment.AssignmentState" class="control-label"></label>
-                <select asp-for="Assignment.AssignmentState" class="form-control"></select>
-                <span asp-validation-for="Assignment.AssignmentState" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Assignment.PositionId" class="control-label"></label>
-                <select asp-for="Assignment.PositionId" class="form-control" asp-items="ViewBag.PositionId"></select>
-                <span asp-validation-for="Assignment.PositionId" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Assignment.EmployeeId" class="control-label"></label>
-                <select asp-for="Assignment.EmployeeId" class="form-control" asp-items="ViewBag.EmployeeId"></select>
-                <span asp-validation-for="Assignment.EmployeeId" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <input type="submit" value="Save" class="btn btn-primary" />
-            </div>
-        </form>
+        </div>
     </div>
-</div>
+    <div class="form-group">
+        <input type="submit" value="Save" class="btn btn-primary" />
+    </div>
+</form>
 
 <div>
-    <a asp-page="./Index">Back to List</a>
+    <a asp-page="./Index"
+       asp-route-pageIndex="@Model.PageIndex"
+       asp-route-sortOrder="@Model.CurrentSort"
+       asp-route-currentFilter="@Model.CurrentFilter">
+        Back to List
+    </a>
 </div>
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    <script>
+        $(function () {
+            $("#Assignment_PositionId, #Assignment_EmployeeId").on("change", function () {
+                var response1;
+                var response2;
+                var employeeId = $("#Assignment_EmployeeId").val();
+                var positionId = $("#Assignment_PositionId").val();
+                var state = document.getElementById('Assignment_AssignmentState');
+                $.getJSON(`?handler=Employee&employeeId=${employeeId}`, function (response) {
+                    if (response === "Active") response1 = true;
+                    else response1 = false;
+                    $.getJSON(`?handler=Position&positionId=${positionId}`, function (response) {
+                        if (response === "Active") response2 = true;
+                        else response2 = false;
+                        if (response1 && response2) response = "Active";
+                        else response = "Inactive";
+                        for (var i = 0; i < state.options.length; i++) {
+                            if (state.options[i].text === response) {
+                                state.selectedIndex = i;
+                                break;
+                            }
+                        }
+                    });
+                });
+            });
+        });
+        $(function () {
+            $("#Assignment_AssignmentState").on("change", function () {
+                var employeeId = $("#Assignment_EmployeeId").val();
+                var positionId = $("#Assignment_PositionId").val();
+                var state = document.getElementById('Assignment_AssignmentState');
+                $.getJSON(`?handler=Employee&employeeId=${employeeId}`, function (response) {
+                    if (response === "Inactive") {
+                        for (var i = 0; i < state.options.length; i++) {
+                            if (state.options[i].text === response) {
+                                state.selectedIndex = i;
+                                break;
+                            }
+                        }
+                    }
+                });
+                $.getJSON(`?handler=Position&companyId=${positionId}`, function (response) {
+                    if (response === "Inactive") {
+                        for (var i = 0; i < state.options.length; i++) {
+                            if (state.options[i].text === response) {
+                                state.selectedIndex = i;
+                                break;
+                            }
+                        }
+                    }
+                });
+            });
+        });
+    </script>
 }

@@ -265,7 +265,14 @@ namespace ERPSystem.Pages.Employees
                     throw;
                 }
             }
-            await Utility.UpdateStateAsync(_context);
+
+            Utility utility = new Utility(_context);
+            utility.UpdateDepartmentsState();
+            utility.UpdateBranchesState();
+            utility.UpdateProjectsState();
+            utility.UpdatePositionsState();
+            utility.UpdateAssignmentsState();
+
             return RedirectToPage("./Index", new
             {
                 pageIndex = $"{pageIndex}",

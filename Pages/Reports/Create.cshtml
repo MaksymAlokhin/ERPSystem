@@ -25,6 +25,11 @@
                 <span asp-validation-for="Report.ReportState" class="text-danger"></span>
             </div>
             <div class="form-group">
+                <label asp-for="Report.Date" class="control-label"></label>
+                <input asp-for="Report.Date" class="form-control" />
+                <span asp-validation-for="Report.Date" class="text-danger"></span>
+            </div>
+            <div class="form-group">
                 <label asp-for="Report.AssignmentId" class="control-label"></label>
                 <select asp-for="Report.AssignmentId" class ="form-control" asp-items="ViewBag.AssignmentId"></select>
             </div>

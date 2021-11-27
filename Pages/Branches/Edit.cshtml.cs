@@ -41,6 +41,8 @@ namespace ERPSystem.Pages.Branches
             }
 
             var EmployeesQuery = _context.Employees
+                .Where(e => e.EmployeeRole == EmployeeRole.Employee 
+                        || e.EmployeeRole == EmployeeRole.Mentor)
                 .OrderBy(e => e.LastName)
                 .ThenBy(e => e.FirstName)
                 .AsNoTracking();
@@ -90,6 +92,17 @@ namespace ERPSystem.Pages.Branches
                 b => b.Name, b => b.BranchState, b => b.CompanyId))
             {
                 UpdateProjects(SelectedEmployees, BranchToUpdate);
+
+                if (BranchToUpdate.BranchState == BranchState.Active)
+                {
+                    foreach (var employee in BranchToUpdate.Employees)
+                        employee.EmployeeState = EmployeeState.Active;
+                }
+                else
+                {
+                    foreach (var employee in BranchToUpdate.Employees)
+                        employee.EmployeeState = EmployeeState.Inactive;
+                }
             }
 
             try
@@ -107,7 +120,7 @@ namespace ERPSystem.Pages.Branches
                     throw;
                 }
             }
-            await Utility.UpdateStateAsync(_context);
+
             return RedirectToPage("./Index", new
             {
                 pageIndex = $"{pageIndex}",
@@ -151,6 +164,7 @@ namespace ERPSystem.Pages.Branches
                         {
                             var toRemove = Branch.Employees.Single(s => s.Id == employee.Id);
                             Branch.Employees.Remove(toRemove);
+                            toRemove.EmployeeState = EmployeeState.Inactive;
                         }
                     }
                 }

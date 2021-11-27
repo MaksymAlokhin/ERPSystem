@@ -346,6 +346,7 @@ namespace ERPSystem.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Hours = table.Column<double>(type: "float", nullable: false),
                     ReportState = table.Column<string>(type: "nvarchar(16)", maxLength: 16, nullable: false),
+                    Date = table.Column<DateTime>(type: "datetime2", nullable: false),
                     AssignmentId = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>

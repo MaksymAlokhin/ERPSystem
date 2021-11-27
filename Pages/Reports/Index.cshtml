@@ -21,6 +21,9 @@
                 @Html.DisplayNameFor(model => model.Report[0].ReportState)
             </th>
             <th>
+                @Html.DisplayNameFor(model => model.Report[0].Date)
+            </th>
+            <th>
                 @Html.DisplayNameFor(model => model.Report[0].Assignment)
             </th>
             <th></th>
@@ -34,6 +37,9 @@
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.ReportState)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Date)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Assignment.Name)

@@ -281,6 +281,9 @@ namespace ERPSystem.Migrations
                     b.Property<int?>("AssignmentId")
                         .HasColumnType("int");
 
+                    b.Property<DateTime>("Date")
+                        .HasColumnType("datetime2");
+
                     b.Property<double>("Hours")
                         .HasColumnType("float");
 
