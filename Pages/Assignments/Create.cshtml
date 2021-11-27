@@ -12,7 +12,6 @@
 <hr />
 <form method="post">
     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-    <input type="hidden" asp-for="Assignment.Id" />
     <div class="row">
         <div class="col-sm-4">
             <div class="form-group">
@@ -24,14 +23,14 @@
         <div class="col-sm-4">
             <div class="form-group">
                 <label asp-for="Assignment.StartDate" class="control-label"></label>
-                <input asp-for="Assignment.StartDate" class="form-control"  min="@Model.Assignment.Position.StartDate.ToString("yyyy-MM-dd")" max="@Model.Assignment.Position.EndDate.AddDays(-1).ToString("yyyy-MM-dd")" />
+                <input asp-for="Assignment.StartDate" class="form-control" />
                 <span asp-validation-for="Assignment.StartDate" class="text-danger"></span>
             </div>
         </div>
         <div class="col-sm-4">
             <div class="form-group">
                 <label asp-for="Assignment.EndDate" class="control-label"></label>
-                <input asp-for="Assignment.EndDate" class="form-control"  min="@Model.Assignment.Position.StartDate.AddDays(1).ToString("yyyy-MM-dd")" max="@Model.Assignment.Position.EndDate.ToString("yyyy-MM-dd")" />
+                <input asp-for="Assignment.EndDate" class="form-control" />
                 <span asp-validation-for="Assignment.EndDate" class="text-danger"></span>
             </div>
         </div>
@@ -81,10 +80,24 @@
         Back to List
     </a>
 </div>
+<div id="test"></div>
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
     <script>
+        //Get date ranges
+        $(function () {
+            $("#Assignment_PositionId").on("change", function () {
+                var positionId = $("#Assignment_PositionId").val();
+                $.getJSON(`?handler=DateRange&positionId=${positionId}`, function (response) {
+                    if (response) {
+                        $("#Assignment_StartDate").attr({ min: response.startmin, max: response.startmax, value: response.startmin });
+                        $("#Assignment_EndDate").attr({ min: response.endmin, max: response.endmax, value: response.endmax });
+                    }
+                });
+            });
+        });
+
         $(function () {
             $("#Assignment_PositionId, #Assignment_EmployeeId").on("change", function () {
                 var response1;

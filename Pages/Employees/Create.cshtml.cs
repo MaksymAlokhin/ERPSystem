@@ -38,7 +38,7 @@ namespace ERPSystem.Pages.Employees
         public IActionResult OnGet(EmployeeRole Role, string sortOrder,
             string currentFilter, int? pageIndex)
         {
-            this.Role = Role; 
+            this.Role = Role;
             PageIndex = pageIndex;
             CurrentSort = sortOrder;
             CurrentFilter = currentFilter;
@@ -84,12 +84,10 @@ namespace ERPSystem.Pages.Employees
             if (SelectedMentors.Length > 0)
             {
                 NewEmployee.Mentors = new List<Employee>();
-                _context.Employees.Load();
             }
             if (SelectedAssignments.Length > 0)
             {
                 NewEmployee.Assignments = new List<Assignment>();
-                _context.Assignments.Load();
             }
 
             foreach (var mentor in SelectedMentors)
@@ -117,13 +115,21 @@ namespace ERPSystem.Pages.Employees
                             e => e.DateOfBirth, e => e.ProjectId, e => e.CompanyId, e => e.DepartmentId,
                             e => e.BranchId))
             {
-                switch (Employee.EmployeeRole)
+                //Make dependants active or inactive
+                switch (NewEmployee.EmployeeRole)
                 {
                     case EmployeeRole.DepartmentHead:
-                        if (Employee.DepartmentId != null)
+                        if (NewEmployee.DepartmentId != null)
                         {
-                            Department department = await _context.Departments.Include(d => d.DepartmentHead).FirstOrDefaultAsync(d => d.Id == Employee.DepartmentId);
-                            department.DepartmentState = DepartmentState.Active;
+                            Department department = await _context.Departments
+                                .Include(d => d.DepartmentHead)
+                                .Include(d => d.Company)
+                                .FirstOrDefaultAsync(d => d.Id == NewEmployee.DepartmentId);
+                            if (department.Company.CompanyState == CompanyState.Active
+                                && NewEmployee.EmployeeState == EmployeeState.Active)
+                                department.DepartmentState = DepartmentState.Active;
+                            else
+                                department.DepartmentState = DepartmentState.Inactive;
                             if (department.DepartmentHead != null)
                             {
                                 department.DepartmentHead.DepartmentId = null;
@@ -131,10 +137,13 @@ namespace ERPSystem.Pages.Employees
                         }
                         break;
                     case EmployeeRole.GeneralManager:
-                        if (Employee.CompanyId != null)
+                        if (NewEmployee.CompanyId != null)
                         {
-                            Company company = await _context.Companies.Include(g => g.GeneralManager).FirstOrDefaultAsync(g => g.Id == Employee.CompanyId);
-                            company.CompanyState = CompanyState.Active;
+                            Company company = await _context.Companies
+                                .Include(g => g.GeneralManager)
+                                .FirstOrDefaultAsync(g => g.Id == NewEmployee.CompanyId);
+                            if (NewEmployee.EmployeeState == EmployeeState.Active)
+                                company.CompanyState = CompanyState.Active;
                             if (company.GeneralManager != null)
                             {
                                 company.GeneralManager.CompanyId = null;
@@ -142,10 +151,16 @@ namespace ERPSystem.Pages.Employees
                         }
                         break;
                     case EmployeeRole.ProjectManager:
-                        if (Employee.ProjectId != null)
+                        if (NewEmployee.ProjectId != null)
                         {
-                            Project project = await _context.Projects.Include(p => p.ProjectManager).FirstOrDefaultAsync(p => p.Id == Employee.ProjectId);
-                            project.ProjectState = ProjectState.Active;
+                            Project project = await _context.Projects
+                                .Include(p => p.ProjectManager)
+                                .Include(p => p.Positions)
+                                .FirstOrDefaultAsync(p => p.Id == NewEmployee.ProjectId);
+                            if (project.Department.DepartmentState == DepartmentState.Active
+                                && NewEmployee.EmployeeState == EmployeeState.Active)
+                                project.ProjectState = ProjectState.Active;
+                            else project.ProjectState = ProjectState.Inactive;
                             if (project.ProjectManager != null)
                             {
                                 project.ProjectManager.ProjectId = null;
@@ -153,12 +168,18 @@ namespace ERPSystem.Pages.Employees
                         }
                         break;
                     case EmployeeRole.Employee:
-                        _context.Assignments.Load();
-                        if (Employee.Assignments != null)
+                    case EmployeeRole.Mentor:
+                        if (NewEmployee.Assignments != null)
                         {
-                            foreach (Assignment assignment in Employee.Assignments)
+                            foreach (Assignment assignment in NewEmployee.Assignments)
                             {
-                                assignment.AssignmentState = AssignmentState.Active;
+                                _context.Entry(assignment)
+                                    .Reference(a => a.Position)
+                                    .Load();
+                                if (assignment.Position.PositionState == PositionState.Active
+                                    && NewEmployee.EmployeeState == EmployeeState.Active)
+                                    assignment.AssignmentState = AssignmentState.Active;
+                                else assignment.AssignmentState = AssignmentState.Inactive;
                             }
                         }
                         break;

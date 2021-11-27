@@ -135,14 +135,22 @@ namespace ERPSystem.Pages.Companies
                 if (CompanyToUpdate.CompanyState == CompanyState.Active)
                 {
                     foreach (var department in CompanyToUpdate.Departments)
+                    {
+                        _context.Entry(department)
+                            .Reference(d => d.DepartmentHead)
+                            .Load();
                         if (department.DepartmentHead != null)
                         {
-                            _context.Employees.Load();
                             if (department.DepartmentHead.EmployeeState == EmployeeState.Active)
                             {
                                 department.DepartmentState = DepartmentState.Active;
                             }
+                            else
+                                department.DepartmentState = DepartmentState.Inactive;
                         }
+                        else
+                            department.DepartmentState = DepartmentState.Inactive;
+                    }
                     foreach (var branch in CompanyToUpdate.Branches)
                         branch.BranchState = BranchState.Active;
                 }

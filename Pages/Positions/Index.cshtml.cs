@@ -40,7 +40,7 @@ namespace ERPSystem.Pages.Positions
             ProjectSort = sortOrder == "project" ? "project_desc" : "project";
             AssignmentsSort = sortOrder == "assignments" ? "assignments_desc" : "assignments";
             StateSort = sortOrder == "state" ? "state_desc" : "state";
-            
+
             if (searchString != null)
             {
                 pageIndex = 1;
@@ -103,6 +103,29 @@ namespace ERPSystem.Pages.Positions
             var pageSize = Configuration.GetValue("PageSize", 7);
             Position = await PaginatedList<Position>.CreateAsync(
                 positionsIQ.AsNoTracking(), pageIndex ?? 1, pageSize);
+        }
+        public async Task<IActionResult> OnGetActivateAsync(string sortOrder,
+            string currentFilter, int? pageIndex)
+        {
+            foreach (var position in _context.Positions)
+            {
+                if (position.ProjectId != null)
+                {
+                    _context.Entry(position)
+                        .Reference(p => p.Project)
+                        .Load();
+                    if (position.Project.ProjectState == ProjectState.Active)
+                        position.PositionState = PositionState.Active;
+                }
+            }
+            await _context.SaveChangesAsync();
+
+            return RedirectToPage("./Index", new
+            {
+                pageIndex = $"{pageIndex}",
+                sortOrder = $"{sortOrder}",
+                currentFilter = $"{currentFilter}"
+            });
         }
     }
 }

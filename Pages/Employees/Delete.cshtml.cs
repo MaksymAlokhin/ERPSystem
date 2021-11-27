@@ -66,7 +66,12 @@ namespace ERPSystem.Pages.Employees
                 return NotFound();
             }
 
-            Employee = await _context.Employees.FindAsync(id);
+            Employee = await _context.Employees
+                .Include(e => e.Branch)
+                .Include(e => e.Assignments)
+                .Include(e => e.Mentors)
+                .Include(e => e.Project)
+                .FirstOrDefaultAsync(m => m.Id == id);
 
             //Delete photo file
             //string uploadsFolder = Path.Combine(webHostEnvironment.WebRootPath, @"images/avatars"); //webHost adds 'wwwroot'
@@ -84,27 +89,32 @@ namespace ERPSystem.Pages.Employees
                     case EmployeeRole.DepartmentHead:
                         if (Employee.DepartmentId != null)
                         {
-                            Department department = await _context.Departments.Include(d => d.DepartmentHead).FirstOrDefaultAsync(d => d.Id == Employee.DepartmentId);
+                            Department department = await _context.Departments
+                                .Include(d => d.DepartmentHead)
+                                .FirstOrDefaultAsync(d => d.Id == Employee.DepartmentId);
                             department.DepartmentState = DepartmentState.Inactive;
                         }
                         break;
                     case EmployeeRole.GeneralManager:
-                        _context.Departments.Load();
-
                         if (Employee.CompanyId != null)
                         {
-                            Company company = await _context.Companies.Include(g => g.GeneralManager).FirstOrDefaultAsync(g => g.Id == Employee.CompanyId);
+                            Company company = await _context.Companies
+                                .Include(g => g.GeneralManager)
+                                .FirstOrDefaultAsync(g => g.Id == Employee.CompanyId);
                             company.CompanyState = CompanyState.Inactive;
                         }
                         break;
                     case EmployeeRole.ProjectManager:
                         if (Employee.ProjectId != null)
                         {
-                            Project project = await _context.Projects.Include(p => p.ProjectManager).FirstOrDefaultAsync(p => p.Id == Employee.ProjectId);
+                            Project project = await _context.Projects
+                                .Include(p => p.ProjectManager)
+                                .FirstOrDefaultAsync(p => p.Id == Employee.ProjectId);
                             project.ProjectState = ProjectState.Inactive;
                         }
                         break;
                     case EmployeeRole.Employee:
+                    case EmployeeRole.Mentor:
                         if (Employee.Assignments != null)
                         {
                             foreach (Assignment assignment in Employee.Assignments)

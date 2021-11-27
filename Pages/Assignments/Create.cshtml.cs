@@ -32,6 +32,10 @@ namespace ERPSystem.Pages.Assignments
 
             ViewData["EmployeeId"] = new SelectList(_context.Employees.OrderBy(e => e.LastName).ThenBy(e => e.FirstName), "Id", "FullName");
             ViewData["PositionId"] = new SelectList(_context.Positions.OrderBy(e => e.Name), "Id", "Name");
+
+            Assignment = new Assignment();
+            Assignment.AssignmentState = AssignmentState.Inactive;
+
             return Page();
         }
 
@@ -46,14 +50,19 @@ namespace ERPSystem.Pages.Assignments
             {
                 return Page();
             }
+
             if (Assignment.PositionId != null)
             {
-                _context.Positions.Load();
-                if (Assignment.StartDate < Assignment.Position.StartDate)
-                    Assignment.StartDate = Assignment.Position.StartDate;
-                if (Assignment.EndDate > Assignment.Position.EndDate)
-                    Assignment.EndDate = Assignment.Position.EndDate;
+                Position position = await _context.Positions.FindAsync(Assignment.PositionId);
+                if (position != null)
+                {
+                    if (Assignment.StartDate < position.StartDate)
+                        Assignment.StartDate = position.StartDate;
+                    if (Assignment.EndDate > position.EndDate)
+                        Assignment.EndDate = position.EndDate;
+                }
             }
+
             _context.Assignments.Add(Assignment);
             await _context.SaveChangesAsync();
 
@@ -73,6 +82,24 @@ namespace ERPSystem.Pages.Assignments
         {
             Utility utility = new Utility(_context);
             return await utility.GetEmployeeStateAsync(employeeId);
+        }
+        public async Task<JsonResult> OnGetDateRangeAsync(string positionId)
+        {
+            if (Int32.TryParse(positionId, out int id))
+            {
+                Position position = await _context.Positions.FindAsync(id);
+                if (position != null)
+                {
+                    return new JsonResult(new 
+                    { 
+                        startmin = position.StartDate.ToString("yyyy-MM-dd"),
+                        startmax = position.EndDate.AddDays(-1).ToString("yyyy-MM-dd"),
+                        endmin = position.StartDate.AddDays(1).ToString("yyyy-MM-dd"),
+                        endmax = position.EndDate.ToString("yyyy-MM-dd")
+                    });
+                }
+            }
+            return new JsonResult(null);
         }
     }
 }

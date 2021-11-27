@@ -68,7 +68,6 @@ namespace ERPSystem.Pages.Branches
             if (SelectedEmployees.Length > 0)
             {
                 NewBranch.Employees = new List<Employee>();
-                _context.Employees.Load();
             }
             foreach (var employee in SelectedEmployees)
             {

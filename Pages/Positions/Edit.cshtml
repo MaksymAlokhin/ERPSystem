@@ -79,9 +79,16 @@
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
     <script>
+        //Get date ranges
         $(function () {
             $("#Position_ProjectId").on("change", function () {
                 var projectId = $(this).val();
+                $.getJSON(`?handler=DateRange&projectId=${projectId}`, function (response) {
+                    if (response) {
+                        $("#Position_StartDate").attr({ min: response.startmin, max: response.startmax, value: response.startmin });
+                        $("#Position_EndDate").attr({ min: response.endmin, max: response.endmax, value: response.endmax });
+                    }
+                });
                 $.getJSON(`?handler=Project&projectId=${projectId}`, function (response) {
                     var state = document.getElementById('Position_PositionState');
                     for (var i = 0; i < state.options.length; i++) {
@@ -93,6 +100,7 @@
                 });
             });
         });
+
         $(function () {
             $("#Position_PositionState").on("change", function () {
                 var projectId = $("#Position_ProjectId").val();

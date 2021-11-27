@@ -135,14 +135,22 @@ namespace ERPSystem.Pages.Departments
                 if (DepartmentToUpdate.DepartmentState == DepartmentState.Active)
                 {
                     foreach (var project in DepartmentToUpdate.Projects)
+                    {
+                        _context.Entry(project)
+                            .Reference(p => p.ProjectManager)
+                            .Load();
                         if (project.ProjectManager != null)
                         {
-                            _context.Employees.Load();
                             if (project.ProjectManager.EmployeeState == EmployeeState.Active)
                             {
                                 project.ProjectState = ProjectState.Active;
                             }
+                            else
+                                project.ProjectState = ProjectState.Inactive;
                         }
+                        else
+                            project.ProjectState = ProjectState.Inactive;
+                    }
                 }
                 else
                 {

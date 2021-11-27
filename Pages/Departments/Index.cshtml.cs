@@ -84,5 +84,37 @@ namespace ERPSystem.Pages.Departments
             Department = await PaginatedList<Department>.CreateAsync(
                 departmentsIQ.AsNoTracking(), pageIndex ?? 1, pageSize);
         }
+        public async Task<IActionResult> OnGetActivateAsync(string sortOrder,
+            string currentFilter, int? pageIndex)
+        {
+            foreach (var department in _context.Departments)
+            {
+                if (department.CompanyId != null)
+                {
+                    _context.Entry(department)
+                        .Reference(p => p.Company)
+                        .Load();
+                    if (department.Company.CompanyState == CompanyState.Active)
+                    {
+                        _context.Entry(department)
+                        .Reference(p => p.DepartmentHead)
+                        .Load();
+                        if (department.DepartmentHead != null)
+                        {
+                            if (department.DepartmentHead.EmployeeState == EmployeeState.Active)
+                                department.DepartmentState = DepartmentState.Active;
+                        }
+                    }
+                }
+            }
+            await _context.SaveChangesAsync();
+
+            return RedirectToPage("./Index", new
+            {
+                pageIndex = $"{pageIndex}",
+                sortOrder = $"{sortOrder}",
+                currentFilter = $"{currentFilter}"
+            });
+        }
     }
 }

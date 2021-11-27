@@ -174,39 +174,53 @@ namespace ERPSystem.Pages.Employees
                     case EmployeeRole.DepartmentHead:
                         if (Employee.DepartmentId != null)
                         {
-                            Department department = await _context.Departments.Include(d => d.DepartmentHead).FirstOrDefaultAsync(d => d.Id == Employee.DepartmentId);
-                            department.DepartmentState = DepartmentState.Active;
+                            Department department = await _context.Departments
+                                .Include(d => d.DepartmentHead)
+                                .Include(d => d.Company)
+                                .FirstOrDefaultAsync(d => d.Id == Employee.DepartmentId);
+                            if (department.Company.CompanyState == CompanyState.Active)
+                                department.DepartmentState = DepartmentState.Active;
+                            else
+                                department.DepartmentState = DepartmentState.Inactive;
                             if (department.DepartmentHead != null)
                             {
                                 department.DepartmentHead.DepartmentId = null;
                             }
+                            EmployeeToUpdate.DepartmentId = Employee.DepartmentId;
                         }
-                        EmployeeToUpdate.DepartmentId = Employee.DepartmentId;
                         UpdateMentors(SelectedMentors, EmployeeToUpdate);
                         break;
                     case EmployeeRole.GeneralManager:
                         if(Employee.CompanyId != null)
                         {
-                            Company company = await _context.Companies.Include(g => g.GeneralManager).FirstOrDefaultAsync(g => g.Id == Employee.CompanyId);
+                            Company company = await _context.Companies
+                                .Include(g => g.GeneralManager)
+                                .FirstOrDefaultAsync(g => g.Id == Employee.CompanyId);
                             company.CompanyState = CompanyState.Active;
                             if (company.GeneralManager != null)
                             {
                                 company.GeneralManager.CompanyId = null;
                             }
+                            EmployeeToUpdate.CompanyId = Employee.CompanyId;
                         }
-                        EmployeeToUpdate.CompanyId = Employee.CompanyId;
                         break;
                     case EmployeeRole.ProjectManager:
                         if(Employee.ProjectId != null)
                         {
-                            Project project = await _context.Projects.Include(p => p.ProjectManager).FirstOrDefaultAsync(p => p.Id == Employee.ProjectId);
-                            project.ProjectState = ProjectState.Active;
-                            if(project.ProjectManager != null)
+                            Project project = await _context.Projects
+                                .Include(p => p.ProjectManager)
+                                .Include(p => p.Department)
+                                .FirstOrDefaultAsync(p => p.Id == Employee.ProjectId);
+                            if (project.Department.DepartmentState == DepartmentState.Active)
+                                project.ProjectState = ProjectState.Active;
+                            else
+                                project.ProjectState = ProjectState.Active;
+                            if (project.ProjectManager != null)
                             {
                                 project.ProjectManager.ProjectId = null;
                             }
+                            EmployeeToUpdate.ProjectId = Employee.ProjectId;
                         }
-                        EmployeeToUpdate.ProjectId = Employee.ProjectId;
                         UpdateMentors(SelectedMentors, EmployeeToUpdate);
                         break;
                 }
