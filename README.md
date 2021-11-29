@@ -19,9 +19,6 @@ Entities Implemented:<br />
 - Project
 - Position
 - Assignment
-
-Entities WIP:<br />
-------------
 - Report
 
 ToDo List:<br />
