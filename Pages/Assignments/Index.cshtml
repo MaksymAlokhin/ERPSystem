@@ -43,27 +43,20 @@
                     @Html.DisplayNameFor(model => model.Assignment[0].Name)
                 </a>
             </th>
-            <th>
-                <a asp-page="./Index"
-                   asp-route-sortOrder="@Model.FTESort"
-                   asp-route-currentFilter="@Model.CurrentFilter">
-                    @Html.DisplayNameFor(model => model.Assignment[0].FTE)
-                </a>
-            </th>
-            <th>
-                <a asp-page="./Index"
-                   asp-route-sortOrder="@Model.StartDateSort"
-                   asp-route-currentFilter="@Model.CurrentFilter">
-                    @Html.DisplayNameFor(model => model.Assignment[0].StartDate)
-                </a>
-            </th>
-            <th>
-                <a asp-page="./Index"
-                   asp-route-sortOrder="@Model.EndDateSort"
-                   asp-route-currentFilter="@Model.CurrentFilter">
-                    @Html.DisplayNameFor(model => model.Assignment[0].EndDate)
-                </a>
-            </th>
+            @*<th>
+                    <a asp-page="./Index"
+                       asp-route-sortOrder="@Model.StartDateSort"
+                       asp-route-currentFilter="@Model.CurrentFilter">
+                        @Html.DisplayNameFor(model => model.Assignment[0].StartDate)
+                    </a>
+                </th>
+                <th>
+                    <a asp-page="./Index"
+                       asp-route-sortOrder="@Model.EndDateSort"
+                       asp-route-currentFilter="@Model.CurrentFilter">
+                        @Html.DisplayNameFor(model => model.Assignment[0].EndDate)
+                    </a>
+                </th>*@
             <th>
                 <a asp-page="./Index"
                    asp-route-sortOrder="@Model.PositionSort"
@@ -80,12 +73,19 @@
             </th>
             <th>
                 <a asp-page="./Index"
+                   asp-route-sortOrder="@Model.FTESort"
+                   asp-route-currentFilter="@Model.CurrentFilter">
+                    @Html.DisplayNameFor(model => model.Assignment[0].FTE)
+                </a>
+            </th>
+            <th>
+                <a asp-page="./Index"
                    asp-route-sortOrder="@Model.StateSort"
                    asp-route-currentFilter="@Model.CurrentFilter">
                     @Html.DisplayNameFor(model => model.Assignment[0].AssignmentState)
                 </a>
             </th>
-            <th></th>
+            <th></th><th></th>
         </tr>
     </thead>
     <tbody>
@@ -100,15 +100,12 @@
                     <td>
                         @Html.DisplayFor(modelItem => item.Name)
                     </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.FTE)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.StartDate)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.EndDate)
-                    </td>
+                    @*<td>
+                            @Html.DisplayFor(modelItem => item.StartDate)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.EndDate)
+                        </td>*@
                     <td>
                         @Html.DisplayFor(modelItem => item.Position.Name)
                     </td>
@@ -116,9 +113,17 @@
                         @Html.DisplayFor(modelItem => item.Employee.FullName)
                     </td>
                     <td>
+                        @Html.DisplayFor(modelItem => item.FTE)
+                    </td>
+                    <td>
                         @Html.DisplayFor(modelItem => item.AssignmentState)
                     </td>
                     <td>
+                        <a asp-page="../Reports/Create"
+                           asp-route-id="@item.Id"
+                           class="btn btn-outline-primary" role="button" aria-pressed="true">Report</a>
+                    </td>
+                    <td style="text-align: center">
                         <a asp-page="./Edit"
                            asp-route-id="@item.Id"
                            asp-route-pageIndex="@Model.Assignment.PageIndex"

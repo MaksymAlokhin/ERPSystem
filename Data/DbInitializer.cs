@@ -41,6 +41,10 @@ namespace ERPSystem.Data
             {
                 context.AddRange(SeedAssignment.data);
             }
+            if (!context.Reports.Any())
+            {
+                context.AddRange(SeedReport.data);
+            }
             context.SaveChanges();
         }
     }

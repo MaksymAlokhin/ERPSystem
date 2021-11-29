@@ -131,6 +131,5 @@ namespace ERPSystem.Pages.Assignments
             }
             return new JsonResult(null);
         }
-
     }
 }

@@ -294,9 +294,7 @@ namespace ERPSystem.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("AssignmentId")
-                        .IsUnique()
-                        .HasFilter("[AssignmentId] IS NOT NULL");
+                    b.HasIndex("AssignmentId");
 
                     b.ToTable("Reports");
                 });
@@ -586,8 +584,8 @@ namespace ERPSystem.Migrations
             modelBuilder.Entity("ERPSystem.Models.Report", b =>
                 {
                     b.HasOne("ERPSystem.Models.Assignment", "Assignment")
-                        .WithOne("Report")
-                        .HasForeignKey("ERPSystem.Models.Report", "AssignmentId");
+                        .WithMany("Reports")
+                        .HasForeignKey("AssignmentId");
 
                     b.Navigation("Assignment");
                 });
@@ -645,7 +643,7 @@ namespace ERPSystem.Migrations
 
             modelBuilder.Entity("ERPSystem.Models.Assignment", b =>
                 {
-                    b.Navigation("Report");
+                    b.Navigation("Reports");
                 });
 
             modelBuilder.Entity("ERPSystem.Models.Branch", b =>
