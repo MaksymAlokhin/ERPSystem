@@ -35,7 +35,7 @@
             @Html.DisplayNameFor(model => model.Project.ProjectManager)
         </dt>
         <dd class="col-sm-10">
-            @if (@Model.Project.ProjectManager != null)
+            @if (Model.Project.ProjectManager != null)
             {
                 <a asp-page="../Employees/Edit"
                    asp-route-id="@Model.Project.ProjectManager.Id">
@@ -57,7 +57,7 @@
             @Html.DisplayNameFor(model => model.Project.Department)
         </dt>
         <dd class="col-sm-10">
-            @if (@Model.Project.Department != null)
+            @if (Model.Project.Department != null)
             {
                 <a asp-page="../Departments/Edit"
                    asp-route-id="@Model.Project.Department.Id">

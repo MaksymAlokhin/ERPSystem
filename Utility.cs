@@ -1,4 +1,5 @@
 ﻿using ERPSystem.Models;
+using ERPSystem.Pages.Reports;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
@@ -23,6 +24,42 @@ namespace ERPSystem
             var range = Convert.ToInt32(endDate.Subtract(startDate).TotalDays);
             return startDate.AddDays(random.Next(range));
         }
+        public static double GetBusinessDays(DateTime startD, DateTime endD)
+        {
+            double calcBusinessDays =
+                1 + ((endD - startD).TotalDays * 5 -
+                (startD.DayOfWeek - endD.DayOfWeek) * 2) / 7;
+
+            if (endD.DayOfWeek == DayOfWeek.Saturday) calcBusinessDays--;
+            if (startD.DayOfWeek == DayOfWeek.Sunday) calcBusinessDays--;
+
+            return calcBusinessDays;
+        }
+        public async Task<ReportData> GetHours(DateTime date, int assignmentId)
+        {
+            Assignment assignment = await _context.Assignments.FindAsync(assignmentId);
+            if (assignment != null)
+            {
+                if (assignment.StartDate > date)
+                    return null;
+                if (assignment.EndDate < date)
+                    return new ReportData
+                    {
+                        hours = GetBusinessDays(assignment.StartDate, assignment.EndDate) * 8,
+                        date = assignment.EndDate,
+                        min = assignment.StartDate,
+                        max = assignment.EndDate
+                    };
+                return new ReportData
+                {
+                    hours = GetBusinessDays(assignment.StartDate, date) * 8,
+                    date = date,
+                    min = assignment.StartDate,
+                    max = assignment.EndDate
+                };
+            }
+            return null;
+        }
         public void UpdateDepartmentsState()
         {
             foreach (var department in _context.Departments)
@@ -32,7 +69,7 @@ namespace ERPSystem
             }
             foreach (var company in _context.Companies)
             {
-                if (company.CompanyState == CompanyState.Inactive 
+                if (company.CompanyState == CompanyState.Inactive
                     || company.CompanyState == CompanyState.Draft)
                 {
                     if (company.Departments != null)
@@ -54,7 +91,7 @@ namespace ERPSystem
             }
             foreach (var department in _context.Departments)
             {
-                if (department.DepartmentState == DepartmentState.Inactive 
+                if (department.DepartmentState == DepartmentState.Inactive
                     || department.DepartmentState == DepartmentState.Draft)
                 {
                     if (department.Projects != null)

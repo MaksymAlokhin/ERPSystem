@@ -32,11 +32,11 @@ namespace ERPSystem.Models
         public AssignmentState AssignmentState { get; set; }
 
         //Navigation properties
-        public Report Report { get; set; }
         public int? PositionId { get; set; }
         public Position Position { get; set; }
         public int? EmployeeId { get; set; }
         public Employee Employee { get; set; }
+        public ICollection<Report> Reports { get; set; }
     }
     public enum AssignmentState
     {

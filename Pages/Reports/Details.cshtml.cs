@@ -13,6 +13,9 @@ namespace ERPSystem.Pages.Reports
     public class DetailsModel : PageModel
     {
         private readonly ERPSystem.Data.ApplicationDbContext _context;
+        public int? PageIndex { get; set; }
+        public string CurrentFilter { get; set; }
+        public string CurrentSort { get; set; }
 
         public DetailsModel(ERPSystem.Data.ApplicationDbContext context)
         {
@@ -21,15 +24,22 @@ namespace ERPSystem.Pages.Reports
 
         public Report Report { get; set; }
 
-        public async Task<IActionResult> OnGetAsync(int? id)
+        public async Task<IActionResult> OnGetAsync(string sortOrder,
+            string currentFilter, int? pageIndex, int? id)
         {
+            PageIndex = pageIndex;
+            CurrentSort = sortOrder;
+            CurrentFilter = currentFilter;
+
             if (id == null)
             {
                 return NotFound();
             }
 
             Report = await _context.Reports
-                .Include(r => r.Assignment).FirstOrDefaultAsync(m => m.Id == id);
+                .Include(r => r.Assignment)
+                .ThenInclude(r => r.Employee)
+                .FirstOrDefaultAsync(m => m.Id == id);
 
             if (Report == null)
             {

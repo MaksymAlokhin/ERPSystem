@@ -56,7 +56,11 @@ namespace ERPSystem.Pages.Assignments
                 return NotFound();
             }
 
-            Assignment = await _context.Assignments.FindAsync(id);
+            Assignment = await _context.Assignments
+                .Include(a => a.Employee)
+                .Include(a => a.Position)
+                .Include(a => a.Reports)
+                .FirstOrDefaultAsync(a => a.Id == id);
 
             if (Assignment != null)
             {

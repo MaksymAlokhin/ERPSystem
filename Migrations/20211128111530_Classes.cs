@@ -463,9 +463,7 @@ namespace ERPSystem.Migrations
             migrationBuilder.CreateIndex(
                 name: "IX_Reports_AssignmentId",
                 table: "Reports",
-                column: "AssignmentId",
-                unique: true,
-                filter: "[AssignmentId] IS NOT NULL");
+                column: "AssignmentId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
