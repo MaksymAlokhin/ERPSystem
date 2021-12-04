@@ -73,19 +73,12 @@ namespace ERPSystem.Pages.Branches
 
             if (Branch != null)
             {
-                if (Branch.Employees != null)
-                {
-                    foreach (var employee in Branch.Employees)
-                    {
-                        if (employee.EmployeeRole == EmployeeRole.Employee
-                            || employee.EmployeeRole == EmployeeRole.Mentor)
-                            employee.EmployeeState = EmployeeState.Inactive;
-                    }
-                }
-
                 _context.Branches.Remove(Branch);
                 await _context.SaveChangesAsync();
             }
+
+            Utility utility = new Utility(_context);
+            utility.UpdateWhenParentIsNull();
 
             return RedirectToPage("./Index", new
             {

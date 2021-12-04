@@ -40,20 +40,26 @@
             @Html.DisplayNameFor(model => model.Assignment.Position)
         </dt>
         <dd class="col-sm-10">
-            <a asp-page="../Positions/Edit"
-               asp-route-id="@Model.Assignment.PositionId">
-                @Html.DisplayFor(model => model.Assignment.Position.Name)
-            </a>
+            @if (Model.Assignment.Position != null)
+            {
+                <a asp-page="../Positions/Details"
+                   asp-route-id="@Model.Assignment.PositionId">
+                    @Html.DisplayFor(model => model.Assignment.Position.Name)
+                </a>
+            }
         </dd>
         <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.Assignment.Employee)
         </dt>
         <dd class="col-sm-10">
-            <a asp-page="../Employees/Edit"
-               asp-route-id="@Model.Assignment.EmployeeId"
-               asp-route-Role="Employee">
-                @Html.DisplayFor(model => model.Assignment.Employee.FullName)
-            </a>
+            @if (Model.Assignment.Employee != null)
+            {
+                <a asp-page="../Employees/Details"
+                   asp-route-id="@Model.Assignment.EmployeeId"
+                   asp-route-Role="Employee">
+                    @Html.DisplayFor(model => model.Assignment.Employee.FullName)
+                </a>
+            }
         </dd>
         <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.Assignment.AssignmentState)

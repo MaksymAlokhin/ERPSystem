@@ -19,11 +19,11 @@ namespace ERPSystem.Pages.Companies
         public string CurrentSort { get; set; }
         public List<SelectListItem> GeneralManagerList { get; set; }
         public int? GeneralManagerId;
-        public int? FormerGeneralManagerId;
         public List<int> SelectedBranches { get; set; }
         public SelectList BranchesSelectList { get; set; }
         public List<int> SelectedDepartments { get; set; }
         public SelectList DepartmentsSelectList { get; set; }
+        List<int> CompaniesWithModifiedState { get; set; }
         public EditModel(ERPSystem.Data.ApplicationDbContext context)
         {
             _context = context;
@@ -62,10 +62,9 @@ namespace ERPSystem.Pages.Companies
             {
                 GeneralManagerList.Add(new SelectListItem { Value = $"{gm.Id}", Text = $"{gm.FullName}" });
             }
+
             if (Company.GeneralManager != null)
-            {
-                GeneralManagerId = FormerGeneralManagerId = Company.GeneralManager.Id;
-            }
+                GeneralManagerId = Company.GeneralManager.Id;
 
             var BranchesQuery = _context.Branches.OrderBy(b => b.Name).AsNoTracking();
             BranchesSelectList = new SelectList(BranchesQuery, "Id", "Name"); //list, id, value
@@ -87,9 +86,11 @@ namespace ERPSystem.Pages.Companies
 
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see https://aka.ms/RazorPagesCRUD.
-        public async Task<IActionResult> OnPostAsync(int? id, int? GeneralManagerId, int? FormerGeneralManagerId, string sortOrder,
+        public async Task<IActionResult> OnPostAsync(int? id, int? GeneralManagerId, string sortOrder,
             string currentFilter, int? pageIndex, int[] SelectedBranches, int[] SelectedDepartments)
         {
+            CompaniesWithModifiedState = new List<int>();
+
             if (!ModelState.IsValid)
             {
                 return Page();
@@ -101,66 +102,45 @@ namespace ERPSystem.Pages.Companies
                 .Include(b => b.Branches)
                 .FirstOrDefaultAsync(m => m.Id == id);
 
-            if (await TryUpdateModelAsync<Company>(
-                            CompanyToUpdate,
-                            "Company",
-                            c => c.Name, c => c.CompanyState))
+            CompanyState InitialCompanyState = CompanyToUpdate.CompanyState;
+
+            if (await TryUpdateModelAsync<Company>(CompanyToUpdate, "Company", c => c.Name, c => c.CompanyState))
             {
                 Employee gm = await _context.Employees.FindAsync(GeneralManagerId);
 
                 if (gm != null)
                 {
-                    if (gm.Id != FormerGeneralManagerId && gm.CompanyId != null)
+                    if (gm.CompanyId != null)
                     {
-                        var oldCompany = await _context.Companies.FindAsync(gm.CompanyId);
-                        oldCompany.CompanyState = CompanyState.Inactive;
+                        if (gm.CompanyId != id) //We stole GM from other company
+                        {
+                            var oldCompany = await _context.Companies.FindAsync(gm.CompanyId);
+                            if (oldCompany.CompanyState != CompanyState.Inactive)
+                            {
+                                oldCompany.CompanyState = CompanyState.Inactive;
+                                CompaniesWithModifiedState.Add(oldCompany.Id);
+                            }
+                        }
                     }
-                    gm.CompanyId = Company.Id;
+                    gm.CompanyId = id;
                 }
                 else
                 {
-                    if (FormerGeneralManagerId != null)
+                    if (CompanyToUpdate.GeneralManager != null) //We removed GM
                     {
                         Employee formerGm = await _context.Employees
-                            .Where(e => e.EmployeeRole == EmployeeRole.GeneralManager && e.Id == FormerGeneralManagerId)
+                            .Where(e => e.EmployeeRole == EmployeeRole.GeneralManager
+                            && e.Id == CompanyToUpdate.GeneralManager.Id)
                             .FirstOrDefaultAsync();
                         formerGm.CompanyId = null;
                     }
-                    CompanyToUpdate.CompanyState = CompanyState.Inactive;
                 }
+
+                if (CompanyToUpdate.CompanyState != InitialCompanyState)
+                    CompaniesWithModifiedState.Add(CompanyToUpdate.Id);
 
                 UpdateDepartments(SelectedDepartments, CompanyToUpdate);
                 UpdateBrances(SelectedBranches, CompanyToUpdate);
-
-                if (CompanyToUpdate.CompanyState == CompanyState.Active)
-                {
-                    foreach (var department in CompanyToUpdate.Departments)
-                    {
-                        _context.Entry(department)
-                            .Reference(d => d.DepartmentHead)
-                            .Load();
-                        if (department.DepartmentHead != null)
-                        {
-                            if (department.DepartmentHead.EmployeeState == EmployeeState.Active)
-                            {
-                                department.DepartmentState = DepartmentState.Active;
-                            }
-                            else
-                                department.DepartmentState = DepartmentState.Inactive;
-                        }
-                        else
-                            department.DepartmentState = DepartmentState.Inactive;
-                    }
-                    foreach (var branch in CompanyToUpdate.Branches)
-                        branch.BranchState = BranchState.Active;
-                }
-                else
-                {
-                    foreach (var department in CompanyToUpdate.Departments)
-                        department.DepartmentState = DepartmentState.Inactive;
-                    foreach (var branch in CompanyToUpdate.Branches)
-                        branch.BranchState = BranchState.Inactive;
-                }
             }
 
             try
@@ -180,9 +160,8 @@ namespace ERPSystem.Pages.Companies
             }
 
             Utility utility = new Utility(_context);
-            utility.UpdateProjectsState();
-            utility.UpdatePositionsState();
-            utility.UpdateAssignmentsState();
+            utility.UpdateCompanyDependants(CompaniesWithModifiedState);
+            utility.UpdateWhenParentIsNull();
 
             return RedirectToPage("./Index", new
             {
@@ -217,6 +196,8 @@ namespace ERPSystem.Pages.Companies
                         if (!CompanyDepartmentsHS.Contains(department.Id))
                         {
                             Company.Departments.Add(department);
+                            if (!CompaniesWithModifiedState.Contains(Company.Id))
+                                CompaniesWithModifiedState.Add(Company.Id);
                         }
                     }
                     //If items are not selected
@@ -227,7 +208,8 @@ namespace ERPSystem.Pages.Companies
                         {
                             var toRemove = Company.Departments.Single(s => s.Id == department.Id);
                             Company.Departments.Remove(toRemove);
-                            toRemove.DepartmentState = DepartmentState.Inactive;
+                            if (!CompaniesWithModifiedState.Contains(Company.Id))
+                                CompaniesWithModifiedState.Add(Company.Id);
                         }
                     }
                 }
@@ -254,6 +236,8 @@ namespace ERPSystem.Pages.Companies
                         if (!CompanyBranchesHS.Contains(branch.Id))
                         {
                             Company.Branches.Add(branch);
+                            if (!CompaniesWithModifiedState.Contains(Company.Id))
+                                CompaniesWithModifiedState.Add(Company.Id);
                         }
                     }
                     //If items are not selected
@@ -264,7 +248,6 @@ namespace ERPSystem.Pages.Companies
                         {
                             var toRemove = Company.Branches.Single(s => s.Id == branch.Id);
                             Company.Branches.Remove(toRemove);
-                            toRemove.BranchState = BranchState.Inactive;
                         }
                     }
                 }

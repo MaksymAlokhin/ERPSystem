@@ -37,14 +37,10 @@
         <dd class="col-sm-10">
             @if (Model.Project.ProjectManager != null)
             {
-                <a asp-page="../Employees/Edit"
+                <a asp-page="../Employees/Details"
                    asp-route-id="@Model.Project.ProjectManager.Id">
                     @Html.DisplayFor(model => model.Project.ProjectManager.FullName)
                 </a>
-            }
-            else
-            {
-                @Html.DisplayFor(model => model.Project.ProjectManager.FullName)
             }
         </dd>
         <dt class="col-sm-2">
@@ -59,14 +55,10 @@
         <dd class="col-sm-10">
             @if (Model.Project.Department != null)
             {
-                <a asp-page="../Departments/Edit"
+                <a asp-page="../Departments/Details"
                    asp-route-id="@Model.Project.Department.Id">
                     @Html.DisplayFor(model => model.Project.Department.Name)
                 </a>
-            }
-            else
-            {
-                @Html.DisplayFor(model => model.Project.Department.Name)
             }
         </dd>
         @if (Model.Project.Positions.Any())
@@ -89,7 +81,7 @@
                                 <tr>
                                     <td style="text-align: center">@i</td>
                                     <td>
-                                        <a asp-page="../Positions/Edit" asp-route-id="@item.Id">
+                                        <a asp-page="../Positions/Details" asp-route-id="@item.Id">
                                             @Html.DisplayFor(modelItem => item.Name)
                                         </a>
                                     </td>

@@ -65,6 +65,8 @@ namespace ERPSystem.Pages.Departments
         public async Task<IActionResult> OnPostAsync(string sortOrder,
             string currentFilter, int? pageIndex, int? DepartmentHeadId, int[] SelectedProjects)
         {
+            List<int> DepartmentsWithModifiedState = new List<int>();
+
             if (!ModelState.IsValid)
             {
                 return Page();
@@ -72,66 +74,45 @@ namespace ERPSystem.Pages.Departments
 
             var NewDepartment = new Department();
 
-            if (await TryUpdateModelAsync<Department>(
-                    NewDepartment,
-                    "Department",
+            if (await TryUpdateModelAsync<Department>(NewDepartment, "Department",
                     d => d.Name, d => d.DepartmentState, d => d.CompanyId))
             {
                 if (DepartmentHeadId != null)
                 {
                     Employee dh = await _context.Employees
-                        .Where(e => e.EmployeeRole == EmployeeRole.DepartmentHead && e.Id == DepartmentHeadId)
+                        .Where(e => e.EmployeeRole == EmployeeRole.DepartmentHead 
+                        && e.Id == DepartmentHeadId)
                         .FirstOrDefaultAsync();
                     if (dh.DepartmentId != null)
                     {
                         var oldDepartment = await _context.Departments.FindAsync(dh.DepartmentId);
-                        oldDepartment.DepartmentState = DepartmentState.Inactive;
+                        if (oldDepartment.DepartmentState != DepartmentState.Inactive)
+                        {
+                            oldDepartment.DepartmentState = DepartmentState.Inactive;
+                            DepartmentsWithModifiedState.Add(oldDepartment.Id);
+                        }
                     }
                     dh.DepartmentId = null;
                     NewDepartment.DepartmentHead = dh;
-                }
-                else
-                {
-                    NewDepartment.DepartmentState = DepartmentState.Inactive;
                 }
 
                 if (SelectedProjects.Length > 0)
                 {
                     NewDepartment.Projects = new List<Project>();
                 }
-
                 foreach (var project in SelectedProjects)
                 {
                     var foundProject = await _context.Projects.FindAsync(project);
                     if (foundProject != null)
-                    {
                         NewDepartment.Projects.Add(foundProject);
-                        if (NewDepartment.DepartmentState == DepartmentState.Active)
-                        {
-                            _context.Entry(foundProject)
-                                .Reference(p => p.ProjectManager)
-                                .Load();
-                            if (foundProject.ProjectManager != null)
-                            {
-                                if (foundProject.ProjectManager.EmployeeState == EmployeeState.Active)
-                                {
-                                    foundProject.ProjectState = ProjectState.Active;
-                                }
-                                else
-                                    foundProject.ProjectState = ProjectState.Inactive;
-                            }
-                            else
-                                foundProject.ProjectState = ProjectState.Inactive;
-                        }
-                    }
                 }
 
                 _context.Departments.Add(NewDepartment);
                 await _context.SaveChangesAsync();
 
+                DepartmentsWithModifiedState.Add(NewDepartment.Id);
                 Utility utility = new Utility(_context);
-                utility.UpdatePositionsState();
-                utility.UpdateAssignmentsState();
+                utility.UpdateDepartmentDependants(DepartmentsWithModifiedState);
 
                 return RedirectToPage("./Index", new
                 {

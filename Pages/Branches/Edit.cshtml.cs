@@ -20,6 +20,7 @@ namespace ERPSystem.Pages.Branches
         public List<int> SelectedEmployees { get; set; }
         public SelectList EmployeesSelectList { get; set; }
         public SelectList CompaniesSelectList { get; set; }
+        List<int> BranchesWithModifiedState { get; set; }
         public EditModel(ERPSystem.Data.ApplicationDbContext context)
         {
             _context = context;
@@ -41,20 +42,20 @@ namespace ERPSystem.Pages.Branches
             }
 
             var EmployeesQuery = _context.Employees
-                .Where(e => e.EmployeeRole == EmployeeRole.Employee 
+                .Where(e => e.EmployeeRole == EmployeeRole.Employee
                         || e.EmployeeRole == EmployeeRole.Mentor)
                 .OrderBy(e => e.LastName)
                 .ThenBy(e => e.FirstName)
                 .AsNoTracking();
 
             EmployeesSelectList = new SelectList(EmployeesQuery, "Id", "FullName"); //list, id, value
-           
+
             Branch = await _context.Branches
                 .Include(b => b.Company)
                 .Include(b => b.Employees)
                 .AsNoTracking()
                 .FirstOrDefaultAsync(m => m.Id == id);
-            
+
             if (Branch == null)
             {
                 return NotFound();
@@ -76,6 +77,8 @@ namespace ERPSystem.Pages.Branches
         public async Task<IActionResult> OnPostAsync(int? id, string sortOrder,
             string currentFilter, int? pageIndex, int[] SelectedEmployees)
         {
+            BranchesWithModifiedState = new List<int>();
+
             if (!ModelState.IsValid)
             {
                 return Page();
@@ -86,22 +89,15 @@ namespace ERPSystem.Pages.Branches
                 .Include(e => e.Employees)
                 .FirstOrDefaultAsync(m => m.Id == id);
 
-                if (await TryUpdateModelAsync<Branch>(
-                BranchToUpdate,
-                "Branch",
+            BranchState InitialBranchState = BranchToUpdate.BranchState;
+
+            if (await TryUpdateModelAsync<Branch>(BranchToUpdate, "Branch",
                 b => b.Name, b => b.BranchState, b => b.CompanyId))
             {
-                UpdateProjects(SelectedEmployees, BranchToUpdate);
-
-                if (BranchToUpdate.BranchState == BranchState.Active)
+                UpdateEmployees(SelectedEmployees, BranchToUpdate);
+                if (BranchToUpdate.BranchState != InitialBranchState)
                 {
-                    foreach (var employee in BranchToUpdate.Employees)
-                        employee.EmployeeState = EmployeeState.Active;
-                }
-                else
-                {
-                    foreach (var employee in BranchToUpdate.Employees)
-                        employee.EmployeeState = EmployeeState.Inactive;
+                    BranchesWithModifiedState.Add(BranchToUpdate.Id);
                 }
             }
 
@@ -121,6 +117,10 @@ namespace ERPSystem.Pages.Branches
                 }
             }
 
+            Utility utility = new Utility(_context);
+            utility.UpdateBranchDependants(BranchesWithModifiedState);
+            utility.UpdateWhenParentIsNull();
+
             return RedirectToPage("./Index", new
             {
                 pageIndex = $"{pageIndex}",
@@ -133,7 +133,7 @@ namespace ERPSystem.Pages.Branches
         {
             return _context.Branches.Any(e => e.Id == id);
         }
-        private void UpdateProjects(int[] SelectedEmployees, Branch Branch)
+        private void UpdateEmployees(int[] SelectedEmployees, Branch Branch)
         {
             {
                 if (SelectedEmployees.Length == 0)
@@ -154,6 +154,8 @@ namespace ERPSystem.Pages.Branches
                         if (!BranchEmployeesHS.Contains(employee.Id))
                         {
                             Branch.Employees.Add(employee);
+                            if (!BranchesWithModifiedState.Contains(Branch.Id))
+                                BranchesWithModifiedState.Add(Branch.Id);
                         }
                     }
                     //If items are not selected
@@ -164,7 +166,6 @@ namespace ERPSystem.Pages.Branches
                         {
                             var toRemove = Branch.Employees.Single(s => s.Id == employee.Id);
                             Branch.Employees.Remove(toRemove);
-                            toRemove.EmployeeState = EmployeeState.Inactive;
                         }
                     }
                 }

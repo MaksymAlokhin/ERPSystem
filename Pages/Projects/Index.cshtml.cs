@@ -116,6 +116,7 @@ namespace ERPSystem.Pages.Projects
             Project = await PaginatedList<Project>.CreateAsync(
                 projectsIQ.AsNoTracking(), pageIndex ?? 1, pageSize);
         }
+        //Method to debug states
         public async Task<IActionResult> OnGetActivateAsync(string sortOrder,
             string currentFilter, int? pageIndex)
         {

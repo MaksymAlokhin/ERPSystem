@@ -23,13 +23,14 @@
             </div>
         </form>
     </div>
-    <div class="col-sm-auto">
+    @*<div class="col-sm-auto">
         <a asp-page-handler="Activate"
            asp-route-pageIndex="@Model.Assignment.PageIndex"
            asp-route-sortOrder="@Model.CurrentSort"
            asp-route-currentFilter="@Model.CurrentFilter"
-           class="btn btn-outline-primary" role="button" aria-pressed="true">Activate</a>
-    </div>
+           class="btn btn-outline-primary" role="button" aria-pressed="true">Activate
+        </a>
+    </div>*@
 </div>
 
 <table class="table table-responsive text-nowrap table-hover">
@@ -119,9 +120,12 @@
                         @Html.DisplayFor(modelItem => item.AssignmentState)
                     </td>
                     <td>
+                        @{
+                            var disabled = item.AssignmentState != Models.AssignmentState.Active ? "disabled btn-light" : "btn-outline-primary";
+                        }
                         <a asp-page="../Reports/Create"
                            asp-route-id="@item.Id"
-                           class="btn btn-outline-primary" role="button" aria-pressed="true">Report</a>
+                           class="btn @disabled" role="button" aria-pressed="true">Report</a>
                     </td>
                     <td style="text-align: center">
                         <a asp-page="./Edit"

@@ -14,13 +14,13 @@ namespace ERPSystem.Models
         [Required]
         [Display(Name = "First Name")]
         [StringLength(50, ErrorMessage = "The {0} must be at max {1} characters long.")]
-        [RegularExpression(@"^[A-Z]+[a-zA-Z-. ]*$")]
+        [RegularExpression(@"^[A-Z][a-zA-Z-.' ]*$")]
         public string FirstName { get; set; }
 
         [Required]
         [Display(Name = "Last Name")]
         [StringLength(50, ErrorMessage = "The {0} must be at max {1} characters long.")]
-        [RegularExpression(@"^[A-Z]+[a-zA-Z-. ]*$")]
+        [RegularExpression(@"^[A-Z][a-zA-Z-.' ]*$")]
         public string LastName { get; set; }
 
         [Display(Name = "Name")]

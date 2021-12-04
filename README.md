@@ -2,7 +2,7 @@
 =========
 Demo App for Avenga<br />
 
-![Avenga](wwwroot/images/avenga-logo.png)<br /><br />
+![ERPSystem](wwwroot/images/avenga-erp-logo.png)<br /><br />
 
 Built With:<br />
 --------------------
@@ -10,7 +10,7 @@ Built With:<br />
 - Entity Framework Core 5
 - Razor Pages
 
-Entities Implemented:<br />
+Entities:<br />
 --------------------
 - Company
 - Department
@@ -24,11 +24,11 @@ Entities Implemented:<br />
 ToDo List:<br />
 ----------
 - Identity
+- Unit Tests
 
 Screenshots:<br />
 -----------
 ![CompanyIndex](Screenshots/CompanyIndex.png)<br /><br />
-![CompanyEdit](Screenshots/CompanyEdit.png)<br /><br />
 ![EmployeeIndex](Screenshots/EmployeeIndex.png)<br /><br />
-![EmployeeDetails](Screenshots/EmployeeDetails.png)<br /><br />
 ![EmployeeEdit](Screenshots/EmployeeEdit.png)<br /><br />
+![EmployeeDetails](Screenshots/DepartmentDetails.png)<br /><br />
