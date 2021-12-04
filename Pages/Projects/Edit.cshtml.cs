@@ -21,8 +21,7 @@ namespace ERPSystem.Pages.Projects
         public SelectList PositionsSelectList { get; set; }
         public List<SelectListItem> ProjectManagerList { get; set; }
         public int? ProjectManagerId;
-        public int? FormerProjectManagerId;
-
+        List<int> ProjectsWithModifiedState { get; set; }
         public EditModel(ERPSystem.Data.ApplicationDbContext context)
         {
             _context = context;
@@ -64,9 +63,7 @@ namespace ERPSystem.Pages.Projects
                 ProjectManagerList.Add(new SelectListItem { Value = $"{pm.Id}", Text = $"{pm.FullName}" });
             }
             if (Project.ProjectManager != null)
-            {
-                ProjectManagerId = FormerProjectManagerId = Project.ProjectManager.Id;
-            }
+                ProjectManagerId = Project.ProjectManager.Id;
 
             var PositionsQuery = _context.Positions.OrderBy(p => p.Name).AsNoTracking();
             PositionsSelectList = new SelectList(PositionsQuery, "Id", "Name"); //list, id, value
@@ -83,9 +80,11 @@ namespace ERPSystem.Pages.Projects
 
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see https://aka.ms/RazorPagesCRUD.
-        public async Task<IActionResult> OnPostAsync(int? id, int? ProjectManagerId, int? FormerProjectManagerId, 
+        public async Task<IActionResult> OnPostAsync(int? id, int? ProjectManagerId, 
             string sortOrder, string currentFilter, int? pageIndex, int[] SelectedPositions)
         {
+            ProjectsWithModifiedState = new List<int>();
+
             if (!ModelState.IsValid)
             {
                 return Page();
@@ -96,6 +95,10 @@ namespace ERPSystem.Pages.Projects
                 .Include(p => p.ProjectManager)
                 .Include(p => p.Positions)
                 .FirstOrDefaultAsync(m => m.Id == id);
+
+            ProjectState InitialProjectState = ProjectToUpdate.ProjectState;
+
+            UpdatePositions(SelectedPositions, ProjectToUpdate);
 
             if (await TryUpdateModelAsync<Project>(
                 ProjectToUpdate,
@@ -108,38 +111,34 @@ namespace ERPSystem.Pages.Projects
                 
                 if (pm != null)
                 {
-                    if (pm.Id != FormerProjectManagerId && pm.ProjectId != null)
+                    if (pm.ProjectId != null)
                     {
-                        var oldProject = await _context.Projects.FindAsync(pm.ProjectId);
-                        oldProject.ProjectState = ProjectState.Inactive;
+                        if (pm.ProjectId != id)
+                        {
+                            var oldProject = await _context.Projects.FindAsync(pm.ProjectId);
+                            if (oldProject.ProjectState != ProjectState.Inactive)
+                            {
+                                oldProject.ProjectState = ProjectState.Inactive;
+                                ProjectsWithModifiedState.Add(oldProject.Id);
+                            }
+                        }
                     }
-                    pm.ProjectId = Project.Id;
+                    pm.ProjectId = id;
                 }
                 else
                 {
-                    if (FormerProjectManagerId != null)
+                    if (ProjectToUpdate.ProjectManager != null)
                     {
                         Employee formerPm = await _context.Employees
-                                .Where(e => e.EmployeeRole == EmployeeRole.ProjectManager && e.Id == FormerProjectManagerId)
+                                .Where(e => e.EmployeeRole == EmployeeRole.ProjectManager 
+                                    && e.Id == ProjectToUpdate.ProjectManager.Id)
                                 .FirstOrDefaultAsync();
                         formerPm.ProjectId = null;
                     }
-                    ProjectToUpdate.ProjectState = ProjectState.Inactive;
                 }
 
-                UpdatePositions(SelectedPositions, ProjectToUpdate);
-
-                if (ProjectToUpdate.ProjectState == ProjectState.Active)
-                {
-                    foreach (var position in ProjectToUpdate.Positions)
-                        position.PositionState = PositionState.Active;
-                }
-                else
-                {
-                    foreach (var position in ProjectToUpdate.Positions)
-                        position.PositionState = PositionState.Inactive;
-                }
-
+                if (ProjectToUpdate.ProjectState != InitialProjectState)
+                    ProjectsWithModifiedState.Add(ProjectToUpdate.Id);
             }
 
             try
@@ -159,7 +158,8 @@ namespace ERPSystem.Pages.Projects
             }
 
             Utility utility = new Utility(_context);
-            utility.UpdateAssignmentsState();
+            utility.UpdateProjectDependants(ProjectsWithModifiedState);
+            utility.UpdateWhenParentIsNull();
 
             return RedirectToPage("./Index", new
             {
@@ -194,6 +194,8 @@ namespace ERPSystem.Pages.Projects
                         if (!ProjectPositionsHS.Contains(position.Id))
                         {
                             Project.Positions.Add(position);
+                            if (!ProjectsWithModifiedState.Contains(Project.Id))
+                                ProjectsWithModifiedState.Add(Project.Id);
                         }
                     }
                     //If items are not selected
@@ -204,7 +206,6 @@ namespace ERPSystem.Pages.Projects
                         {
                             var toRemove = Project.Positions.Single(s => s.Id == position.Id);
                             Project.Positions.Remove(toRemove);
-                            toRemove.PositionState = PositionState.Inactive;
                         }
                     }
                 }

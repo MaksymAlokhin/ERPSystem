@@ -80,7 +80,7 @@ namespace ERPSystem.Pages.Projects
             }
 
             Utility utility = new Utility(_context);
-            utility.UpdateAssignmentsState();
+            utility.UpdateWhenParentIsNull();
 
             return RedirectToPage("./Index", new
             {

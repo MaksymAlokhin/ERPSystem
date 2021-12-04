@@ -52,22 +52,66 @@
         <dd class="col-sm-10">
             @Html.DisplayFor(model => model.Employee.EmployeeRole)
         </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Employee.Branch)
-        </dt>
-        <dd class="col-sm-10">
-            @if (Model.Employee.Branch != null)
-            {
-                <a asp-page="../Branches/Edit"
-                   asp-route-id="@Model.Employee.Branch.Id">
-                    @Html.DisplayFor(model => model.Employee.Branch.Name)
-                </a>
-            }
-            else
-            {
-                @Html.DisplayFor(model => model.Employee.Branch.Name)
-            }
-        </dd>
+        @switch (@Model.Employee.EmployeeRole)
+        {
+            case Models.EmployeeRole.Employee:
+            case Models.EmployeeRole.Mentor:
+                <dt class="col-sm-2">
+                    @Html.DisplayNameFor(model => model.Employee.Branch)
+                </dt>
+                <dd class="col-sm-10">
+                    @if (Model.Employee.Branch != null)
+                    {
+                        <a asp-page="../Branches/Details"
+                           asp-route-id="@Model.Employee.Branch.Id">
+                            @Html.DisplayFor(model => model.Employee.Branch.Name)
+                        </a>
+                    }
+                </dd>
+                break;
+            case Models.EmployeeRole.GeneralManager:
+                <dt class="col-sm-2">
+                    @Html.DisplayNameFor(model => model.Employee.Company)
+                </dt>
+                <dd class="col-sm-10">
+                    @if (Model.Employee.Company != null)
+                    {
+                        <a asp-page="../Companies/Details"
+                           asp-route-id="@Model.Employee.Company.Id">
+                            @Html.DisplayFor(model => model.Employee.Company.Name)
+                        </a>
+                    }
+                </dd>
+                break;
+            case Models.EmployeeRole.ProjectManager:
+                <dt class="col-sm-2">
+                    @Html.DisplayNameFor(model => model.Employee.Project)
+                </dt>
+                <dd class="col-sm-10">
+                    @if (Model.Employee.Project != null)
+                    {
+                        <a asp-page="../Projects/Details"
+                           asp-route-id="@Model.Employee.Project.Id">
+                            @Html.DisplayFor(model => model.Employee.Project.Name)
+                        </a>
+                    }
+                </dd>
+                break;
+            case Models.EmployeeRole.DepartmentHead:
+                <dt class="col-sm-2">
+                    @Html.DisplayNameFor(model => model.Employee.Department)
+                </dt>
+                <dd class="col-sm-10">
+                    @if (Model.Employee.Department != null)
+                    {
+                        <a asp-page="../Departments/Details"
+                           asp-route-id="@Model.Employee.Department.Id">
+                            @Html.DisplayFor(model => model.Employee.Department.Name)
+                        </a>
+                    }
+                </dd>
+                break;
+        }
         @if (Model.Employee.Assignments.Any())
         {
             <dd class="col-sm-auto" style="overflow-y: auto; max-height: 400px;">
@@ -88,7 +132,7 @@
                                 <tr>
                                     <td style="text-align: center">@i</td>
                                     <td>
-                                        <a asp-page="../Assignments/Edit" asp-route-id="@item.Id">
+                                        <a asp-page="../Assignments/Details" asp-route-id="@item.Id">
                                             @Html.DisplayFor(modelItem => item.Name)
                                         </a>
                                     </td>
@@ -124,7 +168,7 @@
                                 <tr>
                                     <td style="text-align: center">@j</td>
                                     <td>
-                                        <a asp-page="./Edit" asp-route-id="@item.Id">
+                                        <a asp-page="./Details" asp-route-id="@item.Id">
                                             @Html.DisplayFor(modelItem => item.FullName)
                                         </a>
                                     </td>

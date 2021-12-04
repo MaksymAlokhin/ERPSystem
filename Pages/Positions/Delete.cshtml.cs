@@ -73,19 +73,12 @@ namespace ERPSystem.Pages.Positions
 
             if (Position != null)
             {
-                if (Position.Assignments != null)
-                {
-                    foreach (var assignment in Position.Assignments)
-                    {
-                        assignment.AssignmentState = AssignmentState.Inactive;
-                    }
-                }
-
                 _context.Positions.Remove(Position);
                 await _context.SaveChangesAsync();
             }
 
             Utility utility = new Utility(_context);
+            utility.UpdateWhenParentIsNull();
 
             return RedirectToPage("./Index", new
             {

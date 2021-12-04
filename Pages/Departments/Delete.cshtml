@@ -25,14 +25,10 @@
         <dd class="col-sm-10">
             @if (Model.Department.DepartmentHead != null)
             {
-                <a asp-page="../Employees/Edit"
+                <a asp-page="../Employees/Details"
                    asp-route-id="@Model.Department.DepartmentHead.Id">
                     @Html.DisplayFor(model => model.Department.DepartmentHead.FullName)
                 </a>
-            }
-            else
-            {
-                @Html.DisplayFor(model => model.Department.DepartmentHead.FullName)
             }
         </dd>
         <dt class="col-sm-2">
@@ -47,14 +43,10 @@
         <dd class="col-sm-10">
             @if (Model.Department.Company != null)
             {
-                <a asp-page="../Companies/Edit"
+                <a asp-page="../Companies/Details"
                    asp-route-id="@Model.Department.Company.Id">
                     @Html.DisplayFor(model => model.Department.Company.Name)
                 </a>
-            }
-            else
-            {
-                @Html.DisplayFor(model => model.Department.Company.Name)
             }
         </dd>
         @if (Model.ProjectsList.Any())
@@ -65,6 +57,7 @@
                         <tr>
                             <th class="col-sm-auto">#</th>
                             <th class="col-sm-auto">@Html.DisplayNameFor(model => model.Department.Projects.First().Name)</th>
+                            <th class="col-sm-auto">@Html.DisplayNameFor(model => model.Department.Projects.First().ProjectManager)</th>
                             <th class="col-sm-auto">@Html.DisplayNameFor(model => model.Department.Projects.First().StartDate)</th>
                             <th class="col-sm-auto">@Html.DisplayNameFor(model => model.Department.Projects.First().EndDate)</th>
                         </tr>
@@ -77,10 +70,19 @@
                                 <tr>
                                     <td style="text-align: center">@i</td>
                                     <td>
-                                        <a asp-page="../Projects/Edit"
+                                        <a asp-page="../Projects/Details"
                                            asp-route-id="@item.Id">
                                             @Html.DisplayFor(modelItem => item.Name)
                                         </a>
+                                    </td>
+                                    <td>
+                                        @if (item.ProjectManager != null)
+                                        {
+                                            <a asp-page="../Employees/Details"
+                                               asp-route-id="@item.ProjectManager.Id">
+                                                @Html.DisplayFor(modelItem => item.ProjectManager.FullName)
+                                            </a>
+                                        }
                                     </td>
                                     <td>@item.StartDate.ToString("yyyy-MM-dd")</td>
                                     <td>@item.EndDate.ToString("yyyy-MM-dd")</td>

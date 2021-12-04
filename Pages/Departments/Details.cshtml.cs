@@ -45,6 +45,7 @@ namespace ERPSystem.Pages.Departments
 
             ProjectsList = await _context.Projects
                 .Where(e => e.DepartmentId == id)
+                .Include(p => p.ProjectManager)
                 .OrderBy(e => e.Name)
                 .AsNoTracking()
                 .ToListAsync();

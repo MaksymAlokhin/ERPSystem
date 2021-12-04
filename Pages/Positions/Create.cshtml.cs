@@ -55,6 +55,8 @@ namespace ERPSystem.Pages.Positions
         public async Task<IActionResult> OnPostAsync(string sortOrder,
             string currentFilter, int? pageIndex, int[] SelectedAssignments)
         {
+            List<int> PositionsWithModifiedState = new List<int>();
+
             if (!ModelState.IsValid)
             {
                 return Page();
@@ -90,15 +92,17 @@ namespace ERPSystem.Pages.Positions
                     if (foundAssignment != null)
                     {
                         NewPosition.Assignments.Add(foundAssignment);
-                        if (NewPosition.PositionState == PositionState.Inactive)
-                            foundAssignment.AssignmentState = AssignmentState.Inactive;
-                        else
-                            foundAssignment.AssignmentState = AssignmentState.Active;
                     }
                 }
 
                 _context.Positions.Add(NewPosition);
                 await _context.SaveChangesAsync();
+
+                PositionsWithModifiedState.Add(NewPosition.Id);
+
+                Utility utility = new Utility(_context);
+                utility.UpdateProjectDependants(PositionsWithModifiedState);
+
 
                 return RedirectToPage("./Index", new
                 {

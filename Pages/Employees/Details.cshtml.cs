@@ -43,6 +43,8 @@ namespace ERPSystem.Pages.Employees
                 .Include(e => e.Assignments)
                 .Include(e => e.Mentors)
                 .Include(e => e.Project)
+                .Include(e => e.Company)
+                .Include(e => e.Department)
                 .AsNoTracking()
                 .FirstOrDefaultAsync(m => m.Id == id);
 

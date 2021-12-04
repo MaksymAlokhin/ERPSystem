@@ -46,6 +46,7 @@ namespace ERPSystem.Pages.Departments
 
             ProjectsList = await _context.Projects
                 .Where(e => e.DepartmentId == id)
+                .Include(p => p.ProjectManager)
                 .OrderBy(e => e.Name)
                 .AsNoTracking()
                 .ToListAsync();
@@ -73,21 +74,12 @@ namespace ERPSystem.Pages.Departments
 
             if (Department != null)
             {
-                if (Department.Projects != null)
-                {
-                    foreach (var project in Department.Projects)
-                    {
-                        project.ProjectState = ProjectState.Inactive;
-                    }
-                }
-
                 _context.Departments.Remove(Department);
                 await _context.SaveChangesAsync();
             }
 
             Utility utility = new Utility(_context);
-            utility.UpdatePositionsState();
-            utility.UpdateAssignmentsState();
+            utility.UpdateWhenParentIsNull();
 
             return RedirectToPage("./Index", new
             {

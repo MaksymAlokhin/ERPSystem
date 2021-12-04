@@ -138,7 +138,7 @@
                         }
                     }
                 });
-                $.getJSON(`?handler=Position&companyId=${positionId}`, function (response) {
+                $.getJSON(`?handler=Position&positionId=${positionId}`, function (response) {
                     if (response === "Inactive") {
                         for (var i = 0; i < state.options.length; i++) {
                             if (state.options[i].text === response) {

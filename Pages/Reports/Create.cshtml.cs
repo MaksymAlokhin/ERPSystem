@@ -79,7 +79,6 @@ namespace ERPSystem.Pages.Reports
                 Utility utility = new Utility(_context);
                 DateTime date = DateTime.Parse(inDate);
                 var result = await utility.GetHours(date, id);
-                //Hours = result.hours;
                 return new JsonResult(new 
                 { 
                     hours = result.hours.ToString(),

@@ -272,6 +272,104 @@
             x.style.display = "block";
         }
 
+        $(function () {
+            $("#Employee_BranchId").on("change", function () {
+                if ($("#Employee_EmployeeRole option:selected").text() === 'Employee' || $("#Employee_EmployeeRole option:selected").text() === 'Mentor') {
+                    var branchId = $(this).val();
+                    $.getJSON(`?handler=Branch&branchId=${branchId}`, function (response) {
+                        var state = document.getElementById('Employee_EmployeeState');
+                        for (var i = 0; i < state.options.length; i++) {
+                            if (state.options[i].text === response) {
+                                state.selectedIndex = i;
+                                break;
+                            }
+                        }
+                    });
+                }
+            });
+        });
+        $(function () {
+            $("#Employee_EmployeeState").on("change", function () {
+                if ($("#Employee_EmployeeRole option:selected").text() === 'Employee' || $("#Employee_EmployeeRole option:selected").text() === 'Mentor') {
+                    var branchId = $("#Employee_BranchId").val();
+                    $.getJSON(`?handler=Branch&branchId=${branchId}`, function (response) {
+                        if (response === "Inactive") {
+                            var state = document.getElementById('Employee_EmployeeState');
+                            for (var i = 0; i < state.options.length; i++) {
+                                if (state.options[i].text === response) {
+                                    state.selectedIndex = i;
+                                    break;
+                                }
+                            }
+                        }
+                    });
+                }
+            });
+        });
+        $(function () {
+            $("#Employee_EmployeeRole").on("change", function () {
+                var state = document.getElementById('Employee_EmployeeState');
+                if ($("#Employee_EmployeeRole option:selected").text() === 'General Manager' || $("#Employee_EmployeeRole option:selected").text() === 'Project Manager' || $("#Employee_EmployeeRole option:selected").text() === 'Department Head') {
+                    for (var i = 0; i < state.options.length; i++) {
+                        if (state.options[i].text === 'Active') {
+                            state.selectedIndex = i;
+                            break;
+                        }
+                    }
+                }
+                else {
+                    for (var i = 0; i < state.options.length; i++) {
+                        var branchId = $("#Employee_BranchId").val();
+                        $.getJSON(`?handler=Branch&branchId=${branchId}`, function (response) {
+                            if (response === "Inactive") {
+                                var state = document.getElementById('Employee_EmployeeState');
+                                for (var i = 0; i < state.options.length; i++) {
+                                    if (state.options[i].text === response) {
+                                        state.selectedIndex = i;
+                                        break;
+                                    }
+                                }
+                            }
+                        });
+                    }
+                }
+            });
+        });
+
+        $(function () {
+            $("#Employee_DepartmentId").on("change", function () {
+                var departmentId = $(this).val();
+                $("#SelectedMentors").empty();
+                $.getJSON(`?handler=Department&departmentId=${departmentId}`, (data) => {
+                    $.each(data, function (i, item) {
+                        $("#SelectedMentors").append(`<option value="${item.value}">${item.text}</option>`);
+                    });
+                });
+            });
+        });
+        $(function () {
+            $("#Employee_ProjectId").on("change", function () {
+                var projectId = $(this).val();
+                $("#SelectedMentors").empty();
+                $.getJSON(`?handler=Project&projectId=${projectId}`, (data) => {
+                    $.each(data, function (i, item) {
+                        $("#SelectedMentors").append(`<option value="${item.value}">${item.text}</option>`);
+                    });
+                });
+            });
+        });
+        $(function () {
+            $("#Employee_BranchId").on("change", function () {
+                var branchId = $(this).val();
+                $("#SelectedMentors").empty();
+                $.getJSON(`?handler=Branch&branchId=${branchId}`, (data) => {
+                    $.each(data, function (i, item) {
+                        $("#SelectedMentors").append(`<option value="${item.value}">${item.text}</option>`);
+                    });
+                });
+            });
+        });
+
         @* Display the filename of the selected photo *@
         $(".custom-file-input").on("change", function () {
             var fileName = $(this).val().split("\\").pop();

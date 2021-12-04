@@ -19,7 +19,7 @@
         <dd class="col-sm-10">
             @if (Model.Report.Assignment != null)
             {
-                <a asp-page="../Assignments/Edit"
+                <a asp-page="../Assignments/Details"
                    asp-route-id="@Model.Report.AssignmentId">
                     @Html.DisplayFor(model => model.Report.Assignment.Name)
                 </a>
@@ -35,7 +35,7 @@
         <dd class="col-sm-10">
             @if (Model.Report.Assignment != null && Model.Report.Assignment.Employee != null)
             {
-                <a asp-page="../Employees/Edit"
+                <a asp-page="../Employees/Details"
                    asp-route-id="@Model.Report.Assignment.EmployeeId">
                     @Html.DisplayFor(model => model.Report.Assignment.Employee.FullName)
                 </a>

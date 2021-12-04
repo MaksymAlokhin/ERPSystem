@@ -45,6 +45,7 @@ namespace ERPSystem.Pages.Companies
 
             DepartmentsList = await _context.Departments
                 .Where(e => e.CompanyId == id)
+                .Include(e => e.DepartmentHead)
                 .OrderBy(e => e.Name)
                 .AsNoTracking()
                 .ToListAsync();

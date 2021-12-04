@@ -17,6 +17,9 @@ namespace ERPSystem.Pages.Employees
         private readonly IConfiguration Configuration;
         public string NameSort { get; set; }
         public string BranchSort { get; set; }
+        public string CompanySort { get; set; }
+        public string DepartmentSort { get; set; }
+        public string ProjectSort { get; set; }
         public string StateSort { get; set; }
         public string AssignmentSort { get; set; }
         public string CurrentFilter { get; set; }
@@ -37,6 +40,9 @@ namespace ERPSystem.Pages.Employees
             CurrentSort = sortOrder;
             NameSort = String.IsNullOrEmpty(sortOrder) ? "name_desc" : "";
             BranchSort = sortOrder == "branch" ? "branch_desc" : "branch";
+            CompanySort = sortOrder == "company" ? "company_desc" : "company";
+            DepartmentSort = sortOrder == "department" ? "department_desc" : "department";
+            ProjectSort = sortOrder == "project" ? "project_desc" : "project";
             StateSort = sortOrder == "state" ? "state_desc" : "state";
             AssignmentSort = sortOrder == "assignment" ? "assignment_desc" : "assignment";
             if (searchString != null)
@@ -51,6 +57,9 @@ namespace ERPSystem.Pages.Employees
 
             IQueryable<Employee> employeesIQ = _context.Employees
                 .Include(e => e.Branch)
+                .Include(e => e.Company)
+                .Include(e => e.Department)
+                .Include(e => e.Project)
                 .Include(e => e.Assignments)
                 .Include(e => e.Mentors)
                 .Where(e => e.EmployeeRole == Role)
@@ -71,6 +80,24 @@ namespace ERPSystem.Pages.Employees
                     break;
                 case "branch_desc":
                     employeesIQ = employeesIQ.OrderByDescending(s => s.Branch.Name).ThenBy(s => s.LastName).ThenBy(s => s.FirstName);
+                    break;
+                case "company":
+                    employeesIQ = employeesIQ.OrderBy(s => s.Company.Name).ThenBy(s => s.LastName).ThenBy(s => s.FirstName); ;
+                    break;
+                case "company_desc":
+                    employeesIQ = employeesIQ.OrderByDescending(s => s.Company.Name).ThenBy(s => s.LastName).ThenBy(s => s.FirstName);
+                    break;
+                case "department":
+                    employeesIQ = employeesIQ.OrderBy(s => s.Department.Name).ThenBy(s => s.LastName).ThenBy(s => s.FirstName); ;
+                    break;
+                case "department_desc":
+                    employeesIQ = employeesIQ.OrderByDescending(s => s.Department.Name).ThenBy(s => s.LastName).ThenBy(s => s.FirstName);
+                    break;
+                case "project":
+                    employeesIQ = employeesIQ.OrderBy(s => s.Project.Name).ThenBy(s => s.LastName).ThenBy(s => s.FirstName); ;
+                    break;
+                case "project_desc":
+                    employeesIQ = employeesIQ.OrderByDescending(s => s.Project.Name).ThenBy(s => s.LastName).ThenBy(s => s.FirstName);
                     break;
                 case "state":
                     employeesIQ = employeesIQ.OrderBy(s => s.EmployeeState).ThenBy(s => s.LastName).ThenBy(s => s.FirstName); ;
@@ -93,5 +120,39 @@ namespace ERPSystem.Pages.Employees
             Employee = await PaginatedList<Employee>.CreateAsync(
                 employeesIQ.AsNoTracking(), pageIndex ?? 1, pageSize);
         }
+        //Method to debug states
+        public async Task<IActionResult> OnGetActivateAsync(string sortOrder,
+            string currentFilter, int? pageIndex)
+        {
+            foreach (Employee employee in _context.Employees)
+            {
+                if (employee.BranchId != null)
+                    {
+                    employee.EmployeeState = EmployeeState.Active;
+                }
+            }
+
+            foreach (var branch in _context.Branches)
+            {
+                if (branch.CompanyId != null)
+                {
+                    _context.Entry(branch)
+                        .Reference(b => b.Company)
+                        .Load();
+                    if (branch.Company.CompanyState == CompanyState.Active)
+                        branch.BranchState = BranchState.Active;
+                }
+            }
+            await _context.SaveChangesAsync();
+
+            return RedirectToPage("./Index", new
+            {
+                pageIndex = $"{pageIndex}",
+                sortOrder = $"{sortOrder}",
+                currentFilter = $"{currentFilter}",
+                Role = $"{Role}"
+            });
+        }
+
     }
 }

@@ -33,7 +33,7 @@ namespace ERPSystem.Pages.Employees
         public async Task<IActionResult> OnGetAsync(EmployeeRole Role, string sortOrder,
             string currentFilter, int? pageIndex, int? id)
         {
-            this.Role = Role; 
+            this.Role = Role;
             PageIndex = pageIndex;
             CurrentSort = sortOrder;
             CurrentFilter = currentFilter;
@@ -48,6 +48,8 @@ namespace ERPSystem.Pages.Employees
                 .Include(e => e.Assignments)
                 .Include(e => e.Mentors)
                 .Include(e => e.Project)
+                .Include(e => e.Company)
+                .Include(e => e.Department)
                 .AsNoTracking()
                 .FirstOrDefaultAsync(m => m.Id == id);
 
@@ -61,6 +63,10 @@ namespace ERPSystem.Pages.Employees
         public async Task<IActionResult> OnPostAsync(EmployeeRole Role, string sortOrder,
             string currentFilter, int? pageIndex, int? id)
         {
+            List<int> DepartmentsWithModifiedState = new List<int>();
+            List<int> CompaniesWithModifiedState = new List<int>();
+            List<int> ProjectsWithModifiedState = new List<int>();
+
             if (id == null)
             {
                 return NotFound();
@@ -73,17 +79,17 @@ namespace ERPSystem.Pages.Employees
                 .Include(e => e.Project)
                 .FirstOrDefaultAsync(m => m.Id == id);
 
-            //Delete photo file
-            //string uploadsFolder = Path.Combine(webHostEnvironment.WebRootPath, @"images/avatars"); //webHost adds 'wwwroot'
-            //var oldFile = Employee.ProfilePicture;
-            //var fileToDelete = string.Empty;
-            //if (!string.IsNullOrEmpty(oldFile))
-            //{
-            //    fileToDelete = Path.Combine(uploadsFolder, oldFile);
-            //}
-
             if (Employee != null)
             {
+                //Delete photo file
+                //string uploadsFolder = Path.Combine(webHostEnvironment.WebRootPath, @"images/avatars"); //webHost adds 'wwwroot'
+                //var oldFile = Employee.ProfilePicture;
+                //var fileToDelete = string.Empty;
+                //if (!string.IsNullOrEmpty(oldFile))
+                //{
+                //    fileToDelete = Path.Combine(uploadsFolder, oldFile);
+                //}
+
                 switch (Employee.EmployeeRole)
                 {
                     case EmployeeRole.DepartmentHead:
@@ -92,7 +98,14 @@ namespace ERPSystem.Pages.Employees
                             Department department = await _context.Departments
                                 .Include(d => d.DepartmentHead)
                                 .FirstOrDefaultAsync(d => d.Id == Employee.DepartmentId);
-                            department.DepartmentState = DepartmentState.Inactive;
+                            if (department != null)
+                            {
+                                if (department.DepartmentState != DepartmentState.Inactive)
+                                {
+                                    department.DepartmentState = DepartmentState.Inactive;
+                                    DepartmentsWithModifiedState.Add(department.Id);
+                                }
+                            }
                         }
                         break;
                     case EmployeeRole.GeneralManager:
@@ -101,7 +114,14 @@ namespace ERPSystem.Pages.Employees
                             Company company = await _context.Companies
                                 .Include(g => g.GeneralManager)
                                 .FirstOrDefaultAsync(g => g.Id == Employee.CompanyId);
-                            company.CompanyState = CompanyState.Inactive;
+                            if (company != null)
+                            {
+                                if (company.CompanyState != CompanyState.Inactive)
+                                {
+                                    company.CompanyState = CompanyState.Inactive;
+                                    CompaniesWithModifiedState.Add(company.Id);
+                                }
+                            }
                         }
                         break;
                     case EmployeeRole.ProjectManager:
@@ -110,16 +130,13 @@ namespace ERPSystem.Pages.Employees
                             Project project = await _context.Projects
                                 .Include(p => p.ProjectManager)
                                 .FirstOrDefaultAsync(p => p.Id == Employee.ProjectId);
-                            project.ProjectState = ProjectState.Inactive;
-                        }
-                        break;
-                    case EmployeeRole.Employee:
-                    case EmployeeRole.Mentor:
-                        if (Employee.Assignments != null)
-                        {
-                            foreach (Assignment assignment in Employee.Assignments)
+                            if (project != null)
                             {
-                                assignment.AssignmentState = AssignmentState.Inactive;
+                                if (project.ProjectState != ProjectState.Inactive)
+                                {
+                                    project.ProjectState = ProjectState.Inactive;
+                                    ProjectsWithModifiedState.Add(project.Id);
+                                }
                             }
                         }
                         break;
@@ -134,6 +151,13 @@ namespace ERPSystem.Pages.Employees
                 //    System.IO.File.Delete(fileToDelete);
                 //}
             }
+
+            Utility utility = new Utility(_context);
+            utility.UpdateCompanyDependants(CompaniesWithModifiedState);
+            utility.UpdateDepartmentDependants(DepartmentsWithModifiedState);
+            utility.UpdateProjectDependants(ProjectsWithModifiedState);
+            utility.UpdateWhenParentIsNull();
+
             return RedirectToPage("./Index", new
             {
                 pageIndex = $"{pageIndex}",

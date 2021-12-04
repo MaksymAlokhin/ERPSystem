@@ -63,6 +63,8 @@ namespace ERPSystem.Pages.Projects
         public async Task<IActionResult> OnPostAsync(string sortOrder,
             string currentFilter, int? pageIndex, int? ProjectManagerId, int[] SelectedPositions)
         {
+            List<int> ProjectsWithModifiedState = new List<int>();
+
             if (!ModelState.IsValid)
             {
                 return Page();
@@ -83,14 +85,14 @@ namespace ERPSystem.Pages.Projects
                     if (pm.ProjectId != null)
                     {
                         var oldProject = await _context.Projects.FindAsync(pm.ProjectId);
-                        oldProject.ProjectState = ProjectState.Inactive;
+                        if (oldProject.ProjectState != ProjectState.Inactive)
+                        {
+                            oldProject.ProjectState = ProjectState.Inactive;
+                            ProjectsWithModifiedState.Add(oldProject.Id);
+                        }
                     }
                     pm.ProjectId = null;
                     NewProject.ProjectManager = pm;
-                }
-                else
-                {
-                    NewProject.ProjectState = ProjectState.Inactive;
                 }
 
                 if (SelectedPositions.Length > 0)
@@ -104,18 +106,16 @@ namespace ERPSystem.Pages.Projects
                     if (foundPosition != null)
                     {
                         NewProject.Positions.Add(foundPosition);
-                        if (NewProject.ProjectState == ProjectState.Active)
-                            foundPosition.PositionState = PositionState.Active;
-                        else
-                            foundPosition.PositionState = PositionState.Inactive;
                     }
                 }
 
                 _context.Projects.Add(NewProject);
                 await _context.SaveChangesAsync();
 
+                ProjectsWithModifiedState.Add(NewProject.Id);
+
                 Utility utility = new Utility(_context);
-                utility.UpdateAssignmentsState();
+                utility.UpdateProjectDependants(ProjectsWithModifiedState);
 
                 return RedirectToPage("./Index", new
                 {

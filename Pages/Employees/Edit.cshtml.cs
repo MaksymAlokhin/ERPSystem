@@ -11,6 +11,7 @@ using ERPSystem.Models;
 using Microsoft.AspNetCore.Http;
 using System.IO;
 using Microsoft.AspNetCore.Hosting;
+using System.Text.Json;
 
 namespace ERPSystem.Pages.Employees
 {
@@ -22,7 +23,8 @@ namespace ERPSystem.Pages.Employees
         public string CurrentFilter { get; set; }
         public string CurrentSort { get; set; }
         public List<int> SelectedMentors { get; set; }
-        public SelectList MentorsSelectList { get; set; }
+        public List<SelectListItem> MentorsSelectList { get; set; }
+        //public SelectList MentorsSelectList { get; set; }
         public List<int> SelectedAssignments { get; set; }
         public SelectList AssignmentsSelectList { get; set; }
         public EmployeeRole Role { get; set; }
@@ -42,7 +44,7 @@ namespace ERPSystem.Pages.Employees
         public async Task<IActionResult> OnGetAsync(EmployeeRole Role, string sortOrder,
             string currentFilter, int? pageIndex, int? id)
         {
-            this.Role = Role;            
+            this.Role = Role;
             PageIndex = pageIndex;
             CurrentSort = sortOrder;
             CurrentFilter = currentFilter;
@@ -72,12 +74,45 @@ namespace ERPSystem.Pages.Employees
             ViewData["DepartmentId"] = new SelectList(_context.Departments.OrderBy(d => d.Name), "Id", "Name");
             ViewData["ProjectId"] = new SelectList(_context.Projects.OrderBy(p => p.Name), "Id", "Name");
 
-            var MentorsQuery = _context.Employees
-                .OrderBy(e => e.LastName)
-                .ThenBy(e => e.FirstName)
-                .Where(e => e.Id !=id)
-                .AsNoTracking();
-            MentorsSelectList = new SelectList(MentorsQuery, "Id", "FullName"); //list, id, value
+            //var MentorsQuery = _context.Employees
+            //    .OrderBy(e => e.LastName)
+            //    .ThenBy(e => e.FirstName)
+            //    .Where(e => e.Id != id)
+            //    .AsNoTracking();
+            //MentorsSelectList = new SelectList(MentorsQuery, "Id", "FullName"); //list, id, value
+
+            MentorsSelectList = Enumerable.Empty<SelectListItem>().ToList();
+
+            //Mentors Initial Dropdown List
+            switch (Employee.EmployeeRole)
+            {
+                case EmployeeRole.Employee:
+                case EmployeeRole.Mentor:
+                    JsonResult jsonResult = await OnGetBranchAsync(Employee.BranchId.ToString());
+                    string json = JsonSerializer.Serialize(jsonResult.Value);
+                    MentorsSelectList = JsonSerializer.Deserialize<List<SelectListItem>>(json);
+                    break;
+                case EmployeeRole.ProjectManager:
+                    jsonResult = await OnGetProjectAsync(Employee.ProjectId.ToString());
+                    json = JsonSerializer.Serialize(jsonResult.Value);
+                    MentorsSelectList = JsonSerializer.Deserialize<List<SelectListItem>>(json);
+                    break;
+                case EmployeeRole.DepartmentHead:
+                    jsonResult = await OnGetDepartmentAsync(Employee.DepartmentId.ToString());
+                    json = JsonSerializer.Serialize(jsonResult.Value);
+                    MentorsSelectList = JsonSerializer.Deserialize<List<SelectListItem>>(json);
+                    break;
+                case EmployeeRole.GeneralManager:
+                    MentorsSelectList = new List<SelectListItem>()
+                    {
+                        new SelectListItem
+                        {
+                            Value = null,
+                            Text = ""
+                        }
+                    };
+                    break;
+            }
 
             SelectedMentors = new List<int>();
             foreach (var mentor in Employee.Mentors)
@@ -101,6 +136,10 @@ namespace ERPSystem.Pages.Employees
         public async Task<IActionResult> OnPostAsync(int? id, EmployeeRole Role, string sortOrder,
             string currentFilter, int? pageIndex, int[] SelectedMentors, int[] SelectedAssignments)
         {
+            List<int> DepartmentsWithModifiedState = new List<int>();
+            List<int> CompaniesWithModifiedState = new List<int>();
+            List<int> ProjectsWithModifiedState = new List<int>();
+
             if (!ModelState.IsValid)
             {
                 return Page();
@@ -115,51 +154,9 @@ namespace ERPSystem.Pages.Employees
                 .Include(e => e.Mentors)
                 .FirstOrDefaultAsync(m => m.Id == id);
 
-            if (EmployeeToUpdate.DepartmentId != null)
+            if (Employee.EmployeeRole == EmployeeToUpdate.EmployeeRole)
             {
-                Department department = await _context.Departments.FindAsync(EmployeeToUpdate.DepartmentId);
-                department.DepartmentState = DepartmentState.Inactive;
-                EmployeeToUpdate.DepartmentId = null;
-            }
-            if (EmployeeToUpdate.CompanyId != null)
-            {
-                Company company = await _context.Companies.FindAsync(EmployeeToUpdate.CompanyId);
-                company.CompanyState = CompanyState.Inactive;
-                EmployeeToUpdate.CompanyId = null;
-            }
-            if (EmployeeToUpdate.ProjectId != null)
-            {
-                Project project = await _context.Projects.FindAsync(EmployeeToUpdate.ProjectId);
-                project.ProjectState = ProjectState.Inactive;
-                EmployeeToUpdate.ProjectId = null;
-            }
-            if (EmployeeToUpdate.BranchId != null)
-            {
-                EmployeeToUpdate.BranchId = null;
-            }
-
-            if (EmployeeToUpdate.EmployeeRole == EmployeeRole.Employee ||
-                EmployeeToUpdate.EmployeeRole == EmployeeRole.Mentor)
-            {
-                foreach (Assignment assignment in EmployeeToUpdate.Assignments)
-                {
-                    assignment.EmployeeId = null;
-                }
-            }
-            foreach (Employee mentor in EmployeeToUpdate.Mentors)
-            {
-                EmployeeToUpdate.Mentors.Remove(mentor);
-            }
-            await _context.SaveChangesAsync();
-
-
-            if (await TryUpdateModelAsync<Employee>(
-                            EmployeeToUpdate,
-                            "Employee",
-                            e => e.FirstName, e => e.LastName, e => e.EmployeeRole, e => e.EmployeeState,
-                            e => e.DateOfBirth))
-            {
-
+                //Copy data from model to existing entity we are editing
                 switch (Employee.EmployeeRole)
                 {
                     case EmployeeRole.Employee:
@@ -172,58 +169,340 @@ namespace ERPSystem.Pages.Employees
                         UpdateAssignments(SelectedAssignments, EmployeeToUpdate);
                         break;
                     case EmployeeRole.DepartmentHead:
+                        UpdateMentors(SelectedMentors, EmployeeToUpdate);
+                        if (EmployeeToUpdate.DepartmentId != Employee.DepartmentId)
+                        {
+                            if (EmployeeToUpdate.Department != null &&
+                                EmployeeToUpdate.Department.DepartmentState != DepartmentState.Inactive)
+                            {
+                                EmployeeToUpdate.Department.DepartmentState = DepartmentState.Inactive;
+                                DepartmentsWithModifiedState.Add(EmployeeToUpdate.Department.Id);
+                            }
+                            Employee oldDh = await _context.Employees.Where(e => e.DepartmentId == Employee.DepartmentId).FirstOrDefaultAsync();
+                            if (oldDh != null)
+                                oldDh.DepartmentId = null;
+                            EmployeeToUpdate.DepartmentId = Employee.DepartmentId;
+                            Department department = await _context.Departments
+                                .Include(d => d.Company)
+                                .Include(d => d.DepartmentHead)
+                                .Where(d => d.Id == EmployeeToUpdate.DepartmentId)
+                                .FirstOrDefaultAsync();
+                            if (department != null)
+                            {
+                                if (department.Company != null)
+                                {
+                                    if (Employee.EmployeeState == EmployeeState.Active && department.Company.CompanyState == CompanyState.Active)
+                                    {
+                                        if (department.DepartmentState != DepartmentState.Active)
+                                        {
+                                            department.DepartmentState = DepartmentState.Active;
+                                            DepartmentsWithModifiedState.Add(department.Id);
+                                        }
+                                    }
+                                    else
+                                    {
+                                        if (department.DepartmentState != DepartmentState.Inactive)
+                                        {
+                                            department.DepartmentState = DepartmentState.Inactive;
+                                            DepartmentsWithModifiedState.Add(department.Id);
+                                        }
+                                    }
+                                }
+                                else
+                                {
+                                    if (department.DepartmentState != DepartmentState.Inactive)
+                                    {
+                                        department.DepartmentState = DepartmentState.Inactive;
+                                        DepartmentsWithModifiedState.Add(department.Id);
+                                    }
+                                }
+                            }
+                        }
+                        break;
+                    case EmployeeRole.GeneralManager:
+                        if (EmployeeToUpdate.CompanyId != Employee.CompanyId)
+                        {
+                            if (EmployeeToUpdate.Company != null &&
+                                EmployeeToUpdate.Company.CompanyState != CompanyState.Inactive)
+                            {
+                                EmployeeToUpdate.Company.CompanyState = CompanyState.Inactive;
+                                CompaniesWithModifiedState.Add(EmployeeToUpdate.Company.Id);
+                            }
+                            Employee oldGm = await _context.Employees.Where(e => e.CompanyId == Employee.CompanyId).FirstOrDefaultAsync();
+                            if (oldGm != null)
+                                oldGm.CompanyId = null;
+                            EmployeeToUpdate.CompanyId = Employee.CompanyId;
+                            Company company = await _context.Companies
+                                .Include(d => d.GeneralManager)
+                                .Where(d => d.Id == EmployeeToUpdate.CompanyId)
+                                .FirstOrDefaultAsync();
+                            if (company != null)
+                            {
+                                if (Employee.EmployeeState == EmployeeState.Active)
+                                {
+                                    if (company.CompanyState != CompanyState.Active)
+                                    {
+                                        company.CompanyState = CompanyState.Active;
+                                        CompaniesWithModifiedState.Add(company.Id);
+                                    }
+                                }
+                                else
+                                {
+                                    if (company.CompanyState != CompanyState.Inactive)
+                                    {
+                                        company.CompanyState = CompanyState.Inactive;
+                                        CompaniesWithModifiedState.Add(company.Id);
+                                    }
+                                }
+                            }
+                        }
+                        break;
+                    case EmployeeRole.ProjectManager:
+                        UpdateMentors(SelectedMentors, EmployeeToUpdate);
+                        if (EmployeeToUpdate.ProjectId != Employee.ProjectId)
+                        {
+                            if (EmployeeToUpdate.Project != null &&
+                                EmployeeToUpdate.Project.ProjectState != ProjectState.Inactive)
+                            {
+                                EmployeeToUpdate.Project.ProjectState = ProjectState.Inactive;
+                                ProjectsWithModifiedState.Add(EmployeeToUpdate.Project.Id);
+                            }
+                            Employee oldPm = await _context.Employees.Where(e => e.ProjectId == Employee.ProjectId).FirstOrDefaultAsync();
+                            if (oldPm != null)
+                                oldPm.ProjectId = null;
+                            EmployeeToUpdate.ProjectId = Employee.ProjectId;
+                            Project project = await _context.Projects
+                                .Include(d => d.Department)
+                                .Include(d => d.ProjectManager)
+                                .Where(d => d.Id == EmployeeToUpdate.ProjectId)
+                                .FirstOrDefaultAsync();
+                            if (project != null)
+                            {
+                                if (project.Department != null)
+                                {
+                                    if (Employee.EmployeeState == EmployeeState.Active && project.Department.DepartmentState == DepartmentState.Active)
+                                    {
+                                        if (project.ProjectState != ProjectState.Active)
+                                        {
+                                            project.ProjectState = ProjectState.Active;
+                                            ProjectsWithModifiedState.Add(project.Id);
+                                        }
+                                    }
+                                    else
+                                    {
+                                        if (project.ProjectState != ProjectState.Inactive)
+                                        {
+                                            project.ProjectState = ProjectState.Inactive;
+                                            ProjectsWithModifiedState.Add(project.Id);
+                                        }
+                                    }
+                                }
+                                else
+                                {
+                                    if (project.ProjectState != ProjectState.Inactive)
+                                    {
+                                        project.ProjectState = ProjectState.Inactive;
+                                        ProjectsWithModifiedState.Add(project.Id);
+                                    }
+                                }
+                            }
+                        }
+                        break;
+                }
+            }
+            else
+            {
+                //remove old data
+                switch (EmployeeToUpdate.EmployeeRole)
+                {
+                    case EmployeeRole.Employee:
+                        if (Employee.EmployeeRole != EmployeeRole.Mentor)
+                        {
+                            foreach (Assignment assignment in EmployeeToUpdate.Assignments)
+                                assignment.EmployeeId = null;
+                            EmployeeToUpdate.BranchId = null;
+                        }
+                        if (Employee.EmployeeRole == EmployeeRole.Mentor
+                            || Employee.EmployeeRole == EmployeeRole.GeneralManager)
+                        {
+                            foreach (Employee mentor in EmployeeToUpdate.Mentors)
+                                EmployeeToUpdate.Mentors.Remove(mentor);
+                        }
+                        break;
+                    case EmployeeRole.Mentor:
+                        if (Employee.EmployeeRole != EmployeeRole.Employee)
+                        {
+                            foreach (Assignment assignment in EmployeeToUpdate.Assignments)
+                                assignment.EmployeeId = null;
+                            EmployeeToUpdate.BranchId = null;
+                        }
+                        break;
+                    case EmployeeRole.DepartmentHead:
+                        Department oldDepartment = await _context.Departments.FindAsync(EmployeeToUpdate.DepartmentId);
+                        if (oldDepartment != null)
+                        {
+                            oldDepartment.DepartmentState = DepartmentState.Inactive;
+                            DepartmentsWithModifiedState.Add(oldDepartment.Id);
+                        }
+                        EmployeeToUpdate.DepartmentId = null;
+                        break;
+                    case EmployeeRole.GeneralManager:
+                        Company oldCompany = await _context.Companies.FindAsync(EmployeeToUpdate.CompanyId);
+                        if (oldCompany != null)
+                        {
+                            oldCompany.CompanyState = CompanyState.Inactive;
+                            CompaniesWithModifiedState.Add(oldCompany.Id);
+                        }
+                        EmployeeToUpdate.CompanyId = null;
+                        break;
+                    case EmployeeRole.ProjectManager:
+                        Project oldProject = await _context.Projects.FindAsync(EmployeeToUpdate.ProjectId);
+                        if (oldProject != null)
+                        {
+                            oldProject.ProjectState = ProjectState.Inactive;
+                            ProjectsWithModifiedState.Add(oldProject.Id);
+                        }
+                        EmployeeToUpdate.ProjectId = null;
+                        break;
+                }
+                //add new data
+                switch (Employee.EmployeeRole)
+                {
+                    case EmployeeRole.Employee:
+                        EmployeeToUpdate.BranchId = Employee.BranchId;
+                        UpdateAssignments(SelectedAssignments, EmployeeToUpdate);
+                        UpdateMentors(SelectedMentors, EmployeeToUpdate);
+                        break;
+                    case EmployeeRole.Mentor:
+                        EmployeeToUpdate.BranchId = Employee.BranchId;
+                        UpdateAssignments(SelectedAssignments, EmployeeToUpdate);
+                        break;
+                    case EmployeeRole.DepartmentHead:
+                        UpdateMentors(SelectedMentors, EmployeeToUpdate);
                         if (Employee.DepartmentId != null)
                         {
                             Department department = await _context.Departments
                                 .Include(d => d.DepartmentHead)
                                 .Include(d => d.Company)
                                 .FirstOrDefaultAsync(d => d.Id == Employee.DepartmentId);
-                            if (department.Company.CompanyState == CompanyState.Active)
-                                department.DepartmentState = DepartmentState.Active;
-                            else
-                                department.DepartmentState = DepartmentState.Inactive;
-                            if (department.DepartmentHead != null)
+                            if (department != null)
                             {
-                                department.DepartmentHead.DepartmentId = null;
+                                if (department.DepartmentHead != null)
+                                {
+                                    department.DepartmentHead.DepartmentId = null;
+                                }
+                                EmployeeToUpdate.DepartmentId = Employee.DepartmentId;
+                                if (department.Company != null)
+                                {
+                                    if (Employee.EmployeeState == EmployeeState.Active && department.Company.CompanyState == CompanyState.Active)
+                                    {
+                                        if (department.DepartmentState != DepartmentState.Active)
+                                        {
+                                            department.DepartmentState = DepartmentState.Active;
+                                            DepartmentsWithModifiedState.Add(department.Id);
+                                        }
+                                    }
+                                    else
+                                    {
+                                        if (department.DepartmentState != DepartmentState.Inactive)
+                                        {
+                                            department.DepartmentState = DepartmentState.Inactive;
+                                            DepartmentsWithModifiedState.Add(department.Id);
+                                        }
+                                    }
+                                }
+                                else
+                                {
+                                    if (department.DepartmentState != DepartmentState.Inactive)
+                                    {
+                                        department.DepartmentState = DepartmentState.Inactive;
+                                        DepartmentsWithModifiedState.Add(department.Id);
+                                    }
+                                }
                             }
-                            EmployeeToUpdate.DepartmentId = Employee.DepartmentId;
                         }
-                        UpdateMentors(SelectedMentors, EmployeeToUpdate);
                         break;
                     case EmployeeRole.GeneralManager:
-                        if(Employee.CompanyId != null)
+                        if (Employee.CompanyId != null)
                         {
                             Company company = await _context.Companies
                                 .Include(g => g.GeneralManager)
                                 .FirstOrDefaultAsync(g => g.Id == Employee.CompanyId);
-                            company.CompanyState = CompanyState.Active;
-                            if (company.GeneralManager != null)
+
+                            if (company != null)
                             {
-                                company.GeneralManager.CompanyId = null;
+                                if (company.GeneralManager != null)
+                                {
+                                    company.GeneralManager.CompanyId = null;
+                                }
+                                EmployeeToUpdate.CompanyId = Employee.CompanyId;
+
+                                if (Employee.EmployeeState == EmployeeState.Active)
+                                {
+                                    if (company.CompanyState != CompanyState.Active)
+                                    {
+                                        company.CompanyState = CompanyState.Active;
+                                        CompaniesWithModifiedState.Add(company.Id);
+                                    }
+                                }
+                                else
+                                {
+                                    if (company.CompanyState != CompanyState.Inactive)
+                                    {
+                                        company.CompanyState = CompanyState.Inactive;
+                                        CompaniesWithModifiedState.Add(company.Id);
+                                    }
+                                }
                             }
-                            EmployeeToUpdate.CompanyId = Employee.CompanyId;
                         }
                         break;
                     case EmployeeRole.ProjectManager:
-                        if(Employee.ProjectId != null)
+                        UpdateMentors(SelectedMentors, EmployeeToUpdate);
+                        if (Employee.ProjectId != null)
                         {
                             Project project = await _context.Projects
                                 .Include(p => p.ProjectManager)
                                 .Include(p => p.Department)
                                 .FirstOrDefaultAsync(p => p.Id == Employee.ProjectId);
-                            if (project.Department.DepartmentState == DepartmentState.Active)
-                                project.ProjectState = ProjectState.Active;
-                            else
-                                project.ProjectState = ProjectState.Active;
-                            if (project.ProjectManager != null)
+                            if (project != null)
                             {
-                                project.ProjectManager.ProjectId = null;
+                                if (project.ProjectManager != null)
+                                {
+                                    project.ProjectManager.ProjectId = null;
+                                }
+                                EmployeeToUpdate.ProjectId = Employee.ProjectId;
+                                if (project.Department != null)
+                                {
+                                    if (Employee.EmployeeState == EmployeeState.Active && project.Department.DepartmentState == DepartmentState.Active)
+                                    {
+                                        if (project.ProjectState != ProjectState.Active)
+                                        {
+                                            project.ProjectState = ProjectState.Active;
+                                            ProjectsWithModifiedState.Add(project.Id);
+                                        }
+                                    }
+                                    else
+                                    {
+                                        if (project.ProjectState != ProjectState.Inactive)
+                                        {
+                                            project.ProjectState = ProjectState.Inactive;
+                                            ProjectsWithModifiedState.Add(project.Id);
+                                        }
+                                    }
+                                }
+                                else
+                                {
+                                    if (project.ProjectState != ProjectState.Inactive)
+                                    {
+                                        project.ProjectState = ProjectState.Inactive;
+                                        ProjectsWithModifiedState.Add(project.Id);
+                                    }
+                                }
                             }
-                            EmployeeToUpdate.ProjectId = Employee.ProjectId;
                         }
-                        UpdateMentors(SelectedMentors, EmployeeToUpdate);
                         break;
                 }
+
             }
 
             if (FormFile != null)
@@ -262,38 +541,55 @@ namespace ERPSystem.Pages.Employees
                     //Update photo
                     EmployeeToUpdate.ProfilePicture = trustedFileNameForFileStorage;
                 }
+
             }
 
-            try
+            //    if (await TryUpdateModelAsync<Employee>(
+            //EmployeeToUpdate,
+            //"Employee",
+            //e => e.FirstName, e => e.LastName, e => e.EmployeeRole,
+            //e => e.EmployeeState, e => e.DateOfBirth))
+
+            if (await TryUpdateModelAsync<Employee>(
+                EmployeeToUpdate,
+                "Employee",
+                e => e.FirstName, e => e.LastName, e => e.EmployeeRole,
+                e => e.EmployeeState, e => e.DateOfBirth))
             {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!EmployeeExists(Employee.Id))
+                try
                 {
-                    return NotFound();
+                    await _context.SaveChangesAsync();
                 }
-                else
+                catch (DbUpdateConcurrencyException)
                 {
-                    throw;
+                    if (!EmployeeExists(Employee.Id))
+                    {
+                        return NotFound();
+                    }
+                    else
+                    {
+                        throw;
+                    }
                 }
+
+                Utility utility = new Utility(_context);
+                utility.UpdateCompanyDependants(CompaniesWithModifiedState);
+                utility.UpdateDepartmentDependants(DepartmentsWithModifiedState);
+                utility.UpdateProjectDependants(ProjectsWithModifiedState);
+                utility.UpdateWhenParentIsNull();
+
+                Role = EmployeeToUpdate.EmployeeRole;
+
+                return RedirectToPage("./Index", new
+                {
+                    pageIndex = $"{pageIndex}",
+                    sortOrder = $"{sortOrder}",
+                    currentFilter = $"{currentFilter}",
+                    Role = $"{Role}"
+                });
             }
 
-            Utility utility = new Utility(_context);
-            utility.UpdateDepartmentsState();
-            utility.UpdateBranchesState();
-            utility.UpdateProjectsState();
-            utility.UpdatePositionsState();
-            utility.UpdateAssignmentsState();
-
-            return RedirectToPage("./Index", new
-            {
-                pageIndex = $"{pageIndex}",
-                sortOrder = $"{sortOrder}",
-                currentFilter = $"{currentFilter}",
-                Role = $"{Role}"
-            });
+            return Page();
         }
 
         private bool EmployeeExists(int id)
@@ -322,6 +618,8 @@ namespace ERPSystem.Pages.Employees
                         if (!EmployeeMentorsHS.Contains(mentor.Id))
                         {
                             Employee.Mentors.Add(mentor);
+                            if (mentor.EmployeeRole == EmployeeRole.Employee)
+                                mentor.EmployeeRole = EmployeeRole.Mentor;
                         }
                     }
                     //If items are not selected
@@ -332,6 +630,8 @@ namespace ERPSystem.Pages.Employees
                         {
                             var toRemove = Employee.Mentors.Single(s => s.Id == mentor.Id);
                             Employee.Mentors.Remove(toRemove);
+                            if (toRemove.EmployeeRole == EmployeeRole.Mentor)
+                                toRemove.EmployeeRole = EmployeeRole.Employee;
                         }
                     }
                 }
@@ -372,6 +672,151 @@ namespace ERPSystem.Pages.Employees
                     }
                 }
             }
+        }
+        public async Task<JsonResult> OnGetBranchStateAsync(string branchId)
+        {
+            Utility utility = new Utility(_context);
+            return await utility.GetBranchStateAsync(branchId);
+        }
+        public async Task<JsonResult> OnGetDepartmentAsync(string departmentId)
+        {
+            if (!string.IsNullOrWhiteSpace(departmentId))
+            {
+                if (Int32.TryParse(departmentId, out int id))
+                {
+                    Department department = await _context.Departments.FindAsync(id);
+                    if (department != null)
+                    {
+                        Company company = await _context.Companies
+                            .Include(c => c.Branches)
+                            .ThenInclude(b => b.Employees)
+                            .Where(c => c.Id == department.CompanyId)
+                            .AsNoTracking()
+                            .FirstOrDefaultAsync();
+                        if (company !=null)
+                        {
+                            if (company.Branches.Count > 0)
+                            {
+                                List<Employee> mentors = new List<Employee>();
+                                foreach (Branch branch in company.Branches)
+                                {
+                                    foreach (Employee mentor in branch.Employees)
+                                        mentors.Add(mentor);
+                                }
+                                IEnumerable<SelectListItem> items = mentors
+                                        .OrderBy(n => n.FullName)
+                                        .Select(n =>
+                                           new SelectListItem
+                                           {
+                                               Value = n.Id.ToString(),
+                                               Text = n.FullName
+                                           }).ToList();
+                                return new JsonResult(items);
+                            }
+                        }
+                    }
+                }
+            }
+            return new JsonResult(
+                new List<SelectListItem>
+                {
+                    new SelectListItem { Value = "0", Text = "No Mentors" }
+                });
+        }
+        public async Task<JsonResult> OnGetProjectAsync(string projectId)
+        {
+            if (!string.IsNullOrWhiteSpace(projectId))
+            {
+                if (Int32.TryParse(projectId, out int id))
+                {
+                    Project project = await _context.Projects.FindAsync(id);
+                    if (project != null)
+                    {
+                        Department department = await _context.Departments.FindAsync(project.DepartmentId);
+                        if (department != null)
+                        {
+                            Company company = await _context.Companies
+                                .Include(c => c.Branches)
+                                .ThenInclude(b => b.Employees)
+                                .Where(c => c.Id == department.CompanyId)
+                                .AsNoTracking()
+                                .FirstOrDefaultAsync();
+                            if (company !=null)
+                            {
+                                if (company.Branches.Count > 0)
+                                {
+                                    List<Employee> mentors = new List<Employee>();
+                                    foreach (Branch branch in company.Branches)
+                                    {
+                                        foreach (Employee mentor in branch.Employees)
+                                            mentors.Add(mentor);
+                                    }
+                                    IEnumerable<SelectListItem> items = mentors
+                                            .OrderBy(n => n.FullName)
+                                            .Select(n =>
+                                               new SelectListItem
+                                               {
+                                                   Value = n.Id.ToString(),
+                                                   Text = n.FullName
+                                               }).ToList();
+                                    return new JsonResult(items);
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            return new JsonResult(
+                new List<SelectListItem>
+                {
+                    new SelectListItem { Value = "0", Text = "No Mentors" }
+                });
+        }
+        public async Task<JsonResult> OnGetBranchAsync(string branchId)
+        {
+            if (!string.IsNullOrWhiteSpace(branchId))
+            {
+                if (Int32.TryParse(branchId, out int id))
+                {
+                    Branch branch = await _context.Branches.FindAsync(id);
+                    if (branch != null)
+                    {
+                        Company company = await _context.Companies
+                            .Include(c => c.Branches)
+                            .ThenInclude(b => b.Employees)
+                            .Where(c => c.Id == branch.CompanyId)
+                            .AsNoTracking()
+                            .FirstOrDefaultAsync();
+                        if (company != null)
+                        {
+                            if (company.Branches.Count > 0)
+                            {
+                                List<Employee> mentors = new List<Employee>();
+                                foreach (Branch brnch in company.Branches)
+                                {
+                                    foreach (Employee mentor in brnch.Employees)
+                                        mentors.Add(mentor);
+                                }
+                                IEnumerable<SelectListItem> items = mentors
+                                    .OrderBy(n => n.FullName)
+                                    .Select(n =>
+                                       new SelectListItem
+                                       {
+                                           Value = n.Id.ToString(),
+                                           Text = n.FullName
+                                       }).ToList();
+                                return new JsonResult(items);
+                            }
+                        }
+                    }
+                }
+            }
+
+            return new JsonResult(
+                new List<SelectListItem>
+                {
+                    new SelectListItem { Value = "0", Text = "No Mentors" }
+                });
         }
     }
 }

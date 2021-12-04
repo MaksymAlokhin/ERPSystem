@@ -19,7 +19,7 @@ namespace ERPSystem.Pages.Positions
         public string CurrentSort { get; set; }
         public List<int> SelectedAssignments { get; set; }
         public SelectList AssignmentsSelectList { get; set; }
-
+        List<int> PositionsWithModifiedState { get; set; }
         public EditModel(ERPSystem.Data.ApplicationDbContext context)
         {
             _context = context;
@@ -70,6 +70,8 @@ namespace ERPSystem.Pages.Positions
         public async Task<IActionResult> OnPostAsync(int? id, string sortOrder,
             string currentFilter, int? pageIndex, int[] SelectedAssignments)
         {
+            PositionsWithModifiedState = new List<int>();
+
             if (!ModelState.IsValid)
             {
                 return Page();
@@ -79,6 +81,9 @@ namespace ERPSystem.Pages.Positions
                 .Include(p => p.Project)
                 .Include(p => p.Assignments)
                 .FirstOrDefaultAsync(m => m.Id == id);
+
+            PositionState InitialPositionState = PositionToUpdate.PositionState;
+
 
             if (Position.ProjectId != null)
             {
@@ -110,6 +115,10 @@ namespace ERPSystem.Pages.Positions
                     foreach (var assignment in PositionToUpdate.Assignments)
                         assignment.AssignmentState = AssignmentState.Inactive;
                 }
+
+                if (PositionToUpdate.PositionState != InitialPositionState)
+                    PositionsWithModifiedState.Add(PositionToUpdate.Id);
+
             }
 
             try
@@ -127,6 +136,10 @@ namespace ERPSystem.Pages.Positions
                     throw;
                 }
             }
+
+            Utility utility = new Utility(_context);
+            utility.UpdatePositionDependants(PositionsWithModifiedState);
+            utility.UpdateWhenParentIsNull();
 
             return RedirectToPage("./Index", new
             {
@@ -162,6 +175,8 @@ namespace ERPSystem.Pages.Positions
                         if (!PositionAssignmentsHS.Contains(assignment.Id))
                         {
                             Position.Assignments.Add(assignment);
+                            if (!PositionsWithModifiedState.Contains(Position.Id))
+                                PositionsWithModifiedState.Add(Position.Id);
                         }
                     }
                     //If items are not selected
@@ -172,7 +187,6 @@ namespace ERPSystem.Pages.Positions
                         {
                             var toRemove = Position.Assignments.Single(s => s.Id == assignment.Id);
                             Position.Assignments.Remove(toRemove);
-                            toRemove.AssignmentState = AssignmentState.Inactive;
                         }
                     }
                 }

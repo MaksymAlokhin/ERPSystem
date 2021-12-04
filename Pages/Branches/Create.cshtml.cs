@@ -58,6 +58,7 @@ namespace ERPSystem.Pages.Branches
         public async Task<IActionResult> OnPostAsync(string sortOrder,
             string currentFilter, int? pageIndex, int[] SelectedEmployees)
         {
+            List<int> BranchesWithModifiedState = new List<int>();
             if (!ModelState.IsValid)
             {
                 return Page();
@@ -73,24 +74,18 @@ namespace ERPSystem.Pages.Branches
             {
                 var foundEmployee = await _context.Employees.FindAsync(employee);
                 if (foundEmployee != null)
-                {
                     NewBranch.Employees.Add(foundEmployee);
-                    if (NewBranch.BranchState == BranchState.Active)
-                        foundEmployee.EmployeeState = EmployeeState.Active;
-                    else 
-                        foundEmployee.EmployeeState = EmployeeState.Inactive;
-                }
             }
 
-            if (await TryUpdateModelAsync<Branch>(
-                                            NewBranch,
-                                            "Branch",
-                                            b => b.Name, b => b.BranchState, b => b.CompanyId))
+            if (await TryUpdateModelAsync<Branch>(NewBranch, "Branch", b => b.Name, b => b.BranchState, b => b.CompanyId))
             {
                 _context.Branches.Add(NewBranch);
                 await _context.SaveChangesAsync();
 
+                BranchesWithModifiedState.Add(NewBranch.Id);
+
                 Utility utility = new Utility(_context);
+                utility.UpdateBranchDependants(BranchesWithModifiedState);
 
                 return RedirectToPage("./Index", new
                 {

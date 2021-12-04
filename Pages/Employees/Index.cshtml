@@ -10,20 +10,32 @@
 
 <form asp-page="./Index" method="get">
     <div class="form-actions no-color">
-        <div class="row justify-content-between">
-            <div class="col-auto">
-                <a asp-page="Create"><i class="fas fa-user-plus fa-lg mr-1"></i></a>
-                <input type="text" name="SearchString" value="@Model.CurrentFilter" placeholder="Find by name" />
-                <button type="submit" class="btn btn-default">
-                    <i class="fa fa-search"></i>
-                </button> |
-                <a asp-page="./Index" asp-route-Role="@Model.Role" class="btn btn-default"><i class="fas fa-times"></i></a>
+        <p>
+            <div class="row">
+                <div class="col-sm-auto">
+
+                    <a asp-page="Create" asp-route-Role="@Model.Role"><i class="fas fa-user-plus fa-lg mr-1"></i></a>
+                    <input type="text" name="SearchString" value="@Model.CurrentFilter" placeholder="Find by name" />
+                    <button type="submit" class="btn btn-default">
+                        <i class="fa fa-search"></i>
+                    </button> |
+                    <a asp-page="./Index" asp-route-Role="@Model.Role" class="btn btn-default"><i class="fas fa-times"></i></a>
+
+                    @*<a asp-page-handler="Activate"
+                           asp-route-pageIndex="@Model.Employee.PageIndex"
+                           asp-route-sortOrder="@Model.CurrentSort"
+                           asp-route-currentFilter="@Model.CurrentFilter"
+                           asp-route-Role="@Model.Role"
+                           class="btn btn-outline-primary" role="button" aria-pressed="true">
+                            | Activate
+                        </a>*@
+                </div>
+                <div class="col-sm-auto">
+                    <label asp-for="Role" class="control-label"><i class="fas fa-users"></i></label>
+                    <select asp-for="Role" style="width: auto" asp-items="Html.GetEnumSelectList<Models.EmployeeRole>()" onchange="this.form.submit();"></select>
+                </div>
             </div>
-            <div class="col-auto">
-                <label asp-for="Role" class="control-label"><i class="fas fa-users"></i></label>
-                <select asp-for="Role" style="width: auto" asp-items="Html.GetEnumSelectList<Models.EmployeeRole>()" onchange="this.form.submit();"></select>
-            </div>
-        </div>
+        </p>
     </div>
 </form>
 <table class="table table-responsive text-nowrap table-hover">
@@ -34,31 +46,71 @@
             <th>
                 <a asp-page="./Index"
                    asp-route-sortOrder="@Model.NameSort"
-                   asp-route-currentFilter="@Model.CurrentFilter">
+                   asp-route-currentFilter="@Model.CurrentFilter"
+                   asp-route-Role="@Model.Role">
                     @Html.DisplayNameFor(model => model.Employee[0].FullName)
                 </a>
             </th>
+            @*<th>
+                    @Html.DisplayNameFor(model => model.Employee[0].EmployeeRole)
+                </th>*@
             <th>
-                @Html.DisplayNameFor(model => model.Employee[0].EmployeeRole)
+                @switch (@Model.Role)
+                {
+                    case Models.EmployeeRole.Employee:
+                    case Models.EmployeeRole.Mentor:
+                        <a asp-page="./Index"
+                           asp-route-sortOrder="@Model.BranchSort"
+                           asp-route-currentFilter="@Model.CurrentFilter"
+                           asp-route-Role="@Model.Role">
+                            @Html.DisplayNameFor(model => model.Employee[0].Branch)
+                        </a>
+                        break;
+                    case Models.EmployeeRole.GeneralManager:
+                        <a asp-page="./Index"
+                           asp-route-sortOrder="@Model.CompanySort"
+                           asp-route-currentFilter="@Model.CurrentFilter"
+                           asp-route-Role="@Model.Role">
+                            @Html.DisplayNameFor(model => model.Employee[0].Company)
+                        </a>
+                        break;
+                    case Models.EmployeeRole.ProjectManager:
+                        <a asp-page="./Index"
+                           asp-route-sortOrder="@Model.ProjectSort"
+                           asp-route-currentFilter="@Model.CurrentFilter"
+                           asp-route-Role="@Model.Role">
+                            @Html.DisplayNameFor(model => model.Employee[0].Project)
+                        </a>
+                        break;
+                    case Models.EmployeeRole.DepartmentHead:
+                        <a asp-page="./Index"
+                           asp-route-sortOrder="@Model.DepartmentSort"
+                           asp-route-currentFilter="@Model.CurrentFilter"
+                           asp-route-Role="@Model.Role">
+                            @Html.DisplayNameFor(model => model.Employee[0].Department)
+                        </a>
+                        break;
+                }
             </th>
-            <th>
-                <a asp-page="./Index"
-                   asp-route-sortOrder="@Model.BranchSort"
-                   asp-route-currentFilter="@Model.CurrentFilter">
-                    @Html.DisplayNameFor(model => model.Employee[0].Branch)
-                </a>
-            </th>
-            <th style="text-align: center">
-                <a asp-page="./Index"
-                   asp-route-sortOrder="@Model.AssignmentSort"
-                   asp-route-currentFilter="@Model.CurrentFilter">
-                    @Html.DisplayNameFor(model => model.Employee[0].Assignments)
-                </a>
-            </th>
+            @switch (@Model.Role)
+            {
+                case Models.EmployeeRole.Employee:
+                case Models.EmployeeRole.Mentor:
+                    <th style="text-align: center">
+                        <a asp-page="./Index"
+                           asp-route-sortOrder="@Model.AssignmentSort"
+                           asp-route-currentFilter="@Model.CurrentFilter"
+                           asp-route-Role="@Model.Role">
+                            @Html.DisplayNameFor(model => model.Employee[0].Assignments)
+                        </a>
+                    </th>
+                    break;
+            }
             <th>
                 <a asp-page="./Index"
                    asp-route-sortOrder="@Model.StateSort"
-                   asp-route-currentFilter="@Model.CurrentFilter">
+                   asp-route-currentFilter="@Model.CurrentFilter"
+                   asp-route-Role="@Model.Role">
                     @Html.DisplayNameFor(model => model.Employee[0].EmployeeState)
                 </a>
             </th>
@@ -85,15 +137,36 @@
                     <td>
                         @Html.DisplayFor(modelItem => item.FullName)
                     </td>
+                    @*<td>
+                            @Html.DisplayFor(modelItem => item.EmployeeRole)
+                        </td>*@
                     <td>
-                        @Html.DisplayFor(modelItem => item.EmployeeRole)
+                        @switch (@Model.Role)
+                        {
+                            case Models.EmployeeRole.Employee:
+                            case Models.EmployeeRole.Mentor:
+                                @Html.DisplayFor(modelItem => item.Branch.Name)
+                                break;
+                            case Models.EmployeeRole.GeneralManager:
+                                @Html.DisplayFor(modelItem => item.Company.Name)
+                                break;
+                            case Models.EmployeeRole.ProjectManager:
+                                @Html.DisplayFor(modelItem => item.Project.Name)
+                                break;
+                            case Models.EmployeeRole.DepartmentHead:
+                                @Html.DisplayFor(modelItem => item.Department.Name)
+                                break;
+                        }
                     </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Branch.Name)
-                    </td>
-                    <td style="text-align: center">
-                        @item.Assignments.Count()
-                    </td>
+                    @switch (@Model.Role)
+                    {
+                        case Models.EmployeeRole.Employee:
+                        case Models.EmployeeRole.Mentor:
+                            <td style="text-align: center">
+                                @item.Assignments.Count()
+                            </td>
+                            break;
+                    }
                     <td>
                         @Html.DisplayFor(modelItem => item.EmployeeState)
                     </td>
