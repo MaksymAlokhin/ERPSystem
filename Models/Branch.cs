@@ -18,7 +18,7 @@ namespace ERPSystem.Models
         [Required]
         [Display(Name = "State")]
         public BranchState BranchState { get; set; }
-        
+
         //Navigation properties
         public ICollection<Employee> Employees { get; set; }
         public int? CompanyId { get; set; }

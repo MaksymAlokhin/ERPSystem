@@ -7,9 +7,11 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 using ERPSystem.Data;
 using ERPSystem.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace ERPSystem.Pages.Positions
 {
+    [Authorize(Policy = "AdminOnly")]
     public class DeleteModel : PageModel
     {
         private readonly ERPSystem.Data.ApplicationDbContext _context;

@@ -5,10 +5,11 @@ using System.Linq;
 using System.Threading.Tasks;
 using static ERPSystem.Data.SeedPosition;
 using static ERPSystem.Data.SeedEmployee;
+using static ERPSystem.Data.DbInitializer;
 
 namespace ERPSystem.Data
 {
-    public class SeedAssignment
+    public static class SeedAssignment
     {
         #region Create Assignments
         public static Assignment as0101 = new Assignment
@@ -99,7 +100,7 @@ namespace ERPSystem.Data
             FTE = 0.5,
             Employee = e009,
             AssignmentState = AssignmentState.Active,
-            Position = pos0109
+            Position = pos0109,
         };
         #endregion
         public static List<Assignment> data;

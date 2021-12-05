@@ -11,9 +11,11 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using System.IO;
+using Microsoft.AspNetCore.Authorization;
 
 namespace ERPSystem.Pages.Employees
 {
+    [Authorize(Policy = "AdminOnly")]
     public class CreateModel : PageModel
     {
         private readonly ERPSystem.Data.ApplicationDbContext _context;

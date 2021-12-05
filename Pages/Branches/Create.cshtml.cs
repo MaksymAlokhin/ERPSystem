@@ -8,9 +8,11 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using ERPSystem.Data;
 using ERPSystem.Models;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Authorization;
 
 namespace ERPSystem.Pages.Branches
 {
+    [Authorize(Policy = "AdminOnly")]
     public class CreateModel : PageModel
     {
         private readonly ERPSystem.Data.ApplicationDbContext _context;

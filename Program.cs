@@ -17,7 +17,22 @@ namespace ERPSystem
         {
             var host = CreateHostBuilder(args).Build();
 
-            SeedDb(host);
+            using (var scope = host.Services.CreateScope())
+            {
+                IServiceProvider services = scope.ServiceProvider;
+
+                try
+                {
+                    IConfiguration config = host.Services.GetRequiredService<IConfiguration>();
+                    String testUserPw = config["SeedUserPW"]; //appsettings.json "SeedUserPW": "aA!111"
+                    DbInitializer.Initialize(services, testUserPw).Wait();
+                }
+                catch (Exception ex)
+                {
+                    var logger = services.GetRequiredService<ILogger<Program>>();
+                    logger.LogError(ex, "An error occurred creating the DB.");
+                }
+            }
 
             host.Run();
         }
@@ -28,22 +43,5 @@ namespace ERPSystem
                 {
                     webBuilder.UseStartup<Startup>();
                 });
-        private static void SeedDb(IHost host)
-        {
-            using (var scope = host.Services.CreateScope())
-            {
-                var services = scope.ServiceProvider;
-                try
-                {
-                    var context = services.GetRequiredService<ApplicationDbContext>();
-                    DbInitializer.Initialize(context);
-                }
-                catch (Exception ex)
-                {
-                    var logger = services.GetRequiredService<ILogger<Program>>();
-                    logger.LogError(ex, "An error occurred creating the DB.");
-                }
-            }
-        }
     }
 }
