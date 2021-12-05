@@ -4,6 +4,18 @@ Demo App for Avenga<br />
 
 ![ERPSystem](wwwroot/images/avenga-erp-logo.png)<br /><br />
 
+Installation<br />
+----------------------
+Package Manager Console:<br />
+`Update-Database`
+.NET CLI:<br />
+`dotnet ef database update`
+Users:<br />
+- admin@avenga.com
+- employee@avenga.com
+Password:<br />
+- aA!111
+You might need to change the `DefaultConnection` string in `appsettings.json` file.
 Built With:<br />
 --------------------
 - ASP.NET Core 5
