@@ -12,9 +12,11 @@ using Microsoft.AspNetCore.Http;
 using System.IO;
 using Microsoft.AspNetCore.Hosting;
 using System.Text.Json;
+using Microsoft.AspNetCore.Authorization;
 
 namespace ERPSystem.Pages.Employees
 {
+    [Authorize(Policy = "AdminOnly")]
     public class EditModel : PageModel
     {
         private readonly ERPSystem.Data.ApplicationDbContext _context;

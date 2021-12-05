@@ -18,7 +18,7 @@ namespace ERPSystem.Models
         [Required]
         [Display(Name = "State")]
         public CompanyState CompanyState { get; set; }
-        
+
         //Navigation Properties
         [Display(Name = "General Manager")]
         public Employee GeneralManager { get; set; }
