@@ -308,6 +308,16 @@ namespace ERPSystem
                     }
                 }
             }
+            foreach (Employee employee in _context.Employees)
+            {
+                if (employee.EmployeeRole == EmployeeRole.Employee || employee.EmployeeRole == EmployeeRole.Mentor)
+                {
+                    if (employee.BranchId == null)
+                    {
+                        employee.EmployeeState = EmployeeState.Inactive;
+                    }
+                }
+            }
             foreach (Department department in _context.Departments)
             {
                 _context.Entry(department).Reference(d => d.DepartmentHead).Load();
