@@ -24,14 +24,28 @@
         <div class="col-sm-4">
             <div class="form-group">
                 <label asp-for="Assignment.StartDate" class="control-label"></label>
-                <input asp-for="Assignment.StartDate" class="form-control" min="@Model.Assignment.Position.StartDate.ToString("yyyy-MM-dd")" max="@Model.Assignment.Position.EndDate.AddDays(-1).ToString("yyyy-MM-dd")" />
+                @if (Model.Assignment.Position != null)
+                {
+                    <input asp-for="Assignment.StartDate" class="form-control" min="@Model.Assignment.Position.StartDate.ToString("yyyy-MM-dd")" max="@Model.Assignment.Position.EndDate.AddDays(-1).ToString("yyyy-MM-dd")" />
+                }
+                else
+                {
+                    <input asp-for="Assignment.StartDate" class="form-control" />
+                }
                 <span asp-validation-for="Assignment.StartDate" class="text-danger"></span>
             </div>
         </div>
         <div class="col-sm-4">
             <div class="form-group">
                 <label asp-for="Assignment.EndDate" class="control-label"></label>
-                <input asp-for="Assignment.EndDate" class="form-control" min="@Model.Assignment.Position.StartDate.AddDays(1).ToString("yyyy-MM-dd")" max="@Model.Assignment.Position.EndDate.ToString("yyyy-MM-dd")" />
+                @if (Model.Assignment.Position != null)
+                {
+                    <input asp-for="Assignment.EndDate" class="form-control" min="@Model.Assignment.Position.StartDate.AddDays(1).ToString("yyyy-MM-dd")" max="@Model.Assignment.Position.EndDate.ToString("yyyy-MM-dd")" />
+                }
+                else
+                {
+                    <input asp-for="Assignment.EndDate" class="form-control" />
+                }
                 <span asp-validation-for="Assignment.EndDate" class="text-danger"></span>
             </div>
         </div>
