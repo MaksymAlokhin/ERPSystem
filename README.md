@@ -7,14 +7,14 @@ Demo App for Avenga<br />
 Installation<br />
 ----------------------
 Package Manager Console:<br />
-`Update-Database`<br />
+`Update-Database`<br /><br />
 .NET CLI:<br />
-`dotnet ef database update`<br />
+`dotnet ef database update`<br /><br />
 Users:<br />
-- admin@avenga.com
-- employee@avenga.com<br />
+`admin@avenga.com`<br />
+`employee@avenga.com`<br /><br />
 Password:<br />
-- aA!111<br />
+`aA!111`<br /><br />
 You might need to change the `DefaultConnection` string in `appsettings.json` file.<br />
 Built With:<br />
 --------------------
