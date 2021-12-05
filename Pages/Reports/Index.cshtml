@@ -90,12 +90,15 @@
                 @{
                     var disabled = item.ReportState == Models.ReportState.Approved ? "disabled btn-light" : "btn-outline-primary";
                 }
-                <a asp-page-handler="Approve"
-                   asp-route-pageIndex="@Model.Report.PageIndex"
-                   asp-route-id="@item.Id"
-                   asp-route-sortOrder="@Model.CurrentSort"
-                   asp-route-currentFilter="@Model.CurrentFilter"
-                   class="btn @disabled" role="button" aria-pressed="true">Approve</a>
+                @if (HttpContext.User.Claims.Any(c => c.Type == "Admin" && c.Value == ""))
+                {
+                    <a asp-page-handler="Approve"
+                       asp-route-pageIndex="@Model.Report.PageIndex"
+                       asp-route-id="@item.Id"
+                       asp-route-sortOrder="@Model.CurrentSort"
+                       asp-route-currentFilter="@Model.CurrentFilter"
+                       class="btn @disabled" role="button" aria-pressed="true">Approve</a>
+                }
             </td>
             <td style="text-align: center">
                 <a asp-page="./Edit"
