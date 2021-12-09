@@ -59,7 +59,8 @@
                     @Html.DisplayNameFor(model => model.Report[0].ReportState)
                 </a>
             </th>
-            <th></th><th></th>
+            <th></th>
+            <th></th>
         </tr>
     </thead>
     <tbody>
@@ -67,63 +68,79 @@
             int i = 0;
             @foreach (var item in Model.Report)
             {
-        <tr style="@(item.ReportState == Models.ReportState.Submitted || item.ReportState == Models.ReportState.Draft? "color:gray;" : "")">
-            <th scope="row">
-                @Model.Report.SeqNum[i]
-            </th>
-            <td>
-                @Html.DisplayFor(modelItem => item.Assignment.Name)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Assignment.Employee.FullName)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Date)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Hours)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.ReportState)
-            </td>
-            <td>
-                @{
-                    var disabled = item.ReportState == Models.ReportState.Approved ? "disabled btn-light" : "btn-outline-primary";
-                }
-                @if (HttpContext.User.Claims.Any(c => c.Type == "Admin" && c.Value == ""))
-                {
-                    <a asp-page-handler="Approve"
-                       asp-route-pageIndex="@Model.Report.PageIndex"
-                       asp-route-id="@item.Id"
-                       asp-route-sortOrder="@Model.CurrentSort"
-                       asp-route-currentFilter="@Model.CurrentFilter"
-                       class="btn @disabled" role="button" aria-pressed="true">Approve</a>
-                }
-            </td>
-            <td style="text-align: center">
-                <a asp-page="./Edit"
-                   asp-route-id="@item.Id"
-                   asp-route-pageIndex="@Model.Report.PageIndex"
-                   asp-route-sortOrder="@Model.CurrentSort"
-                   asp-route-currentFilter="@Model.CurrentFilter">
-                    <i class="fas fa-pencil-alt fa-lg"></i>
-                </a> |
-                <a asp-page="./Details"
-                   asp-route-id="@item.Id"
-                   asp-route-pageIndex="@Model.Report.PageIndex"
-                   asp-route-sortOrder="@Model.CurrentSort"
-                   asp-route-currentFilter="@Model.CurrentFilter">
-                    <i class="fas fa-eye fa-lg"></i>
-                </a> |
-                <a asp-page="./Delete"
-                   asp-route-id="@item.Id"
-                   asp-route-pageIndex="@Model.Report.PageIndex"
-                   asp-route-sortOrder="@Model.CurrentSort"
-                   asp-route-currentFilter="@Model.CurrentFilter">
-                    <i class="fas fa-trash fa-lg text-danger"></i>
-                </a>
-            </td>
-        </tr>
+                <tr style="@(item.ReportState == Models.ReportState.Submitted || item.ReportState == Models.ReportState.Draft? "color:gray;" : "")">
+                    <th scope="row">
+                        @Model.Report.SeqNum[i]
+                    </th>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Assignment.Name)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Assignment.Employee.FullName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Date)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Hours)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.ReportState)
+                    </td>
+                    <td>
+                        @{
+                            var disabled = item.ReportState == Models.ReportState.Approved ? "disabled btn-light" : "btn-outline-primary";
+                        }
+                        @if (HttpContext.User.Claims.Any(c => c.Type == "Admin" && c.Value == ""))
+                        {
+                            <a asp-page-handler="Approve"
+                               asp-route-pageIndex="@Model.Report.PageIndex"
+                               asp-route-id="@item.Id"
+                               asp-route-sortOrder="@Model.CurrentSort"
+                               asp-route-currentFilter="@Model.CurrentFilter"
+                               class="btn @disabled" role="button" aria-pressed="true">Approve</a>
+                        }
+                    </td>
+                    @if (@HttpContext.User.Claims.Any(c => c.Type == "Admin"))
+                    {
+                        <td style="text-align: center">
+                            <a asp-page="./Edit"
+                               asp-route-id="@item.Id"
+                               asp-route-pageIndex="@Model.Report.PageIndex"
+                               asp-route-sortOrder="@Model.CurrentSort"
+                               asp-route-currentFilter="@Model.CurrentFilter">
+                                <i class="fas fa-pencil-alt fa-lg"></i>
+                            </a> |
+                            <a asp-page="./Details"
+                               asp-route-id="@item.Id"
+                               asp-route-pageIndex="@Model.Report.PageIndex"
+                               asp-route-sortOrder="@Model.CurrentSort"
+                               asp-route-currentFilter="@Model.CurrentFilter">
+                                <i class="fas fa-eye fa-lg"></i>
+                            </a> |
+                            <a asp-page="./Delete"
+                               asp-route-id="@item.Id"
+                               asp-route-pageIndex="@Model.Report.PageIndex"
+                               asp-route-sortOrder="@Model.CurrentSort"
+                               asp-route-currentFilter="@Model.CurrentFilter">
+                                <i class="fas fa-trash fa-lg text-danger"></i>
+                            </a>
+                        </td>
+                    }
+                    else
+                    {
+                        <td style="text-align: center">
+                            <a asp-page="./Details"
+                               asp-route-id="@item.Id"
+                               asp-route-pageIndex="@Model.Report.PageIndex"
+                               asp-route-sortOrder="@Model.CurrentSort"
+                               asp-route-currentFilter="@Model.CurrentFilter">
+                                <i class="fas fa-eye fa-lg"></i>
+                            </a>
+                        </td>
+
+                    }
+                </tr>
                 i++;
             }
 

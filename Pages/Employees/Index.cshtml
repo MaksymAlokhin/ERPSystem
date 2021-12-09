@@ -13,8 +13,10 @@
         <p>
             <div class="row">
                 <div class="col-sm-auto">
-
-                    <a asp-page="Create" asp-route-Role="@Model.Role"><i class="fas fa-user-plus fa-lg mr-1"></i></a>
+                    @if (@HttpContext.User.Claims.Any(c => c.Type == "Admin"))
+                    {
+                        <a asp-page="Create" asp-route-Role="@Model.Role"><i class="fas fa-user-plus fa-lg mr-1"></i></a>
+                    }
                     <input type="text" name="SearchString" value="@Model.CurrentFilter" placeholder="Find by name" />
                     <button type="submit" class="btn btn-default">
                         <i class="fa fa-search"></i>
@@ -170,32 +172,48 @@
                     <td>
                         @Html.DisplayFor(modelItem => item.EmployeeState)
                     </td>
-                    <td style="text-align: center">
-                        <a asp-page="./Edit"
-                           asp-route-id="@item.Id"
-                           asp-route-pageIndex="@Model.Employee.PageIndex"
-                           asp-route-sortOrder="@Model.CurrentSort"
-                           asp-route-currentFilter="@Model.CurrentFilter"
-                           asp-route-Role="@Model.Role">
-                            <i class="fas fa-pencil-alt fa-lg"></i>
-                        </a> |
-                        <a asp-page="./Details"
-                           asp-route-id="@item.Id"
-                           asp-route-pageIndex="@Model.Employee.PageIndex"
-                           asp-route-sortOrder="@Model.CurrentSort"
-                           asp-route-currentFilter="@Model.CurrentFilter"
-                           asp-route-Role="@Model.Role">
-                            <i class="fas fa-eye fa-lg"></i>
-                        </a> |
-                        <a asp-page="./Delete"
-                           asp-route-id="@item.Id"
-                           asp-route-pageIndex="@Model.Employee.PageIndex"
-                           asp-route-sortOrder="@Model.CurrentSort"
-                           asp-route-currentFilter="@Model.CurrentFilter"
-                           asp-route-Role="@Model.Role">
-                            <i class="fas fa-trash fa-lg text-danger"></i>
-                        </a>
-                    </td>
+                    @if (@HttpContext.User.Claims.Any(c => c.Type == "Admin"))
+                    {
+                        <td style="text-align: center">
+                            <a asp-page="./Edit"
+                               asp-route-id="@item.Id"
+                               asp-route-pageIndex="@Model.Employee.PageIndex"
+                               asp-route-sortOrder="@Model.CurrentSort"
+                               asp-route-currentFilter="@Model.CurrentFilter"
+                               asp-route-Role="@Model.Role">
+                                <i class="fas fa-pencil-alt fa-lg"></i>
+                            </a> |
+                            <a asp-page="./Details"
+                               asp-route-id="@item.Id"
+                               asp-route-pageIndex="@Model.Employee.PageIndex"
+                               asp-route-sortOrder="@Model.CurrentSort"
+                               asp-route-currentFilter="@Model.CurrentFilter"
+                               asp-route-Role="@Model.Role">
+                                <i class="fas fa-eye fa-lg"></i>
+                            </a> |
+                            <a asp-page="./Delete"
+                               asp-route-id="@item.Id"
+                               asp-route-pageIndex="@Model.Employee.PageIndex"
+                               asp-route-sortOrder="@Model.CurrentSort"
+                               asp-route-currentFilter="@Model.CurrentFilter"
+                               asp-route-Role="@Model.Role">
+                                <i class="fas fa-trash fa-lg text-danger"></i>
+                            </a>
+                        </td>
+                    }
+                    else
+                    {
+                        <td style="text-align: center">
+                            <a asp-page="./Details"
+                               asp-route-id="@item.Id"
+                               asp-route-pageIndex="@Model.Employee.PageIndex"
+                               asp-route-sortOrder="@Model.CurrentSort"
+                               asp-route-currentFilter="@Model.CurrentFilter"
+                               asp-route-Role="@Model.Role">
+                                <i class="fas fa-eye fa-lg"></i>
+                            </a>
+                        </td>
+                    }
                 </tr>
                 i++;
             }

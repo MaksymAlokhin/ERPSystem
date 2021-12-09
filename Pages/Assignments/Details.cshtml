@@ -70,13 +70,16 @@
     </dl>
 </div>
 <div>
-    <a asp-page="./Edit"
-       asp-route-id="@Model.Assignment.Id"
-       asp-route-pageIndex="@Model.PageIndex"
-       asp-route-sortOrder="@Model.CurrentSort"
-       asp-route-currentFilter="@Model.CurrentFilter">
-        Edit
-    </a> |
+    @if (@HttpContext.User.Claims.Any(c => c.Type == "Admin"))
+    {
+        <a asp-page="./Edit"
+           asp-route-id="@Model.Assignment.Id"
+           asp-route-pageIndex="@Model.PageIndex"
+           asp-route-sortOrder="@Model.CurrentSort"
+           asp-route-currentFilter="@Model.CurrentFilter">
+            Edit
+        </a><text> |</text>
+    }
     <a asp-page="./Index"
        asp-route-pageIndex="@Model.PageIndex"
        asp-route-sortOrder="@Model.CurrentSort"
