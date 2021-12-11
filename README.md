@@ -46,9 +46,9 @@ ToDo List:<br />
 
 Screenshots:<br />
 -----------
-![IdentityLogin](ERPSystem/Screenshots/IdentityLogin.png)<br /><br />
-![CompanyIndex](ERPSystem/Screenshots/CompanyIndex.png)<br /><br />
-![EmployeeIndex](ERPSystem/Screenshots/EmployeeIndex.png)<br /><br />
-![EmployeeEdit](ERPSystem/Screenshots/EmployeeEdit.png)<br /><br />
-![DepartmentDetails](ERPSystem/Screenshots/DepartmentDetails.png)<br /><br />
-![ReportIndex](ERPSystem/Screenshots/ReportIndex.png)<br /><br />
+![IdentityLogin](Screenshots/IdentityLogin.png)<br /><br />
+![CompanyIndex](Screenshots/CompanyIndex.png)<br /><br />
+![EmployeeIndex](Screenshots/EmployeeIndex.png)<br /><br />
+![EmployeeEdit](Screenshots/EmployeeEdit.png)<br /><br />
+![DepartmentDetails](Screenshots/DepartmentDetails.png)<br /><br />
+![ReportIndex](Screenshots/ReportIndex.png)<br /><br />
