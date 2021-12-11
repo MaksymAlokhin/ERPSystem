@@ -1,5 +1,5 @@
 .vs
-bin
-obj
-.tmp.driveupload
-ERPSystem/wwwroot/lib/font-awesome
+**/bin
+**/obj
+**/.tmp.driveupload
+**/font-awesome
