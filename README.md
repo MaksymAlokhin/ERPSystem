@@ -2,7 +2,7 @@
 =========
 Demo App for Avenga<br />
 
-![ERPSystem](wwwroot/images/avenga-erp-logo.png)<br /><br />
+![ERPSystem](ERPSystem/wwwroot/images/avenga-erp-logo.png)<br /><br />
 
 Installation<br />
 ----------------------
