@@ -1,23 +1,21 @@
 ﻿using ERPSystem.Data;
+using ERPSystem.Models;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using System;
-using System.Collections.Generic;
 using System.Data.Common;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ERPTest
 {
-    public class SharedDatabaseFixture : IDisposable
+    public class SQLServerSharedDatabaseFixture : IDisposable
     {
         private static readonly object _lock = new object();
         private static bool _databaseInitialized;
 
-        public SharedDatabaseFixture()
+        public SQLServerSharedDatabaseFixture()
         {
-            Connection = new SqlConnection(@"Server=(localdb)\mssqllocaldb;Database=EFTestSample;Trusted_Connection=True");
+            Connection = new SqlConnection(@"Server=(localdb)\mssqllocaldb;Database=EFTestSample;Trusted_Connection=True;MultipleActiveResultSets=true");
 
             Seed();
 
@@ -50,6 +48,7 @@ namespace ERPTest
                         context.Database.EnsureCreated();
 
                         DbInitializer.SeedDB(context);
+                        context.Dispose();
                     }
 
                     _databaseInitialized = true;
