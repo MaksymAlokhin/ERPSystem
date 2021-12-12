@@ -15,17 +15,94 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 
 namespace ERPTest
 {
-    [Collection("InMemory Collection")]
-    public class InMemoryCompanyTests
+    public class InMemoryCompanyTests : IDisposable
     {
-        public InMemoryCompanyTests(InMemorySharedDatabaseFixture fixture)
+        public InMemoryCompanyTests()
         {
-            PageSize = fixture.PageSize;
-            Fixture = fixture;
+            PageSize = 7;
+
+            var options = new DbContextOptionsBuilder<ApplicationDbContext>()
+            .UseInMemoryDatabase("CompanyTestDatabase")
+            .Options;
+
+            context = new ApplicationDbContext(options);
+            SeedCompany(context);
+
         }
-        public InMemorySharedDatabaseFixture Fixture;
-        protected DbContextOptions<ApplicationDbContext> ContextOptions { get; }
         private int PageSize;
+        public ApplicationDbContext context { get; private set; }
+
+        public void Dispose()
+        {
+            context.Dispose();
+        }
+        private void SeedCompany(ApplicationDbContext context)
+        {
+            context.Database.EnsureDeleted();
+            context.Database.EnsureCreated();
+
+            Company Walmart = new Company
+            {
+                Name = "Walmart",
+                CompanyState = CompanyState.Active
+            };
+            Company Amazon = new Company
+            {
+                Name = "Amazon",
+                CompanyState = CompanyState.Active
+            };
+            Company Apple = new Company
+            {
+                Name = "Apple",
+                CompanyState = CompanyState.Active
+            };
+            Company FordMotor = new Company
+            {
+                Name = "Ford Motor",
+                CompanyState = CompanyState.Active
+            };
+            Company FedEx = new Company
+            {
+                Name = "FedEx",
+                CompanyState = CompanyState.Active
+            };
+            Company BankOfAmerica = new Company
+            {
+                Name = "Bank of America",
+                CompanyState = CompanyState.Active
+            };
+            Company JohnsonAndJohnson = new Company
+            {
+                Name = "Johnson & Johnson",
+                CompanyState = CompanyState.Active
+            };
+            Company Facebook = new Company
+            {
+                Name = "Facebook",
+                CompanyState = CompanyState.Active
+            };
+            Company Alphabet = new Company
+            {
+                Name = "Alphabet",
+                CompanyState = CompanyState.Active
+            };
+            Company ExxonMobil = new Company
+            {
+                Name = "Exxon Mobil",
+                CompanyState = CompanyState.Active
+            };
+            context.Add(Walmart);
+            context.Add(Amazon);
+            context.Add(Apple);
+            context.Add(FordMotor);
+            context.Add(FedEx);
+            context.Add(BankOfAmerica);
+            context.Add(JohnsonAndJohnson);
+            context.Add(Facebook);
+            context.Add(Alphabet);
+            context.Add(ExxonMobil);
+            context.SaveChanges();
+        }
 
         //IndexModel
         [Fact]
@@ -33,8 +110,8 @@ namespace ERPTest
         {
             // Arrange
             var config = new ConfigurationBuilder().Build();
-            var pageModel = new ERPSystem.Pages.Companies.IndexModel(Fixture.context, config);
-            var expectedCompanies = Fixture.context.Companies;
+            var pageModel = new ERPSystem.Pages.Companies.IndexModel(context, config);
+            var expectedCompanies = context.Companies;
 
             // Act
             await pageModel.OnGetAsync(null, null, null, null);
@@ -52,8 +129,8 @@ namespace ERPTest
         {
             // Arrange
             var config = new ConfigurationBuilder().Build();
-            var pageModel = new ERPSystem.Pages.Companies.IndexModel(Fixture.context, config);
-            var expectedCompanies = Fixture.context.Companies;
+            var pageModel = new ERPSystem.Pages.Companies.IndexModel(context, config);
+            var expectedCompanies = context.Companies;
 
             // Act
             await pageModel.OnGetAsync("name_desc", null, null, null);
@@ -75,8 +152,8 @@ namespace ERPTest
         {
             // Arrange
             var config = new ConfigurationBuilder().Build();
-            var pageModel = new ERPSystem.Pages.Companies.IndexModel(Fixture.context, config);
-            var expectedCompanies = Fixture.context.Companies.Where(c => c.Name.Contains(searchString)
+            var pageModel = new ERPSystem.Pages.Companies.IndexModel(context, config);
+            var expectedCompanies = context.Companies.Where(c => c.Name.Contains(searchString)
                                          || c.GeneralManager.FirstName.Contains(searchString)
                                           || c.GeneralManager.LastName.Contains(searchString));
 
@@ -102,11 +179,11 @@ namespace ERPTest
         {
             // Arrange
             var config = new ConfigurationBuilder().Build();
-            var pageModel = new ERPSystem.Pages.Companies.IndexModel(Fixture.context, config);
+            var pageModel = new ERPSystem.Pages.Companies.IndexModel(context, config);
             List<Company> expectedCompanies = new List<Company>();
-            if (pageIndex > 0 && pageIndex <= Math.Ceiling((double)Fixture.context.Companies.Count() / (double)PageSize))
+            if (pageIndex > 0 && pageIndex <= Math.Ceiling((double)context.Companies.Count() / (double)PageSize))
             {
-                expectedCompanies = Fixture.context.Companies
+                expectedCompanies = context.Companies
                     .OrderBy(m => m.Name)
                     .Skip((pageIndex - 1) * PageSize)
                     .Take(PageSize)
@@ -115,7 +192,7 @@ namespace ERPTest
             }
             else
             {
-                expectedCompanies = Fixture.context.Companies
+                expectedCompanies = context.Companies
                     .OrderBy(m => m.Name)
                     .Take(PageSize)
                     .ToList(); ;
@@ -137,7 +214,7 @@ namespace ERPTest
         public async Task Company_CreateModel_OnPostAsync_CompanyIsAdded()
         {
             // Arrange
-            var pageModel = new ERPSystem.Pages.Companies.CreateModel(Fixture.context);
+            var pageModel = new ERPSystem.Pages.Companies.CreateModel(context);
             var expectedCompany = new Company
             {
                 Id = 11,
@@ -152,7 +229,7 @@ namespace ERPTest
             var result = await pageModel.OnPostAsync(null, null, null, null, null, null);
 
             // Assert
-            var actualCompany = await Fixture.context.Companies.Where(c => c.Name == "Test Company").FirstOrDefaultAsync();
+            var actualCompany = await context.Companies.Where(c => c.Name == "Test Company").FirstOrDefaultAsync();
             var object1Json = JsonSerializer.Serialize(expectedCompany);
             var object2Json = JsonSerializer.Serialize(actualCompany);
             Assert.Equal(object1Json, object2Json);
@@ -164,7 +241,7 @@ namespace ERPTest
         public async Task Company_CreateModel_OnPostAsync_IfInvalidModel_ReturnPageResult()
         {
             // Arrange
-            var pageModel = new ERPSystem.Pages.Companies.CreateModel(Fixture.context);
+            var pageModel = new ERPSystem.Pages.Companies.CreateModel(context);
             var expectedCompany = new Company
             {
                 Id = 11,
@@ -188,7 +265,7 @@ namespace ERPTest
         public async Task Company_DeleteModel_OnGetAsync_CompanyIsFetched()
         {
             // Arrange
-            var pageModel = new ERPSystem.Pages.Companies.DeleteModel(Fixture.context);
+            var pageModel = new ERPSystem.Pages.Companies.DeleteModel(context);
             var testId = 1;
 
             // Act
@@ -207,15 +284,15 @@ namespace ERPTest
         public async Task Company_DeleteModel_OnPostAsync_CompanyIsDeleted_WhenCompanyIsFound()
         {
             // Arrange
-            var pageModel = new ERPSystem.Pages.Companies.DeleteModel(Fixture.context);
+            var pageModel = new ERPSystem.Pages.Companies.DeleteModel(context);
             var testId = 1;
-            var expectedCompanies = Fixture.context.Companies.Where(c => c.Id != testId).ToList();
+            var expectedCompanies = context.Companies.Where(c => c.Id != testId).ToList();
 
             // Act
             var result = await pageModel.OnPostAsync(null, null, null, testId);
 
             // Assert
-            var actualCompanies = await Fixture.context.Companies.AsNoTracking().ToListAsync();
+            var actualCompanies = await context.Companies.AsNoTracking().ToListAsync();
             Assert.Equal(
                 expectedCompanies.OrderBy(m => m.Id).Select(m => m.Name),
                 actualCompanies.OrderBy(m => m.Id).Select(m => m.Name));
@@ -227,15 +304,15 @@ namespace ERPTest
         public async Task Company_DeleteModel_OnPostAsync_NoCompanyIsDeleted_WhenCompanyIsNotFound()
         {
             // Arrange
-            var pageModel = new ERPSystem.Pages.Companies.DeleteModel(Fixture.context);
+            var pageModel = new ERPSystem.Pages.Companies.DeleteModel(context);
             var testId = 11;
-            var expectedCompanies = Fixture.context.Companies;
+            var expectedCompanies = context.Companies;
 
             // Act
             var result = await pageModel.OnPostAsync(null, null, null, testId);
 
             // Assert
-            var actualCompanies = await Fixture.context.Companies.AsNoTracking().ToListAsync();
+            var actualCompanies = await context.Companies.AsNoTracking().ToListAsync();
             Assert.Equal(
                 expectedCompanies.OrderBy(m => m.Id).Select(m => m.Name),
                 actualCompanies.OrderBy(m => m.Id).Select(m => m.Name));
@@ -247,8 +324,8 @@ namespace ERPTest
         public async Task Company_EditModel_OnGetAsync_CompanyIsFetched()
         {
             // Arrange
-            var pageModel = new ERPSystem.Pages.Companies.EditModel(Fixture.context);
-            int testId = 2;
+            var pageModel = new ERPSystem.Pages.Companies.EditModel(context);
+            int testId = 1;
 
             // Act
             var result = await pageModel.OnGetAsync(null, null, null, testId);
@@ -257,7 +334,7 @@ namespace ERPTest
             Assert.IsType<PageResult>(result);
             var model = Assert.IsAssignableFrom<Company>(pageModel.Company);
             Assert.Equal(testId, model.Id);
-            Assert.Equal("Amazon", model.Name);
+            Assert.Equal("Walmart", model.Name);
             Assert.Equal(CompanyState.Active, model.CompanyState);
         }
 
@@ -266,7 +343,7 @@ namespace ERPTest
         public async Task Company_EditModel_OnPostAsync_CompanyIsModified()
         {
             // Arrange
-            var pageModel = new ERPSystem.Pages.Companies.EditModel(Fixture.context);
+            var pageModel = new ERPSystem.Pages.Companies.EditModel(context);
             int testId = 1;
             var expectedCompany = new Company
             {
@@ -290,7 +367,7 @@ namespace ERPTest
         public async Task Company_EditModel_OnPostAsync_IfInvalidModel_ReturnPageResult()
         {
             // Arrange
-            var pageModel = new ERPSystem.Pages.Companies.EditModel(Fixture.context);
+            var pageModel = new ERPSystem.Pages.Companies.EditModel(context);
             int testId = 1;
             var expectedCompany = new Company
             {
@@ -312,8 +389,8 @@ namespace ERPTest
         public async Task Company_DetailsModel_OnGetAsync_CompanyIsFetched_WhenCompanyIsFound()
         {
             // Arrange
-            var pageModel = new ERPSystem.Pages.Companies.DetailsModel(Fixture.context);
-            int testId = 2;
+            var pageModel = new ERPSystem.Pages.Companies.DetailsModel(context);
+            int testId = 1;
 
             // Act
             var result = await pageModel.OnGetAsync(null, null, null, testId);
@@ -322,7 +399,7 @@ namespace ERPTest
             Assert.IsType<PageResult>(result);
             var model = Assert.IsAssignableFrom<Company>(pageModel.Company);
             Assert.Equal(testId, model.Id);
-            Assert.Equal("Amazon", model.Name);
+            Assert.Equal("Walmart", model.Name);
             Assert.Equal(CompanyState.Active, model.CompanyState);
         }
 
@@ -331,7 +408,7 @@ namespace ERPTest
         public async Task Company_DetailsModel_OnGetAsync_NotFoundResultReturned_WhenCompanyIsNotFound()
         {
             // Arrange
-            var pageModel = new ERPSystem.Pages.Companies.DetailsModel(Fixture.context);
+            var pageModel = new ERPSystem.Pages.Companies.DetailsModel(context);
             int testId = 11;
 
             // Act

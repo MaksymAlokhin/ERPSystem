@@ -72,9 +72,7 @@ namespace ERPTest
                 StartDate = DateTime.Parse("2020-12-30"),
                 EndDate = DateTime.Parse("2023-03-05"),
                 FTE = 0.5,
-                AssignmentState = AssignmentState.Active,
-                Employee = context.Employees.Find(1),
-                Position = context.Positions.Find(1)
+                AssignmentState = AssignmentState.Active
             };
             Assignment as0102 = new Assignment
             {
@@ -82,9 +80,7 @@ namespace ERPTest
                 StartDate = DateTime.Parse("2020-07-10"),
                 EndDate = DateTime.Parse("2022-09-09"),
                 FTE = 0.5,
-                AssignmentState = AssignmentState.Active,
-                Employee = context.Employees.Find(2),
-                Position = context.Positions.Find(2)
+                AssignmentState = AssignmentState.Active
 
             };
             Assignment as0103 = new Assignment
@@ -93,9 +89,7 @@ namespace ERPTest
                 StartDate = DateTime.Parse("2021-05-10"),
                 EndDate = DateTime.Parse("2023-10-09"),
                 FTE = 0.5,
-                AssignmentState = AssignmentState.Active,
-                Employee = context.Employees.Find(3),
-                Position = context.Positions.Find(3)
+                AssignmentState = AssignmentState.Active
             };
             Assignment as0104 = new Assignment
             {
@@ -103,9 +97,7 @@ namespace ERPTest
                 StartDate = DateTime.Parse("2021-06-03"),
                 EndDate = DateTime.Parse("2022-03-14"),
                 FTE = 0.5,
-                AssignmentState = AssignmentState.Active,
-                Employee = context.Employees.Find(4),
-                Position = context.Positions.Find(4)
+                AssignmentState = AssignmentState.Active
             };
             Assignment as0105 = new Assignment
             {
@@ -113,9 +105,7 @@ namespace ERPTest
                 StartDate = DateTime.Parse("2020-09-23"),
                 EndDate = DateTime.Parse("2022-05-28"),
                 FTE = 0.5,
-                AssignmentState = AssignmentState.Active,
-                Employee = context.Employees.Find(5),
-                Position = context.Positions.Find(5)
+                AssignmentState = AssignmentState.Active
             };
             Assignment as0106 = new Assignment
             {
@@ -123,9 +113,7 @@ namespace ERPTest
                 StartDate = DateTime.Parse("2020-07-28"),
                 EndDate = DateTime.Parse("2022-08-03"),
                 FTE = 0.5,
-                AssignmentState = AssignmentState.Active,
-                Employee = context.Employees.Find(6),
-                Position = context.Positions.Find(6)
+                AssignmentState = AssignmentState.Active
             };
             Assignment as0107 = new Assignment
             {
@@ -133,9 +121,7 @@ namespace ERPTest
                 StartDate = DateTime.Parse("2020-04-29"),
                 EndDate = DateTime.Parse("2022-11-04"),
                 FTE = 0.5,
-                AssignmentState = AssignmentState.Active,
-                Employee = context.Employees.Find(7),
-                Position = context.Positions.Find(7)
+                AssignmentState = AssignmentState.Active
             };
             Assignment as0108 = new Assignment
             {
@@ -143,9 +129,7 @@ namespace ERPTest
                 StartDate = DateTime.Parse("2020-02-13"),
                 EndDate = DateTime.Parse("2022-02-10"),
                 FTE = 0.5,
-                AssignmentState = AssignmentState.Active,
-                Employee = context.Employees.Find(8),
-                Position = context.Positions.Find(8)
+                AssignmentState = AssignmentState.Active
             };
             Assignment as0109 = new Assignment
             {
@@ -153,9 +137,7 @@ namespace ERPTest
                 StartDate = DateTime.Parse("2021-08-18"),
                 EndDate = DateTime.Parse("2022-04-01"),
                 FTE = 0.5,
-                AssignmentState = AssignmentState.Active,
-                Employee = context.Employees.Find(9),
-                Position = context.Positions.Find(9)
+                AssignmentState = AssignmentState.Active
             };
 
             context.Add(as0101);
@@ -174,62 +156,52 @@ namespace ERPTest
             Branch WalmartNorthAmerica = new Branch
             {
                 Name = "Walmart North America",
-                BranchState = BranchState.Active,
-                Company = context.Companies.Find(1)
+                BranchState = BranchState.Active
             };
             Branch WalmartEurope = new Branch
             {
                 Name = "Walmart Europe",
-                BranchState = BranchState.Active,
-                Company = context.Companies.Find(2)
+                BranchState = BranchState.Active
             };
             Branch AmazonNorthAmerica = new Branch
             {
                 Name = "Amazon North America",
-                BranchState = BranchState.Active,
-                Company = context.Companies.Find(3)
+                BranchState = BranchState.Active
             };
             Branch AmazonEurope = new Branch
             {
                 Name = "Amazon Europe",
-                BranchState = BranchState.Active,
-                Company = context.Companies.Find(4)
+                BranchState = BranchState.Active
             };
             Branch AppleNorthAmerica = new Branch
             {
                 Name = "Apple North America",
-                BranchState = BranchState.Active,
-                Company = context.Companies.Find(5)
+                BranchState = BranchState.Active
             };
             Branch AppleEurope = new Branch
             {
                 Name = "Apple Europe",
-                BranchState = BranchState.Active,
-                Company = context.Companies.Find(6)
+                BranchState = BranchState.Active
             };
             Branch FordMotorNorthAmerica = new Branch
             {
                 Name = "Ford Motor North America",
-                BranchState = BranchState.Active,
-                Company = context.Companies.Find(7)
+                BranchState = BranchState.Active
             };
             Branch FordMotorEurope = new Branch
             {
                 Name = "Ford Motor Europe",
-                BranchState = BranchState.Active,
-                Company = context.Companies.Find(8)
+                BranchState = BranchState.Active
             };
             Branch FedExNorthAmerica = new Branch
             {
                 Name = "FedEx North America",
-                BranchState = BranchState.Active,
-                Company = context.Companies.Find(9)
+                BranchState = BranchState.Active
             };
             Branch FedExEurope = new Branch
             {
                 Name = "FedEx Europe",
-                BranchState = BranchState.Active,
-                Company = context.Companies.Find(10)
+                BranchState = BranchState.Active
             };
             context.Add(WalmartNorthAmerica);
             context.Add(WalmartEurope);
@@ -312,63 +284,53 @@ namespace ERPTest
             Department WalmartMarketing = new Department
             {
                 Name = "Walmart Marketing",
-                DepartmentState = DepartmentState.Active,
-                Company = context.Companies.Find(1)
+                DepartmentState = DepartmentState.Active
 
             };
             Department WalmartAccountingAndFinance = new Department
             {
                 Name = "Walmart Accounting and Finance",
-                DepartmentState = DepartmentState.Active,
-                Company = context.Companies.Find(2)
+                DepartmentState = DepartmentState.Active
             };
             Department AmazonMarketing = new Department
             {
                 Name = "Amazon Marketing",
-                DepartmentState = DepartmentState.Active,
-                Company = context.Companies.Find(3)
+                DepartmentState = DepartmentState.Active
             };
             Department AmazonAccountingAndFinance = new Department
             {
                 Name = "Amazon Accounting and Finance",
-                DepartmentState = DepartmentState.Active,
-                Company = context.Companies.Find(4)
+                DepartmentState = DepartmentState.Active
             };
             Department AppleMarketing = new Department
             {
                 Name = "Apple Marketing",
-                DepartmentState = DepartmentState.Active,
-                Company = context.Companies.Find(5)
+                DepartmentState = DepartmentState.Active
             };
             Department AppleAccountingAndFinance = new Department
             {
                 Name = "Apple Accounting and Finance",
-                DepartmentState = DepartmentState.Active,
-                Company = context.Companies.Find(6)
+                DepartmentState = DepartmentState.Active
             };
             Department FordMotorMarketing = new Department
             {
                 Name = "Ford Motor Marketing",
-                DepartmentState = DepartmentState.Active,
-                Company = context.Companies.Find(7)
+                DepartmentState = DepartmentState.Active
             };
             Department FordMotorAccountingAndFinance = new Department
             {
                 Name = "Ford Motor Accounting and Finance",
-                DepartmentState = DepartmentState.Active,
-                Company = context.Companies.Find(8)
+                DepartmentState = DepartmentState.Active
             };
             Department FedExMarketing = new Department
             {
                 Name = "FedExMarketing",
-                DepartmentState = DepartmentState.Active,
-                Company = context.Companies.Find(9)
+                DepartmentState = DepartmentState.Active
             };
             Department FedExAccountingAndFinance = new Department
             {
                 Name = "FedExAccounting and Finance",
-                DepartmentState = DepartmentState.Active,
-                Company = context.Companies.Find(10)
+                DepartmentState = DepartmentState.Active
             };
             context.Add(WalmartMarketing);
             context.Add(WalmartAccountingAndFinance);
@@ -391,12 +353,7 @@ namespace ERPTest
                 DateOfBirth = DateTime.Parse("1993-09-27"),
                 ProfilePicture = "female_001.jpg",
                 EmployeeState = EmployeeState.Active,
-                EmployeeRole = EmployeeRole.Employee,
-                Branch = context.Branches.Find(1),
-                Company = context.Companies.Find(1),
-                Project = context.Projects.Find(1),
-                Department = context.Departments.Find(1),
-                Assignments = new List<Assignment>()
+                EmployeeRole = EmployeeRole.Employee
             };
             Employee e002 = new Employee
             {
@@ -405,12 +362,7 @@ namespace ERPTest
                 DateOfBirth = DateTime.Parse("1987-09-27"),
                 ProfilePicture = "female_002.jpg",
                 EmployeeState = EmployeeState.Active,
-                EmployeeRole = EmployeeRole.Employee,
-                Branch = context.Branches.Find(2),
-                Company = context.Companies.Find(2),
-                Project = context.Projects.Find(2),
-                Department = context.Departments.Find(2),
-                Assignments = new List<Assignment>()
+                EmployeeRole = EmployeeRole.Employee
             };
             Employee e003 = new Employee
             {
@@ -419,12 +371,7 @@ namespace ERPTest
                 DateOfBirth = DateTime.Parse("1990-11-18"),
                 ProfilePicture = "male_001.jpg",
                 EmployeeState = EmployeeState.Active,
-                EmployeeRole = EmployeeRole.Employee,
-                Branch = context.Branches.Find(3),
-                Company = context.Companies.Find(3),
-                Project = context.Projects.Find(3),
-                Department = context.Departments.Find(3),
-                Assignments = new List<Assignment>()
+                EmployeeRole = EmployeeRole.Employee
             };
             Employee e004 = new Employee
             {
@@ -433,12 +380,7 @@ namespace ERPTest
                 DateOfBirth = DateTime.Parse("1995-09-11"),
                 ProfilePicture = "male_002.jpg",
                 EmployeeState = EmployeeState.Active,
-                EmployeeRole = EmployeeRole.Employee,
-                Branch = context.Branches.Find(4),
-                Company = context.Companies.Find(4),
-                Project = context.Projects.Find(4),
-                Department = context.Departments.Find(4),
-                Assignments = new List<Assignment>()
+                EmployeeRole = EmployeeRole.Employee
             };
             Employee e005 = new Employee
             {
@@ -447,12 +389,7 @@ namespace ERPTest
                 DateOfBirth = DateTime.Parse("1984-07-19"),
                 ProfilePicture = "female_003.jpg",
                 EmployeeState = EmployeeState.Active,
-                EmployeeRole = EmployeeRole.Employee,
-                Branch = context.Branches.Find(5),
-                Company = context.Companies.Find(5),
-                Project = context.Projects.Find(5),
-                Department = context.Departments.Find(5),
-                Assignments = new List<Assignment>()
+                EmployeeRole = EmployeeRole.Employee
             };
             Employee e006 = new Employee
             {
@@ -461,12 +398,7 @@ namespace ERPTest
                 DateOfBirth = DateTime.Parse("1994-10-04"),
                 ProfilePicture = "male_003.jpg",
                 EmployeeState = EmployeeState.Active,
-                EmployeeRole = EmployeeRole.Employee,
-                Branch = context.Branches.Find(6),
-                Company = context.Companies.Find(6),
-                Project = context.Projects.Find(6),
-                Department = context.Departments.Find(6),
-                Assignments = new List<Assignment>()
+                EmployeeRole = EmployeeRole.Employee
             };
             Employee e007 = new Employee
             {
@@ -475,12 +407,7 @@ namespace ERPTest
                 DateOfBirth = DateTime.Parse("1996-04-22"),
                 ProfilePicture = "male_004.jpg",
                 EmployeeState = EmployeeState.Active,
-                EmployeeRole = EmployeeRole.Employee,
-                Branch = context.Branches.Find(7),
-                Company = context.Companies.Find(7),
-                Project = context.Projects.Find(7),
-                Department = context.Departments.Find(7),
-                Assignments = new List<Assignment>()
+                EmployeeRole = EmployeeRole.Employee
             };
             Employee e008 = new Employee
             {
@@ -489,12 +416,7 @@ namespace ERPTest
                 DateOfBirth = DateTime.Parse("1993-04-16"),
                 ProfilePicture = "male_005.jpg",
                 EmployeeState = EmployeeState.Active,
-                EmployeeRole = EmployeeRole.Employee,
-                Branch = context.Branches.Find(8),
-                Company = context.Companies.Find(8),
-                Project = context.Projects.Find(8),
-                Department = context.Departments.Find(8),
-                Assignments = new List<Assignment>()
+                EmployeeRole = EmployeeRole.Employee
             };
             Employee e009 = new Employee
             {
@@ -503,12 +425,7 @@ namespace ERPTest
                 DateOfBirth = DateTime.Parse("1988-03-15"),
                 ProfilePicture = "male_006.jpg",
                 EmployeeState = EmployeeState.Active,
-                EmployeeRole = EmployeeRole.Employee,
-                Branch = context.Branches.Find(9),
-                Company = context.Companies.Find(9),
-                Project = context.Projects.Find(9),
-                Department = context.Departments.Find(9),
-                Assignments = new List<Assignment>()
+                EmployeeRole = EmployeeRole.Employee
             };
             Employee e010 = new Employee
             {
@@ -517,12 +434,7 @@ namespace ERPTest
                 DateOfBirth = DateTime.Parse("1997-07-30"),
                 ProfilePicture = "female_004.jpg",
                 EmployeeState = EmployeeState.Active,
-                EmployeeRole = EmployeeRole.Employee,
-                Branch = context.Branches.Find(10),
-                Company = context.Companies.Find(10),
-                Project = context.Projects.Find(10),
-                Department = context.Departments.Find(10),
-                Assignments = new List<Assignment>()
+                EmployeeRole = EmployeeRole.Employee
             };
 
             context.Add(e001);
@@ -536,18 +448,6 @@ namespace ERPTest
             context.Add(e009);
             context.Add(e010);
             context.SaveChanges();
-
-            e001.Mentors = new List<Employee> { context.Employees.Find(10) };
-            e002.Mentors = new List<Employee> { context.Employees.Find(1) };
-            e003.Mentors = new List<Employee> { context.Employees.Find(2) };
-            e004.Mentors = new List<Employee> { context.Employees.Find(3) };
-            e005.Mentors = new List<Employee> { context.Employees.Find(4) };
-            e006.Mentors = new List<Employee> { context.Employees.Find(5) };
-            e007.Mentors = new List<Employee> { context.Employees.Find(6) };
-            e008.Mentors = new List<Employee> { context.Employees.Find(7) };
-            e009.Mentors = new List<Employee> { context.Employees.Find(8) };
-            e010.Mentors = new List<Employee> { context.Employees.Find(9) };
-            context.SaveChanges();
         }
         private void SeedPosition(ApplicationDbContext context)
         {
@@ -556,72 +456,63 @@ namespace ERPTest
                 Name = "Operations Manager",
                 StartDate = DateTime.Parse("2020-12-30"),
                 EndDate = DateTime.Parse("2023-03-05"),
-                PositionState = PositionState.Active,
-                Project = context.Projects.Find(1)
+                PositionState = PositionState.Active
             };
             Position pos0102 = new Position
             {
                 Name = "Quality Control",
                 StartDate = DateTime.Parse("2020-07-10"),
                 EndDate = DateTime.Parse("2022-09-09"),
-                PositionState = PositionState.Active,
-                Project = context.Projects.Find(2)
+                PositionState = PositionState.Active
             };
             Position pos0103 = new Position
             {
                 Name = "Accountant",
                 StartDate = DateTime.Parse("2021-05-10"),
                 EndDate = DateTime.Parse("2023-10-09"),
-                PositionState = PositionState.Active,
-                Project = context.Projects.Find(3)
+                PositionState = PositionState.Active
             };
             Position pos0104 = new Position
             {
                 Name = "Office Manager",
                 StartDate = DateTime.Parse("2021-06-03"),
                 EndDate = DateTime.Parse("2022-03-14"),
-                PositionState = PositionState.Active,
-                Project = context.Projects.Find(4)
+                PositionState = PositionState.Active
             };
             Position pos0105 = new Position
             {
                 Name = "Receptionist",
                 StartDate = DateTime.Parse("2020-09-23"),
                 EndDate = DateTime.Parse("2022-05-28"),
-                PositionState = PositionState.Active,
-                Project = context.Projects.Find(5)
+                PositionState = PositionState.Active
             };
             Position pos0106 = new Position
             {
                 Name = "Supervisor",
                 StartDate = DateTime.Parse("2020-07-28"),
                 EndDate = DateTime.Parse("2022-08-03"),
-                PositionState = PositionState.Active,
-                Project = context.Projects.Find(6)
+                PositionState = PositionState.Active
             };
             Position pos0107 = new Position
             {
                 Name = "Marketing Manager",
                 StartDate = DateTime.Parse("2020-04-29"),
                 EndDate = DateTime.Parse("2022-11-04"),
-                PositionState = PositionState.Active,
-                Project = context.Projects.Find(7)
+                PositionState = PositionState.Active
             };
             Position pos0108 = new Position
             {
                 Name = "Purchasing Manager",
                 StartDate = DateTime.Parse("2020-02-13"),
                 EndDate = DateTime.Parse("2022-02-10"),
-                PositionState = PositionState.Active,
-                Project = context.Projects.Find(8)
+                PositionState = PositionState.Active
             };
             Position pos0109 = new Position
             {
                 Name = "Shipping Manager",
                 StartDate = DateTime.Parse("2021-08-18"),
                 EndDate = DateTime.Parse("2022-04-01"),
-                PositionState = PositionState.Active,
-                Project = context.Projects.Find(9)
+                PositionState = PositionState.Active
             };
             context.Add(pos0101);
             context.Add(pos0102);
@@ -641,80 +532,70 @@ namespace ERPTest
                 Name = "Alpha",
                 StartDate = DateTime.Parse("2020-12-30"),
                 EndDate = DateTime.Parse("2023-03-05"),
-                ProjectState = ProjectState.Active,
-                Department = context.Departments.Find(1)
+                ProjectState = ProjectState.Active
             };
             Project p002 = new Project
             {
                 Name = "Beta",
                 StartDate = DateTime.Parse("2020-07-10"),
                 EndDate = DateTime.Parse("2022-09-09"),
-                ProjectState = ProjectState.Active,
-                Department = context.Departments.Find(2)
+                ProjectState = ProjectState.Active
             };
             Project p003 = new Project
             {
                 Name = "Gamma",
                 StartDate = DateTime.Parse("2021-05-10"),
                 EndDate = DateTime.Parse("2023-10-09"),
-                ProjectState = ProjectState.Active,
-                Department = context.Departments.Find(3)
+                ProjectState = ProjectState.Active
             };
             Project p004 = new Project
             {
                 Name = "Delta",
                 StartDate = DateTime.Parse("2021-06-03"),
                 EndDate = DateTime.Parse("2022-03-14"),
-                ProjectState = ProjectState.Active,
-                Department = context.Departments.Find(4)
+                ProjectState = ProjectState.Active
             };
             Project p005 = new Project
             {
                 Name = "Epsilon",
                 StartDate = DateTime.Parse("2020-09-23"),
                 EndDate = DateTime.Parse("2022-05-28"),
-                ProjectState = ProjectState.Active,
-                Department = context.Departments.Find(5)
+                ProjectState = ProjectState.Active
             };
             Project p006 = new Project
             {
                 Name = "Zeta",
                 StartDate = DateTime.Parse("2020-07-28"),
                 EndDate = DateTime.Parse("2022-08-03"),
-                ProjectState = ProjectState.Active,
-                Department = context.Departments.Find(6)
+                ProjectState = ProjectState.Active
             };
             Project p007 = new Project
             {
                 Name = "Kappa",
                 StartDate = DateTime.Parse("2020-04-29"),
                 EndDate = DateTime.Parse("2022-11-04"),
-                ProjectState = ProjectState.Active,
-                Department = context.Departments.Find(7)
+                ProjectState = ProjectState.Active
             };
             Project p008 = new Project
             {
                 Name = "Omicron",
                 StartDate = DateTime.Parse("2020-02-13"),
                 EndDate = DateTime.Parse("2022-02-10"),
-                ProjectState = ProjectState.Active,
-                Department = context.Departments.Find(8)
+                ProjectState = ProjectState.Active
             };
             Project p009 = new Project
             {
                 Name = "Sigma",
                 StartDate = DateTime.Parse("2021-08-18"),
                 EndDate = DateTime.Parse("2022-04-01"),
-                ProjectState = ProjectState.Active,
-                Department = context.Departments.Find(9)
+                ProjectState = ProjectState.Active
             };
             Project p010 = new Project
             {
                 Name = "Tau",
                 StartDate = DateTime.Parse("2019-11-13"),
                 EndDate = DateTime.Parse("2023-07-01"),
-                ProjectState = ProjectState.Active,
-                Department = context.Departments.Find(10)
+                ProjectState = ProjectState.Active
             };
             context.Add(p001);
             context.Add(p002);
@@ -734,64 +615,55 @@ namespace ERPTest
             {
                 Hours = 160.0,
                 Date = DateTime.Parse("2021-09-07"),
-                ReportState = ReportState.Approved,
-                Assignment = context.Assignments.Find(1)
+                ReportState = ReportState.Approved
             };
             Report r002 = new Report
             {
                 Hours = 216.0,
                 Date = DateTime.Parse("2021-06-13"),
-                ReportState = ReportState.Approved,
-                Assignment = context.Assignments.Find(2)
+                ReportState = ReportState.Approved
             };
             Report r003 = new Report
             {
                 Hours = 88.0,
                 Date = DateTime.Parse("2021-08-29"),
-                ReportState = ReportState.Approved,
-                Assignment = context.Assignments.Find(3)
+                ReportState = ReportState.Approved
             };
             Report r004 = new Report
             {
                 Hours = 56.0,
                 Date = DateTime.Parse("2021-06-23"),
-                ReportState = ReportState.Submitted,
-                Assignment = context.Assignments.Find(4)
+                ReportState = ReportState.Submitted
             };
             Report r005 = new Report
             {
                 Hours = 144.0,
                 Date = DateTime.Parse("2021-02-26"),
-                ReportState = ReportState.Submitted,
-                Assignment = context.Assignments.Find(5)
+                ReportState = ReportState.Submitted
             };
             Report r006 = new Report
             {
                 Hours = 24.0,
                 Date = DateTime.Parse("2021-11-17"),
-                ReportState = ReportState.Approved,
-                Assignment = context.Assignments.Find(6)
+                ReportState = ReportState.Approved
             };
             Report r007 = new Report
             {
                 Hours = 40.0,
                 Date = DateTime.Parse("2021-02-16"),
-                ReportState = ReportState.Approved,
-                Assignment = context.Assignments.Find(7)
+                ReportState = ReportState.Approved
             };
             Report r008 = new Report
             {
                 Hours = 72.0,
                 Date = DateTime.Parse("2021-01-05"),
-                ReportState = ReportState.Approved,
-                Assignment = context.Assignments.Find(8)
+                ReportState = ReportState.Approved
             };
             Report r009 = new Report
             {
                 Hours = 248.0,
                 Date = DateTime.Parse("2021-09-17"),
-                ReportState = ReportState.Submitted,
-                Assignment = context.Assignments.Find(9)
+                ReportState = ReportState.Submitted
             };
             context.Add(r001);
             context.Add(r002);
