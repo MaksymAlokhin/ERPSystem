@@ -13,19 +13,16 @@ using System.Text.Json;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
-namespace ERPTest
+namespace AssignmentTest
 {
-    public class InMemoryAssignmentTests : IDisposable
+    public abstract class AssignmentTests : IDisposable
     {
-        public InMemoryAssignmentTests()
+        public AssignmentTests(DbContextOptions<ApplicationDbContext> contextOptions)
         {
             PageSize = 7;
 
-            var options = new DbContextOptionsBuilder<ApplicationDbContext>()
-            .UseInMemoryDatabase("AssignmentTestDatabase")
-            .Options;
+            context = new ApplicationDbContext(contextOptions);
 
-            context = new ApplicationDbContext(options);
             SeedAssignment(context);
         }
         public ApplicationDbContext context { get; private set; }
@@ -240,7 +237,6 @@ namespace ERPTest
             var pageModel = new ERPSystem.Pages.Assignments.CreateModel(context);
             var expectedAssignment = new Assignment
             {
-                Id = 10,
                 Name = "Test Assignment",
                 StartDate = DateTime.Parse("2020-12-30"),
                 EndDate = DateTime.Parse("2023-03-05"),
@@ -254,9 +250,11 @@ namespace ERPTest
 
             // Assert
             var actualAssignment = await context.Assignments.Where(c => c.Name == "Test Assignment").FirstOrDefaultAsync();
-            var object1Json = JsonSerializer.Serialize(expectedAssignment);
-            var object2Json = JsonSerializer.Serialize(actualAssignment);
-            Assert.Equal(object1Json, object2Json);
+            Assert.Equal(expectedAssignment.Name, actualAssignment.Name);
+            Assert.Equal(expectedAssignment.StartDate, actualAssignment.StartDate);
+            Assert.Equal(expectedAssignment.EndDate, actualAssignment.EndDate);
+            Assert.Equal(expectedAssignment.FTE, actualAssignment.FTE);
+            Assert.Equal(expectedAssignment.AssignmentState, actualAssignment.AssignmentState);
             Assert.IsType<RedirectToPageResult>(result);
         }
 
