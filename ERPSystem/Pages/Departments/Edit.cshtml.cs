@@ -104,48 +104,51 @@ namespace ERPSystem.Pages.Departments
 
             DepartmentState InitialDepartmentState = DepartmentToUpdate.DepartmentState;
 
+            //Refactored because TryUpdateModelAsync fails while unit testing:
+            //https://github.com/dotnet/AspNetCore.Docs/issues/14009
+            //if (await TryUpdateModelAsync<Department>(DepartmentToUpdate, "Department",
+            //    d => d.Name, d => d.DepartmentState, d => d.CompanyId))
 
-            if (await TryUpdateModelAsync<Department>(DepartmentToUpdate, "Department",
-                d => d.Name, d => d.DepartmentState, d => d.CompanyId))
+            DepartmentToUpdate.Name = Department.Name;
+            DepartmentToUpdate.DepartmentState = Department.DepartmentState;
+            DepartmentToUpdate.CompanyId = Department.CompanyId;
+
+            Employee dh = await _context.Employees
+        .Where(e => e.EmployeeRole == EmployeeRole.DepartmentHead && e.Id == DepartmentHeadId)
+        .FirstOrDefaultAsync();
+
+            if (dh != null)
             {
-
-                Employee dh = await _context.Employees
-                        .Where(e => e.EmployeeRole == EmployeeRole.DepartmentHead && e.Id == DepartmentHeadId)
-                        .FirstOrDefaultAsync();
-
-                if (dh != null)
+                if (dh.DepartmentId != null)
                 {
-                    if (dh.DepartmentId != null)
+                    if (dh.DepartmentId != id)
                     {
-                        if (dh.DepartmentId != id)
+                        var oldDepartment = await _context.Departments.FindAsync(dh.DepartmentId);
+                        if (oldDepartment.DepartmentState != DepartmentState.Inactive)
                         {
-                            var oldDepartment = await _context.Departments.FindAsync(dh.DepartmentId);
-                            if (oldDepartment.DepartmentState != DepartmentState.Inactive)
-                            {
-                                oldDepartment.DepartmentState = DepartmentState.Inactive;
-                                DepartmentsWithModifiedState.Add(oldDepartment.Id);
-                            }
+                            oldDepartment.DepartmentState = DepartmentState.Inactive;
+                            DepartmentsWithModifiedState.Add(oldDepartment.Id);
                         }
                     }
-                    dh.DepartmentId = id;
                 }
-                else
-                {
-                    if (DepartmentToUpdate.DepartmentHead != null)
-                    {
-                        Employee formerDh = await _context.Employees
-                                .Where(e => e.EmployeeRole == EmployeeRole.DepartmentHead 
-                                    && e.Id == DepartmentToUpdate.DepartmentHead.Id)
-                                .FirstOrDefaultAsync();
-                        formerDh.DepartmentId = null;
-                    }
-                }
-
-                if (DepartmentToUpdate.DepartmentState != InitialDepartmentState)
-                    DepartmentsWithModifiedState.Add(DepartmentToUpdate.Id);
-
-                UpdateProjects(SelectedProjects, DepartmentToUpdate);
+                dh.DepartmentId = id;
             }
+            else
+            {
+                if (DepartmentToUpdate.DepartmentHead != null)
+                {
+                    Employee formerDh = await _context.Employees
+                            .Where(e => e.EmployeeRole == EmployeeRole.DepartmentHead
+                                && e.Id == DepartmentToUpdate.DepartmentHead.Id)
+                            .FirstOrDefaultAsync();
+                    formerDh.DepartmentId = null;
+                }
+            }
+
+            if (DepartmentToUpdate.DepartmentState != InitialDepartmentState)
+                DepartmentsWithModifiedState.Add(DepartmentToUpdate.Id);
+
+            UpdateProjects(SelectedProjects, DepartmentToUpdate);
 
             try
             {
@@ -182,7 +185,7 @@ namespace ERPSystem.Pages.Departments
         private void UpdateProjects(int[] SelectedProjects, Department Department)
         {
             {
-                if (SelectedProjects.Length == 0)
+                if (SelectedProjects == null || SelectedProjects.Length == 0)
                 {
                     Department.Projects = new List<Project>();
                     return;

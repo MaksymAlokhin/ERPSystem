@@ -102,46 +102,52 @@ namespace ERPSystem.Pages.Projects
 
             UpdatePositions(SelectedPositions, ProjectToUpdate);
 
-            if (await TryUpdateModelAsync<Project>(
-                ProjectToUpdate,
-                "Project",
-                p => p.Name, p => p.ProjectState, p => p.StartDate, p => p.EndDate, p => p.DepartmentId))
+            //Refactored because TryUpdateModelAsync fails while unit testing:
+            //https://github.com/dotnet/AspNetCore.Docs/issues/14009
+            //if (await TryUpdateModelAsync<Project>(
+            //    ProjectToUpdate,
+            //    "Project",
+            //    p => p.Name, p => p.ProjectState, p => p.StartDate, p => p.EndDate, p => p.DepartmentId))
+
+            ProjectToUpdate.Name = Project.Name;
+            ProjectToUpdate.ProjectState = Project.ProjectState;
+            ProjectToUpdate.StartDate = Project.StartDate;
+            ProjectToUpdate.EndDate = Project.EndDate;
+            ProjectToUpdate.DepartmentId = Project.DepartmentId;
+
+            Employee pm = await _context.Employees
+                .Where(e => e.EmployeeRole == EmployeeRole.ProjectManager && e.Id == ProjectManagerId)
+                .FirstOrDefaultAsync();
+            if (pm != null)
             {
-                Employee pm = await _context.Employees
-                        .Where(e => e.EmployeeRole == EmployeeRole.ProjectManager && e.Id == ProjectManagerId)
-                        .FirstOrDefaultAsync();
-                
-                if (pm != null)
+                if (pm.ProjectId != null)
                 {
-                    if (pm.ProjectId != null)
+                    if (pm.ProjectId != id)
                     {
-                        if (pm.ProjectId != id)
+                        var oldProject = await _context.Projects.FindAsync(pm.ProjectId);
+                        if (oldProject.ProjectState != ProjectState.Inactive)
                         {
-                            var oldProject = await _context.Projects.FindAsync(pm.ProjectId);
-                            if (oldProject.ProjectState != ProjectState.Inactive)
-                            {
-                                oldProject.ProjectState = ProjectState.Inactive;
-                                ProjectsWithModifiedState.Add(oldProject.Id);
-                            }
+                            oldProject.ProjectState = ProjectState.Inactive;
+                            ProjectsWithModifiedState.Add(oldProject.Id);
                         }
                     }
-                    pm.ProjectId = id;
                 }
-                else
-                {
-                    if (ProjectToUpdate.ProjectManager != null)
-                    {
-                        Employee formerPm = await _context.Employees
-                                .Where(e => e.EmployeeRole == EmployeeRole.ProjectManager 
-                                    && e.Id == ProjectToUpdate.ProjectManager.Id)
-                                .FirstOrDefaultAsync();
-                        formerPm.ProjectId = null;
-                    }
-                }
-
-                if (ProjectToUpdate.ProjectState != InitialProjectState)
-                    ProjectsWithModifiedState.Add(ProjectToUpdate.Id);
+                pm.ProjectId = id;
             }
+            else
+            {
+                if (ProjectToUpdate.ProjectManager != null)
+                {
+                    Employee formerPm = await _context.Employees
+                            .Where(e => e.EmployeeRole == EmployeeRole.ProjectManager
+                                && e.Id == ProjectToUpdate.ProjectManager.Id)
+                            .FirstOrDefaultAsync();
+                    formerPm.ProjectId = null;
+                }
+            }
+
+            if (ProjectToUpdate.ProjectState != InitialProjectState)
+                ProjectsWithModifiedState.Add(ProjectToUpdate.Id);
 
             try
             {
@@ -178,7 +184,7 @@ namespace ERPSystem.Pages.Projects
         private void UpdatePositions(int[] SelectedPositions, Project Project)
         {
             {
-                if (SelectedPositions.Length == 0)
+                if (SelectedPositions == null || SelectedPositions.Length == 0)
                 {
                     Project.Positions = new List<Position>();
                     return;

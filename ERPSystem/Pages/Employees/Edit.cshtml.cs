@@ -546,52 +546,52 @@ namespace ERPSystem.Pages.Employees
 
             }
 
-            //    if (await TryUpdateModelAsync<Employee>(
-            //EmployeeToUpdate,
-            //"Employee",
-            //e => e.FirstName, e => e.LastName, e => e.EmployeeRole,
-            //e => e.EmployeeState, e => e.DateOfBirth))
+            //Refactored because TryUpdateModelAsync fails while unit testing:
+            //https://github.com/dotnet/AspNetCore.Docs/issues/14009
+            //if (await TryUpdateModelAsync<Employee>(
+            //    EmployeeToUpdate,
+            //    "Employee",
+            //    e => e.FirstName, e => e.LastName, e => e.EmployeeRole,
+            //    e => e.EmployeeState, e => e.DateOfBirth))
+            //return Page();
 
-            if (await TryUpdateModelAsync<Employee>(
-                EmployeeToUpdate,
-                "Employee",
-                e => e.FirstName, e => e.LastName, e => e.EmployeeRole,
-                e => e.EmployeeState, e => e.DateOfBirth))
+            EmployeeToUpdate.FirstName = Employee.FirstName;
+            EmployeeToUpdate.LastName = Employee.LastName;
+            EmployeeToUpdate.EmployeeRole = Employee.EmployeeRole;
+            EmployeeToUpdate.EmployeeState = Employee.EmployeeState;
+            EmployeeToUpdate.DateOfBirth = Employee.DateOfBirth;
+
+            try
             {
-                try
+                await _context.SaveChangesAsync();
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                if (!EmployeeExists(Employee.Id))
                 {
-                    await _context.SaveChangesAsync();
+                    return NotFound();
                 }
-                catch (DbUpdateConcurrencyException)
+                else
                 {
-                    if (!EmployeeExists(Employee.Id))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
+                    throw;
                 }
-
-                Utility utility = new Utility(_context);
-                utility.UpdateCompanyDependants(CompaniesWithModifiedState);
-                utility.UpdateDepartmentDependants(DepartmentsWithModifiedState);
-                utility.UpdateProjectDependants(ProjectsWithModifiedState);
-                utility.UpdateWhenParentIsNull();
-
-                Role = EmployeeToUpdate.EmployeeRole;
-
-                return RedirectToPage("./Index", new
-                {
-                    pageIndex = $"{pageIndex}",
-                    sortOrder = $"{sortOrder}",
-                    currentFilter = $"{currentFilter}",
-                    Role = $"{Role}"
-                });
             }
 
-            return Page();
+            Utility utility = new Utility(_context);
+            utility.UpdateCompanyDependants(CompaniesWithModifiedState);
+            utility.UpdateDepartmentDependants(DepartmentsWithModifiedState);
+            utility.UpdateProjectDependants(ProjectsWithModifiedState);
+            utility.UpdateWhenParentIsNull();
+
+            Role = EmployeeToUpdate.EmployeeRole;
+
+            return RedirectToPage("./Index", new
+            {
+                pageIndex = $"{pageIndex}",
+                sortOrder = $"{sortOrder}",
+                currentFilter = $"{currentFilter}",
+                Role = $"{Role}"
+            });
         }
 
         private bool EmployeeExists(int id)
@@ -602,7 +602,7 @@ namespace ERPSystem.Pages.Employees
         private void UpdateMentors(int[] SelectedMentors, Employee Employee)
         {
             {
-                if (SelectedMentors.Length == 0)
+                if (SelectedMentors == null || SelectedMentors.Length == 0)
                 {
                     Employee.Mentors = new List<Employee>();
                     return;
@@ -642,7 +642,7 @@ namespace ERPSystem.Pages.Employees
         private void UpdateAssignments(int[] SelectedAssignments, Employee Employee)
         {
             {
-                if (SelectedAssignments.Length == 0)
+                if (SelectedAssignments == null || SelectedAssignments.Length == 0)
                 {
                     Employee.Assignments = new List<Assignment>();
                     return;

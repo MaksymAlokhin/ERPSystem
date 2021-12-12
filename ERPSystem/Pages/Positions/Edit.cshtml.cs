@@ -99,29 +99,34 @@ namespace ERPSystem.Pages.Positions
                 }
             }
 
-            if (await TryUpdateModelAsync<Position>(
-                    PositionToUpdate,
-                    "Position",
-                    b => b.Name, b => b.PositionState, b => b.ProjectId, b => b.StartDate, b => b.EndDate))
+            //Refactored because TryUpdateModelAsync fails while unit testing:
+            //https://github.com/dotnet/AspNetCore.Docs/issues/14009
+            //if (await TryUpdateModelAsync<Position>(
+            //        PositionToUpdate,
+            //        "Position",
+            //        b => b.Name, b => b.PositionState, b => b.ProjectId, b => b.StartDate, b => b.EndDate))
+
+            PositionToUpdate.Name = Position.Name;
+            PositionToUpdate.PositionState = Position.PositionState;
+            PositionToUpdate.ProjectId = Position.ProjectId;
+            PositionToUpdate.StartDate = Position.StartDate;
+            PositionToUpdate.EndDate = Position.EndDate;
+
+            UpdateAssignments(SelectedAssignments, PositionToUpdate);
+
+            if (PositionToUpdate.PositionState == PositionState.Active)
             {
-
-                UpdateAssignments(SelectedAssignments, PositionToUpdate);
-
-                if (PositionToUpdate.PositionState == PositionState.Active)
-                {
-                    foreach (var assignment in PositionToUpdate.Assignments)
-                        assignment.AssignmentState = AssignmentState.Active;
-                }
-                else
-                {
-                    foreach (var assignment in PositionToUpdate.Assignments)
-                        assignment.AssignmentState = AssignmentState.Inactive;
-                }
-
-                if (PositionToUpdate.PositionState != InitialPositionState)
-                    PositionsWithModifiedState.Add(PositionToUpdate.Id);
-
+                foreach (var assignment in PositionToUpdate.Assignments)
+                    assignment.AssignmentState = AssignmentState.Active;
             }
+            else
+            {
+                foreach (var assignment in PositionToUpdate.Assignments)
+                    assignment.AssignmentState = AssignmentState.Inactive;
+            }
+
+            if (PositionToUpdate.PositionState != InitialPositionState)
+                PositionsWithModifiedState.Add(PositionToUpdate.Id);
 
             try
             {
@@ -159,7 +164,7 @@ namespace ERPSystem.Pages.Positions
         private void UpdateAssignments(int[] SelectedAssignments, Position Position)
         {
             {
-                if (SelectedAssignments.Length == 0)
+                if (SelectedAssignments == null || SelectedAssignments.Length == 0)
                 {
                     Position.Assignments = new List<Assignment>();
                     return;

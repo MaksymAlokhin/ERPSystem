@@ -106,44 +106,48 @@ namespace ERPSystem.Pages.Companies
 
             CompanyState InitialCompanyState = CompanyToUpdate.CompanyState;
 
-            if (await TryUpdateModelAsync<Company>(CompanyToUpdate, "Company", c => c.Name, c => c.CompanyState))
-            {
-                Employee gm = await _context.Employees.FindAsync(GeneralManagerId);
+            //Refactored because TryUpdateModelAsync fails while unit testing:
+            //https://github.com/dotnet/AspNetCore.Docs/issues/14009
+            //if (await TryUpdateModelAsync<Company>(CompanyToUpdate, "Company", c => c.Name, c => c.CompanyState))
 
-                if (gm != null)
+            CompanyToUpdate.Name = Company.Name;
+            CompanyToUpdate.CompanyState = Company.CompanyState;
+
+            Employee gm = await _context.Employees.FindAsync(GeneralManagerId);
+
+            if (gm != null)
+            {
+                if (gm.CompanyId != null)
                 {
-                    if (gm.CompanyId != null)
+                    if (gm.CompanyId != id) //We stole GM from other company
                     {
-                        if (gm.CompanyId != id) //We stole GM from other company
+                        var oldCompany = await _context.Companies.FindAsync(gm.CompanyId);
+                        if (oldCompany.CompanyState != CompanyState.Inactive)
                         {
-                            var oldCompany = await _context.Companies.FindAsync(gm.CompanyId);
-                            if (oldCompany.CompanyState != CompanyState.Inactive)
-                            {
-                                oldCompany.CompanyState = CompanyState.Inactive;
-                                CompaniesWithModifiedState.Add(oldCompany.Id);
-                            }
+                            oldCompany.CompanyState = CompanyState.Inactive;
+                            CompaniesWithModifiedState.Add(oldCompany.Id);
                         }
                     }
-                    gm.CompanyId = id;
                 }
-                else
-                {
-                    if (CompanyToUpdate.GeneralManager != null) //We removed GM
-                    {
-                        Employee formerGm = await _context.Employees
-                            .Where(e => e.EmployeeRole == EmployeeRole.GeneralManager
-                            && e.Id == CompanyToUpdate.GeneralManager.Id)
-                            .FirstOrDefaultAsync();
-                        formerGm.CompanyId = null;
-                    }
-                }
-
-                if (CompanyToUpdate.CompanyState != InitialCompanyState)
-                    CompaniesWithModifiedState.Add(CompanyToUpdate.Id);
-
-                UpdateDepartments(SelectedDepartments, CompanyToUpdate);
-                UpdateBrances(SelectedBranches, CompanyToUpdate);
+                gm.CompanyId = id;
             }
+            else
+            {
+                if (CompanyToUpdate.GeneralManager != null) //We removed GM
+                {
+                    Employee formerGm = await _context.Employees
+                        .Where(e => e.EmployeeRole == EmployeeRole.GeneralManager
+                        && e.Id == CompanyToUpdate.GeneralManager.Id)
+                        .FirstOrDefaultAsync();
+                    formerGm.CompanyId = null;
+                }
+            }
+
+            if (CompanyToUpdate.CompanyState != InitialCompanyState)
+                CompaniesWithModifiedState.Add(CompanyToUpdate.Id);
+
+            UpdateDepartments(SelectedDepartments, CompanyToUpdate);
+            UpdateBrances(SelectedBranches, CompanyToUpdate);
 
             try
             {
@@ -180,7 +184,7 @@ namespace ERPSystem.Pages.Companies
         private void UpdateDepartments(int[] SelectedDepartments, Company Company)
         {
             {
-                if (SelectedDepartments.Length == 0)
+                if (SelectedDepartments == null || SelectedDepartments.Length == 0)
                 {
                     Company.Departments = new List<Department>();
                     return;
@@ -220,7 +224,7 @@ namespace ERPSystem.Pages.Companies
         private void UpdateBrances(int[] SelectedBranches, Company Company)
         {
             {
-                if (SelectedBranches.Length == 0)
+                if (SelectedBranches == null || SelectedBranches.Length == 0)
                 {
                     Company.Branches = new List<Branch>();
                     return;

@@ -68,35 +68,43 @@ namespace ERPSystem.Pages.Branches
 
             Branch NewBranch = new Branch();
 
-            if (SelectedEmployees.Length > 0)
+            if (SelectedEmployees !=null)
             {
-                NewBranch.Employees = new List<Employee>();
-            }
-            foreach (var employee in SelectedEmployees)
-            {
-                var foundEmployee = await _context.Employees.FindAsync(employee);
-                if (foundEmployee != null)
-                    NewBranch.Employees.Add(foundEmployee);
-            }
-
-            if (await TryUpdateModelAsync<Branch>(NewBranch, "Branch", b => b.Name, b => b.BranchState, b => b.CompanyId))
-            {
-                _context.Branches.Add(NewBranch);
-                await _context.SaveChangesAsync();
-
-                BranchesWithModifiedState.Add(NewBranch.Id);
-
-                Utility utility = new Utility(_context);
-                utility.UpdateBranchDependants(BranchesWithModifiedState);
-
-                return RedirectToPage("./Index", new
+                if (SelectedEmployees.Length > 0)
                 {
-                    pageIndex = $"{pageIndex}",
-                    sortOrder = $"{sortOrder}",
-                    currentFilter = $"{currentFilter}"
-                });
+                    NewBranch.Employees = new List<Employee>();
+                }
+                foreach (var employee in SelectedEmployees)
+                {
+                    var foundEmployee = await _context.Employees.FindAsync(employee);
+                    if (foundEmployee != null)
+                        NewBranch.Employees.Add(foundEmployee);
+                }
             }
-            return Page();
+
+            //Refactored because TryUpdateModelAsync fails while unit testing:
+            //https://github.com/dotnet/AspNetCore.Docs/issues/14009
+            //if (await TryUpdateModelAsync<Branch>(NewBranch, "Branch", b => b.Name, b => b.BranchState, b => b.CompanyId))
+            //return Page();
+
+            NewBranch.Name = Branch.Name;
+            NewBranch.BranchState = Branch.BranchState;
+            NewBranch.CompanyId = Branch.CompanyId;
+
+            _context.Branches.Add(NewBranch);
+            await _context.SaveChangesAsync();
+
+            BranchesWithModifiedState.Add(NewBranch.Id);
+
+            Utility utility = new Utility(_context);
+            utility.UpdateBranchDependants(BranchesWithModifiedState);
+
+            return RedirectToPage("./Index", new
+            {
+                pageIndex = $"{pageIndex}",
+                sortOrder = $"{sortOrder}",
+                currentFilter = $"{currentFilter}"
+            });
         }
         public async Task<JsonResult> OnGetCompanyAsync(string companyId)
         {
