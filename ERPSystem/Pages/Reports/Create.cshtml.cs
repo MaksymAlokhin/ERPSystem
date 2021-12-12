@@ -60,6 +60,11 @@ namespace ERPSystem.Pages.Reports
         // To protect from overposting attacks, see https://aka.ms/RazorPagesCRUD
         public async Task<IActionResult> OnPostAsync(int? id, double Hours)
         {
+            if (!ModelState.IsValid)
+            {
+                return Page();
+            }
+
             Assignment = await _context.Assignments
                 .Include(a => a.Employee)
                 .Include(a => a.Position)

@@ -7,7 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using ERPSystem.Data;
 
-namespace ERPTest.Tests
+namespace ERPTest
 {
     public static class Utilities
     {

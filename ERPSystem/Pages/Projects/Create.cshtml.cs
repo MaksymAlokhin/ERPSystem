@@ -74,34 +74,42 @@ namespace ERPSystem.Pages.Projects
 
             var NewProject = new Project();
 
-            if (await TryUpdateModelAsync<Project>(
-                NewProject,
-                "Project",
-                p => p.Name, p => p.ProjectState, p => p.StartDate, p => p.EndDate, p => p.DepartmentId))
-            {
-                if (ProjectManagerId != null)
-                {
-                    Employee pm = await _context.Employees
-                        .Where(e => e.EmployeeRole == EmployeeRole.ProjectManager && e.Id == ProjectManagerId)
-                        .FirstOrDefaultAsync();
-                    if (pm.ProjectId != null)
-                    {
-                        var oldProject = await _context.Projects.FindAsync(pm.ProjectId);
-                        if (oldProject.ProjectState != ProjectState.Inactive)
-                        {
-                            oldProject.ProjectState = ProjectState.Inactive;
-                            ProjectsWithModifiedState.Add(oldProject.Id);
-                        }
-                    }
-                    pm.ProjectId = null;
-                    NewProject.ProjectManager = pm;
-                }
+            //if (await TryUpdateModelAsync<Project>(
+            //    NewProject,
+            //    "Project",
+            //    p => p.Name, p => p.ProjectState, p => p.StartDate, p => p.EndDate, p => p.DepartmentId))
+            //return Page();
 
+            NewProject.Name = Project.Name;
+            NewProject.ProjectState = Project.ProjectState;
+            NewProject.StartDate = Project.StartDate;
+            NewProject.EndDate = Project.EndDate;
+            NewProject.DepartmentId = Project.DepartmentId;
+
+            if (ProjectManagerId != null)
+            {
+                Employee pm = await _context.Employees
+                    .Where(e => e.EmployeeRole == EmployeeRole.ProjectManager && e.Id == ProjectManagerId)
+                    .FirstOrDefaultAsync();
+                if (pm.ProjectId != null)
+                {
+                    var oldProject = await _context.Projects.FindAsync(pm.ProjectId);
+                    if (oldProject.ProjectState != ProjectState.Inactive)
+                    {
+                        oldProject.ProjectState = ProjectState.Inactive;
+                        ProjectsWithModifiedState.Add(oldProject.Id);
+                    }
+                }
+                pm.ProjectId = null;
+                NewProject.ProjectManager = pm;
+            }
+
+            if (SelectedPositions != null)
+            {
                 if (SelectedPositions.Length > 0)
                 {
                     NewProject.Positions = new List<Position>();
                 }
-
                 foreach (var position in SelectedPositions)
                 {
                     var foundPosition = await _context.Positions.FindAsync(position);
@@ -110,23 +118,22 @@ namespace ERPSystem.Pages.Projects
                         NewProject.Positions.Add(foundPosition);
                     }
                 }
-
-                _context.Projects.Add(NewProject);
-                await _context.SaveChangesAsync();
-
-                ProjectsWithModifiedState.Add(NewProject.Id);
-
-                Utility utility = new Utility(_context);
-                utility.UpdateProjectDependants(ProjectsWithModifiedState);
-
-                return RedirectToPage("./Index", new
-                {
-                    pageIndex = $"{pageIndex}",
-                    sortOrder = $"{sortOrder}",
-                    currentFilter = $"{currentFilter}"
-                });
             }
-            return Page();
+
+            _context.Projects.Add(NewProject);
+            await _context.SaveChangesAsync();
+
+            ProjectsWithModifiedState.Add(NewProject.Id);
+
+            Utility utility = new Utility(_context);
+            utility.UpdateProjectDependants(ProjectsWithModifiedState);
+
+            return RedirectToPage("./Index", new
+            {
+                pageIndex = $"{pageIndex}",
+                sortOrder = $"{sortOrder}",
+                currentFilter = $"{currentFilter}"
+            });
         }
         public async Task<JsonResult> OnGetDepartmentAsync(string departmentId)
         {

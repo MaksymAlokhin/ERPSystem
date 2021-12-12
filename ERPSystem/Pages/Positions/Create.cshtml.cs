@@ -78,16 +78,26 @@ namespace ERPSystem.Pages.Positions
 
             var NewPosition = new Position();
 
-            if (await TryUpdateModelAsync<Position>(
-                    NewPosition,
-                    "Position",
-                    d => d.Name, d => d.PositionState, d => d.StartDate, d => d.EndDate, d => d.ProjectId))
+            //Refactored because TryUpdateModelAsync fails while unit testing:
+            //https://github.com/dotnet/AspNetCore.Docs/issues/14009
+            //if (await TryUpdateModelAsync<Position>(
+            //        NewPosition,
+            //        "Position",
+            //        d => d.Name, d => d.PositionState, d => d.StartDate, d => d.EndDate, d => d.ProjectId))
+            //return Page();
+
+            NewPosition.Name = Position.Name;
+            NewPosition.PositionState = Position.PositionState;
+            NewPosition.StartDate = Position.StartDate;
+            NewPosition.EndDate = Position.EndDate;
+            NewPosition.ProjectId = Position.ProjectId;
+
+            if (SelectedAssignments != null)
             {
                 if (SelectedAssignments.Length > 0)
                 {
                     NewPosition.Assignments = new List<Assignment>();
                 }
-
                 foreach (var assignment in SelectedAssignments)
                 {
                     var foundAssignment = await _context.Assignments.FindAsync(assignment);
@@ -96,24 +106,23 @@ namespace ERPSystem.Pages.Positions
                         NewPosition.Assignments.Add(foundAssignment);
                     }
                 }
-
-                _context.Positions.Add(NewPosition);
-                await _context.SaveChangesAsync();
-
-                PositionsWithModifiedState.Add(NewPosition.Id);
-
-                Utility utility = new Utility(_context);
-                utility.UpdateProjectDependants(PositionsWithModifiedState);
-
-
-                return RedirectToPage("./Index", new
-                {
-                    pageIndex = $"{pageIndex}",
-                    sortOrder = $"{sortOrder}",
-                    currentFilter = $"{currentFilter}"
-                });
             }
-            return Page();
+
+            _context.Positions.Add(NewPosition);
+            await _context.SaveChangesAsync();
+
+            PositionsWithModifiedState.Add(NewPosition.Id);
+
+            Utility utility = new Utility(_context);
+            utility.UpdateProjectDependants(PositionsWithModifiedState);
+
+
+            return RedirectToPage("./Index", new
+            {
+                pageIndex = $"{pageIndex}",
+                sortOrder = $"{sortOrder}",
+                currentFilter = $"{currentFilter}"
+            });
         }
 
         public async Task<JsonResult> OnGetProjectAsync(string projectId)

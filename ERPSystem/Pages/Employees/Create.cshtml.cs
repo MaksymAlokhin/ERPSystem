@@ -92,74 +92,82 @@ namespace ERPSystem.Pages.Employees
 
             Employee NewEmployee = new Employee();
 
-            if (SelectedMentors.Length > 0)
+            if (SelectedMentors !=null)
             {
-                NewEmployee.Mentors = new List<Employee>();
-            }
-            if (SelectedAssignments.Length > 0)
-            {
-                NewEmployee.Assignments = new List<Assignment>();
-            }
-
-            foreach (var mentor in SelectedMentors)
-            {
-                var foundMentor = await _context.Employees.FindAsync(mentor);
-                if (foundMentor != null)
+                if (SelectedMentors.Length > 0)
                 {
-                    NewEmployee.Mentors.Add(foundMentor);
-                    if (foundMentor.EmployeeRole == EmployeeRole.Employee)
-                        foundMentor.EmployeeRole = EmployeeRole.Mentor;
+                    NewEmployee.Mentors = new List<Employee>();
+                }
+                foreach (var mentor in SelectedMentors)
+                {
+                    var foundMentor = await _context.Employees.FindAsync(mentor);
+                    if (foundMentor != null)
+                    {
+                        NewEmployee.Mentors.Add(foundMentor);
+                        if (foundMentor.EmployeeRole == EmployeeRole.Employee)
+                            foundMentor.EmployeeRole = EmployeeRole.Mentor;
+                    }
+                }
+            }
+            if (SelectedAssignments !=null)
+            {
+                if (SelectedAssignments.Length > 0)
+                {
+                    NewEmployee.Assignments = new List<Assignment>();
+                }
+                foreach (var assignment in SelectedAssignments)
+                {
+                    var foundAssignment = await _context.Assignments.FindAsync(assignment);
+                    if (foundAssignment != null)
+                    {
+                        NewEmployee.Assignments.Add(foundAssignment);
+                    }
                 }
             }
 
-            foreach (var assignment in SelectedAssignments)
-            {
-                var foundAssignment = await _context.Assignments.FindAsync(assignment);
-                if (foundAssignment != null)
-                {
-                    NewEmployee.Assignments.Add(foundAssignment);
-                }
-            }
+            //Refactored because TryUpdateModelAsync fails while unit testing:
+            //https://github.com/dotnet/AspNetCore.Docs/issues/14009
+            //if (await TryUpdateModelAsync<Employee>(
+            //                NewEmployee,
+            //                "Employee",
+            //                e => e.FirstName, e => e.LastName, e => e.EmployeeRole, e => e.EmployeeState,
+            //                e => e.DateOfBirth, e => e.ProjectId, e => e.CompanyId, e => e.DepartmentId,
+            //                e => e.BranchId))
+            //return Page();
 
-            if (await TryUpdateModelAsync<Employee>(
-                            NewEmployee,
-                            "Employee",
-                            e => e.FirstName, e => e.LastName, e => e.EmployeeRole, e => e.EmployeeState,
-                            e => e.DateOfBirth, e => e.ProjectId, e => e.CompanyId, e => e.DepartmentId,
-                            e => e.BranchId))
+            NewEmployee.FirstName = Employee.FirstName;
+            NewEmployee.LastName = Employee.LastName;
+            NewEmployee.EmployeeRole = Employee.EmployeeRole;
+            NewEmployee.EmployeeState = Employee.EmployeeState;
+            NewEmployee.DateOfBirth = Employee.DateOfBirth;
+            NewEmployee.ProjectId = Employee.ProjectId;
+            NewEmployee.CompanyId = Employee.CompanyId;
+            NewEmployee.DepartmentId = Employee.DepartmentId;
+            NewEmployee.BranchId = Employee.BranchId;
+
+            switch (NewEmployee.EmployeeRole)
             {
-                switch (NewEmployee.EmployeeRole)
-                {
-                    case EmployeeRole.DepartmentHead:
-                        if (NewEmployee.DepartmentId != null)
+                case EmployeeRole.DepartmentHead:
+                    if (NewEmployee.DepartmentId != null)
+                    {
+                        Department department = await _context.Departments
+                            .Include(d => d.DepartmentHead)
+                            .Include(d => d.Company)
+                            .FirstOrDefaultAsync(d => d.Id == NewEmployee.DepartmentId);
+                        if (department != null)
                         {
-                            Department department = await _context.Departments
-                                .Include(d => d.DepartmentHead)
-                                .Include(d => d.Company)
-                                .FirstOrDefaultAsync(d => d.Id == NewEmployee.DepartmentId);
-                            if (department != null)
+                            if (department.DepartmentHead != null)
                             {
-                                if (department.DepartmentHead != null)
+                                department.DepartmentHead.DepartmentId = null;
+                            }
+                            if (department.Company != null)
+                            {
+                                if (Employee.EmployeeState == EmployeeState.Active && department.Company.CompanyState == CompanyState.Active)
                                 {
-                                    department.DepartmentHead.DepartmentId = null;
-                                }
-                                if (department.Company != null)
-                                {
-                                    if (Employee.EmployeeState == EmployeeState.Active && department.Company.CompanyState == CompanyState.Active)
+                                    if (department.DepartmentState != DepartmentState.Active)
                                     {
-                                        if (department.DepartmentState != DepartmentState.Active)
-                                        {
-                                            department.DepartmentState = DepartmentState.Active;
-                                            DepartmentsWithModifiedState.Add(department.Id);
-                                        }
-                                    }
-                                    else
-                                    {
-                                        if (department.DepartmentState != DepartmentState.Inactive)
-                                        {
-                                            department.DepartmentState = DepartmentState.Inactive;
-                                            DepartmentsWithModifiedState.Add(department.Id);
-                                        }
+                                        department.DepartmentState = DepartmentState.Active;
+                                        DepartmentsWithModifiedState.Add(department.Id);
                                     }
                                 }
                                 else
@@ -171,70 +179,70 @@ namespace ERPSystem.Pages.Employees
                                     }
                                 }
                             }
-
-                        }
-                        break;
-                    case EmployeeRole.GeneralManager:
-                        if (NewEmployee.CompanyId != null)
-                        {
-                            Company company = await _context.Companies
-                                .Include(g => g.GeneralManager)
-                                .FirstOrDefaultAsync(g => g.Id == NewEmployee.CompanyId);
-                            if (company != null)
+                            else
                             {
-                                if (company.GeneralManager != null)
+                                if (department.DepartmentState != DepartmentState.Inactive)
                                 {
-                                    company.GeneralManager.CompanyId = null;
-                                }
-                                if (Employee.EmployeeState == EmployeeState.Active)
-                                {
-                                    if (company.CompanyState != CompanyState.Active)
-                                    {
-                                        company.CompanyState = CompanyState.Active;
-                                        CompaniesWithModifiedState.Add(company.Id);
-                                    }
-                                }
-                                else
-                                {
-                                    if (company.CompanyState != CompanyState.Inactive)
-                                    {
-                                        company.CompanyState = CompanyState.Inactive;
-                                        CompaniesWithModifiedState.Add(company.Id);
-                                    }
+                                    department.DepartmentState = DepartmentState.Inactive;
+                                    DepartmentsWithModifiedState.Add(department.Id);
                                 }
                             }
                         }
-                        break;
-                    case EmployeeRole.ProjectManager:
-                        if (NewEmployee.ProjectId != null)
+
+                    }
+                    break;
+                case EmployeeRole.GeneralManager:
+                    if (NewEmployee.CompanyId != null)
+                    {
+                        Company company = await _context.Companies
+                            .Include(g => g.GeneralManager)
+                            .FirstOrDefaultAsync(g => g.Id == NewEmployee.CompanyId);
+                        if (company != null)
                         {
-                            Project project = await _context.Projects
-                                .Include(p => p.ProjectManager)
-                                .Include(p => p.Department)
-                                .FirstOrDefaultAsync(p => p.Id == NewEmployee.ProjectId);
-                            if (project != null)
+                            if (company.GeneralManager != null)
                             {
-                                if (project.ProjectManager != null)
+                                company.GeneralManager.CompanyId = null;
+                            }
+                            if (Employee.EmployeeState == EmployeeState.Active)
+                            {
+                                if (company.CompanyState != CompanyState.Active)
                                 {
-                                    project.ProjectManager.ProjectId = null;
+                                    company.CompanyState = CompanyState.Active;
+                                    CompaniesWithModifiedState.Add(company.Id);
                                 }
-                                if (project.Department != null)
+                            }
+                            else
+                            {
+                                if (company.CompanyState != CompanyState.Inactive)
                                 {
-                                    if (Employee.EmployeeState == EmployeeState.Active && project.Department.DepartmentState == DepartmentState.Active)
+                                    company.CompanyState = CompanyState.Inactive;
+                                    CompaniesWithModifiedState.Add(company.Id);
+                                }
+                            }
+                        }
+                    }
+                    break;
+                case EmployeeRole.ProjectManager:
+                    if (NewEmployee.ProjectId != null)
+                    {
+                        Project project = await _context.Projects
+                            .Include(p => p.ProjectManager)
+                            .Include(p => p.Department)
+                            .FirstOrDefaultAsync(p => p.Id == NewEmployee.ProjectId);
+                        if (project != null)
+                        {
+                            if (project.ProjectManager != null)
+                            {
+                                project.ProjectManager.ProjectId = null;
+                            }
+                            if (project.Department != null)
+                            {
+                                if (Employee.EmployeeState == EmployeeState.Active && project.Department.DepartmentState == DepartmentState.Active)
+                                {
+                                    if (project.ProjectState != ProjectState.Active)
                                     {
-                                        if (project.ProjectState != ProjectState.Active)
-                                        {
-                                            project.ProjectState = ProjectState.Active;
-                                            ProjectsWithModifiedState.Add(project.Id);
-                                        }
-                                    }
-                                    else
-                                    {
-                                        if (project.ProjectState != ProjectState.Inactive)
-                                        {
-                                            project.ProjectState = ProjectState.Inactive;
-                                            ProjectsWithModifiedState.Add(project.Id);
-                                        }
+                                        project.ProjectState = ProjectState.Active;
+                                        ProjectsWithModifiedState.Add(project.Id);
                                     }
                                 }
                                 else
@@ -246,53 +254,60 @@ namespace ERPSystem.Pages.Employees
                                     }
                                 }
                             }
+                            else
+                            {
+                                if (project.ProjectState != ProjectState.Inactive)
+                                {
+                                    project.ProjectState = ProjectState.Inactive;
+                                    ProjectsWithModifiedState.Add(project.Id);
+                                }
+                            }
                         }
-                        break;
-                }
-
-                if (FormFile != null)
-                {
-                    //Check permitted extensions for photo
-                    var ext = Path.GetExtension(FormFile.FileName).ToLowerInvariant();
-                    if (!string.IsNullOrEmpty(ext) || permittedExtensions.Contains(ext))
-                    {
-                        //Get random filename for server storage
-                        string uploadsFolder = Path.Combine(webHostEnvironment.WebRootPath, @"images\avatars"); //webHost adds 'wwwroot'
-                        var trustedFileNameForFileStorage = Path.GetRandomFileName();
-                        trustedFileNameForFileStorage = trustedFileNameForFileStorage.Substring(0, 8)
-                            + trustedFileNameForFileStorage.Substring(9) + ext;
-                        var filePath = Path.Combine(uploadsFolder, trustedFileNameForFileStorage);
-
-                        //Copy data to a new file
-                        using (var fileStream = System.IO.File.Create(filePath))
-                        {
-                            await FormFile.CopyToAsync(fileStream);
-                        }
-
-                        //Update photo
-                        NewEmployee.ProfilePicture = trustedFileNameForFileStorage;
                     }
-                }
-
-                _context.Employees.Add(NewEmployee);
-                await _context.SaveChangesAsync();
-
-                Utility utility = new Utility(_context);
-                utility.UpdateCompanyDependants(CompaniesWithModifiedState);
-                utility.UpdateDepartmentDependants(DepartmentsWithModifiedState);
-                utility.UpdateProjectDependants(ProjectsWithModifiedState);
-
-                Role = NewEmployee.EmployeeRole;
-
-                return RedirectToPage("./Index", new
-                {
-                    pageIndex = $"{pageIndex}",
-                    sortOrder = $"{sortOrder}",
-                    currentFilter = $"{currentFilter}",
-                    Role = $"{NewEmployee.EmployeeRole}"
-                });
+                    break;
             }
-            return Page();
+
+            if (FormFile != null)
+            {
+                //Check permitted extensions for photo
+                var ext = Path.GetExtension(FormFile.FileName).ToLowerInvariant();
+                if (!string.IsNullOrEmpty(ext) || permittedExtensions.Contains(ext))
+                {
+                    //Get random filename for server storage
+                    string uploadsFolder = Path.Combine(webHostEnvironment.WebRootPath, @"images\avatars"); //webHost adds 'wwwroot'
+                    var trustedFileNameForFileStorage = Path.GetRandomFileName();
+                    trustedFileNameForFileStorage = trustedFileNameForFileStorage.Substring(0, 8)
+                        + trustedFileNameForFileStorage.Substring(9) + ext;
+                    var filePath = Path.Combine(uploadsFolder, trustedFileNameForFileStorage);
+
+                    //Copy data to a new file
+                    using (var fileStream = System.IO.File.Create(filePath))
+                    {
+                        await FormFile.CopyToAsync(fileStream);
+                    }
+
+                    //Update photo
+                    NewEmployee.ProfilePicture = trustedFileNameForFileStorage;
+                }
+            }
+
+            _context.Employees.Add(NewEmployee);
+            await _context.SaveChangesAsync();
+
+            Utility utility = new Utility(_context);
+            utility.UpdateCompanyDependants(CompaniesWithModifiedState);
+            utility.UpdateDepartmentDependants(DepartmentsWithModifiedState);
+            utility.UpdateProjectDependants(ProjectsWithModifiedState);
+
+            Role = NewEmployee.EmployeeRole;
+
+            return RedirectToPage("./Index", new
+            {
+                pageIndex = $"{pageIndex}",
+                sortOrder = $"{sortOrder}",
+                currentFilter = $"{currentFilter}",
+                Role = $"{NewEmployee.EmployeeRole}"
+            });
         }
         public async Task<JsonResult> OnGetBranchAsync(string branchId)
         {

@@ -76,28 +76,37 @@ namespace ERPSystem.Pages.Departments
 
             var NewDepartment = new Department();
 
-            if (await TryUpdateModelAsync<Department>(NewDepartment, "Department",
-                    d => d.Name, d => d.DepartmentState, d => d.CompanyId))
-            {
-                if (DepartmentHeadId != null)
-                {
-                    Employee dh = await _context.Employees
-                        .Where(e => e.EmployeeRole == EmployeeRole.DepartmentHead 
-                        && e.Id == DepartmentHeadId)
-                        .FirstOrDefaultAsync();
-                    if (dh.DepartmentId != null)
-                    {
-                        var oldDepartment = await _context.Departments.FindAsync(dh.DepartmentId);
-                        if (oldDepartment.DepartmentState != DepartmentState.Inactive)
-                        {
-                            oldDepartment.DepartmentState = DepartmentState.Inactive;
-                            DepartmentsWithModifiedState.Add(oldDepartment.Id);
-                        }
-                    }
-                    dh.DepartmentId = null;
-                    NewDepartment.DepartmentHead = dh;
-                }
+            //Refactored because TryUpdateModelAsync fails while unit testing:
+            //https://github.com/dotnet/AspNetCore.Docs/issues/14009
+            //if (await TryUpdateModelAsync<Department>(NewDepartment, "Department",
+            //        d => d.Name, d => d.DepartmentState, d => d.CompanyId))
+            //return Page();
 
+            NewDepartment.Name = Department.Name;
+            NewDepartment.DepartmentState = Department.DepartmentState;
+            NewDepartment.CompanyId = Department.CompanyId;
+
+            if (DepartmentHeadId != null)
+            {
+                Employee dh = await _context.Employees
+                    .Where(e => e.EmployeeRole == EmployeeRole.DepartmentHead
+                    && e.Id == DepartmentHeadId)
+                    .FirstOrDefaultAsync();
+                if (dh.DepartmentId != null)
+                {
+                    var oldDepartment = await _context.Departments.FindAsync(dh.DepartmentId);
+                    if (oldDepartment.DepartmentState != DepartmentState.Inactive)
+                    {
+                        oldDepartment.DepartmentState = DepartmentState.Inactive;
+                        DepartmentsWithModifiedState.Add(oldDepartment.Id);
+                    }
+                }
+                dh.DepartmentId = null;
+                NewDepartment.DepartmentHead = dh;
+            }
+
+            if (SelectedProjects != null)
+            {
                 if (SelectedProjects.Length > 0)
                 {
                     NewDepartment.Projects = new List<Project>();
@@ -108,22 +117,21 @@ namespace ERPSystem.Pages.Departments
                     if (foundProject != null)
                         NewDepartment.Projects.Add(foundProject);
                 }
-
-                _context.Departments.Add(NewDepartment);
-                await _context.SaveChangesAsync();
-
-                DepartmentsWithModifiedState.Add(NewDepartment.Id);
-                Utility utility = new Utility(_context);
-                utility.UpdateDepartmentDependants(DepartmentsWithModifiedState);
-
-                return RedirectToPage("./Index", new
-                {
-                    pageIndex = $"{pageIndex}",
-                    sortOrder = $"{sortOrder}",
-                    currentFilter = $"{currentFilter}"
-                });
             }
-            return Page();
+
+            _context.Departments.Add(NewDepartment);
+            await _context.SaveChangesAsync();
+
+            DepartmentsWithModifiedState.Add(NewDepartment.Id);
+            Utility utility = new Utility(_context);
+            utility.UpdateDepartmentDependants(DepartmentsWithModifiedState);
+
+            return RedirectToPage("./Index", new
+            {
+                pageIndex = $"{pageIndex}",
+                sortOrder = $"{sortOrder}",
+                currentFilter = $"{currentFilter}"
+            });
         }
         public async Task<JsonResult> OnGetCompanyAsync(string companyId)
         {

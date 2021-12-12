@@ -77,68 +77,76 @@ namespace ERPSystem.Pages.Companies
 
             var NewCompany = new Company();
 
-            if (await TryUpdateModelAsync<Company>(NewCompany, "Company", c => c.Name, c => c.CompanyState))
-            {
-                //Make old company inactive because its GM is now here
-                if (GeneralManagerId != null)
-                {
-                    Employee gm = await _context.Employees
-                        .Where(e => e.EmployeeRole == EmployeeRole.GeneralManager 
-                            && e.Id == GeneralManagerId)
-                        .FirstOrDefaultAsync();
-                    if (gm.CompanyId != null)
-                    {
-                        var oldCompany = await _context.Companies.FindAsync(gm.CompanyId);
-                        if (oldCompany.CompanyState != CompanyState.Inactive)
-                        {
-                            oldCompany.CompanyState = CompanyState.Inactive;
-                            CompaniesWithModifiedState.Add(oldCompany.Id);
-                        }
-                    }
-                    gm.CompanyId = null;
-                    NewCompany.GeneralManager = gm;
-                }
+            //Refactored because TryUpdateModelAsync fails while unit testing:
+            //https://github.com/dotnet/AspNetCore.Docs/issues/14009
+            //if (await TryUpdateModelAsync<Company>(NewCompany, "Company", c => c.Name, c => c.CompanyState))
+            //return Page();
 
-                //Fill Departments and Branches.
+            NewCompany.Name = Company.Name;
+            NewCompany.CompanyState = Company.CompanyState;
+
+            //Make old company inactive because its GM is now here
+            if (GeneralManagerId != null)
+            {
+                Employee gm = await _context.Employees
+                    .Where(e => e.EmployeeRole == EmployeeRole.GeneralManager
+                        && e.Id == GeneralManagerId)
+                    .FirstOrDefaultAsync();
+                if (gm.CompanyId != null)
+                {
+                    var oldCompany = await _context.Companies.FindAsync(gm.CompanyId);
+                    if (oldCompany.CompanyState != CompanyState.Inactive)
+                    {
+                        oldCompany.CompanyState = CompanyState.Inactive;
+                        CompaniesWithModifiedState.Add(oldCompany.Id);
+                    }
+                }
+                gm.CompanyId = null;
+                NewCompany.GeneralManager = gm;
+            }
+
+            //Fill Departments and Branches.
+            if (SelectedDepartments != null)
+            {
                 if (SelectedDepartments.Length > 0)
                 {
                     NewCompany.Departments = new List<Department>();
                 }
-                if (SelectedBranches.Length > 0)
-                {
-                    NewCompany.Branches = new List<Branch>();
-                }
-
                 foreach (var department in SelectedDepartments)
                 {
                     var foundDepartment = await _context.Departments.FindAsync(department);
                     if (foundDepartment != null)
                         NewCompany.Departments.Add(foundDepartment);
                 }
-
+            }
+            if (SelectedBranches != null)
+            {
+                if (SelectedBranches.Length > 0)
+                {
+                    NewCompany.Branches = new List<Branch>();
+                }
                 foreach (var branch in SelectedBranches)
                 {
                     var foundBranch = await _context.Branches.FindAsync(branch);
                     if (foundBranch != null)
                         NewCompany.Branches.Add(foundBranch);
                 }
-
-                _context.Companies.Add(NewCompany);
-                await _context.SaveChangesAsync();
-
-                CompaniesWithModifiedState.Add(NewCompany.Id);
-
-                Utility utility = new Utility(_context);
-                utility.UpdateCompanyDependants(CompaniesWithModifiedState);
-
-                return RedirectToPage("./Index", new
-                {
-                    pageIndex = $"{pageIndex}",
-                    sortOrder = $"{sortOrder}",
-                    currentFilter = $"{currentFilter}"
-                });
             }
-            return Page();
+
+            _context.Companies.Add(NewCompany);
+            await _context.SaveChangesAsync();
+
+            CompaniesWithModifiedState.Add(NewCompany.Id);
+
+            Utility utility = new Utility(_context);
+            utility.UpdateCompanyDependants(CompaniesWithModifiedState);
+
+            return RedirectToPage("./Index", new
+            {
+                pageIndex = $"{pageIndex}",
+                sortOrder = $"{sortOrder}",
+                currentFilter = $"{currentFilter}"
+            });
         }
         public async Task<JsonResult> OnGetEmployeeAsync(string employeeId)
         {

@@ -93,14 +93,19 @@ namespace ERPSystem.Pages.Branches
 
             BranchState InitialBranchState = BranchToUpdate.BranchState;
 
-            if (await TryUpdateModelAsync<Branch>(BranchToUpdate, "Branch",
-                b => b.Name, b => b.BranchState, b => b.CompanyId))
+            //Refactored because TryUpdateModelAsync fails while unit testing:
+            //https://github.com/dotnet/AspNetCore.Docs/issues/14009
+            //if (await TryUpdateModelAsync<Branch>(BranchToUpdate, "Branch",
+            //    b => b.Name, b => b.BranchState, b => b.CompanyId))
+
+            BranchToUpdate.Name = Branch.Name;
+            BranchToUpdate.BranchState = Branch.BranchState;
+            BranchToUpdate.CompanyId = Branch.CompanyId;
+
+            UpdateEmployees(SelectedEmployees, BranchToUpdate);
+            if (BranchToUpdate.BranchState != InitialBranchState)
             {
-                UpdateEmployees(SelectedEmployees, BranchToUpdate);
-                if (BranchToUpdate.BranchState != InitialBranchState)
-                {
-                    BranchesWithModifiedState.Add(BranchToUpdate.Id);
-                }
+                BranchesWithModifiedState.Add(BranchToUpdate.Id);
             }
 
             try
@@ -138,7 +143,7 @@ namespace ERPSystem.Pages.Branches
         private void UpdateEmployees(int[] SelectedEmployees, Branch Branch)
         {
             {
-                if (SelectedEmployees.Length == 0)
+                if (SelectedEmployees == null || SelectedEmployees.Length == 0)
                 {
                     Branch.Employees = new List<Employee>();
                     return;
