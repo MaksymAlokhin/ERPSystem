@@ -15,7 +15,8 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 
 namespace ERPTest
 {
-    public class SQLServerCompanyTests : IClassFixture<SQLServerSharedDatabaseFixture>
+    [Collection("SQL Server Collection")]
+    public class SQLServerCompanyTests
     {
         public SQLServerCompanyTests(SQLServerSharedDatabaseFixture fixture)
         {
@@ -36,7 +37,7 @@ namespace ERPTest
                     // Arrange
                     var config = new ConfigurationBuilder().Build();
                     var pageModel = new ERPSystem.Pages.Companies.IndexModel(context, config);
-                    var expectedCompanies = SeedCompany.data;
+                    var expectedCompanies = context.Companies;
 
                     // Act
                     await pageModel.OnGetAsync(null, null, null, null);
@@ -61,7 +62,7 @@ namespace ERPTest
                     // Arrange
                     var config = new ConfigurationBuilder().Build();
                     var pageModel = new ERPSystem.Pages.Companies.IndexModel(context, config);
-                    var expectedCompanies = SeedCompany.data;
+                    var expectedCompanies = context.Companies;
 
                     // Act
                     await pageModel.OnGetAsync("name_desc", null, null, null);
@@ -90,7 +91,7 @@ namespace ERPTest
                     // Arrange
                     var config = new ConfigurationBuilder().Build();
                     var pageModel = new ERPSystem.Pages.Companies.IndexModel(context, config);
-                    var expectedCompanies = SeedCompany.data.Where(c => c.Name.Contains(searchString)
+                    var expectedCompanies = context.Companies.Where(c => c.Name.Contains(searchString)
                                                  || c.GeneralManager.FirstName.Contains(searchString)
                                                   || c.GeneralManager.LastName.Contains(searchString));
 
@@ -124,9 +125,9 @@ namespace ERPTest
                     var config = new ConfigurationBuilder().Build();
                     var pageModel = new ERPSystem.Pages.Companies.IndexModel(context, config);
                     List<Company> expectedCompanies = new List<Company>();
-                    if (pageIndex > 0 && pageIndex <= Math.Ceiling((double)SeedCompany.data.Count / (double)PageSize))
+                    if (pageIndex > 0 && pageIndex <= Math.Ceiling((double)context.Companies.Count() / (double)PageSize))
                     {
-                        expectedCompanies = SeedCompany.data
+                        expectedCompanies = context.Companies
                             .OrderBy(m => m.Name)
                             .Skip((pageIndex - 1) * PageSize)
                             .Take(PageSize)
@@ -135,7 +136,7 @@ namespace ERPTest
                     }
                     else
                     {
-                        expectedCompanies = SeedCompany.data
+                        expectedCompanies = context.Companies
                             .OrderBy(m => m.Name)
                             .Take(PageSize)
                             .ToList(); ;
@@ -230,13 +231,13 @@ namespace ERPTest
                     var testId = 1;
 
                     // Act
-                    var result = await pageModel.OnPostAsync(null, null, null, testId);
+                    var result = await pageModel.OnGetAsync(null, null, null, testId);
 
                     // Assert
-                    Assert.IsType<RedirectToPageResult>(result);
+                    Assert.IsType<PageResult>(result);
                     var model = Assert.IsAssignableFrom<Company>(pageModel.Company);
                     Assert.Equal(testId, model.Id);
-                    Assert.Equal("Walmart", model.Name);
+                    Assert.Equal("Exxon Mobil", model.Name);
                     Assert.Equal(CompanyState.Active, model.CompanyState);
                 }
             }
@@ -253,7 +254,7 @@ namespace ERPTest
                     // Arrange
                     var pageModel = new ERPSystem.Pages.Companies.DeleteModel(context);
                     var testId = 1;
-                    var expectedCompanies = SeedCompany.data.Where(c => c.Id != testId).ToList();
+                    var expectedCompanies = context.Companies.Where(c => c.Id != testId).ToList();
 
                     // Act
                     var result = await pageModel.OnPostAsync(null, null, null, testId);
@@ -279,7 +280,7 @@ namespace ERPTest
                     // Arrange
                     var pageModel = new ERPSystem.Pages.Companies.DeleteModel(context);
                     var testId = 11;
-                    var expectedCompanies = SeedCompany.data;
+                    var expectedCompanies = context.Companies;
 
                     // Act
                     var result = await pageModel.OnPostAsync(null, null, null, testId);
@@ -313,7 +314,7 @@ namespace ERPTest
                     Assert.IsType<PageResult>(result);
                     var model = Assert.IsAssignableFrom<Company>(pageModel.Company);
                     Assert.Equal(testId, model.Id);
-                    Assert.Equal("Walmart", model.Name);
+                    Assert.Equal("Exxon Mobil", model.Name);
                     Assert.Equal(CompanyState.Active, model.CompanyState);
                 }
             }
@@ -396,7 +397,7 @@ namespace ERPTest
                     Assert.IsType<PageResult>(result);
                     var model = Assert.IsAssignableFrom<Company>(pageModel.Company);
                     Assert.Equal(testId, model.Id);
-                    Assert.Equal("Walmart", model.Name);
+                    Assert.Equal("Exxon Mobil", model.Name);
                     Assert.Equal(CompanyState.Active, model.CompanyState);
                 }
             }

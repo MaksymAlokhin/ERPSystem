@@ -9,58 +9,26 @@ using Xunit;
 
 namespace ERPTest
 {
-    public class SQLServerSharedDatabaseFixture : IDisposable
+    public class InMemorySharedDatabaseFixture : IDisposable
     {
-        private static readonly object _lock = new object();
-        private static bool _databaseInitialized;
+        public ApplicationDbContext context { get; private set; }
 
-        public SQLServerSharedDatabaseFixture()
+        public InMemorySharedDatabaseFixture()
         {
-            Connection = new SqlConnection(@"Server=(localdb)\mssqllocaldb;Database=EFTestSample;Trusted_Connection=True;MultipleActiveResultSets=true");
+            var options = new DbContextOptionsBuilder<ApplicationDbContext>()
+                        .UseInMemoryDatabase("TestDatabase")
+                        .Options;
 
-            Seed();
+            context = new ApplicationDbContext(options);
 
-            Connection.Open();
-        }
-
-        public DbConnection Connection { get; }
-
-        public ApplicationDbContext CreateContext(DbTransaction transaction = null)
-        {
-            var context = new ApplicationDbContext(new DbContextOptionsBuilder<ApplicationDbContext>().UseSqlServer(Connection).Options);
-
-            if (transaction != null)
-            {
-                context.Database.UseTransaction(transaction);
-            }
-
-            return context;
-        }
-
-        private void Seed()
-        {
-            lock (_lock)
-            {
-                if (!_databaseInitialized)
-                {
-                    using (var context = CreateContext())
-                    {
-                        context.Database.EnsureDeleted();
-                        context.Database.EnsureCreated();
-
-                        SeedAssignment(context);
-                        SeedBranch(context);
-                        SeedCompany(context);
-                        SeedDepartment(context);
-                        SeedEmployee(context);
-                        SeedPosition(context);
-                        SeedProject(context);
-                        SeedReport(context);
-                    }
-
-                    _databaseInitialized = true;
-                }
-            }
+            SeedAssignment(context);
+            SeedBranch(context);
+            SeedCompany(context);
+            SeedDepartment(context);
+            SeedEmployee(context);
+            SeedPosition(context);
+            SeedProject(context);
+            SeedReport(context);
         }
         private void SeedAssignment(ApplicationDbContext context)
         {
@@ -671,13 +639,14 @@ namespace ERPTest
             context.Add(r009);
             context.SaveChanges();
         }
+
         public void Dispose()
         {
-            Connection.Dispose();
+            context.Dispose();
         }
     }
-    [CollectionDefinition("SQL Server Collection")]
-    public class SQLServerCollection : ICollectionFixture<SQLServerSharedDatabaseFixture>
+    [CollectionDefinition("InMemory Collection")]
+    public class InMemoryCollection : ICollectionFixture<InMemorySharedDatabaseFixture>
     {
         // This class has no code, and is never created. Its purpose is simply
         // to be the place to apply [CollectionDefinition] and all the

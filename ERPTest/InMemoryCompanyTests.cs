@@ -15,72 +15,55 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 
 namespace ERPTest
 {
+    [Collection("InMemory Collection")]
     public class InMemoryCompanyTests
     {
-        public InMemoryCompanyTests()
+        public InMemoryCompanyTests(InMemorySharedDatabaseFixture fixture)
         {
-            ContextOptions = new DbContextOptionsBuilder<ApplicationDbContext>()
-                .UseInMemoryDatabase("TestDatabase")
-                .Options;
-            Seed();
             PageSize = 7;
+            Fixture = fixture;
+            //ContextOptions = new DbContextOptionsBuilder<ApplicationDbContext>().UseInMemoryDatabase("TestDatabase").Options;
         }
+        public InMemorySharedDatabaseFixture Fixture;
         protected DbContextOptions<ApplicationDbContext> ContextOptions { get; }
         private int PageSize;
-
-        private void Seed()
-        {
-            using (var context = new ApplicationDbContext(ContextOptions))
-            {
-                context.Database.EnsureDeleted();
-                context.Database.EnsureCreated();
-
-                DbInitializer.SeedDB(context);
-            }
-        }
 
         //IndexModel
         [Fact]
         public async Task Company_IndexModel_OnGetAsync_CompaniesAreReturned()
         {
-            using (var context = new ApplicationDbContext(ContextOptions))
-            {
-                // Arrange
-                var config = new ConfigurationBuilder().Build();
-                var pageModel = new ERPSystem.Pages.Companies.IndexModel(context, config);
-                var expectedCompanies = SeedCompany.data;
+            // Arrange
+            var config = new ConfigurationBuilder().Build();
+            var pageModel = new ERPSystem.Pages.Companies.IndexModel(Fixture.context, config);
+            var expectedCompanies = Fixture.context.Companies;
 
-                // Act
-                await pageModel.OnGetAsync(null, null, null, null);
+            // Act
+            await pageModel.OnGetAsync(null, null, null, null);
 
-                // Assert
-                var actualCompanies = Assert.IsAssignableFrom<List<Company>>(pageModel.Company);
-                Assert.Equal(
-                    expectedCompanies.OrderBy(m => m.Name).Take(PageSize).Select(m => m.Name),
-                    actualCompanies.OrderBy(m => m.Name).Select(m => m.Name));
-            }
+            // Assert
+            var actualCompanies = Assert.IsAssignableFrom<List<Company>>(pageModel.Company);
+            Assert.Equal(
+                expectedCompanies.OrderBy(m => m.Name).Take(PageSize).Select(m => m.Name),
+                actualCompanies.OrderBy(m => m.Name).Select(m => m.Name));
         }
 
         //IndexModel
         [Fact]
         public async Task Company_IndexModel_OnGetAsync_CompaniesAreReturnedInDescendingOrder()
         {
-            using (var context = new ApplicationDbContext(ContextOptions))
-            {
-                // Arrange
-                var config = new ConfigurationBuilder().Build();
-                var pageModel = new ERPSystem.Pages.Companies.IndexModel(context, config);
-                var expectedCompanies = SeedCompany.data;
+            // Arrange
+            var config = new ConfigurationBuilder().Build();
+            var pageModel = new ERPSystem.Pages.Companies.IndexModel(Fixture.context, config);
+            var expectedCompanies = Fixture.context.Companies;
 
-                // Act
-                await pageModel.OnGetAsync("name_desc", null, null, null);
+            // Act
+            await pageModel.OnGetAsync("name_desc", null, null, null);
 
-                // Assert
-                var actualCompanies = Assert.IsAssignableFrom<List<Company>>(pageModel.Company);
-                Assert.Equal(
-                    expectedCompanies.OrderByDescending(m => m.Name).Take(PageSize).Select(m => m.Name),
-                    actualCompanies.OrderByDescending(m => m.Name).Select(m => m.Name));
-            }
+            // Assert
+            var actualCompanies = Assert.IsAssignableFrom<List<Company>>(pageModel.Company);
+            Assert.Equal(
+                expectedCompanies.OrderByDescending(m => m.Name).Take(PageSize).Select(m => m.Name),
+                actualCompanies.OrderByDescending(m => m.Name).Select(m => m.Name));
         }
 
         //IndexModel
@@ -91,24 +74,21 @@ namespace ERPTest
         [InlineData("er")]
         public async Task Company_IndexModel_OnGetAsync_FilteredListOfCompaniesIsReturned(string searchString)
         {
-            using (var context = new ApplicationDbContext(ContextOptions))
-            {
-                // Arrange
-                var config = new ConfigurationBuilder().Build();
-                var pageModel = new ERPSystem.Pages.Companies.IndexModel(context, config);
-                var expectedCompanies = SeedCompany.data.Where(c => c.Name.Contains(searchString)
-                                             || c.GeneralManager.FirstName.Contains(searchString)
-                                              || c.GeneralManager.LastName.Contains(searchString));
+            // Arrange
+            var config = new ConfigurationBuilder().Build();
+            var pageModel = new ERPSystem.Pages.Companies.IndexModel(Fixture.context, config);
+            var expectedCompanies = Fixture.context.Companies.Where(c => c.Name.Contains(searchString)
+                                         || c.GeneralManager.FirstName.Contains(searchString)
+                                          || c.GeneralManager.LastName.Contains(searchString));
 
-                // Act
-                await pageModel.OnGetAsync(null, searchString, null, null);
+            // Act
+            await pageModel.OnGetAsync(null, searchString, null, null);
 
-                // Assert
-                var actualCompanies = Assert.IsAssignableFrom<List<Company>>(pageModel.Company);
-                Assert.Equal(
-                    expectedCompanies.OrderBy(m => m.Name).Take(PageSize).Select(m => m.Name),
-                    actualCompanies.OrderBy(m => m.Name).Select(m => m.Name));
-            }
+            // Assert
+            var actualCompanies = Assert.IsAssignableFrom<List<Company>>(pageModel.Company);
+            Assert.Equal(
+                expectedCompanies.OrderBy(m => m.Name).Take(PageSize).Select(m => m.Name),
+                actualCompanies.OrderBy(m => m.Name).Select(m => m.Name));
         }
 
         //IndexModel
@@ -121,278 +101,245 @@ namespace ERPTest
         [InlineData(int.MaxValue)]
         public async Task Company_IndexModel_OnGetAsync_Pagination(int pageIndex)
         {
-            using (var context = new ApplicationDbContext(ContextOptions))
+            // Arrange
+            var config = new ConfigurationBuilder().Build();
+            var pageModel = new ERPSystem.Pages.Companies.IndexModel(Fixture.context, config);
+            List<Company> expectedCompanies = new List<Company>();
+            if (pageIndex > 0 && pageIndex <= Math.Ceiling((double)Fixture.context.Companies.Count() / (double)PageSize))
             {
-                // Arrange
-                var config = new ConfigurationBuilder().Build();
-                var pageModel = new ERPSystem.Pages.Companies.IndexModel(context, config);
-                List<Company> expectedCompanies = new List<Company>();
-                if (pageIndex > 0 && pageIndex <= Math.Ceiling((double)SeedCompany.data.Count / (double)PageSize))
-                {
-                    expectedCompanies = SeedCompany.data
-                        .OrderBy(m => m.Name)
-                        .Skip((pageIndex - 1) * PageSize)
-                        .Take(PageSize)
-                        .ToList();
+                expectedCompanies = Fixture.context.Companies
+                    .OrderBy(m => m.Name)
+                    .Skip((pageIndex - 1) * PageSize)
+                    .Take(PageSize)
+                    .ToList();
 
-                }
-                else
-                {
-                    expectedCompanies = SeedCompany.data
-                        .OrderBy(m => m.Name)
-                        .Take(PageSize)
-                        .ToList(); ;
-
-                }
-
-                // Act
-                await pageModel.OnGetAsync(null, null, null, pageIndex);
-
-                // Assert
-                var actualCompanies = Assert.IsAssignableFrom<List<Company>>(pageModel.Company);
-                Assert.Equal(
-                    expectedCompanies.OrderBy(m => m.Name).Take(PageSize).Select(m => m.Name),
-                    actualCompanies.OrderBy(m => m.Name).Select(m => m.Name));
             }
+            else
+            {
+                expectedCompanies = Fixture.context.Companies
+                    .OrderBy(m => m.Name)
+                    .Take(PageSize)
+                    .ToList(); ;
+
+            }
+
+            // Act
+            await pageModel.OnGetAsync(null, null, null, pageIndex);
+
+            // Assert
+            var actualCompanies = Assert.IsAssignableFrom<List<Company>>(pageModel.Company);
+            Assert.Equal(
+                expectedCompanies.OrderBy(m => m.Name).Take(PageSize).Select(m => m.Name),
+                actualCompanies.OrderBy(m => m.Name).Select(m => m.Name));
         }
 
         //CreateModel
         [Fact]
         public async Task Company_CreateModel_OnPostAsync_CompanyIsAdded()
         {
-            using (var context = new ApplicationDbContext(ContextOptions))
+            // Arrange
+            var pageModel = new ERPSystem.Pages.Companies.CreateModel(Fixture.context);
+            var expectedCompany = new Company
             {
-                // Arrange
-                var pageModel = new ERPSystem.Pages.Companies.CreateModel(context);
-                var expectedCompany = new Company
-                {
-                    Id = 11,
-                    Name = "Test Company",
-                    CompanyState = CompanyState.Inactive,
-                    Branches = new List<Branch>(),
-                    Departments = new List<Department>()
-                };
-                pageModel.Company = expectedCompany;
+                Id = 11,
+                Name = "Test Company",
+                CompanyState = CompanyState.Inactive,
+                Branches = new List<Branch>(),
+                Departments = new List<Department>()
+            };
+            pageModel.Company = expectedCompany;
 
-                // Act
-                var result = await pageModel.OnPostAsync(null, null, null, null, null, null);
+            // Act
+            var result = await pageModel.OnPostAsync(null, null, null, null, null, null);
 
-                // Assert
-                var actualCompany = await context.Companies.Where(c => c.Name == "Test Company").FirstOrDefaultAsync();
-                var object1Json = JsonSerializer.Serialize(expectedCompany);
-                var object2Json = JsonSerializer.Serialize(actualCompany);
-                Assert.Equal(object1Json, object2Json);
-                Assert.IsType<RedirectToPageResult>(result);
-            }
+            // Assert
+            var actualCompany = await Fixture.context.Companies.Where(c => c.Name == "Test Company").FirstOrDefaultAsync();
+            var object1Json = JsonSerializer.Serialize(expectedCompany);
+            var object2Json = JsonSerializer.Serialize(actualCompany);
+            Assert.Equal(object1Json, object2Json);
+            Assert.IsType<RedirectToPageResult>(result);
         }
 
         //CreateModel
         [Fact]
         public async Task Company_CreateModel_OnPostAsync_IfInvalidModel_ReturnPageResult()
         {
-            using (var context = new ApplicationDbContext(ContextOptions))
+            // Arrange
+            var pageModel = new ERPSystem.Pages.Companies.CreateModel(Fixture.context);
+            var expectedCompany = new Company
             {
-                // Arrange
-                var pageModel = new ERPSystem.Pages.Companies.CreateModel(context);
-                var expectedCompany = new Company
-                {
-                    Id = 11,
-                    Name = "Test Company",
-                    CompanyState = CompanyState.Inactive,
-                    Branches = new List<Branch>(),
-                    Departments = new List<Department>()
-                };
-                pageModel.Company = expectedCompany;
+                Id = 11,
+                Name = "Test Company",
+                CompanyState = CompanyState.Inactive,
+                Branches = new List<Branch>(),
+                Departments = new List<Department>()
+            };
+            pageModel.Company = expectedCompany;
 
-                // Act
-                pageModel.ModelState.AddModelError("Error", "ModelState is invalid");
-                var result = await pageModel.OnPostAsync(null, null, null, null, null, null);
+            // Act
+            pageModel.ModelState.AddModelError("Error", "ModelState is invalid");
+            var result = await pageModel.OnPostAsync(null, null, null, null, null, null);
 
-                // Assert
-                Assert.IsType<PageResult>(result);
-            }
+            // Assert
+            Assert.IsType<PageResult>(result);
         }
 
         //DeleteModel
         [Fact]
         public async Task Company_DeleteModel_OnGetAsync_CompanyIsFetched()
         {
-            using (var context = new ApplicationDbContext(ContextOptions))
-            {
-                // Arrange
-                var pageModel = new ERPSystem.Pages.Companies.DeleteModel(context);
-                var testId = 1;
+            // Arrange
+            var pageModel = new ERPSystem.Pages.Companies.DeleteModel(Fixture.context);
+            var testId = 1;
 
-                // Act
-                var result = await pageModel.OnPostAsync(null, null, null, testId);
+            // Act
+            var result = await pageModel.OnGetAsync(null, null, null, testId);
 
-                // Assert
-                Assert.IsType<RedirectToPageResult>(result);
-                var model = Assert.IsAssignableFrom<Company>(pageModel.Company);
-                Assert.Equal(testId, model.Id);
-                Assert.Equal("Walmart", model.Name);
-                Assert.Equal(CompanyState.Active, model.CompanyState);
-            }
+            // Assert
+            Assert.IsType<PageResult>(result);
+            var model = Assert.IsAssignableFrom<Company>(pageModel.Company);
+            Assert.Equal(testId, model.Id);
+            Assert.Equal("Walmart", model.Name);
+            Assert.Equal(CompanyState.Active, model.CompanyState);
         }
 
         //DeleteModel
         [Fact]
         public async Task Company_DeleteModel_OnPostAsync_CompanyIsDeleted_WhenCompanyIsFound()
         {
-            using (var context = new ApplicationDbContext(ContextOptions))
-            {
-                // Arrange
-                var pageModel = new ERPSystem.Pages.Companies.DeleteModel(context);
-                var testId = 1;
-                var expectedCompanies = SeedCompany.data.Where(c => c.Id != testId).ToList();
+            // Arrange
+            var pageModel = new ERPSystem.Pages.Companies.DeleteModel(Fixture.context);
+            var testId = 1;
+            var expectedCompanies = Fixture.context.Companies.Where(c => c.Id != testId).ToList();
 
-                // Act
-                var result = await pageModel.OnPostAsync(null, null, null, testId);
+            // Act
+            var result = await pageModel.OnPostAsync(null, null, null, testId);
 
-                // Assert
-                var actualCompanies = await context.Companies.AsNoTracking().ToListAsync();
-                Assert.Equal(
-                    expectedCompanies.OrderBy(m => m.Id).Select(m => m.Name),
-                    actualCompanies.OrderBy(m => m.Id).Select(m => m.Name));
-                Assert.IsType<RedirectToPageResult>(result);
-            }
+            // Assert
+            var actualCompanies = await Fixture.context.Companies.AsNoTracking().ToListAsync();
+            Assert.Equal(
+                expectedCompanies.OrderBy(m => m.Id).Select(m => m.Name),
+                actualCompanies.OrderBy(m => m.Id).Select(m => m.Name));
+            Assert.IsType<RedirectToPageResult>(result);
         }
 
         //DeleteModel
         [Fact]
         public async Task Company_DeleteModel_OnPostAsync_NoCompanyIsDeleted_WhenCompanyIsNotFound()
         {
-            using (var context = new ApplicationDbContext(ContextOptions))
-            {
-                // Arrange
-                var pageModel = new ERPSystem.Pages.Companies.DeleteModel(context);
-                var testId = 11;
-                var expectedCompanies = SeedCompany.data;
+            // Arrange
+            var pageModel = new ERPSystem.Pages.Companies.DeleteModel(Fixture.context);
+            var testId = 11;
+            var expectedCompanies = Fixture.context.Companies;
 
-                // Act
-                var result = await pageModel.OnPostAsync(null, null, null, testId);
+            // Act
+            var result = await pageModel.OnPostAsync(null, null, null, testId);
 
-                // Assert
-                var actualCompanies = await context.Companies.AsNoTracking().ToListAsync();
-                Assert.Equal(
-                    expectedCompanies.OrderBy(m => m.Id).Select(m => m.Name),
-                    actualCompanies.OrderBy(m => m.Id).Select(m => m.Name));
-                Assert.IsType<RedirectToPageResult>(result);
-            }
+            // Assert
+            var actualCompanies = await Fixture.context.Companies.AsNoTracking().ToListAsync();
+            Assert.Equal(
+                expectedCompanies.OrderBy(m => m.Id).Select(m => m.Name),
+                actualCompanies.OrderBy(m => m.Id).Select(m => m.Name));
+            Assert.IsType<RedirectToPageResult>(result);
         }
 
         //EditModel
         [Fact]
         public async Task Company_EditModel_OnGetAsync_CompanyIsFetched()
         {
-            using (var context = new ApplicationDbContext(ContextOptions))
-            {
-                // Arrange
-                var pageModel = new ERPSystem.Pages.Companies.EditModel(context);
-                int testId = 1;
+            // Arrange
+            var pageModel = new ERPSystem.Pages.Companies.EditModel(Fixture.context);
+            int testId = 2;
 
-                // Act
-                var result = await pageModel.OnGetAsync(null, null, null, testId);
+            // Act
+            var result = await pageModel.OnGetAsync(null, null, null, testId);
 
-                // Assert
-                Assert.IsType<PageResult>(result);
-                var model = Assert.IsAssignableFrom<Company>(pageModel.Company);
-                Assert.Equal(testId, model.Id);
-                Assert.Equal("Walmart", model.Name);
-                Assert.Equal(CompanyState.Active, model.CompanyState);
-            }
+            // Assert
+            Assert.IsType<PageResult>(result);
+            var model = Assert.IsAssignableFrom<Company>(pageModel.Company);
+            Assert.Equal(testId, model.Id);
+            Assert.Equal("Amazon", model.Name);
+            Assert.Equal(CompanyState.Inactive, model.CompanyState);
         }
 
         //EditModel
         [Fact]
         public async Task Company_EditModel_OnPostAsync_CompanyIsModified()
         {
-            using (var context = new ApplicationDbContext(ContextOptions))
+            // Arrange
+            var pageModel = new ERPSystem.Pages.Companies.EditModel(Fixture.context);
+            int testId = 1;
+            var expectedCompany = new Company
             {
-                // Arrange
-                var pageModel = new ERPSystem.Pages.Companies.EditModel(context);
-                int testId = 1;
-                var expectedCompany = new Company
-                {
-                    Name = "Modified Entity",
-                    CompanyState = CompanyState.Inactive,
-                };
-                pageModel.Company = expectedCompany;
+                Name = "Modified Entity",
+                CompanyState = CompanyState.Inactive,
+            };
+            pageModel.Company = expectedCompany;
 
-                // Act
-                var result = await pageModel.OnPostAsync(testId, null, null, null, null, null, null);
+            // Act
+            var result = await pageModel.OnPostAsync(testId, null, null, null, null, null, null);
 
-                // Assert
-                Assert.IsType<RedirectToPageResult>(result);
-                var model = Assert.IsAssignableFrom<Company>(pageModel.Company);
-                Assert.Equal("Modified Entity", model.Name);
-                Assert.Equal(CompanyState.Inactive, model.CompanyState);
-            }
+            // Assert
+            Assert.IsType<RedirectToPageResult>(result);
+            var model = Assert.IsAssignableFrom<Company>(pageModel.Company);
+            Assert.Equal("Modified Entity", model.Name);
+            Assert.Equal(CompanyState.Inactive, model.CompanyState);
         }
 
         //EditModel
         [Fact]
         public async Task Company_EditModel_OnPostAsync_IfInvalidModel_ReturnPageResult()
         {
-            using (var context = new ApplicationDbContext(ContextOptions))
+            // Arrange
+            var pageModel = new ERPSystem.Pages.Companies.EditModel(Fixture.context);
+            int testId = 1;
+            var expectedCompany = new Company
             {
-                // Arrange
-                var pageModel = new ERPSystem.Pages.Companies.EditModel(context);
-                int testId = 1;
-                var expectedCompany = new Company
-                {
-                    Name = "Modified Entity",
-                    CompanyState = CompanyState.Inactive,
-                };
-                pageModel.Company = expectedCompany;
+                Name = "Modified Entity",
+                CompanyState = CompanyState.Inactive,
+            };
+            pageModel.Company = expectedCompany;
 
-                // Act
-                pageModel.ModelState.AddModelError("Error", "ModelState is invalid");
-                var result = await pageModel.OnPostAsync(testId, null, null, null, null, null, null);
+            // Act
+            pageModel.ModelState.AddModelError("Error", "ModelState is invalid");
+            var result = await pageModel.OnPostAsync(testId, null, null, null, null, null, null);
 
-                // Assert
-                Assert.IsType<PageResult>(result);
-            }
+            // Assert
+            Assert.IsType<PageResult>(result);
         }
 
         //DetailsModel
         [Fact]
         public async Task Company_DetailsModel_OnGetAsync_CompanyIsFetched_WhenCompanyIsFound()
         {
-            using (var context = new ApplicationDbContext(ContextOptions))
-            {
-                // Arrange
-                var pageModel = new ERPSystem.Pages.Companies.DetailsModel(context);
-                int testId = 1;
+            // Arrange
+            var pageModel = new ERPSystem.Pages.Companies.DetailsModel(Fixture.context);
+            int testId = 2;
 
-                // Act
-                var result = await pageModel.OnGetAsync(null, null, null, testId);
+            // Act
+            var result = await pageModel.OnGetAsync(null, null, null, testId);
 
-                // Assert
-                Assert.IsType<PageResult>(result);
-                var model = Assert.IsAssignableFrom<Company>(pageModel.Company);
-                Assert.Equal(testId, model.Id);
-                Assert.Equal("Walmart", model.Name);
-                Assert.Equal(CompanyState.Active, model.CompanyState);
-            }
+            // Assert
+            Assert.IsType<PageResult>(result);
+            var model = Assert.IsAssignableFrom<Company>(pageModel.Company);
+            Assert.Equal(testId, model.Id);
+            Assert.Equal("Amazon", model.Name);
+            Assert.Equal(CompanyState.Inactive, model.CompanyState);
         }
 
         //DetailsModel
         [Fact]
         public async Task Company_DetailsModel_OnGetAsync_NotFoundResultReturned_WhenCompanyIsNotFound()
         {
-            using (var context = new ApplicationDbContext(ContextOptions))
-            {
-                // Arrange
-                var pageModel = new ERPSystem.Pages.Companies.DetailsModel(context);
-                int testId = 11;
+            // Arrange
+            var pageModel = new ERPSystem.Pages.Companies.DetailsModel(Fixture.context);
+            int testId = 11;
 
-                // Act
-                var result = await pageModel.OnGetAsync(null, null, null, testId);
+            // Act
+            var result = await pageModel.OnGetAsync(null, null, null, testId);
 
-                // Assert
-                Assert.IsType<NotFoundResult>(result);
-            }
+            // Assert
+            Assert.IsType<NotFoundResult>(result);
         }
     }
 }
