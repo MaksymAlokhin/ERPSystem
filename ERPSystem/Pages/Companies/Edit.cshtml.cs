@@ -139,7 +139,8 @@ namespace ERPSystem.Pages.Companies
                         .Where(e => e.EmployeeRole == EmployeeRole.GeneralManager
                         && e.Id == CompanyToUpdate.GeneralManager.Id)
                         .FirstOrDefaultAsync();
-                    formerGm.CompanyId = null;
+                    if (formerGm != null)
+                        formerGm.CompanyId = null;
                 }
             }
 
