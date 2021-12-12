@@ -20,9 +20,8 @@ namespace ERPTest
     {
         public InMemoryCompanyTests(InMemorySharedDatabaseFixture fixture)
         {
-            PageSize = 7;
+            PageSize = fixture.PageSize;
             Fixture = fixture;
-            //ContextOptions = new DbContextOptionsBuilder<ApplicationDbContext>().UseInMemoryDatabase("TestDatabase").Options;
         }
         public InMemorySharedDatabaseFixture Fixture;
         protected DbContextOptions<ApplicationDbContext> ContextOptions { get; }
@@ -259,7 +258,7 @@ namespace ERPTest
             var model = Assert.IsAssignableFrom<Company>(pageModel.Company);
             Assert.Equal(testId, model.Id);
             Assert.Equal("Amazon", model.Name);
-            Assert.Equal(CompanyState.Inactive, model.CompanyState);
+            Assert.Equal(CompanyState.Active, model.CompanyState);
         }
 
         //EditModel
@@ -324,7 +323,7 @@ namespace ERPTest
             var model = Assert.IsAssignableFrom<Company>(pageModel.Company);
             Assert.Equal(testId, model.Id);
             Assert.Equal("Amazon", model.Name);
-            Assert.Equal(CompanyState.Inactive, model.CompanyState);
+            Assert.Equal(CompanyState.Active, model.CompanyState);
         }
 
         //DetailsModel

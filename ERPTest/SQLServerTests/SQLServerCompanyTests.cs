@@ -21,7 +21,7 @@ namespace ERPTest
         public SQLServerCompanyTests(SQLServerSharedDatabaseFixture fixture)
         {
             Fixture = fixture;
-            PageSize = 7;
+            PageSize = fixture.PageSize;
         }
         public SQLServerSharedDatabaseFixture Fixture { get; }
         private int PageSize;

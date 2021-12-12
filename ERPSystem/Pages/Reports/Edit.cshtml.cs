@@ -74,7 +74,7 @@ namespace ERPSystem.Pages.Reports
 
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see https://aka.ms/RazorPagesCRUD.
-        public async Task<IActionResult> OnPostAsync(string sortOrder,
+        public async Task<IActionResult> OnPostAsync(int? id, string sortOrder,
             string currentFilter, int? pageIndex, double Hours)
         {
             if (!ModelState.IsValid)
