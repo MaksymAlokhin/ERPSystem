@@ -39,31 +39,59 @@ namespace ERPSystem
         public static async Task<PaginatedList<T>> CreateAsync(
             IQueryable<T> source, int pageIndex, int pageSize)
         {
-            var count = await source.CountAsync();
-            var items = await source.Skip(
-                (pageIndex - 1) * pageSize)
-                .Take(pageSize).ToListAsync();
+            if (pageIndex > 0 && pageIndex <= Math.Ceiling((double)source.ToList().Count / (double)pageSize))
+            {
+                var count = await source.CountAsync();
+                var items = await source.Skip(
+                    (pageIndex - 1) * pageSize)
+                    .Take(pageSize).ToListAsync();
 
-            var seqNum = Enumerable.Range(1, count).Skip(
-                (pageIndex - 1) * pageSize)
-                .Take(pageSize).ToList();
+                var seqNum = Enumerable.Range(1, count).Skip(
+                    (pageIndex - 1) * pageSize)
+                    .Take(pageSize).ToList();
 
-            return new PaginatedList<T>(items, count, pageIndex, pageSize, seqNum);
+                return new PaginatedList<T>(items, count, pageIndex, pageSize, seqNum);
+            }
+            else
+            {
+                var count = await source.CountAsync();
+                var items = await source
+                    .Take(pageSize).ToListAsync();
+
+                var seqNum = Enumerable.Range(1, count)
+                    .Take(pageSize).ToList();
+
+                return new PaginatedList<T>(items, count, pageIndex, pageSize, seqNum);
+            }
         }
 
         public static PaginatedList<T> CreateFromList(
             IList<T> source, int pageIndex, int pageSize)
         {
-            var count = source.Count();
-            var items = source.Skip(
-                (pageIndex - 1) * pageSize)
-                .Take(pageSize).ToList();
+            if (pageIndex > 0 && pageIndex <= Math.Ceiling((double)source.Count / (double)pageSize))
+            {
+                var count = source.Count();
+                var items = source.Skip(
+                    (pageIndex - 1) * pageSize)
+                    .Take(pageSize).ToList();
 
-            var seqNum = Enumerable.Range(1, count).Skip(
-                (pageIndex - 1) * pageSize)
-                .Take(pageSize).ToList();
+                var seqNum = Enumerable.Range(1, count).Skip(
+                    (pageIndex - 1) * pageSize)
+                    .Take(pageSize).ToList();
 
-            return new PaginatedList<T>(items, count, pageIndex, pageSize, seqNum);
+                return new PaginatedList<T>(items, count, pageIndex, pageSize, seqNum);
+            }
+            else
+            {
+                var count = source.Count();
+                var items = source
+                    .Take(pageSize).ToList();
+
+                var seqNum = Enumerable.Range(1, count)
+                    .Take(pageSize).ToList();
+
+                return new PaginatedList<T>(items, count, pageIndex, pageSize, seqNum);
+            }
         }
     }
 }
