@@ -29,4 +29,8 @@
     <ProjectReference Include="..\ERPSystem\ERPSystem.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="InMemoryTests\" />
+  </ItemGroup>
+
 </Project>

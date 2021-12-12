@@ -13,22 +13,19 @@ using System.Text.Json;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
-namespace ERPTest
+namespace CompanyTest
 {
-    public class InMemoryCompanyTests : IDisposable
+    public abstract class CompanyTests : IDisposable
     {
-        public InMemoryCompanyTests()
+        public CompanyTests(DbContextOptions<ApplicationDbContext> contextOptions)
         {
             PageSize = 7;
+            context = new ApplicationDbContext(contextOptions);
 
-            var options = new DbContextOptionsBuilder<ApplicationDbContext>()
-            .UseInMemoryDatabase("CompanyTestDatabase")
-            .Options;
-
-            context = new ApplicationDbContext(options);
             SeedCompany(context);
 
         }
+
         private int PageSize;
         public ApplicationDbContext context { get; private set; }
 
