@@ -1,5 +1,6 @@
 using ERPSystem.Data;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -23,6 +24,9 @@ namespace ERPSystem
 
                 try
                 {
+                    var context = services.GetRequiredService<ApplicationDbContext>();
+                    context.Database.Migrate();
+
                     IConfiguration config = host.Services.GetRequiredService<IConfiguration>();
                     String testUserPw = config["SeedUserPW"]; //appsettings.json "SeedUserPW": "aA!111"
                     DbInitializer.Initialize(services, testUserPw).Wait();
