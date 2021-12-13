@@ -29,6 +29,7 @@ Built With:<br />
 - Entity Framework Core 5
 - Razor Pages
 - Microsoft Identity
+- xUnit.net
 
 Entities:<br />
 --------------------
@@ -40,11 +41,6 @@ Entities:<br />
 - Position
 - Assignment
 - Report
-
-ToDo List:<br />
-----------
-- xUnit Tests
-- Logging
 
 Screenshots:<br />
 -----------
