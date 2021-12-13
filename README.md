@@ -1,4 +1,5 @@
-﻿ERPSystem<br />
+﻿[![.NET](https://github.com/gform/ERPSystem/actions/workflows/dotnet.yml/badge.svg)](https://github.com/gform/ERPSystem/actions/workflows/dotnet.yml)
+ERPSystem<br />
 =========
 Demo App for Avenga<br />
 
