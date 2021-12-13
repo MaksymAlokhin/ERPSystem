@@ -1,4 +1,4 @@
-using ERPSystem.Data;
+/*using ERPSystem.Data;
 using Microsoft.EntityFrameworkCore;
 
 namespace AssignmentTest
@@ -14,3 +14,4 @@ namespace AssignmentTest
         }
     }
 }
+*/
