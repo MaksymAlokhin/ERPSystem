@@ -71,10 +71,14 @@ namespace ERPSystem.Pages.Employees
                 return NotFound();
             }
 
-            ViewData["BranchId"] = new SelectList(_context.Branches.OrderBy(b => b.Name), "Id", "Name");
-            ViewData["CompanyId"] = new SelectList(_context.Companies.OrderBy(c => c.Name), "Id", "Name");
-            ViewData["DepartmentId"] = new SelectList(_context.Departments.OrderBy(d => d.Name), "Id", "Name");
-            ViewData["ProjectId"] = new SelectList(_context.Projects.OrderBy(p => p.Name), "Id", "Name");
+            if (_context.Branches.Any())
+                ViewData["BranchId"] = new SelectList(_context.Branches.OrderBy(b => b.Name), "Id", "Name");
+            if (_context.Companies.Any())
+                ViewData["CompanyId"] = new SelectList(_context.Companies.OrderBy(c => c.Name), "Id", "Name");
+            if (_context.Departments.Any())
+                ViewData["DepartmentId"] = new SelectList(_context.Departments.OrderBy(d => d.Name), "Id", "Name");
+            if (_context.Projects.Any())
+                ViewData["ProjectId"] = new SelectList(_context.Projects.OrderBy(p => p.Name), "Id", "Name");
 
             //var MentorsQuery = _context.Employees
             //    .OrderBy(e => e.LastName)
@@ -695,7 +699,7 @@ namespace ERPSystem.Pages.Employees
                             .Where(c => c.Id == department.CompanyId)
                             .AsNoTracking()
                             .FirstOrDefaultAsync();
-                        if (company !=null)
+                        if (company != null)
                         {
                             if (company.Branches.Count > 0)
                             {
@@ -743,7 +747,7 @@ namespace ERPSystem.Pages.Employees
                                 .Where(c => c.Id == department.CompanyId)
                                 .AsNoTracking()
                                 .FirstOrDefaultAsync();
-                            if (company !=null)
+                            if (company != null)
                             {
                                 if (company.Branches.Count > 0)
                                 {

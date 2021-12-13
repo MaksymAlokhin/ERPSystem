@@ -40,18 +40,23 @@ namespace ERPSystem.Pages.Reports
         public async Task<IActionResult> OnGetAsync(string sortOrder,
             string currentFilter, int? pageIndex, int? id)
         {
-            PageIndex = pageIndex;
-            CurrentSort = sortOrder;
-            CurrentFilter = currentFilter;
-
             if (id == null)
             {
                 return NotFound();
             }
-
+            
             Report = await _context.Reports
                 .Include(r => r.Assignment)
                 .ThenInclude(r => r.Employee).FirstOrDefaultAsync(m => m.Id == id);
+            
+            if (Report == null)
+            {
+                return NotFound();
+            }
+
+            PageIndex = pageIndex;
+            CurrentSort = sortOrder;
+            CurrentFilter = currentFilter;
 
             Assignment = await _context.Assignments
                 .Include(a => a.Employee)
@@ -59,13 +64,12 @@ namespace ERPSystem.Pages.Reports
                 .AsNoTracking()
                 .FirstOrDefaultAsync(a => a.Id == Report.AssignmentId);
 
-            if (Report == null)
+            if(Assignment != null)
             {
-                return NotFound();
+                MinDate = Assignment.StartDate.ToString("yyyy-MM-dd");
+                MaxDate = Assignment.EndDate.ToString("yyyy-MM-dd");
             }
 
-            MinDate = Assignment.StartDate.ToString("yyyy-MM-dd");
-            MaxDate = Assignment.EndDate.ToString("yyyy-MM-dd");
             Hours = Report.Hours;
             Report.ReportState = ReportState.Submitted;
 

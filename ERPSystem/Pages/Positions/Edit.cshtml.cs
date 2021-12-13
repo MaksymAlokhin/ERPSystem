@@ -53,7 +53,8 @@ namespace ERPSystem.Pages.Positions
                 return NotFound();
             }
 
-            ViewData["ProjectId"] = new SelectList(_context.Projects.OrderBy(p => p.Name), "Id", "Name");
+            if (_context.Projects.Any())
+                ViewData["ProjectId"] = new SelectList(_context.Projects.OrderBy(p => p.Name), "Id", "Name");
 
             var AssignmentsQuery = _context.Assignments.OrderBy(e => e.Name).AsNoTracking();
             AssignmentsSelectList = new SelectList(AssignmentsQuery, "Id", "Name"); //list, id, value

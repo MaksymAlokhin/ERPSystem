@@ -65,16 +65,17 @@ namespace ERPSystem.Pages.Reports
                 return Page();
             }
 
+            Report.Hours = Hours;
+
             Assignment = await _context.Assignments
                 .Include(a => a.Employee)
                 .Include(a => a.Position)
                 .Include(a => a.Reports)
                 .FirstOrDefaultAsync(a => a.Id == id);
+            if (Assignment != null)
+                Assignment.Reports.Add(Report);
 
-            Report.Hours = Hours;
-
-            Assignment.Reports.Add(Report);
-
+            _context.Reports.Add(Report);
             await _context.SaveChangesAsync();
 
             return RedirectToPage("./Index");
@@ -86,8 +87,8 @@ namespace ERPSystem.Pages.Reports
                 Utility utility = new Utility(_context);
                 DateTime date = DateTime.Parse(inDate);
                 var result = await utility.GetHours(date, id);
-                return new JsonResult(new 
-                { 
+                return new JsonResult(new
+                {
                     hours = result.hours.ToString(),
                     date = result.date.ToString("yyyy-MM-dd"),
                     min = result.min.ToString("yyyy-MM-dd"),
