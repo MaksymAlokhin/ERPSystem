@@ -43,7 +43,8 @@ Entities:<br />
 
 ToDo List:<br />
 ----------
-- Unit Tests
+- xUnit Tests
+- Logging
 
 Screenshots:<br />
 -----------

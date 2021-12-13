@@ -75,14 +75,14 @@ namespace ERPSystem.Pages.Projects
             {
                 SelectedPositions.Add(position.Id);
             }
-
-            ViewData["DepartmentId"] = new SelectList(_context.Departments.OrderBy(d => d.Name), "Id", "Name");
+            if (_context.Departments.Any())
+                ViewData["DepartmentId"] = new SelectList(_context.Departments.OrderBy(d => d.Name), "Id", "Name");
             return Page();
         }
 
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see https://aka.ms/RazorPagesCRUD.
-        public async Task<IActionResult> OnPostAsync(int? id, int? ProjectManagerId, 
+        public async Task<IActionResult> OnPostAsync(int? id, int? ProjectManagerId,
             string sortOrder, string currentFilter, int? pageIndex, int[] SelectedPositions)
         {
             ProjectsWithModifiedState = new List<int>();

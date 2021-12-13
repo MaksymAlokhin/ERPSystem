@@ -207,24 +207,26 @@ namespace ERPSystem
                     .Include(p => p.Positions)
                         .ThenInclude(a => a.Assignments)
                     .FirstOrDefault(c => c.Id == id);
-
-                if (project.ProjectState != ProjectState.Active)
+                if (project != null)
                 {
-                    foreach (Position position in project.Positions)
+                    if (project.ProjectState != ProjectState.Active)
                     {
-                        position.PositionState = PositionState.Inactive;
-                        foreach (Assignment assignment in position.Assignments)
-                            assignment.AssignmentState = AssignmentState.Inactive;
+                        foreach (Position position in project.Positions)
+                        {
+                            position.PositionState = PositionState.Inactive;
+                            foreach (Assignment assignment in position.Assignments)
+                                assignment.AssignmentState = AssignmentState.Inactive;
+                        }
                     }
-                }
-                else
-                {
-                    foreach (Position position in project.Positions)
+                    else
                     {
-                        _context.Entry(position).Collection(p => p.Assignments).Load();
-                        position.PositionState = PositionState.Active;
-                        foreach (Assignment assignment in position.Assignments)
-                            assignment.AssignmentState = AssignmentState.Active;
+                        foreach (Position position in project.Positions)
+                        {
+                            _context.Entry(position).Collection(p => p.Assignments).Load();
+                            position.PositionState = PositionState.Active;
+                            foreach (Assignment assignment in position.Assignments)
+                                assignment.AssignmentState = AssignmentState.Active;
+                        }
                     }
                 }
             }
