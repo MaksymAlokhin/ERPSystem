@@ -20,20 +20,40 @@ namespace ERPSystem
 
         public static DateTime GetRandomDate(DateTime startDate, DateTime endDate)
         {
+            if (startDate > endDate)
+            {
+                var dates = SwapDates(startDate, endDate);
+                startDate = dates[0];
+                endDate = dates[1];
+            }
             var random = new Random();
             var range = Convert.ToInt32(endDate.Subtract(startDate).TotalDays);
             return startDate.AddDays(random.Next(range));
         }
-        public static double GetBusinessDays(DateTime startD, DateTime endD)
+        public static double GetBusinessDays(DateTime startDate, DateTime endDate)
         {
-            double calcBusinessDays =
-                1 + ((endD - startD).TotalDays * 5 -
-                (startD.DayOfWeek - endD.DayOfWeek) * 2) / 7;
+            if (startDate > endDate)
+            {
+                var dates = SwapDates(startDate, endDate);
+                startDate = dates[0];
+                endDate = dates[1];
+            }
 
-            if (endD.DayOfWeek == DayOfWeek.Saturday) calcBusinessDays--;
-            if (startD.DayOfWeek == DayOfWeek.Sunday) calcBusinessDays--;
+            double calcBusinessDays =
+                1 + ((endDate - startDate).TotalDays * 5 -
+                (startDate.DayOfWeek - endDate.DayOfWeek) * 2) / 7;
+
+            if (endDate.DayOfWeek == DayOfWeek.Saturday) calcBusinessDays--;
+            if (startDate.DayOfWeek == DayOfWeek.Sunday) calcBusinessDays--;
 
             return calcBusinessDays;
+        }
+        public static DateTime[] SwapDates(DateTime one, DateTime two)
+        {
+            var temp = one;
+            one = two;
+            two = temp;
+            return new DateTime[] { one, two };
         }
         public async Task<ReportData> GetHours(DateTime date, int assignmentId)
         {
