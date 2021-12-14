@@ -28,6 +28,7 @@ Built With:<br />
 - ASP.NET Core 5
 - Entity Framework Core 5
 - Razor Pages
+- SQL Server LocalDB
 - Microsoft Identity
 - xUnit.net
 
