@@ -216,7 +216,6 @@ namespace ReportTest
         public async Task Report_CreateModel_OnPostAsync_ReportIsAdded()
         {
             // Arrange
-            int testId = 1;
             var pageModel = new ERPSystem.Pages.Reports.CreateModel(context);
             var expectedReport = new Report 
             {
