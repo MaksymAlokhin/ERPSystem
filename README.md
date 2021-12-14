@@ -33,14 +33,7 @@ Built With:<br />
 
 Entities:<br />
 --------------------
-- Company
-- Department
-- Branch
-- Employee
-- Project
-- Position
-- Assignment
-- Report
+![Entities](Screenshots/Entities.png)<br /><br />
 
 Screenshots:<br />
 -----------
