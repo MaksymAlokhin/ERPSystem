@@ -9,12 +9,14 @@ using ERPSystem.Data;
 using ERPSystem.Models;
 using Microsoft.Extensions.Configuration;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.Extensions.Logging;
 
 namespace ERPSystem.Pages.Reports
 {
     public class IndexModel : PageModel
     {
         private readonly ERPSystem.Data.ApplicationDbContext _context;
+        private readonly ILogger<IndexModel> _logger;
         private readonly IConfiguration Configuration;
         public string AssignmentSort { get; set; }
         public string DateSort { get; set; }
@@ -25,10 +27,11 @@ namespace ERPSystem.Pages.Reports
         public string CurrentSort { get; set; }
         public PaginatedList<Report> Report { get; set; }
 
-        public IndexModel(ERPSystem.Data.ApplicationDbContext context, IConfiguration configuration)
+        public IndexModel(ERPSystem.Data.ApplicationDbContext context, IConfiguration configuration, ILogger<IndexModel> logger)
         {
             _context = context;
             Configuration = configuration;
+            _logger = logger;
         }
 
         public async Task OnGetAsync(string sortOrder,

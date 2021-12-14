@@ -9,6 +9,7 @@ using Microsoft.EntityFrameworkCore;
 using ERPSystem.Data;
 using ERPSystem.Models;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.Extensions.Logging;
 
 namespace ERPSystem.Pages.Branches
 {
@@ -16,6 +17,7 @@ namespace ERPSystem.Pages.Branches
     public class EditModel : PageModel
     {
         private readonly ERPSystem.Data.ApplicationDbContext _context;
+        private readonly ILogger<EditModel> _logger;
         public int? PageIndex { get; set; }
         public string CurrentFilter { get; set; }
         public string CurrentSort { get; set; }
@@ -23,9 +25,10 @@ namespace ERPSystem.Pages.Branches
         public SelectList EmployeesSelectList { get; set; }
         public SelectList CompaniesSelectList { get; set; }
         List<int> BranchesWithModifiedState { get; set; }
-        public EditModel(ERPSystem.Data.ApplicationDbContext context)
+        public EditModel(ERPSystem.Data.ApplicationDbContext context, ILogger<EditModel> logger)
         {
             _context = context;
+            _logger = logger;
         }
 
         [BindProperty]

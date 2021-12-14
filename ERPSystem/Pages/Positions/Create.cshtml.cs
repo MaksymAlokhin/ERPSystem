@@ -9,6 +9,7 @@ using ERPSystem.Data;
 using ERPSystem.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.Extensions.Logging;
 
 namespace ERPSystem.Pages.Positions
 {
@@ -16,15 +17,17 @@ namespace ERPSystem.Pages.Positions
     public class CreateModel : PageModel
     {
         private readonly ERPSystem.Data.ApplicationDbContext _context;
+        private readonly ILogger<CreateModel> _logger;
         public int? PageIndex { get; set; }
         public string CurrentFilter { get; set; }
         public string CurrentSort { get; set; }
         public List<int> SelectedAssignments { get; set; }
         public SelectList AssignmentsSelectList { get; set; }
 
-        public CreateModel(ERPSystem.Data.ApplicationDbContext context)
+        public CreateModel(ERPSystem.Data.ApplicationDbContext context, ILogger<CreateModel> logger)
         {
             _context = context;
+            _logger = logger;
         }
 
         public IActionResult OnGet(string sortOrder,

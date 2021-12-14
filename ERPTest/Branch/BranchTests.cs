@@ -106,7 +106,7 @@ namespace BranchTest
         {
             // Arrange
             var config = new ConfigurationBuilder().Build();
-            var pageModel = new ERPSystem.Pages.Branches.IndexModel(context, config);
+            var pageModel = new ERPSystem.Pages.Branches.IndexModel(context, config, null);
             var expectedBranches = context.Branches;
 
             // Act
@@ -125,7 +125,7 @@ namespace BranchTest
         {
             // Arrange
             var config = new ConfigurationBuilder().Build();
-            var pageModel = new ERPSystem.Pages.Branches.IndexModel(context, config);
+            var pageModel = new ERPSystem.Pages.Branches.IndexModel(context, config, null);
             var expectedBranches = context.Branches;
 
             // Act
@@ -148,7 +148,7 @@ namespace BranchTest
         {
             // Arrange
             var config = new ConfigurationBuilder().Build();
-            var pageModel = new ERPSystem.Pages.Branches.IndexModel(context, config);
+            var pageModel = new ERPSystem.Pages.Branches.IndexModel(context, config, null);
             var expectedBranches = context.Branches.Where(c => c.Name.Contains(searchString)
                                                              || c.Company.Name.Contains(searchString));
 
@@ -174,7 +174,7 @@ namespace BranchTest
         {
             // Arrange
             var config = new ConfigurationBuilder().Build();
-            var pageModel = new ERPSystem.Pages.Branches.IndexModel(context, config);
+            var pageModel = new ERPSystem.Pages.Branches.IndexModel(context, config, null);
             List<Branch> expectedBranches = new List<Branch>();
             if (pageIndex > 0 && pageIndex <= Math.Ceiling((double)context.Branches.Count() / (double)PageSize))
             {
@@ -208,7 +208,7 @@ namespace BranchTest
         public async Task Branch_CreateModel_OnPostAsync_BranchIsAdded()
         {
             // Arrange
-            var pageModel = new ERPSystem.Pages.Branches.CreateModel(context);
+            var pageModel = new ERPSystem.Pages.Branches.CreateModel(context, null);
             var expectedBranch = new Branch 
             {
                 Name = "Test Branch",
@@ -232,7 +232,7 @@ namespace BranchTest
         public async Task Branch_CreateModel_OnPostAsync_IfInvalidModel_ReturnPageResult()
         {
             // Arrange
-            var pageModel = new ERPSystem.Pages.Branches.CreateModel(context);
+            var pageModel = new ERPSystem.Pages.Branches.CreateModel(context, null);
             var expectedBranch = new Branch
             {
                 Name = "Test Branch",
@@ -253,7 +253,7 @@ namespace BranchTest
         public async Task Branch_DeleteModel_OnGetAsync_BranchIsFetched()
         {
             // Arrange
-            var pageModel = new ERPSystem.Pages.Branches.DeleteModel(context);
+            var pageModel = new ERPSystem.Pages.Branches.DeleteModel(context, null);
             var testId = 1;
 
             // Act
@@ -272,7 +272,7 @@ namespace BranchTest
         public async Task Branch_DeleteModel_OnPostAsync_BranchIsDeleted_WhenBranchIsFound()
         {
             // Arrange
-            var pageModel = new ERPSystem.Pages.Branches.DeleteModel(context);
+            var pageModel = new ERPSystem.Pages.Branches.DeleteModel(context, null);
             var testId = 1;
             var expectedBranches = context.Branches.Where(c => c.Id != testId).ToList();
 
@@ -292,7 +292,7 @@ namespace BranchTest
         public async Task Branch_DeleteModel_OnPostAsync_NoBranchIsDeleted_WhenBranchIsNotFound()
         {
             // Arrange
-            var pageModel = new ERPSystem.Pages.Branches.DeleteModel(context);
+            var pageModel = new ERPSystem.Pages.Branches.DeleteModel(context, null);
             var testId = 11;
             var expectedBranches = context.Branches;
 
@@ -312,7 +312,7 @@ namespace BranchTest
         public async Task Branch_EditModel_OnGetAsync_BranchIsFetched()
         {
             // Arrange
-            var pageModel = new ERPSystem.Pages.Branches.EditModel(context);
+            var pageModel = new ERPSystem.Pages.Branches.EditModel(context, null);
             int testId = 2;
 
             // Act
@@ -332,7 +332,7 @@ namespace BranchTest
         {
             // Arrange
             var testId = 1;
-            var pageModel = new ERPSystem.Pages.Branches.EditModel(context);
+            var pageModel = new ERPSystem.Pages.Branches.EditModel(context, null);
             var expectedBranch = context.Branches.FirstOrDefault(m => m.Id == testId);
             pageModel.Branch = expectedBranch;
             pageModel.Branch.Name = "Modified Entity";
@@ -353,7 +353,7 @@ namespace BranchTest
         public async Task Branch_EditModel_OnPostAsync_IfInvalidModel_ReturnPageResult()
         {
             // Arrange
-            var pageModel = new ERPSystem.Pages.Branches.EditModel(context);
+            var pageModel = new ERPSystem.Pages.Branches.EditModel(context, null);
             int testId = 1;
             var expectedBranch = context.Branches.FirstOrDefault(m => m.Id == testId);
             pageModel.Branch = expectedBranch;
@@ -373,7 +373,7 @@ namespace BranchTest
         public async Task Branch_DetailsModel_OnGetAsync_BranchIsFetched_WhenBranchIsFound()
         {
             // Arrange
-            var pageModel = new ERPSystem.Pages.Branches.DetailsModel(context);
+            var pageModel = new ERPSystem.Pages.Branches.DetailsModel(context, null);
             int testId = 2;
 
             // Act
@@ -392,7 +392,7 @@ namespace BranchTest
         public async Task Branch_DetailsModel_OnGetAsync_NotFoundResultReturned_WhenBranchIsNotFound()
         {
             // Arrange
-            var pageModel = new ERPSystem.Pages.Branches.DetailsModel(context);
+            var pageModel = new ERPSystem.Pages.Branches.DetailsModel(context, null);
             int testId = 11;
 
             // Act

@@ -9,6 +9,7 @@ using ERPSystem.Data;
 using ERPSystem.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.Extensions.Logging;
 
 namespace ERPSystem.Pages.Reports
 {
@@ -16,6 +17,7 @@ namespace ERPSystem.Pages.Reports
     public class CreateModel : PageModel
     {
         private readonly ERPSystem.Data.ApplicationDbContext _context;
+        private readonly ILogger<CreateModel> _logger;
         public int? PageIndex { get; set; }
         public string CurrentFilter { get; set; }
         public string CurrentSort { get; set; }
@@ -29,9 +31,10 @@ namespace ERPSystem.Pages.Reports
             new SelectListItem { Value = "1", Text = "Submitted" }
         };
 
-        public CreateModel(ERPSystem.Data.ApplicationDbContext context)
+        public CreateModel(ERPSystem.Data.ApplicationDbContext context, ILogger<CreateModel> logger)
         {
             _context = context;
+            _logger = logger;
         }
         public async Task<IActionResult> OnGet(string sortOrder,
             string currentFilter, int? pageIndex, int id)

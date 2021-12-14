@@ -9,20 +9,23 @@ using ERPSystem.Data;
 using ERPSystem.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.Extensions.Logging;
 
 namespace ERPSystem.Pages.Assignments
 {
     [Authorize(Policy = "AdminOnly")]
     public class CreateModel : PageModel
     {
+        private readonly ILogger<CreateModel> _logger;
         private readonly ERPSystem.Data.ApplicationDbContext _context;
         public int? PageIndex { get; set; }
         public string CurrentFilter { get; set; }
         public string CurrentSort { get; set; }
 
-        public CreateModel(ERPSystem.Data.ApplicationDbContext context)
+        public CreateModel(ERPSystem.Data.ApplicationDbContext context, ILogger<CreateModel> logger)
         {
             _context = context;
+            _logger = logger;
         }
 
         public IActionResult OnGet(string sortOrder,

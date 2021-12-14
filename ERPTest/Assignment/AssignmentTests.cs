@@ -129,7 +129,7 @@ namespace AssignmentTest
         {
             // Arrange
             var config = new ConfigurationBuilder().Build();
-            var pageModel = new ERPSystem.Pages.Assignments.IndexModel(context, config);
+            var pageModel = new ERPSystem.Pages.Assignments.IndexModel(context, config, null);
             var expectedAssignments = context.Assignments;
 
             // Act
@@ -148,7 +148,7 @@ namespace AssignmentTest
         {
             // Arrange
             var config = new ConfigurationBuilder().Build();
-            var pageModel = new ERPSystem.Pages.Assignments.IndexModel(context, config);
+            var pageModel = new ERPSystem.Pages.Assignments.IndexModel(context, config, null);
             var expectedAssignments = context.Assignments;
 
             // Act
@@ -171,7 +171,7 @@ namespace AssignmentTest
         {
             // Arrange
             var config = new ConfigurationBuilder().Build();
-            var pageModel = new ERPSystem.Pages.Assignments.IndexModel(context, config);
+            var pageModel = new ERPSystem.Pages.Assignments.IndexModel(context, config, null);
             var expectedAssignments = context.Assignments.Where(c => c.Name.Contains(searchString)
                                                              || c.Position.Name.Contains(searchString)
                                                            || c.Employee.LastName.Contains(searchString)
@@ -199,7 +199,7 @@ namespace AssignmentTest
         {
             // Arrange
             var config = new ConfigurationBuilder().Build();
-            var pageModel = new ERPSystem.Pages.Assignments.IndexModel(context, config);
+            var pageModel = new ERPSystem.Pages.Assignments.IndexModel(context, config, null);
             List<Assignment> expectedAssignments = new List<Assignment>();
             if (pageIndex > 0 && pageIndex <= Math.Ceiling((double)context.Assignments.Count() / (double)PageSize))
             {
@@ -234,7 +234,7 @@ namespace AssignmentTest
         public async Task Assignment_CreateModel_OnPostAsync_AssignmentIsAdded()
         {
             // Arrange
-            var pageModel = new ERPSystem.Pages.Assignments.CreateModel(context);
+            var pageModel = new ERPSystem.Pages.Assignments.CreateModel(context, null);
             var expectedAssignment = new Assignment
             {
                 Name = "Test Assignment",
@@ -263,7 +263,7 @@ namespace AssignmentTest
         public async Task Assignment_CreateModel_OnPostAsync_IfInvalidModel_ReturnPageResult()
         {
             // Arrange
-            var pageModel = new ERPSystem.Pages.Assignments.CreateModel(context);
+            var pageModel = new ERPSystem.Pages.Assignments.CreateModel(context, null);
             var expectedAssignment = new Assignment
             {
                 Id = 10,
@@ -288,7 +288,7 @@ namespace AssignmentTest
         public async Task Assignment_DeleteModel_OnGetAsync_AssignmentIsFetched()
         {
             // Arrange
-            var pageModel = new ERPSystem.Pages.Assignments.DeleteModel(context);
+            var pageModel = new ERPSystem.Pages.Assignments.DeleteModel(context, null);
             var testId = 1;
 
             // Act
@@ -307,7 +307,7 @@ namespace AssignmentTest
         public async Task Assignment_DeleteModel_OnPostAsync_AssignmentIsDeleted_WhenAssignmentIsFound()
         {
             // Arrange
-            var pageModel = new ERPSystem.Pages.Assignments.DeleteModel(context);
+            var pageModel = new ERPSystem.Pages.Assignments.DeleteModel(context, null);
             var testId = 1;
             var expectedAssignments = context.Assignments.Where(c => c.Id != testId).ToList();
 
@@ -327,7 +327,7 @@ namespace AssignmentTest
         public async Task Assignment_DeleteModel_OnPostAsync_NoAssignmentIsDeleted_WhenAssignmentIsNotFound()
         {
             // Arrange
-            var pageModel = new ERPSystem.Pages.Assignments.DeleteModel(context);
+            var pageModel = new ERPSystem.Pages.Assignments.DeleteModel(context, null);
             var testId = 11;
             var expectedAssignments = context.Assignments;
 
@@ -347,7 +347,7 @@ namespace AssignmentTest
         public async Task Assignment_EditModel_OnGetAsync_AssignmentIsFetched()
         {
             // Arrange
-            var pageModel = new ERPSystem.Pages.Assignments.EditModel(context);
+            var pageModel = new ERPSystem.Pages.Assignments.EditModel(context, null);
             int testId = 2;
 
             // Act
@@ -367,7 +367,7 @@ namespace AssignmentTest
         {
             // Arrange
             var testId = 1;
-            var pageModel = new ERPSystem.Pages.Assignments.EditModel(context);
+            var pageModel = new ERPSystem.Pages.Assignments.EditModel(context, null);
             var expectedAssignment = context.Assignments.FirstOrDefault(m => m.Id == testId);
             pageModel.Assignment = expectedAssignment;
             pageModel.Assignment.Name = "Modified Entity";
@@ -388,7 +388,7 @@ namespace AssignmentTest
         public async Task Assignment_EditModel_OnPostAsync_IfInvalidModel_ReturnPageResult()
         {
             // Arrange
-            var pageModel = new ERPSystem.Pages.Assignments.EditModel(context);
+            var pageModel = new ERPSystem.Pages.Assignments.EditModel(context, null);
             int testId = 1;
             var expectedAssignment = context.Assignments.FirstOrDefault(m => m.Id == testId);
             pageModel.Assignment = expectedAssignment;
@@ -408,7 +408,7 @@ namespace AssignmentTest
         public async Task Assignment_DetailsModel_OnGetAsync_AssignmentIsFetched_WhenAssignmentIsFound()
         {
             // Arrange
-            var pageModel = new ERPSystem.Pages.Assignments.DetailsModel(context);
+            var pageModel = new ERPSystem.Pages.Assignments.DetailsModel(context, null);
             int testId = 2;
 
             // Act
@@ -427,7 +427,7 @@ namespace AssignmentTest
         public async Task Assignment_DetailsModel_OnGetAsync_NotFoundResultReturned_WhenAssignmentIsNotFound()
         {
             // Arrange
-            var pageModel = new ERPSystem.Pages.Assignments.DetailsModel(context);
+            var pageModel = new ERPSystem.Pages.Assignments.DetailsModel(context, null);
             int testId = 11;
 
             // Act

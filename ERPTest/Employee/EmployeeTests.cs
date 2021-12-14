@@ -148,7 +148,7 @@ namespace EmployeeTest
         {
             // Arrange
             var config = new ConfigurationBuilder().Build();
-            var pageModel = new ERPSystem.Pages.Employees.IndexModel(context, config);
+            var pageModel = new ERPSystem.Pages.Employees.IndexModel(context, config, null);
             var expectedEmployees = context.Employees;
 
             // Act
@@ -167,7 +167,7 @@ namespace EmployeeTest
         {
             // Arrange
             var config = new ConfigurationBuilder().Build();
-            var pageModel = new ERPSystem.Pages.Employees.IndexModel(context, config);
+            var pageModel = new ERPSystem.Pages.Employees.IndexModel(context, config, null);
             var expectedEmployees = context.Employees;
 
             // Act
@@ -190,7 +190,7 @@ namespace EmployeeTest
         {
             // Arrange
             var config = new ConfigurationBuilder().Build();
-            var pageModel = new ERPSystem.Pages.Employees.IndexModel(context, config);
+            var pageModel = new ERPSystem.Pages.Employees.IndexModel(context, config, null);
             var expectedEmployees = context.Employees.Where(s => s.LastName.Contains(searchString)
                                        || s.FirstName.Contains(searchString));
 
@@ -216,7 +216,7 @@ namespace EmployeeTest
         {
             // Arrange
             var config = new ConfigurationBuilder().Build();
-            var pageModel = new ERPSystem.Pages.Employees.IndexModel(context, config);
+            var pageModel = new ERPSystem.Pages.Employees.IndexModel(context, config, null);
             List<Employee> expectedEmployees = new List<Employee>();
             if (pageIndex > 0 && pageIndex <= Math.Ceiling((double)context.Employees.Count() / (double)PageSize))
             {
@@ -251,7 +251,7 @@ namespace EmployeeTest
         {
             // Arrange
             //IWebHostEnvironment hostEnvironment = new 
-            var pageModel = new ERPSystem.Pages.Employees.CreateModel(context, null);
+            var pageModel = new ERPSystem.Pages.Employees.CreateModel(context, null, null);
             var expectedEmployee = new Employee
             {
                 FirstName = "Test First Name",
@@ -281,7 +281,7 @@ namespace EmployeeTest
         public async Task Employee_CreateModel_OnPostAsync_IfInvalidModel_ReturnPageResult()
         {
             // Arrange
-            var pageModel = new ERPSystem.Pages.Employees.CreateModel(context, null);
+            var pageModel = new ERPSystem.Pages.Employees.CreateModel(context, null, null);
             var expectedEmployee = new Employee
             {
                 FirstName = "Test First Name",
@@ -305,7 +305,7 @@ namespace EmployeeTest
         public async Task Employee_DeleteModel_OnGetAsync_EmployeeIsFetched()
         {
             // Arrange
-            var pageModel = new ERPSystem.Pages.Employees.DeleteModel(context, null);
+            var pageModel = new ERPSystem.Pages.Employees.DeleteModel(context, null, null);
             var testId = 1;
 
             // Act
@@ -327,7 +327,7 @@ namespace EmployeeTest
         public async Task Employee_DeleteModel_OnPostAsync_EmployeeIsDeleted_WhenEmployeeIsFound()
         {
             // Arrange
-            var pageModel = new ERPSystem.Pages.Employees.DeleteModel(context, null);
+            var pageModel = new ERPSystem.Pages.Employees.DeleteModel(context, null, null);
             var testId = 1;
             var expectedEmployees = context.Employees.Where(c => c.Id != testId).ToList();
 
@@ -347,7 +347,7 @@ namespace EmployeeTest
         public async Task Employee_DeleteModel_OnPostAsync_NoEmployeeIsDeleted_WhenEmployeeIsNotFound()
         {
             // Arrange
-            var pageModel = new ERPSystem.Pages.Employees.DeleteModel(context, null);
+            var pageModel = new ERPSystem.Pages.Employees.DeleteModel(context, null, null);
             var testId = 11;
             var expectedEmployees = context.Employees;
 
@@ -367,7 +367,7 @@ namespace EmployeeTest
         public async Task Employee_EditModel_OnGetAsync_EmployeeIsFetched()
         {
             // Arrange
-            var pageModel = new ERPSystem.Pages.Employees.EditModel(context, null);
+            var pageModel = new ERPSystem.Pages.Employees.EditModel(context, null, null);
             int testId = 2;
 
             // Act
@@ -390,7 +390,7 @@ namespace EmployeeTest
         {
             // Arrange
             var testId = 1;
-            var pageModel = new ERPSystem.Pages.Employees.EditModel(context, null);
+            var pageModel = new ERPSystem.Pages.Employees.EditModel(context, null, null);
             var expectedEmployee = context.Employees.FirstOrDefault(m => m.Id == testId);
             pageModel.Employee = expectedEmployee;
             pageModel.Employee.LastName = "Modified Entity";
@@ -411,7 +411,7 @@ namespace EmployeeTest
         public async Task Employee_EditModel_OnPostAsync_IfInvalidModel_ReturnPageResult()
         {
             // Arrange
-            var pageModel = new ERPSystem.Pages.Employees.EditModel(context, null);
+            var pageModel = new ERPSystem.Pages.Employees.EditModel(context, null, null);
             int testId = 1;
             var expectedEmployee = context.Employees.FirstOrDefault(m => m.Id == testId);
             pageModel.Employee = expectedEmployee;
@@ -431,7 +431,7 @@ namespace EmployeeTest
         public async Task Employee_DetailsModel_OnGetAsync_EmployeeIsFetched_WhenEmployeeIsFound()
         {
             // Arrange
-            var pageModel = new ERPSystem.Pages.Employees.DetailsModel(context);
+            var pageModel = new ERPSystem.Pages.Employees.DetailsModel(context, null);
             int testId = 2;
 
             // Act
@@ -453,7 +453,7 @@ namespace EmployeeTest
         public async Task Employee_DetailsModel_OnGetAsync_NotFoundResultReturned_WhenEmployeeIsNotFound()
         {
             // Arrange
-            var pageModel = new ERPSystem.Pages.Employees.DetailsModel(context);
+            var pageModel = new ERPSystem.Pages.Employees.DetailsModel(context, null);
             int testId = 11;
 
             // Act
