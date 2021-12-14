@@ -12,6 +12,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using System.IO;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.Extensions.Logging;
 
 namespace ERPSystem.Pages.Employees
 {
@@ -19,6 +20,7 @@ namespace ERPSystem.Pages.Employees
     public class CreateModel : PageModel
     {
         private readonly ERPSystem.Data.ApplicationDbContext _context;
+        private readonly ILogger<CreateModel> _logger;
         private readonly IWebHostEnvironment webHostEnvironment;
         public int? PageIndex { get; set; }
         public string CurrentFilter { get; set; }
@@ -31,10 +33,11 @@ namespace ERPSystem.Pages.Employees
         public IFormFile FormFile { get; set; }
         private readonly string[] permittedExtensions = { ".jpg", ".jpeg", ".png", ".gif", ".bmp", ".tif", ".tiff" };
 
-        public CreateModel(ERPSystem.Data.ApplicationDbContext context, IWebHostEnvironment hostEnvironment)
+        public CreateModel(ERPSystem.Data.ApplicationDbContext context, IWebHostEnvironment hostEnvironment, ILogger<CreateModel> logger)
         {
             _context = context;
             webHostEnvironment = hostEnvironment;
+            _logger = logger;
         }
 
         public IActionResult OnGet(EmployeeRole Role, string sortOrder,

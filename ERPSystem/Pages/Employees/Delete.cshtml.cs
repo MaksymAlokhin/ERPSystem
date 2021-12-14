@@ -10,6 +10,7 @@ using ERPSystem.Models;
 using System.IO;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.Extensions.Logging;
 
 namespace ERPSystem.Pages.Employees
 {
@@ -17,16 +18,18 @@ namespace ERPSystem.Pages.Employees
     public class DeleteModel : PageModel
     {
         private readonly ERPSystem.Data.ApplicationDbContext _context;
+        private readonly ILogger<DeleteModel> _logger;
         private readonly IWebHostEnvironment webHostEnvironment;
         public int? PageIndex { get; set; }
         public string CurrentFilter { get; set; }
         public string CurrentSort { get; set; }
         public EmployeeRole Role { get; set; }
 
-        public DeleteModel(ERPSystem.Data.ApplicationDbContext context, IWebHostEnvironment hostEnvironment)
+        public DeleteModel(ERPSystem.Data.ApplicationDbContext context, IWebHostEnvironment hostEnvironment, ILogger<DeleteModel> logger)
         {
             _context = context;
             webHostEnvironment = hostEnvironment;
+            _logger = logger;
         }
 
         [BindProperty]

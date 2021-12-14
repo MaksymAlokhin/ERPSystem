@@ -118,7 +118,7 @@ namespace PositionTest
         {
             // Arrange
             var config = new ConfigurationBuilder().Build();
-            var pageModel = new ERPSystem.Pages.Positions.IndexModel(context, config);
+            var pageModel = new ERPSystem.Pages.Positions.IndexModel(context, config, null);
             var expectedPositions = context.Positions;
 
             // Act
@@ -137,7 +137,7 @@ namespace PositionTest
         {
             // Arrange
             var config = new ConfigurationBuilder().Build();
-            var pageModel = new ERPSystem.Pages.Positions.IndexModel(context, config);
+            var pageModel = new ERPSystem.Pages.Positions.IndexModel(context, config, null);
             var expectedPositions = context.Positions;
 
             // Act
@@ -160,7 +160,7 @@ namespace PositionTest
         {
             // Arrange
             var config = new ConfigurationBuilder().Build();
-            var pageModel = new ERPSystem.Pages.Positions.IndexModel(context, config);
+            var pageModel = new ERPSystem.Pages.Positions.IndexModel(context, config, null);
             var expectedPositions = context.Positions.Where(s => s.Name.Contains(searchString)
                                        || s.Project.Name.Contains(searchString));
 
@@ -186,7 +186,7 @@ namespace PositionTest
         {
             // Arrange
             var config = new ConfigurationBuilder().Build();
-            var pageModel = new ERPSystem.Pages.Positions.IndexModel(context, config);
+            var pageModel = new ERPSystem.Pages.Positions.IndexModel(context, config, null);
             List<Position> expectedPositions = new List<Position>();
             if (pageIndex > 0 && pageIndex <= Math.Ceiling((double)context.Positions.Count() / (double)PageSize))
             {
@@ -220,7 +220,7 @@ namespace PositionTest
         public async Task Position_CreateModel_OnPostAsync_PositionIsAdded()
         {
             // Arrange
-            var pageModel = new ERPSystem.Pages.Positions.CreateModel(context);
+            var pageModel = new ERPSystem.Pages.Positions.CreateModel(context, null);
             var expectedPosition = new Position 
             {
                 Name = "Test Position",
@@ -248,7 +248,7 @@ namespace PositionTest
         public async Task Position_CreateModel_OnPostAsync_IfInvalidModel_ReturnPageResult()
         {
             // Arrange
-            var pageModel = new ERPSystem.Pages.Positions.CreateModel(context);
+            var pageModel = new ERPSystem.Pages.Positions.CreateModel(context, null);
             var expectedPosition = new Position
             {
                 Name = "Test Position",
@@ -271,7 +271,7 @@ namespace PositionTest
         public async Task Position_DeleteModel_OnGetAsync_PositionIsFetched()
         {
             // Arrange
-            var pageModel = new ERPSystem.Pages.Positions.DeleteModel(context);
+            var pageModel = new ERPSystem.Pages.Positions.DeleteModel(context, null);
             var testId = 1;
 
             // Act
@@ -292,7 +292,7 @@ namespace PositionTest
         public async Task Position_DeleteModel_OnPostAsync_PositionIsDeleted_WhenPositionIsFound()
         {
             // Arrange
-            var pageModel = new ERPSystem.Pages.Positions.DeleteModel(context);
+            var pageModel = new ERPSystem.Pages.Positions.DeleteModel(context, null);
             var testId = 1;
             var expectedPositions = context.Positions.Where(c => c.Id != testId).ToList();
 
@@ -312,7 +312,7 @@ namespace PositionTest
         public async Task Position_DeleteModel_OnPostAsync_NoPositionIsDeleted_WhenPositionIsNotFound()
         {
             // Arrange
-            var pageModel = new ERPSystem.Pages.Positions.DeleteModel(context);
+            var pageModel = new ERPSystem.Pages.Positions.DeleteModel(context, null);
             var testId = 11;
             var expectedPositions = context.Positions;
 
@@ -332,7 +332,7 @@ namespace PositionTest
         public async Task Position_EditModel_OnGetAsync_PositionIsFetched()
         {
             // Arrange
-            var pageModel = new ERPSystem.Pages.Positions.EditModel(context);
+            var pageModel = new ERPSystem.Pages.Positions.EditModel(context, null);
             int testId = 2;
 
             // Act
@@ -354,7 +354,7 @@ namespace PositionTest
         {
             // Arrange
             var testId = 1;
-            var pageModel = new ERPSystem.Pages.Positions.EditModel(context);
+            var pageModel = new ERPSystem.Pages.Positions.EditModel(context, null);
             var expectedPosition = context.Positions.FirstOrDefault(m => m.Id == testId);
             pageModel.Position = expectedPosition;
             pageModel.Position.Name = "Modified Entity";
@@ -377,7 +377,7 @@ namespace PositionTest
         public async Task Position_EditModel_OnPostAsync_IfInvalidModel_ReturnPageResult()
         {
             // Arrange
-            var pageModel = new ERPSystem.Pages.Positions.EditModel(context);
+            var pageModel = new ERPSystem.Pages.Positions.EditModel(context, null);
             int testId = 1;
             var expectedPosition = context.Positions.FirstOrDefault(m => m.Id == testId);
             pageModel.Position = expectedPosition;
@@ -397,7 +397,7 @@ namespace PositionTest
         public async Task Position_DetailsModel_OnGetAsync_PositionIsFetched_WhenPositionIsFound()
         {
             // Arrange
-            var pageModel = new ERPSystem.Pages.Positions.DetailsModel(context);
+            var pageModel = new ERPSystem.Pages.Positions.DetailsModel(context, null);
             int testId = 2;
 
             // Act
@@ -418,7 +418,7 @@ namespace PositionTest
         public async Task Position_DetailsModel_OnGetAsync_NotFoundResultReturned_WhenPositionIsNotFound()
         {
             // Arrange
-            var pageModel = new ERPSystem.Pages.Positions.DetailsModel(context);
+            var pageModel = new ERPSystem.Pages.Positions.DetailsModel(context, null);
             int testId = 11;
 
             // Act

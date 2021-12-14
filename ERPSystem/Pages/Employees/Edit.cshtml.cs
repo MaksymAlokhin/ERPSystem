@@ -13,6 +13,7 @@ using System.IO;
 using Microsoft.AspNetCore.Hosting;
 using System.Text.Json;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.Extensions.Logging;
 
 namespace ERPSystem.Pages.Employees
 {
@@ -20,6 +21,7 @@ namespace ERPSystem.Pages.Employees
     public class EditModel : PageModel
     {
         private readonly ERPSystem.Data.ApplicationDbContext _context;
+        private readonly ILogger<EditModel> _logger;
         private readonly IWebHostEnvironment webHostEnvironment;
         public int? PageIndex { get; set; }
         public string CurrentFilter { get; set; }
@@ -34,10 +36,11 @@ namespace ERPSystem.Pages.Employees
         private readonly string[] permittedExtensions = { ".jpg", ".jpeg", ".png", ".gif", ".bmp", ".tif", ".tiff" };
 
 
-        public EditModel(ERPSystem.Data.ApplicationDbContext context, IWebHostEnvironment hostEnvironment)
+        public EditModel(ERPSystem.Data.ApplicationDbContext context, IWebHostEnvironment hostEnvironment, ILogger<EditModel> logger)
         {
             _context = context;
             webHostEnvironment = hostEnvironment;
+            _logger = logger;
         }
 
         [BindProperty]

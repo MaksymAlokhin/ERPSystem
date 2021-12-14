@@ -126,7 +126,7 @@ namespace ProjectTest
         {
             // Arrange
             var config = new ConfigurationBuilder().Build();
-            var pageModel = new ERPSystem.Pages.Projects.IndexModel(context, config);
+            var pageModel = new ERPSystem.Pages.Projects.IndexModel(context, config, null);
             var expectedProjects = context.Projects;
 
             // Act
@@ -145,7 +145,7 @@ namespace ProjectTest
         {
             // Arrange
             var config = new ConfigurationBuilder().Build();
-            var pageModel = new ERPSystem.Pages.Projects.IndexModel(context, config);
+            var pageModel = new ERPSystem.Pages.Projects.IndexModel(context, config, null);
             var expectedProjects = context.Projects;
 
             // Act
@@ -168,7 +168,7 @@ namespace ProjectTest
         {
             // Arrange
             var config = new ConfigurationBuilder().Build();
-            var pageModel = new ERPSystem.Pages.Projects.IndexModel(context, config);
+            var pageModel = new ERPSystem.Pages.Projects.IndexModel(context, config, null);
             var expectedProjects = context.Projects.Where(s => s.Name.Contains(searchString)
                                        || s.Department.Name.Contains(searchString)
                                        || s.ProjectManager.LastName.Contains(searchString)
@@ -196,7 +196,7 @@ namespace ProjectTest
         {
             // Arrange
             var config = new ConfigurationBuilder().Build();
-            var pageModel = new ERPSystem.Pages.Projects.IndexModel(context, config);
+            var pageModel = new ERPSystem.Pages.Projects.IndexModel(context, config, null);
             List<Project> expectedProjects = new List<Project>();
             if (pageIndex > 0 && pageIndex <= Math.Ceiling((double)context.Projects.Count() / (double)PageSize))
             {
@@ -230,7 +230,7 @@ namespace ProjectTest
         public async Task Project_CreateModel_OnPostAsync_ProjectIsAdded()
         {
             // Arrange
-            var pageModel = new ERPSystem.Pages.Projects.CreateModel(context);
+            var pageModel = new ERPSystem.Pages.Projects.CreateModel(context, null);
             var expectedProject = new Project
             {
                 Name = "Test Project",
@@ -258,7 +258,7 @@ namespace ProjectTest
         public async Task Project_CreateModel_OnPostAsync_IfInvalidModel_ReturnPageResult()
         {
             // Arrange
-            var pageModel = new ERPSystem.Pages.Projects.CreateModel(context);
+            var pageModel = new ERPSystem.Pages.Projects.CreateModel(context, null);
             var expectedProject = new Project
             {
                 Name = "Test Project",
@@ -281,7 +281,7 @@ namespace ProjectTest
         public async Task Project_DeleteModel_OnGetAsync_ProjectIsFetched()
         {
             // Arrange
-            var pageModel = new ERPSystem.Pages.Projects.DeleteModel(context);
+            var pageModel = new ERPSystem.Pages.Projects.DeleteModel(context, null);
             var testId = 1;
 
             // Act
@@ -302,7 +302,7 @@ namespace ProjectTest
         public async Task Project_DeleteModel_OnPostAsync_ProjectIsDeleted_WhenProjectIsFound()
         {
             // Arrange
-            var pageModel = new ERPSystem.Pages.Projects.DeleteModel(context);
+            var pageModel = new ERPSystem.Pages.Projects.DeleteModel(context, null);
             var testId = 1;
             var expectedProjects = context.Projects.Where(c => c.Id != testId).ToList();
 
@@ -322,7 +322,7 @@ namespace ProjectTest
         public async Task Project_DeleteModel_OnPostAsync_NoProjectIsDeleted_WhenProjectIsNotFound()
         {
             // Arrange
-            var pageModel = new ERPSystem.Pages.Projects.DeleteModel(context);
+            var pageModel = new ERPSystem.Pages.Projects.DeleteModel(context, null);
             var testId = 11;
             var expectedProjects = context.Projects;
 
@@ -342,7 +342,7 @@ namespace ProjectTest
         public async Task Project_EditModel_OnGetAsync_ProjectIsFetched()
         {
             // Arrange
-            var pageModel = new ERPSystem.Pages.Projects.EditModel(context);
+            var pageModel = new ERPSystem.Pages.Projects.EditModel(context, null);
             int testId = 2;
 
             // Act
@@ -364,7 +364,7 @@ namespace ProjectTest
         {
             // Arrange
             var testId = 1;
-            var pageModel = new ERPSystem.Pages.Projects.EditModel(context);
+            var pageModel = new ERPSystem.Pages.Projects.EditModel(context, null);
             var expectedProject = context.Projects.FirstOrDefault(m => m.Id == testId);
             pageModel.Project = expectedProject;
             pageModel.Project.Name = "Modified Entity";
@@ -385,7 +385,7 @@ namespace ProjectTest
         public async Task Project_EditModel_OnPostAsync_IfInvalidModel_ReturnPageResult()
         {
             // Arrange
-            var pageModel = new ERPSystem.Pages.Projects.EditModel(context);
+            var pageModel = new ERPSystem.Pages.Projects.EditModel(context, null);
             int testId = 1;
             var expectedProject = context.Projects.FirstOrDefault(m => m.Id == testId);
             pageModel.Project = expectedProject;
@@ -405,7 +405,7 @@ namespace ProjectTest
         public async Task Project_DetailsModel_OnGetAsync_ProjectIsFetched_WhenProjectIsFound()
         {
             // Arrange
-            var pageModel = new ERPSystem.Pages.Projects.DetailsModel(context);
+            var pageModel = new ERPSystem.Pages.Projects.DetailsModel(context, null);
             int testId = 2;
 
             // Act
@@ -426,7 +426,7 @@ namespace ProjectTest
         public async Task Project_DetailsModel_OnGetAsync_NotFoundResultReturned_WhenProjectIsNotFound()
         {
             // Arrange
-            var pageModel = new ERPSystem.Pages.Projects.DetailsModel(context);
+            var pageModel = new ERPSystem.Pages.Projects.DetailsModel(context, null);
             int testId = 11;
 
             // Act

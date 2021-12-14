@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using ERPSystem.Data;
 using ERPSystem.Models;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.Extensions.Logging;
 
 namespace ERPSystem.Pages.Projects
 {
@@ -15,13 +16,15 @@ namespace ERPSystem.Pages.Projects
     public class DeleteModel : PageModel
     {
         private readonly ERPSystem.Data.ApplicationDbContext _context;
+        private readonly ILogger<DeleteModel> _logger;
         public int? PageIndex { get; set; }
         public string CurrentFilter { get; set; }
         public string CurrentSort { get; set; }
 
-        public DeleteModel(ERPSystem.Data.ApplicationDbContext context)
+        public DeleteModel(ERPSystem.Data.ApplicationDbContext context, ILogger<DeleteModel> logger)
         {
             _context = context;
+            _logger = logger;
         }
 
         [BindProperty]

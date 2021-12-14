@@ -107,7 +107,7 @@ namespace DepartmentTest
         {
             // Arrange
             var config = new ConfigurationBuilder().Build();
-            var pageModel = new ERPSystem.Pages.Departments.IndexModel(context, config);
+            var pageModel = new ERPSystem.Pages.Departments.IndexModel(context, config, null);
             var expectedDepartments = context.Departments;
 
             // Act
@@ -126,7 +126,7 @@ namespace DepartmentTest
         {
             // Arrange
             var config = new ConfigurationBuilder().Build();
-            var pageModel = new ERPSystem.Pages.Departments.IndexModel(context, config);
+            var pageModel = new ERPSystem.Pages.Departments.IndexModel(context, config, null);
             var expectedDepartments = context.Departments;
 
             // Act
@@ -149,7 +149,7 @@ namespace DepartmentTest
         {
             // Arrange
             var config = new ConfigurationBuilder().Build();
-            var pageModel = new ERPSystem.Pages.Departments.IndexModel(context, config);
+            var pageModel = new ERPSystem.Pages.Departments.IndexModel(context, config, null);
             var expectedDepartments = context.Departments.Where(c => c.Name.Contains(searchString)
                                                              || c.Company.Name.Contains(searchString));
 
@@ -175,7 +175,7 @@ namespace DepartmentTest
         {
             // Arrange
             var config = new ConfigurationBuilder().Build();
-            var pageModel = new ERPSystem.Pages.Departments.IndexModel(context, config);
+            var pageModel = new ERPSystem.Pages.Departments.IndexModel(context, config, null);
             List<Department> expectedDepartments = new List<Department>();
             if (pageIndex > 0 && pageIndex <= Math.Ceiling((double)context.Departments.Count() / (double)PageSize))
             {
@@ -209,7 +209,7 @@ namespace DepartmentTest
         public async Task Department_CreateModel_OnPostAsync_DepartmentIsAdded()
         {
             // Arrange
-            var pageModel = new ERPSystem.Pages.Departments.CreateModel(context);
+            var pageModel = new ERPSystem.Pages.Departments.CreateModel(context, null);
             var expectedDepartment = new Department 
             {
                 Name = "Test Department",
@@ -233,7 +233,7 @@ namespace DepartmentTest
         public async Task Department_CreateModel_OnPostAsync_IfInvalidModel_ReturnPageResult()
         {
             // Arrange
-            var pageModel = new ERPSystem.Pages.Departments.CreateModel(context);
+            var pageModel = new ERPSystem.Pages.Departments.CreateModel(context, null);
             var expectedDepartment = new Department
             {
                 Name = "Test Department",
@@ -254,7 +254,7 @@ namespace DepartmentTest
         public async Task Department_DeleteModel_OnGetAsync_DepartmentIsFetched()
         {
             // Arrange
-            var pageModel = new ERPSystem.Pages.Departments.DeleteModel(context);
+            var pageModel = new ERPSystem.Pages.Departments.DeleteModel(context, null);
             var testId = 1;
 
             // Act
@@ -273,7 +273,7 @@ namespace DepartmentTest
         public async Task Department_DeleteModel_OnPostAsync_DepartmentIsDeleted_WhenDepartmentIsFound()
         {
             // Arrange
-            var pageModel = new ERPSystem.Pages.Departments.DeleteModel(context);
+            var pageModel = new ERPSystem.Pages.Departments.DeleteModel(context, null);
             var testId = 1;
             var expectedDepartments = context.Departments.Where(c => c.Id != testId).ToList();
 
@@ -293,7 +293,7 @@ namespace DepartmentTest
         public async Task Department_DeleteModel_OnPostAsync_NoDepartmentIsDeleted_WhenDepartmentIsNotFound()
         {
             // Arrange
-            var pageModel = new ERPSystem.Pages.Departments.DeleteModel(context);
+            var pageModel = new ERPSystem.Pages.Departments.DeleteModel(context, null);
             var testId = 11;
             var expectedDepartments = context.Departments;
 
@@ -313,7 +313,7 @@ namespace DepartmentTest
         public async Task Department_EditModel_OnGetAsync_DepartmentIsFetched()
         {
             // Arrange
-            var pageModel = new ERPSystem.Pages.Departments.EditModel(context);
+            var pageModel = new ERPSystem.Pages.Departments.EditModel(context, null);
             int testId = 2;
 
             // Act
@@ -333,7 +333,7 @@ namespace DepartmentTest
         {
             // Arrange
             var testId = 1;
-            var pageModel = new ERPSystem.Pages.Departments.EditModel(context);
+            var pageModel = new ERPSystem.Pages.Departments.EditModel(context, null);
             var expectedDepartment = context.Departments.FirstOrDefault(m => m.Id == testId);
             pageModel.Department = expectedDepartment;
             pageModel.Department.Name = "Modified Entity";
@@ -354,7 +354,7 @@ namespace DepartmentTest
         public async Task Department_EditModel_OnPostAsync_IfInvalidModel_ReturnPageResult()
         {
             // Arrange
-            var pageModel = new ERPSystem.Pages.Departments.EditModel(context);
+            var pageModel = new ERPSystem.Pages.Departments.EditModel(context, null);
             int testId = 1;
             var expectedDepartment = context.Departments.FirstOrDefault(m => m.Id == testId);
             pageModel.Department = expectedDepartment;
@@ -374,7 +374,7 @@ namespace DepartmentTest
         public async Task Department_DetailsModel_OnGetAsync_DepartmentIsFetched_WhenDepartmentIsFound()
         {
             // Arrange
-            var pageModel = new ERPSystem.Pages.Departments.DetailsModel(context);
+            var pageModel = new ERPSystem.Pages.Departments.DetailsModel(context, null);
             int testId = 2;
 
             // Act
@@ -393,7 +393,7 @@ namespace DepartmentTest
         public async Task Department_DetailsModel_OnGetAsync_NotFoundResultReturned_WhenDepartmentIsNotFound()
         {
             // Arrange
-            var pageModel = new ERPSystem.Pages.Departments.DetailsModel(context);
+            var pageModel = new ERPSystem.Pages.Departments.DetailsModel(context, null);
             int testId = 11;
 
             // Act

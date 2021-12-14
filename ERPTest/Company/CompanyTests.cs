@@ -107,7 +107,7 @@ namespace CompanyTest
         {
             // Arrange
             var config = new ConfigurationBuilder().Build();
-            var pageModel = new ERPSystem.Pages.Companies.IndexModel(context, config);
+            var pageModel = new ERPSystem.Pages.Companies.IndexModel(context, config, null);
             var expectedCompanies = context.Companies;
 
             // Act
@@ -126,7 +126,7 @@ namespace CompanyTest
         {
             // Arrange
             var config = new ConfigurationBuilder().Build();
-            var pageModel = new ERPSystem.Pages.Companies.IndexModel(context, config);
+            var pageModel = new ERPSystem.Pages.Companies.IndexModel(context, config, null);
             var expectedCompanies = context.Companies;
 
             // Act
@@ -149,7 +149,7 @@ namespace CompanyTest
         {
             // Arrange
             var config = new ConfigurationBuilder().Build();
-            var pageModel = new ERPSystem.Pages.Companies.IndexModel(context, config);
+            var pageModel = new ERPSystem.Pages.Companies.IndexModel(context, config, null);
             var expectedCompanies = context.Companies.Where(c => c.Name.Contains(searchString)
                                          || c.GeneralManager.FirstName.Contains(searchString)
                                           || c.GeneralManager.LastName.Contains(searchString));
@@ -176,7 +176,7 @@ namespace CompanyTest
         {
             // Arrange
             var config = new ConfigurationBuilder().Build();
-            var pageModel = new ERPSystem.Pages.Companies.IndexModel(context, config);
+            var pageModel = new ERPSystem.Pages.Companies.IndexModel(context, config, null);
             List<Company> expectedCompanies = new List<Company>();
             if (pageIndex > 0 && pageIndex <= Math.Ceiling((double)context.Companies.Count() / (double)PageSize))
             {
@@ -211,7 +211,7 @@ namespace CompanyTest
         public async Task Company_CreateModel_OnPostAsync_CompanyIsAdded()
         {
             // Arrange
-            var pageModel = new ERPSystem.Pages.Companies.CreateModel(context);
+            var pageModel = new ERPSystem.Pages.Companies.CreateModel(context, null);
             var expectedCompany = new Company
             {
                 Id = 11,
@@ -238,7 +238,7 @@ namespace CompanyTest
         public async Task Company_CreateModel_OnPostAsync_IfInvalidModel_ReturnPageResult()
         {
             // Arrange
-            var pageModel = new ERPSystem.Pages.Companies.CreateModel(context);
+            var pageModel = new ERPSystem.Pages.Companies.CreateModel(context, null);
             var expectedCompany = new Company
             {
                 Id = 11,
@@ -262,7 +262,7 @@ namespace CompanyTest
         public async Task Company_DeleteModel_OnGetAsync_CompanyIsFetched()
         {
             // Arrange
-            var pageModel = new ERPSystem.Pages.Companies.DeleteModel(context);
+            var pageModel = new ERPSystem.Pages.Companies.DeleteModel(context, null);
             var testId = 1;
 
             // Act
@@ -281,7 +281,7 @@ namespace CompanyTest
         public async Task Company_DeleteModel_OnPostAsync_CompanyIsDeleted_WhenCompanyIsFound()
         {
             // Arrange
-            var pageModel = new ERPSystem.Pages.Companies.DeleteModel(context);
+            var pageModel = new ERPSystem.Pages.Companies.DeleteModel(context, null);
             var testId = 1;
             var expectedCompanies = context.Companies.Where(c => c.Id != testId).ToList();
 
@@ -301,7 +301,7 @@ namespace CompanyTest
         public async Task Company_DeleteModel_OnPostAsync_NoCompanyIsDeleted_WhenCompanyIsNotFound()
         {
             // Arrange
-            var pageModel = new ERPSystem.Pages.Companies.DeleteModel(context);
+            var pageModel = new ERPSystem.Pages.Companies.DeleteModel(context, null);
             var testId = 11;
             var expectedCompanies = context.Companies;
 
@@ -321,7 +321,7 @@ namespace CompanyTest
         public async Task Company_EditModel_OnGetAsync_CompanyIsFetched()
         {
             // Arrange
-            var pageModel = new ERPSystem.Pages.Companies.EditModel(context);
+            var pageModel = new ERPSystem.Pages.Companies.EditModel(context, null);
             int testId = 1;
 
             // Act
@@ -340,7 +340,7 @@ namespace CompanyTest
         public async Task Company_EditModel_OnPostAsync_CompanyIsModified()
         {
             // Arrange
-            var pageModel = new ERPSystem.Pages.Companies.EditModel(context);
+            var pageModel = new ERPSystem.Pages.Companies.EditModel(context, null);
             int testId = 1;
             var expectedCompany = new Company
             {
@@ -364,7 +364,7 @@ namespace CompanyTest
         public async Task Company_EditModel_OnPostAsync_IfInvalidModel_ReturnPageResult()
         {
             // Arrange
-            var pageModel = new ERPSystem.Pages.Companies.EditModel(context);
+            var pageModel = new ERPSystem.Pages.Companies.EditModel(context, null);
             int testId = 1;
             var expectedCompany = new Company
             {
@@ -386,7 +386,7 @@ namespace CompanyTest
         public async Task Company_DetailsModel_OnGetAsync_CompanyIsFetched_WhenCompanyIsFound()
         {
             // Arrange
-            var pageModel = new ERPSystem.Pages.Companies.DetailsModel(context);
+            var pageModel = new ERPSystem.Pages.Companies.DetailsModel(context, null);
             int testId = 1;
 
             // Act
@@ -405,7 +405,7 @@ namespace CompanyTest
         public async Task Company_DetailsModel_OnGetAsync_NotFoundResultReturned_WhenCompanyIsNotFound()
         {
             // Arrange
-            var pageModel = new ERPSystem.Pages.Companies.DetailsModel(context);
+            var pageModel = new ERPSystem.Pages.Companies.DetailsModel(context, null);
             int testId = 11;
 
             // Act
