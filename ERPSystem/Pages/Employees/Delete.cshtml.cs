@@ -163,6 +163,8 @@ namespace ERPSystem.Pages.Employees
             utility.UpdateProjectDependants(ProjectsWithModifiedState);
             utility.UpdateWhenParentIsNull();
 
+            _logger.LogInformation("Employee deleted: {1}, {2}", Employee.LastName, Employee.FirstName);
+
             return RedirectToPage("./Index", new
             {
                 pageIndex = $"{pageIndex}",

@@ -28,9 +28,10 @@ Built With:<br />
 - ASP.NET Core 5
 - Entity Framework Core 5
 - Razor Pages
-- SQL Server Express LocalDB
+- SQL Server
 - Microsoft Identity
 - xUnit.net
+- Serilog
 
 Entities:<br />
 --------------------

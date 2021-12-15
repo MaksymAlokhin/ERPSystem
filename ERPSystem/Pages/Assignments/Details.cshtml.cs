@@ -48,6 +48,9 @@ namespace ERPSystem.Pages.Assignments
             {
                 return NotFound();
             }
+
+            _logger.LogInformation("Details displayed for Assignment: {1}", Assignment.Name);
+
             return Page();
         }
     }

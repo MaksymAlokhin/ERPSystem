@@ -71,6 +71,8 @@ namespace ERPSystem.Pages.Assignments
             _context.Assignments.Add(Assignment);
             await _context.SaveChangesAsync();
 
+            _logger.LogInformation("Assignment created: {1}", Assignment.Name);
+
             return RedirectToPage("./Index", new
             {
                 pageIndex = $"{pageIndex}",

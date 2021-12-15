@@ -49,6 +49,9 @@ namespace ERPSystem.Pages.Reports
             {
                 return NotFound();
             }
+
+            _logger.LogInformation("Report displayed for Assignment: {1}", Report.Assignment.Name);
+
             return Page();
         }
     }

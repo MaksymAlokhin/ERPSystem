@@ -172,6 +172,8 @@ namespace ERPSystem.Pages.Projects
             utility.UpdateProjectDependants(ProjectsWithModifiedState);
             utility.UpdateWhenParentIsNull();
 
+            _logger.LogInformation("Project modified: {1}", ProjectToUpdate.Name);
+
             return RedirectToPage("./Index", new
             {
                 pageIndex = $"{pageIndex}",

@@ -109,6 +109,9 @@ namespace ERPSystem.Pages.Reports
                 }
             }
 
+            Report = await _context.Reports.Include(a => a.Assignment).Where(r => r.Id == id).FirstOrDefaultAsync();
+            _logger.LogInformation("Report modified for Assignment: {1}", Report.Assignment.Name);
+
             return RedirectToPage("./Index", new
             {
                 pageIndex = $"{pageIndex}",

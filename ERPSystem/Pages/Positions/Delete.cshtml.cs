@@ -85,6 +85,8 @@ namespace ERPSystem.Pages.Positions
             Utility utility = new Utility(_context);
             utility.UpdateWhenParentIsNull();
 
+            _logger.LogInformation("Position deleted: {1}", Position.Name);
+
             return RedirectToPage("./Index", new
             {
                 pageIndex = $"{pageIndex}",

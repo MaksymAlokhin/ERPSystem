@@ -81,6 +81,8 @@ namespace ERPSystem.Pages.Reports
             _context.Reports.Add(Report);
             await _context.SaveChangesAsync();
 
+            _logger.LogInformation("Report created for assignment: {1}", Assignment.Name);
+
             return RedirectToPage("./Index");
         }
         public async Task<JsonResult> OnGetHoursAsync(string inDate, string assignmentId)

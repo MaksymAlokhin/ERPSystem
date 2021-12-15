@@ -56,6 +56,9 @@ namespace ERPSystem.Pages.Employees
             {
                 return NotFound();
             }
+
+            _logger.LogInformation("Details displayed for Employee: {1}, {2}", Employee.LastName, Employee.FirstName);
+
             return Page();
         }
     }

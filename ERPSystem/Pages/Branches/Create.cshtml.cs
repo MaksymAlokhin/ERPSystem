@@ -102,6 +102,8 @@ namespace ERPSystem.Pages.Branches
             Utility utility = new Utility(_context);
             utility.UpdateBranchDependants(BranchesWithModifiedState);
 
+            _logger.LogInformation("Branch created: {1}", NewBranch.Name);
+
             return RedirectToPage("./Index", new
             {
                 pageIndex = $"{pageIndex}",

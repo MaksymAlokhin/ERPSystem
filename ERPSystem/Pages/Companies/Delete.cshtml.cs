@@ -93,6 +93,8 @@ namespace ERPSystem.Pages.Companies
             Utility utility = new Utility(_context);
             utility.UpdateWhenParentIsNull();
 
+            _logger.LogInformation("Company deleted: {1}", Company.Name);
+
             return RedirectToPage("./Index", new
             {
                 pageIndex = $"{pageIndex}",

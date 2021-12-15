@@ -86,6 +86,8 @@ namespace ERPSystem.Pages.Departments
             Utility utility = new Utility(_context);
             utility.UpdateWhenParentIsNull();
 
+            _logger.LogInformation("Department deleted: {1}", Department.Name);
+
             return RedirectToPage("./Index", new
             {
                 pageIndex = $"{pageIndex}",
