@@ -85,6 +85,8 @@ namespace ERPSystem.Pages.Branches
             Utility utility = new Utility(_context);
             utility.UpdateWhenParentIsNull();
 
+            _logger.LogInformation("Branch deleted: {1}", Branch.Name);
+
             return RedirectToPage("./Index", new
             {
                 pageIndex = $"{pageIndex}",

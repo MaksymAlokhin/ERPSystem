@@ -123,6 +123,8 @@ namespace ERPSystem.Pages.Employees
             var pageSize = Configuration.GetValue("PageSize", 7);
             Employee = await PaginatedList<Employee>.CreateAsync(
                 employeesIQ.AsNoTracking(), pageIndex ?? 1, pageSize);
+
+            _logger.LogInformation("Displaying page {1} of Employees", pageIndex);
         }
         //Method to debug states
         public async Task<IActionResult> OnGetActivateAsync(string sortOrder,

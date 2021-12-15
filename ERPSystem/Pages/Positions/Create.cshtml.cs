@@ -119,6 +119,7 @@ namespace ERPSystem.Pages.Positions
             Utility utility = new Utility(_context);
             utility.UpdateProjectDependants(PositionsWithModifiedState);
 
+            _logger.LogInformation("Position created: {1}", NewPosition.Name);
 
             return RedirectToPage("./Index", new
             {

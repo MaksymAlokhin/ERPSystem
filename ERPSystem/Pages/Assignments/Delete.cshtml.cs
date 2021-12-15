@@ -73,6 +73,8 @@ namespace ERPSystem.Pages.Assignments
                 await _context.SaveChangesAsync();
             }
 
+            _logger.LogInformation("Assignment deleted: {1}", Assignment.Name);
+
             return RedirectToPage("./Index", new
             {
                 pageIndex = $"{pageIndex}",

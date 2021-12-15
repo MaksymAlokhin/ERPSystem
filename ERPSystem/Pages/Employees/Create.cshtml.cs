@@ -304,6 +304,8 @@ namespace ERPSystem.Pages.Employees
 
             Role = NewEmployee.EmployeeRole;
 
+            _logger.LogInformation("Employee created: {1}, {2}", NewEmployee.LastName, NewEmployee.FirstName);
+
             return RedirectToPage("./Index", new
             {
                 pageIndex = $"{pageIndex}",

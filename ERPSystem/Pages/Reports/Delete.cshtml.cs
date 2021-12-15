@@ -61,13 +61,15 @@ namespace ERPSystem.Pages.Reports
                 return NotFound();
             }
 
-            Report = await _context.Reports.FindAsync(id);
+            Report = await _context.Reports.Include(a => a.Assignment).Where(r => r.Id == id).FirstOrDefaultAsync();
 
             if (Report != null)
             {
                 _context.Reports.Remove(Report);
                 await _context.SaveChangesAsync();
             }
+
+            _logger.LogInformation("Report deleted for Assignment: {1}", Report.Assignment.Name);
 
             return RedirectToPage("./Index", new
             {

@@ -51,6 +51,9 @@ namespace ERPSystem.Pages.Projects
             {
                 return NotFound();
             }
+
+            _logger.LogInformation("Details displayed for Project: {1}", Project.Name);
+
             return Page();
         }
     }

@@ -131,6 +131,8 @@ namespace ERPSystem.Pages.Projects
             Utility utility = new Utility(_context);
             utility.UpdateProjectDependants(ProjectsWithModifiedState);
 
+            _logger.LogInformation("Project created: {1}", NewProject.Name);
+
             return RedirectToPage("./Index", new
             {
                 pageIndex = $"{pageIndex}",

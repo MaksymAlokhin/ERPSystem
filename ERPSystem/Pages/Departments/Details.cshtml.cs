@@ -59,6 +59,9 @@ namespace ERPSystem.Pages.Departments
             {
                 return NotFound();
             }
+
+            _logger.LogInformation("Details displayed for Department: {1}", Department.Name);
+
             return Page();
         }
     }

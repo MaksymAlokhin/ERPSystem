@@ -173,6 +173,8 @@ namespace ERPSystem.Pages.Departments
             utility.UpdateDepartmentDependants(DepartmentsWithModifiedState);
             utility.UpdateWhenParentIsNull();
 
+            _logger.LogInformation("Department modified: {1}", DepartmentToUpdate.Name);
+
             return RedirectToPage("./Index", new
             {
                 pageIndex = $"{pageIndex}",

@@ -144,6 +144,8 @@ namespace ERPSystem.Pages.Companies
             Utility utility = new Utility(_context);
             utility.UpdateCompanyDependants(CompaniesWithModifiedState);
 
+            _logger.LogInformation("Company created: {1}", NewCompany.Name);
+
             return RedirectToPage("./Index", new
             {
                 pageIndex = $"{pageIndex}",

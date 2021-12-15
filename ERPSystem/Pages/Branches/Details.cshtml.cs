@@ -57,6 +57,9 @@ namespace ERPSystem.Pages.Branches
             {
                 return NotFound();
             }
+
+            _logger.LogInformation("Details displayed for Branch: {1}", Branch.Name);
+
             return Page();
         }
     }

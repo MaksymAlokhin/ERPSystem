@@ -114,6 +114,8 @@ namespace ERPSystem.Pages.Assignments
             var pageSize = Configuration.GetValue("PageSize", 7);
             Assignment = await PaginatedList<Assignment>.CreateAsync(
                 assignmentsIQ.AsNoTracking(), pageIndex ?? 1, pageSize);
+
+            _logger.LogInformation("Displaying page {1} of Assignments", pageIndex);
         }
         //Method to debug states
         public async Task<IActionResult> OnGetActivateAsync(string sortOrder,

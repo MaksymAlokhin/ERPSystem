@@ -87,6 +87,8 @@ namespace ERPSystem.Pages.Projects
             Utility utility = new Utility(_context);
             utility.UpdateWhenParentIsNull();
 
+            _logger.LogInformation("Project deleted: {1}", Project.Name);
+
             return RedirectToPage("./Index", new
             {
                 pageIndex = $"{pageIndex}",
