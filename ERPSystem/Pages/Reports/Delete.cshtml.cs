@@ -65,11 +65,12 @@ namespace ERPSystem.Pages.Reports
 
             if (Report != null)
             {
+                if (Report.Assignment != null)
+                    _logger.LogInformation("Report deleted for Assignment: {1}", Report.Assignment.Name);
+
                 _context.Reports.Remove(Report);
                 await _context.SaveChangesAsync();
             }
-
-            _logger.LogInformation("Report deleted for Assignment: {1}", Report.Assignment.Name);
 
             return RedirectToPage("./Index", new
             {

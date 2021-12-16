@@ -10,6 +10,7 @@ using ERPSystem.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.Extensions.Logging;
+//using Serilog;
 
 namespace ERPSystem.Pages.Assignments
 {
@@ -71,6 +72,8 @@ namespace ERPSystem.Pages.Assignments
             _context.Assignments.Add(Assignment);
             await _context.SaveChangesAsync();
 
+            //Static Serilog
+            //Log.Information("Assignment created: {1}", Assignment.Name);
             _logger.LogInformation("Assignment created: {1}", Assignment.Name);
 
             return RedirectToPage("./Index", new
@@ -97,8 +100,8 @@ namespace ERPSystem.Pages.Assignments
                 Position position = await _context.Positions.FindAsync(id);
                 if (position != null)
                 {
-                    return new JsonResult(new 
-                    { 
+                    return new JsonResult(new
+                    {
                         startmin = position.StartDate.ToString("yyyy-MM-dd"),
                         startmax = position.EndDate.AddDays(-1).ToString("yyyy-MM-dd"),
                         endmin = position.StartDate.AddDays(1).ToString("yyyy-MM-dd"),

@@ -107,8 +107,9 @@ namespace ReportTest
         public async Task Report_IndexModel_OnGetAsync_ReportsAreReturned()
         {
             // Arrange
+            var logger = Mock.Of<Microsoft.Extensions.Logging.ILogger<ERPSystem.Pages.Reports.IndexModel>>();
             var config = new ConfigurationBuilder().Build();
-            var pageModel = new ERPSystem.Pages.Reports.IndexModel(context, config, null);
+            var pageModel = new ERPSystem.Pages.Reports.IndexModel(context, config, logger);
             var expectedReports = context.Reports;
 
             // Act
@@ -126,8 +127,9 @@ namespace ReportTest
         public async Task Report_IndexModel_OnGetAsync_ReportsAreReturnedInDescendingOrder()
         {
             // Arrange
+            var logger = Mock.Of<Microsoft.Extensions.Logging.ILogger<ERPSystem.Pages.Reports.IndexModel>>();
             var config = new ConfigurationBuilder().Build();
-            var pageModel = new ERPSystem.Pages.Reports.IndexModel(context, config, null);
+            var pageModel = new ERPSystem.Pages.Reports.IndexModel(context, config, logger);
             var expectedReports = context.Reports;
 
             // Act
@@ -149,8 +151,9 @@ namespace ReportTest
         public async Task Report_IndexModel_OnGetAsync_FilteredListOfReportsIsReturned(string searchString)
         {
             // Arrange
+            var logger = Mock.Of<Microsoft.Extensions.Logging.ILogger<ERPSystem.Pages.Reports.IndexModel>>();
             var config = new ConfigurationBuilder().Build();
-            var pageModel = new ERPSystem.Pages.Reports.IndexModel(context, config, null);
+            var pageModel = new ERPSystem.Pages.Reports.IndexModel(context, config, logger);
             IQueryable<Report> reportsIQ = context.Reports;
             if (!String.IsNullOrEmpty(searchString))
             {
@@ -181,8 +184,9 @@ namespace ReportTest
         public async Task Report_IndexModel_OnGetAsync_Pagination(int pageIndex)
         {
             // Arrange
+            var logger = Mock.Of<Microsoft.Extensions.Logging.ILogger<ERPSystem.Pages.Reports.IndexModel>>();
             var config = new ConfigurationBuilder().Build();
-            var pageModel = new ERPSystem.Pages.Reports.IndexModel(context, config, null);
+            var pageModel = new ERPSystem.Pages.Reports.IndexModel(context, config, logger);
             List<Report> expectedReports = new List<Report>();
             if (pageIndex > 0 && pageIndex <= Math.Ceiling((double)context.Reports.Count() / (double)PageSize))
             {
@@ -216,7 +220,8 @@ namespace ReportTest
         public async Task Report_CreateModel_OnPostAsync_ReportIsAdded()
         {
             // Arrange
-            var pageModel = new ERPSystem.Pages.Reports.CreateModel(context, null);
+            var logger = Mock.Of<Microsoft.Extensions.Logging.ILogger<ERPSystem.Pages.Reports.CreateModel>>();
+            var pageModel = new ERPSystem.Pages.Reports.CreateModel(context, logger);
             var expectedReport = new Report 
             {
                 Hours = 24.0,
@@ -242,8 +247,9 @@ namespace ReportTest
         public async Task Report_CreateModel_OnPostAsync_IfInvalidModel_ReturnPageResult()
         {
             // Arrange
+            var logger = Mock.Of<Microsoft.Extensions.Logging.ILogger<ERPSystem.Pages.Reports.CreateModel>>();
             int testId = 1;
-            var pageModel = new ERPSystem.Pages.Reports.CreateModel(context, null);
+            var pageModel = new ERPSystem.Pages.Reports.CreateModel(context, logger);
             var expectedReport = new Report
             {
                 Hours = 24.0,
@@ -265,7 +271,8 @@ namespace ReportTest
         public async Task Report_DeleteModel_OnGetAsync_ReportIsFetched()
         {
             // Arrange
-            var pageModel = new ERPSystem.Pages.Reports.DeleteModel(context, null);
+            var logger = Mock.Of<Microsoft.Extensions.Logging.ILogger<ERPSystem.Pages.Reports.DeleteModel>>();
+            var pageModel = new ERPSystem.Pages.Reports.DeleteModel(context, logger);
             var testId = 1;
 
             // Act
@@ -285,7 +292,8 @@ namespace ReportTest
         public async Task Report_DeleteModel_OnPostAsync_ReportIsDeleted_WhenReportIsFound()
         {
             // Arrange
-            var pageModel = new ERPSystem.Pages.Reports.DeleteModel(context, null);
+            var logger = Mock.Of<Microsoft.Extensions.Logging.ILogger<ERPSystem.Pages.Reports.DeleteModel>>();
+            var pageModel = new ERPSystem.Pages.Reports.DeleteModel(context, logger);
             var testId = 1;
             var expectedReports = context.Reports.Where(c => c.Id != testId).ToList();
 
@@ -305,7 +313,8 @@ namespace ReportTest
         public async Task Report_DeleteModel_OnPostAsync_NoReportIsDeleted_WhenReportIsNotFound()
         {
             // Arrange
-            var pageModel = new ERPSystem.Pages.Reports.DeleteModel(context, null);
+            var logger = Mock.Of<Microsoft.Extensions.Logging.ILogger<ERPSystem.Pages.Reports.DeleteModel>>();
+            var pageModel = new ERPSystem.Pages.Reports.DeleteModel(context, logger);
             var testId = 11;
             var expectedReports = context.Reports;
 
@@ -325,7 +334,8 @@ namespace ReportTest
         public async Task Report_EditModel_OnGetAsync_ReportIsFetched()
         {
             // Arrange
-            var pageModel = new ERPSystem.Pages.Reports.EditModel(context, null);
+            var logger = Mock.Of<Microsoft.Extensions.Logging.ILogger<ERPSystem.Pages.Reports.EditModel>>();
+            var pageModel = new ERPSystem.Pages.Reports.EditModel(context, logger);
             int testId = 2;
 
             // Act
@@ -345,11 +355,12 @@ namespace ReportTest
         public async Task Report_EditModel_OnPostAsync_ReportIsModified()
         {
             // Arrange
+            var logger = Mock.Of<Microsoft.Extensions.Logging.ILogger<ERPSystem.Pages.Reports.EditModel>>();
             var testId = 1;
             var expectedHours = 22.0;
             var expectedDate = DateTime.Parse("2021-07-07");
             var expectedReportState = ReportState.Draft;
-            var pageModel = new ERPSystem.Pages.Reports.EditModel(context, null);
+            var pageModel = new ERPSystem.Pages.Reports.EditModel(context, logger);
             var expectedReport = context.Reports.FirstOrDefault(m => m.Id == testId);
             pageModel.Report = expectedReport;
             pageModel.Report.Date = expectedDate;
@@ -372,11 +383,12 @@ namespace ReportTest
         public async Task Report_EditModel_OnPostAsync_IfInvalidModel_ReturnPageResult()
         {
             // Arrange
+            var logger = Mock.Of<Microsoft.Extensions.Logging.ILogger<ERPSystem.Pages.Reports.EditModel>>();
             var testId = 1;
             var expectedHours = 22.0;
             var expectedDate = DateTime.Parse("2021-07-07");
             var expectedReportState = ReportState.Draft;
-            var pageModel = new ERPSystem.Pages.Reports.EditModel(context, null);
+            var pageModel = new ERPSystem.Pages.Reports.EditModel(context, logger);
             var expectedReport = context.Reports.FirstOrDefault(m => m.Id == testId);
             pageModel.Report = expectedReport;
             pageModel.Report.Date = expectedDate;
@@ -396,7 +408,8 @@ namespace ReportTest
         public async Task Report_DetailsModel_OnGetAsync_ReportIsFetched_WhenReportIsFound()
         {
             // Arrange
-            var pageModel = new ERPSystem.Pages.Reports.DetailsModel(context, null);
+            var logger = Mock.Of<Microsoft.Extensions.Logging.ILogger<ERPSystem.Pages.Reports.DetailsModel>>();
+            var pageModel = new ERPSystem.Pages.Reports.DetailsModel(context, logger);
             int testId = 2;
 
             // Act
@@ -416,7 +429,8 @@ namespace ReportTest
         public async Task Report_DetailsModel_OnGetAsync_NotFoundResultReturned_WhenReportIsNotFound()
         {
             // Arrange
-            var pageModel = new ERPSystem.Pages.Reports.DetailsModel(context, null);
+            var logger = Mock.Of<Microsoft.Extensions.Logging.ILogger<ERPSystem.Pages.Reports.DetailsModel>>();
+            var pageModel = new ERPSystem.Pages.Reports.DetailsModel(context, logger);
             int testId = 11;
 
             // Act

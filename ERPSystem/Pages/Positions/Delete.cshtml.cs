@@ -78,14 +78,14 @@ namespace ERPSystem.Pages.Positions
 
             if (Position != null)
             {
+                _logger.LogInformation("Position deleted: {1}", Position.Name);
+
                 _context.Positions.Remove(Position);
                 await _context.SaveChangesAsync();
             }
 
             Utility utility = new Utility(_context);
             utility.UpdateWhenParentIsNull();
-
-            _logger.LogInformation("Position deleted: {1}", Position.Name);
 
             return RedirectToPage("./Index", new
             {

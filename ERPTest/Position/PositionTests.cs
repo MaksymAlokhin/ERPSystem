@@ -117,8 +117,9 @@ namespace PositionTest
         public async Task Position_IndexModel_OnGetAsync_PositionsAreReturned()
         {
             // Arrange
+            var logger = Mock.Of<Microsoft.Extensions.Logging.ILogger<ERPSystem.Pages.Positions.IndexModel>>();
             var config = new ConfigurationBuilder().Build();
-            var pageModel = new ERPSystem.Pages.Positions.IndexModel(context, config, null);
+            var pageModel = new ERPSystem.Pages.Positions.IndexModel(context, config, logger);
             var expectedPositions = context.Positions;
 
             // Act
@@ -136,8 +137,9 @@ namespace PositionTest
         public async Task Position_IndexModel_OnGetAsync_PositionsAreReturnedInDescendingOrder()
         {
             // Arrange
+            var logger = Mock.Of<Microsoft.Extensions.Logging.ILogger<ERPSystem.Pages.Positions.IndexModel>>();
             var config = new ConfigurationBuilder().Build();
-            var pageModel = new ERPSystem.Pages.Positions.IndexModel(context, config, null);
+            var pageModel = new ERPSystem.Pages.Positions.IndexModel(context, config, logger);
             var expectedPositions = context.Positions;
 
             // Act
@@ -159,8 +161,9 @@ namespace PositionTest
         public async Task Position_IndexModel_OnGetAsync_FilteredListOfPositionsIsReturned(string searchString)
         {
             // Arrange
+            var logger = Mock.Of<Microsoft.Extensions.Logging.ILogger<ERPSystem.Pages.Positions.IndexModel>>();
             var config = new ConfigurationBuilder().Build();
-            var pageModel = new ERPSystem.Pages.Positions.IndexModel(context, config, null);
+            var pageModel = new ERPSystem.Pages.Positions.IndexModel(context, config, logger);
             var expectedPositions = context.Positions.Where(s => s.Name.Contains(searchString)
                                        || s.Project.Name.Contains(searchString));
 
@@ -185,8 +188,9 @@ namespace PositionTest
         public async Task Position_IndexModel_OnGetAsync_Pagination(int pageIndex)
         {
             // Arrange
+            var logger = Mock.Of<Microsoft.Extensions.Logging.ILogger<ERPSystem.Pages.Positions.IndexModel>>();
             var config = new ConfigurationBuilder().Build();
-            var pageModel = new ERPSystem.Pages.Positions.IndexModel(context, config, null);
+            var pageModel = new ERPSystem.Pages.Positions.IndexModel(context, config, logger);
             List<Position> expectedPositions = new List<Position>();
             if (pageIndex > 0 && pageIndex <= Math.Ceiling((double)context.Positions.Count() / (double)PageSize))
             {
@@ -220,7 +224,8 @@ namespace PositionTest
         public async Task Position_CreateModel_OnPostAsync_PositionIsAdded()
         {
             // Arrange
-            var pageModel = new ERPSystem.Pages.Positions.CreateModel(context, null);
+            var logger = Mock.Of<Microsoft.Extensions.Logging.ILogger<ERPSystem.Pages.Positions.CreateModel>>();
+            var pageModel = new ERPSystem.Pages.Positions.CreateModel(context, logger);
             var expectedPosition = new Position 
             {
                 Name = "Test Position",
@@ -248,7 +253,8 @@ namespace PositionTest
         public async Task Position_CreateModel_OnPostAsync_IfInvalidModel_ReturnPageResult()
         {
             // Arrange
-            var pageModel = new ERPSystem.Pages.Positions.CreateModel(context, null);
+            var logger = Mock.Of<Microsoft.Extensions.Logging.ILogger<ERPSystem.Pages.Positions.CreateModel>>();
+            var pageModel = new ERPSystem.Pages.Positions.CreateModel(context, logger);
             var expectedPosition = new Position
             {
                 Name = "Test Position",
@@ -271,7 +277,8 @@ namespace PositionTest
         public async Task Position_DeleteModel_OnGetAsync_PositionIsFetched()
         {
             // Arrange
-            var pageModel = new ERPSystem.Pages.Positions.DeleteModel(context, null);
+            var logger = Mock.Of<Microsoft.Extensions.Logging.ILogger<ERPSystem.Pages.Positions.DeleteModel>>();
+            var pageModel = new ERPSystem.Pages.Positions.DeleteModel(context, logger);
             var testId = 1;
 
             // Act
@@ -292,7 +299,8 @@ namespace PositionTest
         public async Task Position_DeleteModel_OnPostAsync_PositionIsDeleted_WhenPositionIsFound()
         {
             // Arrange
-            var pageModel = new ERPSystem.Pages.Positions.DeleteModel(context, null);
+            var logger = Mock.Of<Microsoft.Extensions.Logging.ILogger<ERPSystem.Pages.Positions.DeleteModel>>();
+            var pageModel = new ERPSystem.Pages.Positions.DeleteModel(context, logger);
             var testId = 1;
             var expectedPositions = context.Positions.Where(c => c.Id != testId).ToList();
 
@@ -312,7 +320,8 @@ namespace PositionTest
         public async Task Position_DeleteModel_OnPostAsync_NoPositionIsDeleted_WhenPositionIsNotFound()
         {
             // Arrange
-            var pageModel = new ERPSystem.Pages.Positions.DeleteModel(context, null);
+            var logger = Mock.Of<Microsoft.Extensions.Logging.ILogger<ERPSystem.Pages.Positions.DeleteModel>>();
+            var pageModel = new ERPSystem.Pages.Positions.DeleteModel(context, logger);
             var testId = 11;
             var expectedPositions = context.Positions;
 
@@ -332,7 +341,8 @@ namespace PositionTest
         public async Task Position_EditModel_OnGetAsync_PositionIsFetched()
         {
             // Arrange
-            var pageModel = new ERPSystem.Pages.Positions.EditModel(context, null);
+            var logger = Mock.Of<Microsoft.Extensions.Logging.ILogger<ERPSystem.Pages.Positions.EditModel>>();
+            var pageModel = new ERPSystem.Pages.Positions.EditModel(context, logger);
             int testId = 2;
 
             // Act
@@ -353,8 +363,9 @@ namespace PositionTest
         public async Task Position_EditModel_OnPostAsync_PositionIsModified()
         {
             // Arrange
+            var logger = Mock.Of<Microsoft.Extensions.Logging.ILogger<ERPSystem.Pages.Positions.EditModel>>();
             var testId = 1;
-            var pageModel = new ERPSystem.Pages.Positions.EditModel(context, null);
+            var pageModel = new ERPSystem.Pages.Positions.EditModel(context, logger);
             var expectedPosition = context.Positions.FirstOrDefault(m => m.Id == testId);
             pageModel.Position = expectedPosition;
             pageModel.Position.Name = "Modified Entity";
@@ -377,7 +388,8 @@ namespace PositionTest
         public async Task Position_EditModel_OnPostAsync_IfInvalidModel_ReturnPageResult()
         {
             // Arrange
-            var pageModel = new ERPSystem.Pages.Positions.EditModel(context, null);
+            var logger = Mock.Of<Microsoft.Extensions.Logging.ILogger<ERPSystem.Pages.Positions.EditModel>>();
+            var pageModel = new ERPSystem.Pages.Positions.EditModel(context, logger);
             int testId = 1;
             var expectedPosition = context.Positions.FirstOrDefault(m => m.Id == testId);
             pageModel.Position = expectedPosition;
@@ -397,7 +409,8 @@ namespace PositionTest
         public async Task Position_DetailsModel_OnGetAsync_PositionIsFetched_WhenPositionIsFound()
         {
             // Arrange
-            var pageModel = new ERPSystem.Pages.Positions.DetailsModel(context, null);
+            var logger = Mock.Of<Microsoft.Extensions.Logging.ILogger<ERPSystem.Pages.Positions.DetailsModel>>();
+            var pageModel = new ERPSystem.Pages.Positions.DetailsModel(context, logger);
             int testId = 2;
 
             // Act
@@ -418,7 +431,8 @@ namespace PositionTest
         public async Task Position_DetailsModel_OnGetAsync_NotFoundResultReturned_WhenPositionIsNotFound()
         {
             // Arrange
-            var pageModel = new ERPSystem.Pages.Positions.DetailsModel(context, null);
+            var logger = Mock.Of<Microsoft.Extensions.Logging.ILogger<ERPSystem.Pages.Positions.DetailsModel>>();
+            var pageModel = new ERPSystem.Pages.Positions.DetailsModel(context, logger);
             int testId = 11;
 
             // Act

@@ -86,14 +86,14 @@ namespace ERPSystem.Pages.Companies
 
             if (Company != null)
             {
+                _logger.LogInformation("Company deleted: {1}", Company.Name);
+
                 _context.Companies.Remove(Company);
                 await _context.SaveChangesAsync();
             }
 
             Utility utility = new Utility(_context);
             utility.UpdateWhenParentIsNull();
-
-            _logger.LogInformation("Company deleted: {1}", Company.Name);
 
             return RedirectToPage("./Index", new
             {

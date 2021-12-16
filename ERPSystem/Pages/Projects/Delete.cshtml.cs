@@ -79,6 +79,7 @@ namespace ERPSystem.Pages.Projects
                         position.PositionState = PositionState.Inactive;
                     }
                 }
+                _logger.LogInformation("Project deleted: {1}", Project.Name);
 
                 _context.Projects.Remove(Project);
                 await _context.SaveChangesAsync();
@@ -86,8 +87,6 @@ namespace ERPSystem.Pages.Projects
 
             Utility utility = new Utility(_context);
             utility.UpdateWhenParentIsNull();
-
-            _logger.LogInformation("Project deleted: {1}", Project.Name);
 
             return RedirectToPage("./Index", new
             {

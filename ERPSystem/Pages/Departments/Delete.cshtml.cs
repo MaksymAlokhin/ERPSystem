@@ -79,14 +79,14 @@ namespace ERPSystem.Pages.Departments
 
             if (Department != null)
             {
+                _logger.LogInformation("Department deleted: {1}", Department.Name);
+
                 _context.Departments.Remove(Department);
                 await _context.SaveChangesAsync();
             }
 
             Utility utility = new Utility(_context);
             utility.UpdateWhenParentIsNull();
-
-            _logger.LogInformation("Department deleted: {1}", Department.Name);
 
             return RedirectToPage("./Index", new
             {

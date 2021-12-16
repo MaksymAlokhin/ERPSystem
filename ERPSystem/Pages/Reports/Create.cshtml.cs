@@ -76,12 +76,14 @@ namespace ERPSystem.Pages.Reports
                 .Include(a => a.Reports)
                 .FirstOrDefaultAsync(a => a.Id == id);
             if (Assignment != null)
+            {
                 Assignment.Reports.Add(Report);
+                _logger.LogInformation("Report created for assignment: {1}", Assignment.Name);
+            }
 
             _context.Reports.Add(Report);
             await _context.SaveChangesAsync();
 
-            _logger.LogInformation("Report created for assignment: {1}", Assignment.Name);
 
             return RedirectToPage("./Index");
         }
