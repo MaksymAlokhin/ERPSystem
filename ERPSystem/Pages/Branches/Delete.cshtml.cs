@@ -78,14 +78,14 @@ namespace ERPSystem.Pages.Branches
 
             if (Branch != null)
             {
+                _logger.LogInformation("Branch deleted: {1}", Branch.Name);
+
                 _context.Branches.Remove(Branch);
                 await _context.SaveChangesAsync();
             }
 
             Utility utility = new Utility(_context);
             utility.UpdateWhenParentIsNull();
-
-            _logger.LogInformation("Branch deleted: {1}", Branch.Name);
 
             return RedirectToPage("./Index", new
             {

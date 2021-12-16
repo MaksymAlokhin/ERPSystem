@@ -47,11 +47,11 @@ namespace ERPSystem.Pages.Reports
             {
                 return NotFound();
             }
-            
+
             Report = await _context.Reports
                 .Include(r => r.Assignment)
                 .ThenInclude(r => r.Employee).FirstOrDefaultAsync(m => m.Id == id);
-            
+
             if (Report == null)
             {
                 return NotFound();
@@ -67,7 +67,7 @@ namespace ERPSystem.Pages.Reports
                 .AsNoTracking()
                 .FirstOrDefaultAsync(a => a.Id == Report.AssignmentId);
 
-            if(Assignment != null)
+            if (Assignment != null)
             {
                 MinDate = Assignment.StartDate.ToString("yyyy-MM-dd");
                 MaxDate = Assignment.EndDate.ToString("yyyy-MM-dd");
@@ -110,7 +110,9 @@ namespace ERPSystem.Pages.Reports
             }
 
             Report = await _context.Reports.Include(a => a.Assignment).Where(r => r.Id == id).FirstOrDefaultAsync();
-            _logger.LogInformation("Report modified for Assignment: {1}", Report.Assignment.Name);
+
+            if (Report.Assignment != null)
+                _logger.LogInformation("Report modified for Assignment: {1}", Report.Assignment.Name);
 
             return RedirectToPage("./Index", new
             {

@@ -147,8 +147,9 @@ namespace EmployeeTest
         public async Task Employee_IndexModel_OnGetAsync_EmployeesAreReturned()
         {
             // Arrange
+            var logger = Mock.Of<Microsoft.Extensions.Logging.ILogger<ERPSystem.Pages.Employees.IndexModel>>();
             var config = new ConfigurationBuilder().Build();
-            var pageModel = new ERPSystem.Pages.Employees.IndexModel(context, config, null);
+            var pageModel = new ERPSystem.Pages.Employees.IndexModel(context, config, logger);
             var expectedEmployees = context.Employees;
 
             // Act
@@ -166,8 +167,9 @@ namespace EmployeeTest
         public async Task Employee_IndexModel_OnGetAsync_EmployeesAreReturnedInDescendingOrder()
         {
             // Arrange
+            var logger = Mock.Of<Microsoft.Extensions.Logging.ILogger<ERPSystem.Pages.Employees.IndexModel>>();
             var config = new ConfigurationBuilder().Build();
-            var pageModel = new ERPSystem.Pages.Employees.IndexModel(context, config, null);
+            var pageModel = new ERPSystem.Pages.Employees.IndexModel(context, config, logger);
             var expectedEmployees = context.Employees;
 
             // Act
@@ -189,8 +191,9 @@ namespace EmployeeTest
         public async Task Employee_IndexModel_OnGetAsync_FilteredListOfEmployeesIsReturned(string searchString)
         {
             // Arrange
+            var logger = Mock.Of<Microsoft.Extensions.Logging.ILogger<ERPSystem.Pages.Employees.IndexModel>>();
             var config = new ConfigurationBuilder().Build();
-            var pageModel = new ERPSystem.Pages.Employees.IndexModel(context, config, null);
+            var pageModel = new ERPSystem.Pages.Employees.IndexModel(context, config, logger);
             var expectedEmployees = context.Employees.Where(s => s.LastName.Contains(searchString)
                                        || s.FirstName.Contains(searchString));
 
@@ -215,8 +218,9 @@ namespace EmployeeTest
         public async Task Employee_IndexModel_OnGetAsync_Pagination(int pageIndex)
         {
             // Arrange
+            var logger = Mock.Of<Microsoft.Extensions.Logging.ILogger<ERPSystem.Pages.Employees.IndexModel>>();
             var config = new ConfigurationBuilder().Build();
-            var pageModel = new ERPSystem.Pages.Employees.IndexModel(context, config, null);
+            var pageModel = new ERPSystem.Pages.Employees.IndexModel(context, config, logger);
             List<Employee> expectedEmployees = new List<Employee>();
             if (pageIndex > 0 && pageIndex <= Math.Ceiling((double)context.Employees.Count() / (double)PageSize))
             {
@@ -251,7 +255,8 @@ namespace EmployeeTest
         {
             // Arrange
             //IWebHostEnvironment hostEnvironment = new 
-            var pageModel = new ERPSystem.Pages.Employees.CreateModel(context, null, null);
+            var logger = Mock.Of<Microsoft.Extensions.Logging.ILogger<ERPSystem.Pages.Employees.CreateModel>>();
+            var pageModel = new ERPSystem.Pages.Employees.CreateModel(context, null, logger);
             var expectedEmployee = new Employee
             {
                 FirstName = "Test First Name",
@@ -281,7 +286,8 @@ namespace EmployeeTest
         public async Task Employee_CreateModel_OnPostAsync_IfInvalidModel_ReturnPageResult()
         {
             // Arrange
-            var pageModel = new ERPSystem.Pages.Employees.CreateModel(context, null, null);
+            var logger = Mock.Of<Microsoft.Extensions.Logging.ILogger<ERPSystem.Pages.Employees.CreateModel>>();
+            var pageModel = new ERPSystem.Pages.Employees.CreateModel(context, null, logger);
             var expectedEmployee = new Employee
             {
                 FirstName = "Test First Name",
@@ -305,7 +311,8 @@ namespace EmployeeTest
         public async Task Employee_DeleteModel_OnGetAsync_EmployeeIsFetched()
         {
             // Arrange
-            var pageModel = new ERPSystem.Pages.Employees.DeleteModel(context, null, null);
+            var logger = Mock.Of<Microsoft.Extensions.Logging.ILogger<ERPSystem.Pages.Employees.DeleteModel>>();
+            var pageModel = new ERPSystem.Pages.Employees.DeleteModel(context, null, logger);
             var testId = 1;
 
             // Act
@@ -327,7 +334,8 @@ namespace EmployeeTest
         public async Task Employee_DeleteModel_OnPostAsync_EmployeeIsDeleted_WhenEmployeeIsFound()
         {
             // Arrange
-            var pageModel = new ERPSystem.Pages.Employees.DeleteModel(context, null, null);
+            var logger = Mock.Of<Microsoft.Extensions.Logging.ILogger<ERPSystem.Pages.Employees.DeleteModel>>();
+            var pageModel = new ERPSystem.Pages.Employees.DeleteModel(context, null, logger);
             var testId = 1;
             var expectedEmployees = context.Employees.Where(c => c.Id != testId).ToList();
 
@@ -347,7 +355,8 @@ namespace EmployeeTest
         public async Task Employee_DeleteModel_OnPostAsync_NoEmployeeIsDeleted_WhenEmployeeIsNotFound()
         {
             // Arrange
-            var pageModel = new ERPSystem.Pages.Employees.DeleteModel(context, null, null);
+            var logger = Mock.Of<Microsoft.Extensions.Logging.ILogger<ERPSystem.Pages.Employees.DeleteModel>>();
+            var pageModel = new ERPSystem.Pages.Employees.DeleteModel(context, null, logger);
             var testId = 11;
             var expectedEmployees = context.Employees;
 
@@ -367,7 +376,8 @@ namespace EmployeeTest
         public async Task Employee_EditModel_OnGetAsync_EmployeeIsFetched()
         {
             // Arrange
-            var pageModel = new ERPSystem.Pages.Employees.EditModel(context, null, null);
+            var logger = Mock.Of<Microsoft.Extensions.Logging.ILogger<ERPSystem.Pages.Employees.EditModel>>();
+            var pageModel = new ERPSystem.Pages.Employees.EditModel(context, null, logger);
             int testId = 2;
 
             // Act
@@ -389,8 +399,9 @@ namespace EmployeeTest
         public async Task Employee_EditModel_OnPostAsync_EmployeeIsModified()
         {
             // Arrange
+            var logger = Mock.Of<Microsoft.Extensions.Logging.ILogger<ERPSystem.Pages.Employees.EditModel>>();
             var testId = 1;
-            var pageModel = new ERPSystem.Pages.Employees.EditModel(context, null, null);
+            var pageModel = new ERPSystem.Pages.Employees.EditModel(context, null, logger);
             var expectedEmployee = context.Employees.FirstOrDefault(m => m.Id == testId);
             pageModel.Employee = expectedEmployee;
             pageModel.Employee.LastName = "Modified Entity";
@@ -411,7 +422,8 @@ namespace EmployeeTest
         public async Task Employee_EditModel_OnPostAsync_IfInvalidModel_ReturnPageResult()
         {
             // Arrange
-            var pageModel = new ERPSystem.Pages.Employees.EditModel(context, null, null);
+            var logger = Mock.Of<Microsoft.Extensions.Logging.ILogger<ERPSystem.Pages.Employees.EditModel>>();
+            var pageModel = new ERPSystem.Pages.Employees.EditModel(context, null, logger);
             int testId = 1;
             var expectedEmployee = context.Employees.FirstOrDefault(m => m.Id == testId);
             pageModel.Employee = expectedEmployee;
@@ -431,7 +443,8 @@ namespace EmployeeTest
         public async Task Employee_DetailsModel_OnGetAsync_EmployeeIsFetched_WhenEmployeeIsFound()
         {
             // Arrange
-            var pageModel = new ERPSystem.Pages.Employees.DetailsModel(context, null);
+            var logger = Mock.Of<Microsoft.Extensions.Logging.ILogger<ERPSystem.Pages.Employees.DetailsModel>>();
+            var pageModel = new ERPSystem.Pages.Employees.DetailsModel(context, logger);
             int testId = 2;
 
             // Act
@@ -453,7 +466,8 @@ namespace EmployeeTest
         public async Task Employee_DetailsModel_OnGetAsync_NotFoundResultReturned_WhenEmployeeIsNotFound()
         {
             // Arrange
-            var pageModel = new ERPSystem.Pages.Employees.DetailsModel(context, null);
+            var logger = Mock.Of<Microsoft.Extensions.Logging.ILogger<ERPSystem.Pages.Employees.DetailsModel>>();
+            var pageModel = new ERPSystem.Pages.Employees.DetailsModel(context, logger);
             int testId = 11;
 
             // Act

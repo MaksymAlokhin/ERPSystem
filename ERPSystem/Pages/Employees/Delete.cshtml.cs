@@ -147,6 +147,8 @@ namespace ERPSystem.Pages.Employees
                         break;
                 }
 
+                _logger.LogInformation("Employee deleted: {1}, {2}", Employee.LastName, Employee.FirstName);
+
                 _context.Employees.Remove(Employee);
                 await _context.SaveChangesAsync();
 
@@ -162,8 +164,6 @@ namespace ERPSystem.Pages.Employees
             utility.UpdateDepartmentDependants(DepartmentsWithModifiedState);
             utility.UpdateProjectDependants(ProjectsWithModifiedState);
             utility.UpdateWhenParentIsNull();
-
-            _logger.LogInformation("Employee deleted: {1}, {2}", Employee.LastName, Employee.FirstName);
 
             return RedirectToPage("./Index", new
             {
