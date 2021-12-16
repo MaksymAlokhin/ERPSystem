@@ -532,19 +532,23 @@ namespace ERPSystem.Pages.Employees
                     {
                         await FormFile.CopyToAsync(fileStream);
                     }
-
+                    bool isProduction = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") == "Production";
+                    
                     #region Delete old photo file
-                    //var oldFile = EmployeeToUpdate.ProfilePicture;
-                    //var fileToDelete = string.Empty;
-                    //if (!string.IsNullOrEmpty(oldFile))
-                    //{
-                    //    fileToDelete = Path.Combine(uploadsFolder, oldFile);
-                    //}
+                    if (isProduction)
+                    {
+                        var oldFile = EmployeeToUpdate.ProfilePicture;
+                        var fileToDelete = string.Empty;
+                        if (!string.IsNullOrEmpty(oldFile))
+                        {
+                            fileToDelete = Path.Combine(uploadsFolder, oldFile);
+                        }
 
-                    //if (System.IO.File.Exists(fileToDelete))
-                    //{
-                    //    System.IO.File.Delete(fileToDelete);
-                    //}
+                        if (System.IO.File.Exists(fileToDelete))
+                        {
+                            System.IO.File.Delete(fileToDelete);
+                        }
+                    }
                     #endregion
 
                     //Update photo
