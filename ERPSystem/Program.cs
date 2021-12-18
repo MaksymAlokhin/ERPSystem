@@ -26,7 +26,10 @@ namespace ERPSystem
                 try
                 {
                     var context = services.GetRequiredService<ApplicationDbContext>();
-                    context.Database.Migrate();
+                    context.Database.EnsureDeleted();
+                    context.Database.EnsureCreated();
+
+                    //context.Database.Migrate();
 
                     IConfiguration config = host.Services.GetRequiredService<IConfiguration>();
                     String testUserPw = config["SeedUserPW"]; //appsettings.json "SeedUserPW": "aA!111"
