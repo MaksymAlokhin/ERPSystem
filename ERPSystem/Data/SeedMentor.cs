@@ -45,7 +45,7 @@ namespace ERPSystem.Data
             FirstName = "Clinton",
             LastName = "Bentley",
             DateOfBirth = DateTime.Parse("1988-12-09"),
-            ProfilePicture = "male_001.jpg",
+            ProfilePicture = "male_105.jpg",
             Branch = AmazonEurope,
             EmployeeState = EmployeeState.Active,
             EmployeeRole = EmployeeRole.Mentor
@@ -65,7 +65,7 @@ namespace ERPSystem.Data
             FirstName = "Ryder",
             LastName = "Reynolds",
             DateOfBirth = DateTime.Parse("1995-04-21"),
-            ProfilePicture = "male_002.jpg",
+            ProfilePicture = "male_106.jpg",
             Branch = AppleEurope,
             EmployeeState = EmployeeState.Active,
             EmployeeRole = EmployeeRole.Mentor
@@ -75,7 +75,7 @@ namespace ERPSystem.Data
             FirstName = "Nissim",
             LastName = "Munoz",
             DateOfBirth = DateTime.Parse("1983-05-15"),
-            ProfilePicture = "male_003.jpg",
+            ProfilePicture = "male_107.jpg",
             Branch = FordMotorNorthAmerica,
             EmployeeState = EmployeeState.Active,
             EmployeeRole = EmployeeRole.Mentor
@@ -85,7 +85,7 @@ namespace ERPSystem.Data
             FirstName = "Seth",
             LastName = "Thompson",
             DateOfBirth = DateTime.Parse("1992-11-01"),
-            ProfilePicture = "male_004.jpg",
+            ProfilePicture = "male_108.jpg",
             Branch = FordMotorEurope,
             EmployeeState = EmployeeState.Active,
             EmployeeRole = EmployeeRole.Mentor
@@ -95,7 +95,7 @@ namespace ERPSystem.Data
             FirstName = "Channing",
             LastName = "Chang",
             DateOfBirth = DateTime.Parse("1998-03-09"),
-            ProfilePicture = "male_005.jpg",
+            ProfilePicture = "male_109.jpg",
             Branch = FedExNorthAmerica,
             EmployeeState = EmployeeState.Active,
             EmployeeRole = EmployeeRole.Mentor
@@ -105,7 +105,7 @@ namespace ERPSystem.Data
             FirstName = "Nissim",
             LastName = "Bryan",
             DateOfBirth = DateTime.Parse("1990-06-06"),
-            ProfilePicture = "male_006.jpg",
+            ProfilePicture = "male_110.jpg",
             Branch = FedExEurope,
             EmployeeState = EmployeeState.Active,
             EmployeeRole = EmployeeRole.Mentor
@@ -115,7 +115,7 @@ namespace ERPSystem.Data
             FirstName = "Sebastian",
             LastName = "Hansen",
             DateOfBirth = DateTime.Parse("1995-04-29"),
-            ProfilePicture = "male_007.jpg",
+            ProfilePicture = "male_111.jpg",
             Branch = BankOfAmericaNorthAmerica,
             EmployeeState = EmployeeState.Active,
             EmployeeRole = EmployeeRole.Mentor
@@ -125,7 +125,7 @@ namespace ERPSystem.Data
             FirstName = "Lester",
             LastName = "Zamora",
             DateOfBirth = DateTime.Parse("1993-06-11"),
-            ProfilePicture = "male_008.jpg",
+            ProfilePicture = "male_112.jpg",
             Branch = BankOfAmericaEurope,
             EmployeeState = EmployeeState.Active,
             EmployeeRole = EmployeeRole.Mentor
@@ -145,7 +145,7 @@ namespace ERPSystem.Data
             FirstName = "Quinn",
             LastName = "Wilder",
             DateOfBirth = DateTime.Parse("2000-12-27"),
-            ProfilePicture = "male_009.jpg",
+            ProfilePicture = "male_113.jpg",
             Branch = JohnsonAndJohnsonEurope,
             EmployeeState = EmployeeState.Active,
             EmployeeRole = EmployeeRole.Mentor
@@ -155,7 +155,7 @@ namespace ERPSystem.Data
             FirstName = "Barry",
             LastName = "Fuller",
             DateOfBirth = DateTime.Parse("1988-01-27"),
-            ProfilePicture = "male_010.jpg",
+            ProfilePicture = "male_114.jpg",
             Branch = FacebookNorthAmerica,
             EmployeeState = EmployeeState.Active,
             EmployeeRole = EmployeeRole.Mentor
@@ -165,7 +165,7 @@ namespace ERPSystem.Data
             FirstName = "Omar",
             LastName = "Hudson",
             DateOfBirth = DateTime.Parse("1987-05-22"),
-            ProfilePicture = "male_011.jpg",
+            ProfilePicture = "male_115.jpg",
             Branch = FacebookEurope,
             EmployeeState = EmployeeState.Active,
             EmployeeRole = EmployeeRole.Mentor
@@ -195,7 +195,7 @@ namespace ERPSystem.Data
             FirstName = "Melvin",
             LastName = "Sykes",
             DateOfBirth = DateTime.Parse("1993-02-12"),
-            ProfilePicture = "male_012.jpg",
+            ProfilePicture = "male_116.jpg",
             Branch = ExxonMobilNorthAmerica,
             EmployeeState = EmployeeState.Active,
             EmployeeRole = EmployeeRole.Mentor
@@ -205,7 +205,7 @@ namespace ERPSystem.Data
             FirstName = "Rogan",
             LastName = "Warren",
             DateOfBirth = DateTime.Parse("1992-08-24"),
-            ProfilePicture = "male_013.jpg",
+            ProfilePicture = "male_117.jpg",
             Branch = ExxonMobilEurope,
             EmployeeState = EmployeeState.Active,
             EmployeeRole = EmployeeRole.Mentor
