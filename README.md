@@ -8,6 +8,8 @@ Demo App for Avenga<br />
 Installation<br />
 ----------------------
 
+Click [here](https://erpsystemdemowebapp.azurewebsites.net/) to view live demo.<br /><br />
+
 Package Manager Console:<br />
 `Update-Database`<br />
 
