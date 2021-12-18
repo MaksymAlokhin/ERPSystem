@@ -47,7 +47,7 @@ namespace ERPSystem.Data
             LastName = "Roach",
             Department = AmazonAccountingAndFinance,
             DateOfBirth = DateTime.Parse("1999-10-31"),
-            ProfilePicture = "male_020.jpg",
+            ProfilePicture = "male_124.jpg",
             EmployeeState = EmployeeState.Active,
             EmployeeRole = EmployeeRole.DepartmentHead
         };
@@ -57,7 +57,7 @@ namespace ERPSystem.Data
             LastName = "Kelley",
             Department = AppleMarketing,
             DateOfBirth = DateTime.Parse("1991-03-31"),
-            ProfilePicture = "male_021.jpg",
+            ProfilePicture = "male_125.jpg",
             EmployeeState = EmployeeState.Active,
             EmployeeRole = EmployeeRole.DepartmentHead
         };
@@ -67,7 +67,7 @@ namespace ERPSystem.Data
             LastName = "West",
             Department = AppleAccountingAndFinance,
             DateOfBirth = DateTime.Parse("1990-05-09"),
-            ProfilePicture = "male_022.jpg",
+            ProfilePicture = "male_126.jpg",
             EmployeeState = EmployeeState.Active,
             EmployeeRole = EmployeeRole.DepartmentHead
         };
@@ -87,7 +87,7 @@ namespace ERPSystem.Data
             LastName = "Bonner",
             Department = FordMotorAccountingAndFinance,
             DateOfBirth = DateTime.Parse("1999-05-21"),
-            ProfilePicture = "male_023.jpg",
+            ProfilePicture = "male_127.jpg",
             EmployeeState = EmployeeState.Active,
             EmployeeRole = EmployeeRole.DepartmentHead
         };
@@ -97,7 +97,7 @@ namespace ERPSystem.Data
             LastName = "Curtis",
             Department = FedExMarketing,
             DateOfBirth = DateTime.Parse("1988-02-28"),
-            ProfilePicture = "male_024.jpg",
+            ProfilePicture = "male_128.jpg",
             EmployeeState = EmployeeState.Active,
             EmployeeRole = EmployeeRole.DepartmentHead
         };
@@ -117,7 +117,7 @@ namespace ERPSystem.Data
             LastName = "Roberts",
             Department = BankOfAmericaMarketing,
             DateOfBirth = DateTime.Parse("1984-11-10"),
-            ProfilePicture = "male_025.jpg",
+            ProfilePicture = "male_129.jpg",
             EmployeeState = EmployeeState.Active,
             EmployeeRole = EmployeeRole.DepartmentHead
         };
@@ -127,7 +127,7 @@ namespace ERPSystem.Data
             LastName = "Rivas",
             Department = BankOfAmericaAccountingAndFinance,
             DateOfBirth = DateTime.Parse("1981-07-30"),
-            ProfilePicture = "male_026.jpg",
+            ProfilePicture = "male_130.jpg",
             EmployeeState = EmployeeState.Active,
             EmployeeRole = EmployeeRole.DepartmentHead
         };
@@ -147,7 +147,7 @@ namespace ERPSystem.Data
             LastName = "Hammond",
             Department = JohnsonAndJohnsonAccountingAndFinance,
             DateOfBirth = DateTime.Parse("1997-07-16"),
-            ProfilePicture = "male_027.jpg",
+            ProfilePicture = "male_131.jpg",
             EmployeeState = EmployeeState.Active,
             EmployeeRole = EmployeeRole.DepartmentHead
         };
@@ -157,7 +157,7 @@ namespace ERPSystem.Data
             LastName = "Daniels",
             Department = FacebookMarketing,
             DateOfBirth = DateTime.Parse("1993-05-15"),
-            ProfilePicture = "male_028.jpg",
+            ProfilePicture = "male_132.jpg",
             EmployeeState = EmployeeState.Active,
             EmployeeRole = EmployeeRole.DepartmentHead
         };
@@ -167,7 +167,7 @@ namespace ERPSystem.Data
             LastName = "Franco",
             Department = FacebookAccountingAndFinance,
             DateOfBirth = DateTime.Parse("2000-07-26"),
-            ProfilePicture = "male_029.jpg",
+            ProfilePicture = "male_133.jpg",
             EmployeeState = EmployeeState.Active,
             EmployeeRole = EmployeeRole.DepartmentHead
         };
@@ -177,7 +177,7 @@ namespace ERPSystem.Data
             LastName = "Knight",
             Department = AlphabetMarketing,
             DateOfBirth = DateTime.Parse("1993-03-13"),
-            ProfilePicture = "male_030.jpg",
+            ProfilePicture = "male_134.jpg",
             EmployeeState = EmployeeState.Active,
             EmployeeRole = EmployeeRole.DepartmentHead
         };
@@ -197,7 +197,7 @@ namespace ERPSystem.Data
             LastName = "English",
             Department = ExxonMobilMarketing,
             DateOfBirth = DateTime.Parse("2001-04-07"),
-            ProfilePicture = "male_031.jpg",
+            ProfilePicture = "male_135.jpg",
             EmployeeState = EmployeeState.Active,
             EmployeeRole = EmployeeRole.DepartmentHead
         };

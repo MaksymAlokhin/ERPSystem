@@ -15,7 +15,7 @@ namespace ERPSystem.Data
             FirstName = "Channing",
             LastName = "Fuentes",
             DateOfBirth = DateTime.Parse("1981-11-25"),
-            ProfilePicture = "male_014.jpg",
+            ProfilePicture = "male_118.jpg",
             Project = p001,
             EmployeeState = EmployeeState.Active,
             EmployeeRole = EmployeeRole.ProjectManager
@@ -25,7 +25,7 @@ namespace ERPSystem.Data
             FirstName = "Cooper",
             LastName = "Jacobson",
             DateOfBirth = DateTime.Parse("1989-07-21"),
-            ProfilePicture = "male_015.jpg",
+            ProfilePicture = "male_119.jpg",
             Project = p002,
             EmployeeState = EmployeeState.Active,
             EmployeeRole = EmployeeRole.ProjectManager
@@ -35,7 +35,7 @@ namespace ERPSystem.Data
             FirstName = "Preston",
             LastName = "Holman",
             DateOfBirth = DateTime.Parse("1996-08-05"),
-            ProfilePicture = "male_016.jpg",
+            ProfilePicture = "male_120.jpg",
             Project = p003,
             EmployeeState = EmployeeState.Active,
             EmployeeRole = EmployeeRole.ProjectManager
@@ -45,7 +45,7 @@ namespace ERPSystem.Data
             FirstName = "Judah",
             LastName = "Bush",
             DateOfBirth = DateTime.Parse("2000-10-01"),
-            ProfilePicture = "male_017.jpg",
+            ProfilePicture = "male_121.jpg",
             Project = p004,
             EmployeeState = EmployeeState.Active,
             EmployeeRole = EmployeeRole.ProjectManager
@@ -85,7 +85,7 @@ namespace ERPSystem.Data
             FirstName = "James",
             LastName = "Gonzalez",
             DateOfBirth = DateTime.Parse("2001-09-06"),
-            ProfilePicture = "male_018.jpg",
+            ProfilePicture = "male_122.jpg",
             Project = p008,
             EmployeeState = EmployeeState.Active,
             EmployeeRole = EmployeeRole.ProjectManager
@@ -125,7 +125,7 @@ namespace ERPSystem.Data
             FirstName = "Nigel",
             LastName = "Mckinney",
             DateOfBirth = DateTime.Parse("1995-09-14"),
-            ProfilePicture = "male_019.jpg",
+            ProfilePicture = "male_123.jpg",
             Project = p012,
             EmployeeState = EmployeeState.Active,
             EmployeeRole = EmployeeRole.ProjectManager
