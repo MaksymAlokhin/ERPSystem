@@ -535,8 +535,8 @@ namespace ERPSystem.Pages.Employees
                     bool isProduction = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") == "Production";
                     
                     #region Delete old photo file
-                    if (isProduction)
-                    {
+                    //if (isProduction)
+                    //{
                         var oldFile = EmployeeToUpdate.ProfilePicture;
                         var fileToDelete = string.Empty;
                         if (!string.IsNullOrEmpty(oldFile))
@@ -548,7 +548,7 @@ namespace ERPSystem.Pages.Employees
                         {
                             System.IO.File.Delete(fileToDelete);
                         }
-                    }
+                    //}
                     #endregion
 
                     //Update photo
