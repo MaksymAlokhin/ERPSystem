@@ -39,13 +39,14 @@ namespace ERPSystem.Areas.Identity.Pages.Admin
         }
 
         public async Task<IActionResult> OnPostAddClaimAsync([Required] string type,
-                                                             [Required] string value)
+                                                             string value)
         {
 
             IdentityUser user = await UserManager.FindByIdAsync(Id);
 
             if (ModelState.IsValid)
             {
+                value = value ?? "";
                 var claim = new Claim(type, value);
                 var result = await UserManager.AddClaimAsync(user, claim);
                 if (!result.Succeeded)
@@ -61,9 +62,12 @@ namespace ERPSystem.Areas.Identity.Pages.Admin
         }
 
         public async Task<IActionResult> OnPostEditClaimAsync([Required] string type,
-                                                              [Required] string value,
-                                                              [Required] string oldValue)
+                                                              string value,
+                                                              string oldValue)
         {
+            value = value ?? "";
+            oldValue = oldValue ?? "";
+
             IdentityUser user = await UserManager.FindByIdAsync(Id);
             if (ModelState.IsValid)
             {
@@ -76,11 +80,12 @@ namespace ERPSystem.Areas.Identity.Pages.Admin
         }
 
         public async Task<IActionResult> OnPostDeleteClaimAsync([Required] string type,
-                                                                [Required] string value)
+                                                                string value)
         {
             IdentityUser user = await UserManager.FindByIdAsync(Id);
             if (ModelState.IsValid)
             {
+                value = value ?? "";
                 var claim = new Claim(type, value);
                 var result = await UserManager.RemoveClaimAsync(user, claim);
             }
