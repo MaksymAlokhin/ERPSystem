@@ -277,7 +277,7 @@ namespace ERPSystem.Pages.Employees
                 if (!string.IsNullOrEmpty(ext) || permittedExtensions.Contains(ext))
                 {
                     //Get random filename for server storage
-                    string uploadsFolder = Path.Combine(webHostEnvironment.WebRootPath, @"images\avatars"); //webHost adds 'wwwroot'
+                    string uploadsFolder = Path.Combine(webHostEnvironment.WebRootPath, @"images/avatars"); //webHost adds 'wwwroot'
                     var trustedFileNameForFileStorage = Path.GetRandomFileName();
                     trustedFileNameForFileStorage = trustedFileNameForFileStorage.Substring(0, 8)
                         + trustedFileNameForFileStorage.Substring(9) + ext;
