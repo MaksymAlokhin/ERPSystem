@@ -79,7 +79,7 @@ namespace ERPSystem.Pages.Companies
             Company = await PaginatedList<Company>.CreateAsync(
                 companiesIQ.AsNoTracking(), pageIndex ?? 1, pageSize);
 
-            _logger.LogInformation("Displaying page {1} of Companies", pageIndex);
+            _logger.LogInformation("Displaying page {1} of Companies", pageIndex ?? 1);
         }
         //Method to debug states
         public async Task<IActionResult> OnGetActivateAsync(string sortOrder,
