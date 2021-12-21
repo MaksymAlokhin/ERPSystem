@@ -124,7 +124,7 @@ namespace ERPSystem.Pages.Employees
             Employee = await PaginatedList<Employee>.CreateAsync(
                 employeesIQ.AsNoTracking(), pageIndex ?? 1, pageSize);
 
-            _logger.LogInformation("Displaying page {1} of Employees", pageIndex);
+            _logger.LogInformation("Displaying page {1} of Employees", pageIndex ?? 1);
         }
         //Method to debug states
         public async Task<IActionResult> OnGetActivateAsync(string sortOrder,
