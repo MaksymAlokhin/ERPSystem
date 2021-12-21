@@ -88,8 +88,8 @@ namespace ERPSystem.Pages.Employees
             {
                 //Delete photo file
                 bool isProduction = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") == "Production";
-                if (isProduction)
-                {
+                //if (isProduction)
+                //{
                     string uploadsFolder = Path.Combine(webHostEnvironment.WebRootPath, @"images/avatars"); //webHost adds 'wwwroot'
                     var oldFile = Employee.ProfilePicture;
                     var fileToDelete = string.Empty;
@@ -97,7 +97,10 @@ namespace ERPSystem.Pages.Employees
                     {
                         fileToDelete = Path.Combine(uploadsFolder, oldFile);
                     }
-                }
+                    //Delete photo file
+                    if (System.IO.File.Exists(fileToDelete))
+                        System.IO.File.Delete(fileToDelete);
+                //}
 
                 switch (Employee.EmployeeRole)
                 {
@@ -155,12 +158,6 @@ namespace ERPSystem.Pages.Employees
 
                 _context.Employees.Remove(Employee);
                 await _context.SaveChangesAsync();
-
-                //Delete photo file
-                //if (System.IO.File.Exists(fileToDelete))
-                //{
-                //    System.IO.File.Delete(fileToDelete);
-                //}
             }
 
             Utility utility = new Utility(_context);
