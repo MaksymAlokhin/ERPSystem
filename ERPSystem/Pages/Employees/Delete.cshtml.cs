@@ -90,6 +90,8 @@ namespace ERPSystem.Pages.Employees
                 bool isProduction = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") == "Production";
                 //if (isProduction)
                 //{
+                if (webHostEnvironment != null)
+                {
                     string uploadsFolder = Path.Combine(webHostEnvironment.WebRootPath, @"images/avatars"); //webHost adds 'wwwroot'
                     var oldFile = Employee.ProfilePicture;
                     var fileToDelete = string.Empty;
@@ -100,6 +102,7 @@ namespace ERPSystem.Pages.Employees
                     //Delete photo file
                     if (System.IO.File.Exists(fileToDelete))
                         System.IO.File.Delete(fileToDelete);
+                }
                 //}
 
                 switch (Employee.EmployeeRole)
