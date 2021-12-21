@@ -88,22 +88,22 @@ namespace ERPSystem.Pages.Employees
             {
                 //Delete photo file
                 bool isProduction = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") == "Production";
-                //if (isProduction)
-                //{
-                if (webHostEnvironment != null)
+                if (isProduction)
                 {
-                    string uploadsFolder = Path.Combine(webHostEnvironment.WebRootPath, @"images/avatars"); //webHost adds 'wwwroot'
-                    var oldFile = Employee.ProfilePicture;
-                    var fileToDelete = string.Empty;
-                    if (!string.IsNullOrEmpty(oldFile))
+                    if (webHostEnvironment != null)
                     {
-                        fileToDelete = Path.Combine(uploadsFolder, oldFile);
+                        string uploadsFolder = Path.Combine(webHostEnvironment.WebRootPath, @"images/avatars"); //webHost adds 'wwwroot'
+                        var oldFile = Employee.ProfilePicture;
+                        var fileToDelete = string.Empty;
+                        if (!string.IsNullOrEmpty(oldFile))
+                        {
+                            fileToDelete = Path.Combine(uploadsFolder, oldFile);
+                        }
+                        //Delete photo file
+                        if (System.IO.File.Exists(fileToDelete))
+                            System.IO.File.Delete(fileToDelete);
                     }
-                    //Delete photo file
-                    if (System.IO.File.Exists(fileToDelete))
-                        System.IO.File.Delete(fileToDelete);
                 }
-                //}
 
                 switch (Employee.EmployeeRole)
                 {
