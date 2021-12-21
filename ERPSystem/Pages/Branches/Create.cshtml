@@ -75,7 +75,7 @@
             });
         });
         $(function () {
-            $("#Position_PositionState").on("change", function () {
+            $("#Branch_BranchState").on("change", function () {
                 var companyId = $("#Branch_CompanyId").val();
                 $.getJSON(`?handler=Company&companyId=${companyId}`, function (response) {
                     if (response === "Inactive") {
