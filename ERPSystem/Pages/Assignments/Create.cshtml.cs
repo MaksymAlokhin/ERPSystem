@@ -41,6 +41,8 @@ namespace ERPSystem.Pages.Assignments
 
             Assignment = new Assignment();
             Assignment.AssignmentState = AssignmentState.Inactive;
+            Assignment.StartDate = Utility.GetRandomDate(DateTime.Now.AddYears(-2), DateTime.Now);
+            Assignment.EndDate = Utility.GetRandomDate(DateTime.Now, DateTime.Now.AddYears(2));
 
             return Page();
         }

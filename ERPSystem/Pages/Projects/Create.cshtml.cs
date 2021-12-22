@@ -89,6 +89,13 @@ namespace ERPSystem.Pages.Projects
             NewProject.EndDate = Project.EndDate;
             NewProject.DepartmentId = Project.DepartmentId;
 
+            if (NewProject.StartDate > NewProject.EndDate)
+            {
+                var temp = NewProject.StartDate;
+                NewProject.StartDate = NewProject.EndDate;
+                NewProject.EndDate = temp;
+            }
+
             if (ProjectManagerId != null)
             {
                 Employee pm = await _context.Employees
