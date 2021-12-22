@@ -26,12 +26,22 @@ namespace ERPSystem.Pages.Reports
         public string CurrentFilter { get; set; }
         public string CurrentSort { get; set; }
         public PaginatedList<Report> Report { get; set; }
+        public List<StateDoughnut> Doughnut { get; set; }
 
         public IndexModel(ERPSystem.Data.ApplicationDbContext context, IConfiguration configuration, ILogger<IndexModel> logger)
         {
             _context = context;
             Configuration = configuration;
             _logger = logger;
+            Doughnut = _context.Reports
+                .GroupBy(r => r.ReportState)
+                .Select(g => new StateDoughnut
+                {
+                    state = g.Key.ToString(),
+                    count = g.Count()
+                })
+                .AsNoTracking()
+                .ToList();
         }
 
         public async Task OnGetAsync(string sortOrder,
@@ -151,5 +161,15 @@ namespace ERPSystem.Pages.Reports
                 currentFilter = $"{currentFilter}"
             });
         }
+        public JsonResult OnGetReportState()
+        {
+            return new JsonResult(Doughnut);
+        }
     }
+    public class StateDoughnut
+    {
+        public string state { get; set; }
+        public int count { get; set; }
+    }
+
 }
