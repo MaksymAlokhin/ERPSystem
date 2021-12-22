@@ -34,6 +34,7 @@ Built With:<br />
 - Microsoft Identity
 - xUnit.net
 - Serilog
+- Chart.js
 
 Entities:<br />
 --------------------
