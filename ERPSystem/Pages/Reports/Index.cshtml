@@ -19,134 +19,144 @@
         </p>
     </div>
 </form>
-
-<table class="table table-responsive text-nowrap table-hover">
-    <thead>
-        <tr>
-            <th>#</th>
-            <th>
-                <a asp-page="./Index"
-                   asp-route-sortOrder="@Model.AssignmentSort"
-                   asp-route-currentFilter="@Model.CurrentFilter">
-                    @Html.DisplayNameFor(model => model.Report[0].Assignment)
-                </a>
-            </th>
-            <th>
-                <a asp-page="./Index"
-                   asp-route-sortOrder="@Model.EmployeeSort"
-                   asp-route-currentFilter="@Model.CurrentFilter">
-                    @Html.DisplayNameFor(model => model.Report[0].Assignment.Employee)
-                </a>
-            </th>
-            <th>
-                <a asp-page="./Index"
-                   asp-route-sortOrder="@Model.DateSort"
-                   asp-route-currentFilter="@Model.CurrentFilter">
-                    @Html.DisplayNameFor(model => model.Report[0].Date)
-                </a>
-            </th>
-            <th>
-                <a asp-page="./Index"
-                   asp-route-sortOrder="@Model.HoursSort"
-                   asp-route-currentFilter="@Model.CurrentFilter">
-                    @Html.DisplayNameFor(model => model.Report[0].Hours)
-                </a>
-            </th>
-            <th>
-                <a asp-page="./Index"
-                   asp-route-sortOrder="@Model.StateSort"
-                   asp-route-currentFilter="@Model.CurrentFilter">
-                    @Html.DisplayNameFor(model => model.Report[0].ReportState)
-                </a>
-            </th>
-            <th></th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-        @{
-            int i = 0;
-            @foreach (var item in Model.Report)
-            {
-                <tr style="@(item.ReportState == Models.ReportState.Submitted || item.ReportState == Models.ReportState.Draft? "color:gray;" : "")">
-                    <th scope="row">
-                        @Model.Report.SeqNum[i]
+<div class="row">
+    <div class="col-sm-9">
+        <table class="table table-sm table-responsive text-nowrap table-hover">
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>
+                        <a asp-page="./Index"
+                           asp-route-sortOrder="@Model.AssignmentSort"
+                           asp-route-currentFilter="@Model.CurrentFilter">
+                            @Html.DisplayNameFor(model => model.Report[0].Assignment)
+                        </a>
                     </th>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Assignment.Name)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Assignment.Employee.FullName)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Date)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Hours)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.ReportState)
-                    </td>
-                    <td>
-                        @{
-                            var disabled = item.ReportState == Models.ReportState.Approved ? "disabled btn-light" : "btn-outline-primary";
-                        }
-                        @if (HttpContext.User.Claims.Any(c => c.Type == "Admin" && c.Value == ""))
-                        {
-                            <a asp-page-handler="Approve"
-                               asp-route-pageIndex="@Model.Report.PageIndex"
-                               asp-route-id="@item.Id"
-                               asp-route-sortOrder="@Model.CurrentSort"
-                               asp-route-currentFilter="@Model.CurrentFilter"
-                               class="btn @disabled" role="button" aria-pressed="true">Approve</a>
-                        }
-                    </td>
-                    @if (@HttpContext.User.Claims.Any(c => c.Type == "Admin"))
-                    {
-                        <td style="text-align: center">
-                            <a asp-page="./Edit"
-                               asp-route-id="@item.Id"
-                               asp-route-pageIndex="@Model.Report.PageIndex"
-                               asp-route-sortOrder="@Model.CurrentSort"
-                               asp-route-currentFilter="@Model.CurrentFilter">
-                                <i class="fas fa-pencil-alt fa-lg"></i>
-                            </a> |
-                            <a asp-page="./Details"
-                               asp-route-id="@item.Id"
-                               asp-route-pageIndex="@Model.Report.PageIndex"
-                               asp-route-sortOrder="@Model.CurrentSort"
-                               asp-route-currentFilter="@Model.CurrentFilter">
-                                <i class="fas fa-eye fa-lg"></i>
-                            </a> |
-                            <a asp-page="./Delete"
-                               asp-route-id="@item.Id"
-                               asp-route-pageIndex="@Model.Report.PageIndex"
-                               asp-route-sortOrder="@Model.CurrentSort"
-                               asp-route-currentFilter="@Model.CurrentFilter">
-                                <i class="fas fa-trash fa-lg text-danger"></i>
-                            </a>
-                        </td>
-                    }
-                    else
-                    {
-                        <td style="text-align: center">
-                            <a asp-page="./Details"
-                               asp-route-id="@item.Id"
-                               asp-route-pageIndex="@Model.Report.PageIndex"
-                               asp-route-sortOrder="@Model.CurrentSort"
-                               asp-route-currentFilter="@Model.CurrentFilter">
-                                <i class="fas fa-eye fa-lg"></i>
-                            </a>
-                        </td>
-
-                    }
+                    <th>
+                        <a asp-page="./Index"
+                           asp-route-sortOrder="@Model.EmployeeSort"
+                           asp-route-currentFilter="@Model.CurrentFilter">
+                            @Html.DisplayNameFor(model => model.Report[0].Assignment.Employee)
+                        </a>
+                    </th>
+                    <th>
+                        <a asp-page="./Index"
+                           asp-route-sortOrder="@Model.DateSort"
+                           asp-route-currentFilter="@Model.CurrentFilter">
+                            @Html.DisplayNameFor(model => model.Report[0].Date)
+                        </a>
+                    </th>
+                    <th>
+                        <a asp-page="./Index"
+                           asp-route-sortOrder="@Model.HoursSort"
+                           asp-route-currentFilter="@Model.CurrentFilter">
+                            @Html.DisplayNameFor(model => model.Report[0].Hours)
+                        </a>
+                    </th>
+                    <th>
+                        <a asp-page="./Index"
+                           asp-route-sortOrder="@Model.StateSort"
+                           asp-route-currentFilter="@Model.CurrentFilter">
+                            @Html.DisplayNameFor(model => model.Report[0].ReportState)
+                        </a>
+                    </th>
+                    <th></th>
+                    <th></th>
                 </tr>
-                i++;
-            }
+            </thead>
+            <tbody>
+                @{
+                    int i = 0;
+                    @foreach (var item in Model.Report)
+                    {
+                        <tr style="@(item.ReportState == Models.ReportState.Submitted || item.ReportState == Models.ReportState.Draft? "color:gray;" : "")">
+                            <th scope="row">
+                                @Model.Report.SeqNum[i]
+                            </th>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Assignment.Name)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Assignment.Employee.FullName)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Date)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Hours)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.ReportState)
+                            </td>
+                            <td>
+                                @{
+                                    var disabled = item.ReportState == Models.ReportState.Approved ? "disabled btn-light" : "btn-outline-primary";
+                                }
+                                @if (HttpContext.User.Claims.Any(c => c.Type == "Admin" && c.Value == ""))
+                                {
+                                    <a asp-page-handler="Approve"
+                                       asp-route-pageIndex="@Model.Report.PageIndex"
+                                       asp-route-id="@item.Id"
+                                       asp-route-sortOrder="@Model.CurrentSort"
+                                       asp-route-currentFilter="@Model.CurrentFilter"
+                                       class="btn @disabled" role="button" aria-pressed="true">Approve</a>
+                                }
+                            </td>
+                            @if (@HttpContext.User.Claims.Any(c => c.Type == "Admin"))
+                            {
+                                <td style="text-align: center">
+                                    <a asp-page="./Edit"
+                                       asp-route-id="@item.Id"
+                                       asp-route-pageIndex="@Model.Report.PageIndex"
+                                       asp-route-sortOrder="@Model.CurrentSort"
+                                       asp-route-currentFilter="@Model.CurrentFilter">
+                                        <i class="fas fa-pencil-alt fa-lg"></i>
+                                    </a> |
+                                    <a asp-page="./Details"
+                                       asp-route-id="@item.Id"
+                                       asp-route-pageIndex="@Model.Report.PageIndex"
+                                       asp-route-sortOrder="@Model.CurrentSort"
+                                       asp-route-currentFilter="@Model.CurrentFilter">
+                                        <i class="fas fa-eye fa-lg"></i>
+                                    </a> |
+                                    <a asp-page="./Delete"
+                                       asp-route-id="@item.Id"
+                                       asp-route-pageIndex="@Model.Report.PageIndex"
+                                       asp-route-sortOrder="@Model.CurrentSort"
+                                       asp-route-currentFilter="@Model.CurrentFilter">
+                                        <i class="fas fa-trash fa-lg text-danger"></i>
+                                    </a>
+                                </td>
+                            }
+                            else
+                            {
+                                <td style="text-align: center">
+                                    <a asp-page="./Details"
+                                       asp-route-id="@item.Id"
+                                       asp-route-pageIndex="@Model.Report.PageIndex"
+                                       asp-route-sortOrder="@Model.CurrentSort"
+                                       asp-route-currentFilter="@Model.CurrentFilter">
+                                        <i class="fas fa-eye fa-lg"></i>
+                                    </a>
+                                </td>
 
-        }
-    </tbody>
-</table>
+                            }
+                        </tr>
+                        i++;
+                    }
+
+                }
+            </tbody>
+        </table>
+    </div>
+    <div class="col-sm-3">
+        <h4 style="text-align: center">Reports</h4>
+        <canvas id="doughnutChart"></canvas>
+    </div>
+</div>
+
+
+
 @{
     var prevDisabled = !Model.Report.HasPreviousPage ? "disabled" : "";
     var nextDisabled = !Model.Report.HasNextPage ? "disabled" : "";
@@ -179,3 +189,75 @@
    class="btn btn-primary @nextDisabled">
     <i class="fas fa-fast-forward"></i>
 </a>
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    <script>
+        @* Random color generator *@
+        var randomColorGenerator = function () {
+            return '#' + (Math.random().toString(16) + '0000000').slice(2, 8);
+        };
+
+        var ctx = document.getElementById('doughnutChart').getContext('2d');
+
+        $(function () {
+            $.getJSON(`?handler=ReportState`, function (data) {
+                var labels = [];
+                var dataresults = [];
+                var color = [];
+                for (let i = 0; i < 3; i++) {
+                    color.push(randomColorGenerator());
+                }
+                $.each(data, function (index, item) {
+                    labels.push(item.state);
+                    dataresults.push(item.count);
+                });
+                var myChart = new Chart(ctx, {
+                    type: 'doughnut',
+                    data: {
+                        labels: labels,
+                        datasets: [{
+                            label: 'State',
+                            data: dataresults,
+                            backgroundColor: color,
+                            borderWidth: 1,
+                            hoverOffset: 4
+                        }]
+                    }
+                });
+            });
+        });
+
+        //$.ajax({
+        //    url: "?handler=ReportState",
+        //    type: "POST",
+        //    headers: { "RequestVerificationToken": $('input[name="__RequestVerificationToken"]').val() },
+        //    dataType: "json",
+        //    data: { 'id': id },
+        //    success: function (data) {
+        //        var labels = [];
+        //        var dataresults = [];
+        //        $.each(data, function (index, item) {
+        //            labels.push(item.state);
+        //            dataresults.push(item.count);
+        //        });
+        //        var myChart = new Chart(ctx, {
+        //            type: 'doughnut',
+        //            data: {
+        //                labels: labels,
+        //                datasets: [{
+        //                    label: 'State',
+        //                    data: dataresults,
+        //                    backgroundColor: [
+        //                        'rgb(102, 153, 153)',
+        //                        'rgb(51, 102, 255)',
+        //                        'rgb(51, 204, 51)'
+        //                    ],
+        //                    borderWidth: 1,
+        //                    hoverOffset: 4
+        //                }]
+        //            }
+        //        });
+        //    }
+        //});
+    </script>
+}
