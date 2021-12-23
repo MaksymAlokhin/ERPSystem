@@ -29,7 +29,7 @@ namespace ERPSystem
                     //context.Database.EnsureDeleted();
                     //context.Database.EnsureCreated();
 
-                    //context.Database.Migrate();
+                    context.Database.Migrate();
 
                     IConfiguration config = host.Services.GetRequiredService<IConfiguration>();
                     String testUserPw = config["SeedUserPW"]; //appsettings.json "SeedUserPW": "aA!111"
