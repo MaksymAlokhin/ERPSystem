@@ -62,38 +62,6 @@ namespace ERPSystem.Pages.Employees
 
             MentorsSelectList = Enumerable.Empty<SelectListItem>().ToList();
 
-            //Mentors Initial Dropdown List
-            //switch (Role)
-            //{
-            //    case EmployeeRole.Employee:
-            //    case EmployeeRole.Mentor:
-            //        JsonResult jsonResult = await OnGetBranchAsync(Employee.BranchId.ToString());
-            //        string json = JsonSerializer.Serialize(jsonResult.Value);
-            //        MentorsSelectList = JsonSerializer.Deserialize<List<SelectListItem>>(json);
-            //        break;
-            //    case EmployeeRole.ProjectManager:
-            //        jsonResult = await OnGetProjectAsync(Employee.ProjectId.ToString());
-            //        json = JsonSerializer.Serialize(jsonResult.Value);
-            //        MentorsSelectList = JsonSerializer.Deserialize<List<SelectListItem>>(json);
-            //        break;
-            //    case EmployeeRole.DepartmentHead:
-            //        jsonResult = await OnGetDepartmentAsync(Employee.DepartmentId.ToString());
-            //        json = JsonSerializer.Serialize(jsonResult.Value);
-            //        MentorsSelectList = JsonSerializer.Deserialize<List<SelectListItem>>(json);
-            //        break;
-            //    case EmployeeRole.GeneralManager:
-            //        MentorsSelectList = new List<SelectListItem>()
-            //        {
-            //            new SelectListItem
-            //            {
-            //                Value = null,
-            //                Text = ""
-            //            }
-            //        };
-            //        break;
-            //}
-
-
             SelectedMentors = new List<int>();
 
             var AssignmentsQuery = _context.Assignments.OrderBy(e => e.Name).AsNoTracking();
