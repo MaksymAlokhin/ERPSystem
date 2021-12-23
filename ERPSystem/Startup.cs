@@ -39,7 +39,7 @@ namespace ERPSystem
             {
                 services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlServer(
-                    Configuration.GetConnectionString("AzureSQLConnection"))); //"DefaultConnection", "AzureSQLConnection"
+                    Configuration.GetConnectionString("DefaultConnection"))); //"DefaultConnection", "AzureSQLConnection"
             }
             else if (environment.IsProduction())
             {
