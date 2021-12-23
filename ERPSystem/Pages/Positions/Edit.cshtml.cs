@@ -90,6 +90,13 @@ namespace ERPSystem.Pages.Positions
 
             PositionState InitialPositionState = PositionToUpdate.PositionState;
 
+            if (Position.StartDate > Position.EndDate)
+            {
+                var temp = Position.StartDate;
+                Position.StartDate = Position.EndDate;
+                Position.EndDate = temp;
+            }
+
 
             if (Position.ProjectId != null)
             {

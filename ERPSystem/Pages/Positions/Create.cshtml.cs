@@ -67,6 +67,13 @@ namespace ERPSystem.Pages.Positions
                 return Page();
             }
 
+            if (Position.StartDate > Position.EndDate)
+            {
+                var temp = Position.StartDate;
+                Position.StartDate = Position.EndDate;
+                Position.EndDate = temp;
+            }
+
             if (Position.ProjectId != null)
             {
                 Project project = await _context.Projects.FindAsync(Position.ProjectId);
