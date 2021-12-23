@@ -83,18 +83,18 @@ namespace ERPSystem.Pages.Projects
             //    p => p.Name, p => p.ProjectState, p => p.StartDate, p => p.EndDate, p => p.DepartmentId))
             //return Page();
 
+            if (Project.StartDate > Project.EndDate)
+            {
+                var temp = Project.StartDate;
+                Project.StartDate = Project.EndDate;
+                Project.EndDate = temp;
+            }
+
             NewProject.Name = Project.Name;
             NewProject.ProjectState = Project.ProjectState;
             NewProject.StartDate = Project.StartDate;
             NewProject.EndDate = Project.EndDate;
             NewProject.DepartmentId = Project.DepartmentId;
-
-            if (NewProject.StartDate > NewProject.EndDate)
-            {
-                var temp = NewProject.StartDate;
-                NewProject.StartDate = NewProject.EndDate;
-                NewProject.EndDate = temp;
-            }
 
             if (ProjectManagerId != null)
             {

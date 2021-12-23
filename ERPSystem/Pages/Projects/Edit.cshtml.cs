@@ -112,17 +112,18 @@ namespace ERPSystem.Pages.Projects
             //    "Project",
             //    p => p.Name, p => p.ProjectState, p => p.StartDate, p => p.EndDate, p => p.DepartmentId))
 
+            if (Project.StartDate > Project.EndDate)
+            {
+                var temp = Project.StartDate;
+                Project.StartDate = Project.EndDate;
+                Project.EndDate = temp;
+            }
+
             ProjectToUpdate.Name = Project.Name;
             ProjectToUpdate.ProjectState = Project.ProjectState;
             ProjectToUpdate.StartDate = Project.StartDate;
             ProjectToUpdate.EndDate = Project.EndDate;
             ProjectToUpdate.DepartmentId = Project.DepartmentId;
-            if (ProjectToUpdate.StartDate > ProjectToUpdate.EndDate)
-            {
-                var temp = ProjectToUpdate.StartDate;
-                ProjectToUpdate.StartDate = ProjectToUpdate.EndDate;
-                ProjectToUpdate.EndDate = temp;
-            }
 
             Employee pm = await _context.Employees
                 .Where(e => e.EmployeeRole == EmployeeRole.ProjectManager && e.Id == ProjectManagerId)
