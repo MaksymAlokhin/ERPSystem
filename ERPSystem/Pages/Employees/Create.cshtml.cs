@@ -13,6 +13,7 @@ using Microsoft.AspNetCore.Http;
 using System.IO;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.Extensions.Logging;
+using System.Text.Json;
 
 namespace ERPSystem.Pages.Employees
 {
@@ -26,7 +27,7 @@ namespace ERPSystem.Pages.Employees
         public string CurrentFilter { get; set; }
         public string CurrentSort { get; set; }
         public List<int> SelectedMentors { get; set; }
-        public SelectList MentorsSelectList { get; set; }
+        public List<SelectListItem> MentorsSelectList { get; set; }
         public List<int> SelectedAssignments { get; set; }
         public SelectList AssignmentsSelectList { get; set; }
         public EmployeeRole Role { get; set; }
@@ -40,7 +41,7 @@ namespace ERPSystem.Pages.Employees
             _logger = logger;
         }
 
-        public IActionResult OnGet(EmployeeRole Role, string sortOrder,
+        public async Task<IActionResult> OnGetAsync(EmployeeRole Role, string sortOrder,
             string currentFilter, int? pageIndex)
         {
             this.Role = Role;
@@ -59,7 +60,39 @@ namespace ERPSystem.Pages.Employees
             //    .AsNoTracking();
             //MentorsSelectList = new SelectList(MentorsQuery, "Id", "FullName"); //list, id, value
 
-            MentorsSelectList = new SelectList(Enumerable.Empty<SelectListItem>());
+            MentorsSelectList = Enumerable.Empty<SelectListItem>().ToList();
+
+            //Mentors Initial Dropdown List
+            //switch (Role)
+            //{
+            //    case EmployeeRole.Employee:
+            //    case EmployeeRole.Mentor:
+            //        JsonResult jsonResult = await OnGetBranchAsync(Employee.BranchId.ToString());
+            //        string json = JsonSerializer.Serialize(jsonResult.Value);
+            //        MentorsSelectList = JsonSerializer.Deserialize<List<SelectListItem>>(json);
+            //        break;
+            //    case EmployeeRole.ProjectManager:
+            //        jsonResult = await OnGetProjectAsync(Employee.ProjectId.ToString());
+            //        json = JsonSerializer.Serialize(jsonResult.Value);
+            //        MentorsSelectList = JsonSerializer.Deserialize<List<SelectListItem>>(json);
+            //        break;
+            //    case EmployeeRole.DepartmentHead:
+            //        jsonResult = await OnGetDepartmentAsync(Employee.DepartmentId.ToString());
+            //        json = JsonSerializer.Serialize(jsonResult.Value);
+            //        MentorsSelectList = JsonSerializer.Deserialize<List<SelectListItem>>(json);
+            //        break;
+            //    case EmployeeRole.GeneralManager:
+            //        MentorsSelectList = new List<SelectListItem>()
+            //        {
+            //            new SelectListItem
+            //            {
+            //                Value = null,
+            //                Text = ""
+            //            }
+            //        };
+            //        break;
+            //}
+
 
             SelectedMentors = new List<int>();
 
@@ -95,7 +128,7 @@ namespace ERPSystem.Pages.Employees
 
             Employee NewEmployee = new Employee();
 
-            if (SelectedMentors !=null)
+            if (SelectedMentors != null)
             {
                 if (SelectedMentors.Length > 0)
                 {
@@ -112,7 +145,7 @@ namespace ERPSystem.Pages.Employees
                     }
                 }
             }
-            if (SelectedAssignments !=null)
+            if (SelectedAssignments != null)
             {
                 if (SelectedAssignments.Length > 0)
                 {
@@ -314,96 +347,150 @@ namespace ERPSystem.Pages.Employees
                 Role = $"{NewEmployee.EmployeeRole}"
             });
         }
-        public async Task<JsonResult> OnGetBranchAsync(string branchId)
+        public async Task<JsonResult> OnGetBranchStateAsync(string branchId)
         {
             Utility utility = new Utility(_context);
             return await utility.GetBranchStateAsync(branchId);
         }
-        public async Task<JsonResult> OnGetDepartment(string departmentId)
+        public async Task<JsonResult> OnGetDepartmentAsync(string departmentId)
         {
-            Department department = await _context.Departments.FindAsync(departmentId);
-            if (department != null)
+            if (!string.IsNullOrWhiteSpace(departmentId))
             {
-                List<Employee> mentors = new List<Employee>();
-                Company company = await _context.Companies
-                    .Include(c => c.Branches)
-                    .ThenInclude(b => b.Employees)
-                    .Where(c => c.Id == department.CompanyId)
-                    .AsNoTracking()
-                    .FirstOrDefaultAsync();
-                foreach (Branch branch in company.Branches)
+                if (Int32.TryParse(departmentId, out int id))
                 {
-                    foreach (Employee mentor in branch.Employees)
-                        mentors.Add(mentor);
-                }
-                IEnumerable<SelectListItem> items = mentors
-                        .OrderBy(n => n.FullName)
-                        .Select(n =>
-                           new SelectListItem
-                           {
-                               Value = n.Id.ToString(),
-                               Text = n.FullName
-                           }).ToList();
-                return new JsonResult(items);
-            }
-            return null;
-        }
-        public async Task<JsonResult> OnGetProject(string projectId)
-        {
-            Project project = await _context.Projects.FindAsync(projectId);
-            if (project != null)
-            {
-                Department department = await _context.Departments.FindAsync(project.DepartmentId);
-                if (department != null)
-                {
-                    List<Employee> mentors = new List<Employee>();
-                    Company company = await _context.Companies
-                        .Include(c => c.Branches)
-                        .ThenInclude(b => b.Employees)
-                        .Where(c => c.Id == department.CompanyId)
-                        .AsNoTracking()
-                        .FirstOrDefaultAsync();
-                    foreach (Branch branch in company.Branches)
+                    Department department = await _context.Departments.FindAsync(id);
+                    if (department != null)
                     {
-                        foreach (Employee mentor in branch.Employees)
-                            mentors.Add(mentor);
+                        Company company = await _context.Companies
+                            .Include(c => c.Branches)
+                            .ThenInclude(b => b.Employees)
+                            .Where(c => c.Id == department.CompanyId)
+                            .AsNoTracking()
+                            .FirstOrDefaultAsync();
+                        if (company != null)
+                        {
+                            if (company.Branches.Count > 0)
+                            {
+                                List<Employee> mentors = new List<Employee>();
+                                foreach (Branch branch in company.Branches)
+                                {
+                                    foreach (Employee mentor in branch.Employees)
+                                        mentors.Add(mentor);
+                                }
+                                IEnumerable<SelectListItem> items = mentors
+                                        .OrderBy(n => n.FullName)
+                                        .Select(n =>
+                                           new SelectListItem
+                                           {
+                                               Value = n.Id.ToString(),
+                                               Text = n.FullName
+                                           }).ToList();
+                                return new JsonResult(items);
+                            }
+                        }
                     }
-                    IEnumerable<SelectListItem> items = mentors
-                            .OrderBy(n => n.FullName)
-                            .Select(n =>
-                               new SelectListItem
-                               {
-                                   Value = n.Id.ToString(),
-                                   Text = n.FullName
-                               }).ToList();
-                    return new JsonResult(items);
                 }
             }
-            return null;
+            return new JsonResult(
+                new List<SelectListItem>
+                {
+                    new SelectListItem { Value = "0", Text = "No Mentors" }
+                });
         }
-        public async Task<JsonResult> OnGetBranch(string branchId)
+        public async Task<JsonResult> OnGetProjectAsync(string projectId)
         {
-            Branch branch = await _context.Branches.FindAsync(branchId);
-
-            if (branch != null)
+            if (!string.IsNullOrWhiteSpace(projectId))
             {
-                List<Employee> mentors = new List<Employee>();
-
-                foreach (Employee mentor in branch.Employees)
-                    mentors.Add(mentor);
-
-                IEnumerable<SelectListItem> items = mentors
-                        .OrderBy(n => n.FullName)
-                        .Select(n =>
-                           new SelectListItem
-                           {
-                               Value = n.Id.ToString(),
-                               Text = n.FullName
-                           }).ToList();
-
-                return new JsonResult(items);
+                if (Int32.TryParse(projectId, out int id))
+                {
+                    Project project = await _context.Projects.FindAsync(id);
+                    if (project != null)
+                    {
+                        Department department = await _context.Departments.FindAsync(project.DepartmentId);
+                        if (department != null)
+                        {
+                            Company company = await _context.Companies
+                                .Include(c => c.Branches)
+                                .ThenInclude(b => b.Employees)
+                                .Where(c => c.Id == department.CompanyId)
+                                .AsNoTracking()
+                                .FirstOrDefaultAsync();
+                            if (company != null)
+                            {
+                                if (company.Branches.Count > 0)
+                                {
+                                    List<Employee> mentors = new List<Employee>();
+                                    foreach (Branch branch in company.Branches)
+                                    {
+                                        foreach (Employee mentor in branch.Employees)
+                                            mentors.Add(mentor);
+                                    }
+                                    IEnumerable<SelectListItem> items = mentors
+                                            .OrderBy(n => n.FullName)
+                                            .Select(n =>
+                                               new SelectListItem
+                                               {
+                                                   Value = n.Id.ToString(),
+                                                   Text = n.FullName
+                                               }).ToList();
+                                    return new JsonResult(items);
+                                }
+                            }
+                        }
+                    }
+                }
             }
-            return null;
+            return new JsonResult(
+                new List<SelectListItem>
+                {
+                    new SelectListItem { Value = "0", Text = "No Mentors" }
+                });
+        }
+        public async Task<JsonResult> OnGetBranchAsync(string branchId)
+        {
+            if (!string.IsNullOrWhiteSpace(branchId))
+            {
+                if (Int32.TryParse(branchId, out int id))
+                {
+                    Branch branch = await _context.Branches.FindAsync(id);
+                    if (branch != null)
+                    {
+                        Company company = await _context.Companies
+                            .Include(c => c.Branches)
+                            .ThenInclude(b => b.Employees)
+                            .Where(c => c.Id == branch.CompanyId)
+                            .AsNoTracking()
+                            .FirstOrDefaultAsync();
+                        if (company != null)
+                        {
+                            if (company.Branches.Count > 0)
+                            {
+                                List<Employee> mentors = new List<Employee>();
+                                foreach (Branch brnch in company.Branches)
+                                {
+                                    foreach (Employee mentor in brnch.Employees)
+                                        mentors.Add(mentor);
+                                }
+                                IEnumerable<SelectListItem> items = mentors
+                                    .OrderBy(n => n.FullName)
+                                    .Select(n =>
+                                       new SelectListItem
+                                       {
+                                           Value = n.Id.ToString(),
+                                           Text = n.FullName
+                                       }).ToList();
+                                return new JsonResult(items);
+                            }
+                        }
+                    }
+                }
+            }
+
+            return new JsonResult(
+                new List<SelectListItem>
+                {
+                    new SelectListItem { Value = "0", Text = "No Mentors" }
+                });
         }
     }
 }
