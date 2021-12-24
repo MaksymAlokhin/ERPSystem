@@ -92,6 +92,9 @@ namespace ERPSystem.Pages.Projects
 
             if (!ModelState.IsValid)
             {
+                var PositionsQuery = _context.Positions.OrderBy(p => p.Name).AsNoTracking();
+                PositionsSelectList = new SelectList(PositionsQuery, "Id", "Name"); //list, id, value
+                this.SelectedPositions = SelectedPositions.ToList();
                 return Page();
             }
 
@@ -111,13 +114,6 @@ namespace ERPSystem.Pages.Projects
             //    ProjectToUpdate,
             //    "Project",
             //    p => p.Name, p => p.ProjectState, p => p.StartDate, p => p.EndDate, p => p.DepartmentId))
-
-            if (Project.StartDate > Project.EndDate)
-            {
-                var temp = Project.StartDate;
-                Project.StartDate = Project.EndDate;
-                Project.EndDate = temp;
-            }
 
             ProjectToUpdate.Name = Project.Name;
             ProjectToUpdate.ProjectState = Project.ProjectState;

@@ -58,7 +58,7 @@ namespace ERPSystem.Data
             Hours = 40.0,
             Date = DateTime.Parse("2021-02-16"),
             Assignment = as0107,
-            ReportState = ReportState.Approved
+            ReportState = ReportState.Draft
         };
         public static Report r008 = new Report
         {
