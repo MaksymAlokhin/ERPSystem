@@ -33,6 +33,7 @@ Built With:<br />
 - xUnit.net
 - Serilog
 - Chart.js
+- FluentValidation
 
 Entities:<br />
 --------------------
