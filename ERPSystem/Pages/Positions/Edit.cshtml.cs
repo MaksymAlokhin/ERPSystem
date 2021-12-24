@@ -80,6 +80,9 @@ namespace ERPSystem.Pages.Positions
 
             if (!ModelState.IsValid)
             {
+                var AssignmentsQuery = _context.Assignments.OrderBy(e => e.Name).AsNoTracking();
+                AssignmentsSelectList = new SelectList(AssignmentsQuery, "Id", "Name"); //list, id, value
+                this.SelectedAssignments = SelectedAssignments.ToList();
                 return Page();
             }
 
@@ -89,14 +92,6 @@ namespace ERPSystem.Pages.Positions
                 .FirstOrDefaultAsync(m => m.Id == id);
 
             PositionState InitialPositionState = PositionToUpdate.PositionState;
-
-            if (Position.StartDate > Position.EndDate)
-            {
-                var temp = Position.StartDate;
-                Position.StartDate = Position.EndDate;
-                Position.EndDate = temp;
-            }
-
 
             if (Position.ProjectId != null)
             {

@@ -41,7 +41,7 @@ namespace ERPSystem.Pages.Employees
             _logger = logger;
         }
 
-        public async Task<IActionResult> OnGetAsync(EmployeeRole Role, string sortOrder,
+        public IActionResult OnGetAsync(EmployeeRole Role, string sortOrder,
             string currentFilter, int? pageIndex)
         {
             this.Role = Role;
@@ -53,12 +53,6 @@ namespace ERPSystem.Pages.Employees
             ViewData["CompanyId"] = new SelectList(_context.Companies.OrderBy(c => c.Name), "Id", "Name");
             ViewData["DepartmentId"] = new SelectList(_context.Departments.OrderBy(d => d.Name), "Id", "Name");
             ViewData["ProjectId"] = new SelectList(_context.Projects.OrderBy(p => p.Name), "Id", "Name");
-
-            //var MentorsQuery = _context.Employees
-            //    .OrderBy(e => e.LastName)
-            //    .ThenBy(e => e.FirstName)
-            //    .AsNoTracking();
-            //MentorsSelectList = new SelectList(MentorsQuery, "Id", "FullName"); //list, id, value
 
             MentorsSelectList = Enumerable.Empty<SelectListItem>().ToList();
 
