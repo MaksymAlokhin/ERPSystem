@@ -66,7 +66,8 @@ namespace ERPSystem.Pages.Positions
             {
                 var AssignmentsQuery = _context.Assignments.OrderBy(e => e.Name).AsNoTracking();
                 AssignmentsSelectList = new SelectList(AssignmentsQuery, "Id", "Name"); //list, id, value
-                this.SelectedAssignments = SelectedAssignments.ToList();
+                if (SelectedAssignments != null)
+                    this.SelectedAssignments = SelectedAssignments.ToList();
                 return Page();
             }
 

@@ -74,7 +74,8 @@ namespace ERPSystem.Pages.Projects
             {
                 var PositionsQuery = _context.Positions.OrderBy(p => p.Name).AsNoTracking();
                 PositionsSelectList = new SelectList(PositionsQuery, "Id", "Name"); //list, id, value
-                this.SelectedPositions = SelectedPositions.ToList();
+                if (SelectedPositions != null)
+                    this.SelectedPositions = SelectedPositions.ToList();
                 return Page();
             }
 
