@@ -5,16 +5,15 @@ Demo App for Avenga<br />
 
 ![ERPSystem](ERPSystem/wwwroot/images/avenga-erp-logo.png)<br /><br />
 
+Technologies<br />
+----------------------
+![TechnologiesUsed](Screenshots/TechnologiesUsed.jpg)<br /><br />
+
 Installation<br />
 ----------------------
+Everything should work out of the box.<br />
 
 Click [here](https://erpsystemdemowebapp.azurewebsites.net/) to view live demo.<br />
-
-Package Manager Console:<br />
-`Update-Database`<br />
-
-.NET CLI:<br />
-`dotnet ef database update`<br />
 
 Users:<br />
 `admin@avenga.com`<br />
@@ -23,7 +22,6 @@ Users:<br />
 Password:<br />
 `aA!111`<br />
 
-You might need to change the `DefaultConnection` string in `appsettings.json` file.<br />
 
 Built With:<br />
 --------------------
