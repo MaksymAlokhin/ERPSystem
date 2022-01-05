@@ -153,8 +153,12 @@ namespace DepartmentTest
             var logger = Mock.Of<Microsoft.Extensions.Logging.ILogger<ERPSystem.Pages.Departments.IndexModel>>();
             var config = new ConfigurationBuilder().Build();
             var pageModel = new ERPSystem.Pages.Departments.IndexModel(context, config, logger);
-            var expectedDepartments = context.Departments.Where(c => c.Name.Contains(searchString)
-                                                             || c.Company.Name.Contains(searchString));
+            IQueryable<Department> expectedDepartments = context.Departments;
+            if (!String.IsNullOrEmpty(searchString))
+            {
+                expectedDepartments = context.Departments.Where(c => c.Name.Contains(searchString)
+                                                                 || c.Company.Name.Contains(searchString));
+            }
 
             // Act
             await pageModel.OnGetAsync(null, searchString, null, null);

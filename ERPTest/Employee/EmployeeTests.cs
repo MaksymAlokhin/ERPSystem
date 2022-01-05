@@ -194,8 +194,12 @@ namespace EmployeeTest
             var logger = Mock.Of<Microsoft.Extensions.Logging.ILogger<ERPSystem.Pages.Employees.IndexModel>>();
             var config = new ConfigurationBuilder().Build();
             var pageModel = new ERPSystem.Pages.Employees.IndexModel(context, config, logger);
-            var expectedEmployees = context.Employees.Where(s => s.LastName.Contains(searchString)
-                                       || s.FirstName.Contains(searchString));
+            IQueryable<Employee> expectedEmployees = context.Employees;
+            if (!String.IsNullOrEmpty(searchString))
+            {
+                expectedEmployees = context.Employees.Where(s => s.LastName.Contains(searchString)
+                                           || s.FirstName.Contains(searchString));
+            }
 
             // Act
             await pageModel.OnGetAsync(EmployeeRole.Employee, null, searchString, null, null);

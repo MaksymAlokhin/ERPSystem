@@ -153,9 +153,14 @@ namespace CompanyTest
             var logger = Mock.Of<Microsoft.Extensions.Logging.ILogger<ERPSystem.Pages.Companies.IndexModel>>();
             var config = new ConfigurationBuilder().Build();
             var pageModel = new ERPSystem.Pages.Companies.IndexModel(context, config, logger);
-            var expectedCompanies = context.Companies.Where(c => c.Name.Contains(searchString)
+            IQueryable<Company> expectedCompanies = context.Companies;
+            if (!String.IsNullOrEmpty(searchString))
+            {
+                expectedCompanies = context.Companies.Where(c => c.Name.Contains(searchString)
                                          || c.GeneralManager.FirstName.Contains(searchString)
                                           || c.GeneralManager.LastName.Contains(searchString));
+            }
+                
 
             // Act
             await pageModel.OnGetAsync(null, searchString, null, null);

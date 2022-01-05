@@ -164,8 +164,12 @@ namespace PositionTest
             var logger = Mock.Of<Microsoft.Extensions.Logging.ILogger<ERPSystem.Pages.Positions.IndexModel>>();
             var config = new ConfigurationBuilder().Build();
             var pageModel = new ERPSystem.Pages.Positions.IndexModel(context, config, logger);
-            var expectedPositions = context.Positions.Where(s => s.Name.Contains(searchString)
-                                       || s.Project.Name.Contains(searchString));
+            IQueryable<Position> expectedPositions = context.Positions;
+            if (!String.IsNullOrEmpty(searchString))
+            {
+                expectedPositions = context.Positions.Where(s => s.Name.Contains(searchString)
+                                           || s.Project.Name.Contains(searchString));
+            }
 
             // Act
             await pageModel.OnGetAsync(null, searchString, null, null);
