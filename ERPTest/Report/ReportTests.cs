@@ -180,7 +180,7 @@ namespace ReportTest
         [InlineData(3)]
         [InlineData(int.MinValue)]
         [InlineData(int.MaxValue)]
-        public async Task Report_IndexModel_OnGetAsync_Pagination(int pageIndex)
+        public async Task Report_IndexModel_OnGetAsync_PaginationWorkingAsExpected(int pageIndex)
         {
             // Arrange
             var logger = Mock.Of<Microsoft.Extensions.Logging.ILogger<ERPSystem.Pages.Reports.IndexModel>>();

@@ -219,7 +219,7 @@ namespace EmployeeTest
         [InlineData(3)]
         [InlineData(int.MinValue)]
         [InlineData(int.MaxValue)]
-        public async Task Employee_IndexModel_OnGetAsync_Pagination(int pageIndex)
+        public async Task Employee_IndexModel_OnGetAsync_PaginationWorkingAsExpected(int pageIndex)
         {
             // Arrange
             var logger = Mock.Of<Microsoft.Extensions.Logging.ILogger<ERPSystem.Pages.Employees.IndexModel>>();
