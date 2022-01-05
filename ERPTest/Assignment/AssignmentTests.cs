@@ -175,10 +175,14 @@ namespace AssignmentTest
             var logger = Mock.Of<Microsoft.Extensions.Logging.ILogger<ERPSystem.Pages.Assignments.IndexModel>>(); 
             var config = new ConfigurationBuilder().Build();
             var pageModel = new ERPSystem.Pages.Assignments.IndexModel(context, config, logger);
-            var expectedAssignments = context.Assignments.Where(c => c.Name.Contains(searchString)
-                                                             || c.Position.Name.Contains(searchString)
-                                                           || c.Employee.LastName.Contains(searchString)
-                                                           || c.Employee.FirstName.Contains(searchString));
+            IQueryable<Assignment> expectedAssignments = context.Assignments;
+            if (!String.IsNullOrEmpty(searchString))
+            {
+                expectedAssignments = context.Assignments.Where(c => c.Name.Contains(searchString)
+                                                                 || c.Position.Name.Contains(searchString)
+                                                               || c.Employee.LastName.Contains(searchString)
+                                                               || c.Employee.FirstName.Contains(searchString));
+            }
 
             // Act
             await pageModel.OnGetAsync(null, searchString, null, null);

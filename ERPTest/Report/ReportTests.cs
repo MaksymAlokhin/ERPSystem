@@ -154,14 +154,13 @@ namespace ReportTest
             var logger = Mock.Of<Microsoft.Extensions.Logging.ILogger<ERPSystem.Pages.Reports.IndexModel>>();
             var config = new ConfigurationBuilder().Build();
             var pageModel = new ERPSystem.Pages.Reports.IndexModel(context, config, logger);
-            IQueryable<Report> reportsIQ = context.Reports;
+            IQueryable<Report> expectedReports = context.Reports;
             if (!String.IsNullOrEmpty(searchString))
             {
-                reportsIQ = reportsIQ.Where(s => s.Assignment.Name.Contains(searchString)
+                expectedReports = context.Reports.Where(s => s.Assignment.Name.Contains(searchString)
                                        || s.Assignment.Employee.LastName.Contains(searchString)
                                        || s.Assignment.Employee.FirstName.Contains(searchString));
             }
-            var expectedReports = reportsIQ.ToList();
 
             // Act
             await pageModel.OnGetAsync(null, null, searchString, null);

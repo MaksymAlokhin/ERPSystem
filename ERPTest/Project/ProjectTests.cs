@@ -172,10 +172,14 @@ namespace ProjectTest
             var logger = Mock.Of<Microsoft.Extensions.Logging.ILogger<ERPSystem.Pages.Projects.IndexModel>>();
             var config = new ConfigurationBuilder().Build();
             var pageModel = new ERPSystem.Pages.Projects.IndexModel(context, config, logger);
-            var expectedProjects = context.Projects.Where(s => s.Name.Contains(searchString)
-                                       || s.Department.Name.Contains(searchString)
-                                       || s.ProjectManager.LastName.Contains(searchString)
-                                       || s.ProjectManager.FirstName.Contains(searchString));
+            IQueryable<Project> expectedProjects = context.Projects;
+            if (!String.IsNullOrEmpty(searchString))
+            {
+                expectedProjects = context.Projects.Where(s => s.Name.Contains(searchString)
+                                           || s.Department.Name.Contains(searchString)
+                                           || s.ProjectManager.LastName.Contains(searchString)
+                                           || s.ProjectManager.FirstName.Contains(searchString));
+            }
 
             // Act
             await pageModel.OnGetAsync(null, searchString, null, null);

@@ -152,8 +152,12 @@ namespace BranchTest
             var logger = Mock.Of<Microsoft.Extensions.Logging.ILogger<ERPSystem.Pages.Branches.IndexModel>>();
             var config = new ConfigurationBuilder().Build();
             var pageModel = new ERPSystem.Pages.Branches.IndexModel(context, config, logger);
-            var expectedBranches = context.Branches.Where(c => c.Name.Contains(searchString)
-                                                             || c.Company.Name.Contains(searchString));
+            IQueryable<Branch> expectedBranches = context.Branches;
+            if (!String.IsNullOrEmpty(searchString))
+            {
+                expectedBranches = context.Branches.Where(c => c.Name.Contains(searchString)
+                                                                 || c.Company.Name.Contains(searchString));
+            }
 
             // Act
             await pageModel.OnGetAsync(null, searchString, null, null);
