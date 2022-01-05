@@ -157,7 +157,7 @@ namespace ReportTest
             IQueryable<Report> expectedReports = context.Reports;
             if (!String.IsNullOrEmpty(searchString))
             {
-                expectedReports = context.Reports.Where(s => s.Assignment.Name.Contains(searchString)
+                expectedReports = expectedReports.Where(s => s.Assignment.Name.Contains(searchString)
                                        || s.Assignment.Employee.LastName.Contains(searchString)
                                        || s.Assignment.Employee.FirstName.Contains(searchString));
             }

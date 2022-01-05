@@ -178,7 +178,7 @@ namespace AssignmentTest
             IQueryable<Assignment> expectedAssignments = context.Assignments;
             if (!String.IsNullOrEmpty(searchString))
             {
-                expectedAssignments = context.Assignments.Where(c => c.Name.Contains(searchString)
+                expectedAssignments = expectedAssignments.Where(c => c.Name.Contains(searchString)
                                                                  || c.Position.Name.Contains(searchString)
                                                                || c.Employee.LastName.Contains(searchString)
                                                                || c.Employee.FirstName.Contains(searchString));

@@ -155,7 +155,7 @@ namespace BranchTest
             IQueryable<Branch> expectedBranches = context.Branches;
             if (!String.IsNullOrEmpty(searchString))
             {
-                expectedBranches = context.Branches.Where(c => c.Name.Contains(searchString)
+                expectedBranches = expectedBranches.Where(c => c.Name.Contains(searchString)
                                                                  || c.Company.Name.Contains(searchString));
             }
 

@@ -156,7 +156,7 @@ namespace DepartmentTest
             IQueryable<Department> expectedDepartments = context.Departments;
             if (!String.IsNullOrEmpty(searchString))
             {
-                expectedDepartments = context.Departments.Where(c => c.Name.Contains(searchString)
+                expectedDepartments = expectedDepartments.Where(c => c.Name.Contains(searchString)
                                                                  || c.Company.Name.Contains(searchString));
             }
 
