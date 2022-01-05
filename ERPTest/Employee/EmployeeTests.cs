@@ -197,7 +197,7 @@ namespace EmployeeTest
             IQueryable<Employee> expectedEmployees = context.Employees;
             if (!String.IsNullOrEmpty(searchString))
             {
-                expectedEmployees = context.Employees.Where(s => s.LastName.Contains(searchString)
+                expectedEmployees = expectedEmployees.Where(s => s.LastName.Contains(searchString)
                                            || s.FirstName.Contains(searchString));
             }
 

@@ -167,7 +167,7 @@ namespace PositionTest
             IQueryable<Position> expectedPositions = context.Positions;
             if (!String.IsNullOrEmpty(searchString))
             {
-                expectedPositions = context.Positions.Where(s => s.Name.Contains(searchString)
+                expectedPositions = expectedPositions.Where(s => s.Name.Contains(searchString)
                                            || s.Project.Name.Contains(searchString));
             }
 

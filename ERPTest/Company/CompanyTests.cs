@@ -156,7 +156,7 @@ namespace CompanyTest
             IQueryable<Company> expectedCompanies = context.Companies;
             if (!String.IsNullOrEmpty(searchString))
             {
-                expectedCompanies = context.Companies.Where(c => c.Name.Contains(searchString)
+                expectedCompanies = expectedCompanies.Where(c => c.Name.Contains(searchString)
                                          || c.GeneralManager.FirstName.Contains(searchString)
                                           || c.GeneralManager.LastName.Contains(searchString));
             }

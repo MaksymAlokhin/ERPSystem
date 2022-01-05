@@ -175,7 +175,7 @@ namespace ProjectTest
             IQueryable<Project> expectedProjects = context.Projects;
             if (!String.IsNullOrEmpty(searchString))
             {
-                expectedProjects = context.Projects.Where(s => s.Name.Contains(searchString)
+                expectedProjects = expectedProjects.Where(s => s.Name.Contains(searchString)
                                            || s.Department.Name.Contains(searchString)
                                            || s.ProjectManager.LastName.Contains(searchString)
                                            || s.ProjectManager.FirstName.Contains(searchString));
