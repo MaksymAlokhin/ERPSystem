@@ -373,6 +373,9 @@ namespace CompanyTest
             var model = Assert.IsAssignableFrom<Company>(pageModel.Company);
             Assert.Equal("Modified Entity", model.Name);
             Assert.Equal(CompanyState.Inactive, model.CompanyState);
+            var actualCompany = context.Companies.FirstOrDefault(m => m.Id == testId);
+            Assert.Equal("Modified Entity", actualCompany.Name);
+            Assert.Equal(CompanyState.Inactive, actualCompany.CompanyState);
         }
 
         //EditModel

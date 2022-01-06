@@ -396,6 +396,9 @@ namespace AssignmentTest
             var model = Assert.IsAssignableFrom<Assignment>(pageModel.Assignment);
             Assert.Equal("Modified Entity", model.Name);
             Assert.Equal(AssignmentState.Inactive, model.AssignmentState);
+            var actualAssignment = context.Assignments.FirstOrDefault(m => m.Id == testId);
+            Assert.Equal("Modified Entity", actualAssignment.Name);
+            Assert.Equal(AssignmentState.Inactive, actualAssignment.AssignmentState);
         }
 
         //EditModel

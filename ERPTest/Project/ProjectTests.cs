@@ -393,6 +393,9 @@ namespace ProjectTest
             var model = Assert.IsAssignableFrom<Project>(pageModel.Project);
             Assert.Equal("Modified Entity", model.Name);
             Assert.Equal(ProjectState.Inactive, model.ProjectState);
+            var actualProject = context.Projects.FirstOrDefault(m => m.Id == testId);
+            Assert.Equal("Modified Entity", actualProject.Name);
+            Assert.Equal(ProjectState.Inactive, actualProject.ProjectState);
         }
 
         //EditModel
