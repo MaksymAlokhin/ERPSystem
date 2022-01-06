@@ -419,6 +419,9 @@ namespace EmployeeTest
             var model = Assert.IsAssignableFrom<Employee>(pageModel.Employee);
             Assert.Equal("Modified Entity", model.LastName);
             Assert.Equal(EmployeeState.Inactive, model.EmployeeState);
+            var actualEmployee = context.Employees.FirstOrDefault(m => m.Id == testId);
+            Assert.Equal("Modified Entity", actualEmployee.LastName);
+            Assert.Equal(EmployeeState.Inactive, actualEmployee.EmployeeState);
         }
 
         //EditModel

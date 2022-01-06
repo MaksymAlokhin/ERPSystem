@@ -361,6 +361,9 @@ namespace BranchTest
             var model = Assert.IsAssignableFrom<Branch>(pageModel.Branch);
             Assert.Equal("Modified Entity", model.Name);
             Assert.Equal(BranchState.Inactive, model.BranchState);
+            var actualBranch = context.Branches.FirstOrDefault(m => m.Id == testId);
+            Assert.Equal("Modified Entity", actualBranch.Name);
+            Assert.Equal(BranchState.Inactive, actualBranch.BranchState);
         }
 
         //EditModel

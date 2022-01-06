@@ -375,6 +375,10 @@ namespace ReportTest
             Assert.Equal(expectedDate, model.Date);
             Assert.Equal(expectedHours, model.Hours);
             Assert.Equal(expectedReportState, model.ReportState);
+            var actualReport = context.Reports.FirstOrDefault(m => m.Id == testId);
+            Assert.Equal(expectedDate, actualReport.Date);
+            Assert.Equal(expectedHours, actualReport.Hours);
+            Assert.Equal(expectedReportState, actualReport.ReportState);
         }
 
         //EditModel

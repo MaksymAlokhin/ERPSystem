@@ -362,6 +362,9 @@ namespace DepartmentTest
             var model = Assert.IsAssignableFrom<Department>(pageModel.Department);
             Assert.Equal("Modified Entity", model.Name);
             Assert.Equal(DepartmentState.Inactive, model.DepartmentState);
+            var actualDepartment = context.Departments.FirstOrDefault(m => m.Id == testId);
+            Assert.Equal("Modified Entity", actualDepartment.Name);
+            Assert.Equal(DepartmentState.Inactive, actualDepartment.DepartmentState);
         }
 
         //EditModel

@@ -385,6 +385,11 @@ namespace PositionTest
             Assert.Equal(PositionState.Inactive, model.PositionState);
             Assert.Equal(DateTime.Parse("2020-12-30"), model.StartDate);
             Assert.Equal(DateTime.Parse("2023-03-05"), model.EndDate);
+            var actualPosition = context.Positions.FirstOrDefault(m => m.Id == testId);
+            Assert.Equal("Modified Entity", actualPosition.Name);
+            Assert.Equal(PositionState.Inactive, actualPosition.PositionState);
+            Assert.Equal(DateTime.Parse("2020-12-30"), actualPosition.StartDate);
+            Assert.Equal(DateTime.Parse("2023-03-05"), actualPosition.EndDate);
         }
 
         //EditModel
