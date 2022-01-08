@@ -51,7 +51,7 @@ namespace ERPSystem.Pages.Reports
             }
 
             if (Report.Assignment != null)
-                _logger.LogInformation("Report displayed for Assignment: {1}", Report.Assignment.Name);
+                _logger.LogInformation("Report displayed for Assignment: {0}", Report.Assignment.Name);
 
             return Page();
         }

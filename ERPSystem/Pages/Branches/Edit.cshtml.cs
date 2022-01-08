@@ -131,7 +131,7 @@ namespace ERPSystem.Pages.Branches
             utility.UpdateBranchDependants(BranchesWithModifiedState);
             utility.UpdateWhenParentIsNull();
 
-            _logger.LogInformation("Branch modified: {1}", BranchToUpdate.Name);
+            _logger.LogInformation("Branch modified: {0}", BranchToUpdate.Name);
 
             return RedirectToPage("./Index", new
             {

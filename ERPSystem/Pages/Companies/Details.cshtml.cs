@@ -65,7 +65,7 @@ namespace ERPSystem.Pages.Companies
                 return NotFound();
             }
 
-            _logger.LogInformation("Details displayed for Company: {1}", Company.Name);
+            _logger.LogInformation("Details displayed for Company: {0}", Company.Name);
 
             return Page();
         }

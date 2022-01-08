@@ -78,7 +78,7 @@ namespace ERPSystem.Pages.Positions
 
             if (Position != null)
             {
-                _logger.LogInformation("Position deleted: {1}", Position.Name);
+                _logger.LogInformation("Position deleted: {0}", Position.Name);
 
                 _context.Positions.Remove(Position);
                 await _context.SaveChangesAsync();

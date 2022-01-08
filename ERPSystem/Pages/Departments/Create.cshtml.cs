@@ -129,7 +129,7 @@ namespace ERPSystem.Pages.Departments
             Utility utility = new Utility(_context);
             utility.UpdateDepartmentDependants(DepartmentsWithModifiedState);
 
-            _logger.LogInformation("Department created: {1}", NewDepartment.Name);
+            _logger.LogInformation("Department created: {0}", NewDepartment.Name);
 
             return RedirectToPage("./Index", new
             {

@@ -76,7 +76,7 @@ namespace ERPSystem.Pages.Assignments
 
             //Static Serilog
             //Log.Information("Assignment created: {1}", Assignment.Name);
-            _logger.LogInformation("Assignment created: {1}", Assignment.Name);
+            _logger.LogInformation("Assignment created: {0}", Assignment.Name);
 
             return RedirectToPage("./Index", new
             {

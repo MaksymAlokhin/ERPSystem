@@ -78,7 +78,7 @@ namespace ERPSystem.Pages.Reports
             if (Assignment != null)
             {
                 Assignment.Reports.Add(Report);
-                _logger.LogInformation("Report created for assignment: {1}", Assignment.Name);
+                _logger.LogInformation("Report created for assignment: {0}", Assignment.Name);
             }
 
             _context.Reports.Add(Report);

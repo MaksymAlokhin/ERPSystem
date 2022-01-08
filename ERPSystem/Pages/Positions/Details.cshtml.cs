@@ -57,7 +57,7 @@ namespace ERPSystem.Pages.Positions
                 return NotFound();
             }
 
-            _logger.LogInformation("Details displayed for Position: {1}", Position.Name);
+            _logger.LogInformation("Details displayed for Position: {0}", Position.Name);
 
             return Page();
         }

@@ -157,7 +157,7 @@ namespace ERPSystem.Pages.Employees
                         break;
                 }
 
-                _logger.LogInformation("Employee deleted: {1}, {2}", Employee.LastName, Employee.FirstName);
+                _logger.LogInformation("Employee deleted: {0}, {1}", Employee.LastName, Employee.FirstName);
 
                 _context.Employees.Remove(Employee);
                 await _context.SaveChangesAsync();

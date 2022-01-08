@@ -69,7 +69,7 @@ namespace ERPSystem.Pages.Assignments
 
             if (Assignment != null)
             {
-                _logger.LogInformation("Assignment deleted: {1}", Assignment.Name);
+                _logger.LogInformation("Assignment deleted: {0}", Assignment.Name);
 
                 _context.Assignments.Remove(Assignment);
                 await _context.SaveChangesAsync();

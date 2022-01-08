@@ -52,7 +52,7 @@ namespace ERPSystem.Pages.Projects
                 return NotFound();
             }
 
-            _logger.LogInformation("Details displayed for Project: {1}", Project.Name);
+            _logger.LogInformation("Details displayed for Project: {0}", Project.Name);
 
             return Page();
         }

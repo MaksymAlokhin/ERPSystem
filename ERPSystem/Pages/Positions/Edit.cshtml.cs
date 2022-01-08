@@ -155,7 +155,7 @@ namespace ERPSystem.Pages.Positions
             utility.UpdatePositionDependants(PositionsWithModifiedState);
             utility.UpdateWhenParentIsNull();
 
-            _logger.LogInformation("Position modified: {1}", PositionToUpdate.Name);
+            _logger.LogInformation("Position modified: {0}", PositionToUpdate.Name);
 
             return RedirectToPage("./Index", new
             {
