@@ -78,7 +78,7 @@ namespace ERPSystem.Pages.Branches
 
             if (Branch != null)
             {
-                _logger.LogInformation("Branch deleted: {1}", Branch.Name);
+                _logger.LogInformation("Branch deleted: {0}", Branch.Name);
 
                 _context.Branches.Remove(Branch);
                 await _context.SaveChangesAsync();

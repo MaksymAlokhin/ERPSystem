@@ -88,7 +88,7 @@ namespace ERPSystem.Pages.Departments
             Department = await PaginatedList<Department>.CreateAsync(
                 departmentsIQ.AsNoTracking(), pageIndex ?? 1, pageSize);
 
-            _logger.LogInformation("Displaying page {1} of Departments", pageIndex ?? 1);
+            _logger.LogInformation("Displaying page {0} of Departments", pageIndex ?? 1);
         }
         //Method to debug states
         public async Task<IActionResult> OnGetActivateAsync(string sortOrder,

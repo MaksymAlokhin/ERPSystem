@@ -79,7 +79,7 @@ namespace ERPSystem.Pages.Departments
 
             if (Department != null)
             {
-                _logger.LogInformation("Department deleted: {1}", Department.Name);
+                _logger.LogInformation("Department deleted: {0}", Department.Name);
 
                 _context.Departments.Remove(Department);
                 await _context.SaveChangesAsync();

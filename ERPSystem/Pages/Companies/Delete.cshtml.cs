@@ -86,7 +86,7 @@ namespace ERPSystem.Pages.Companies
 
             if (Company != null)
             {
-                _logger.LogInformation("Company deleted: {1}", Company.Name);
+                _logger.LogInformation("Company deleted: {0}", Company.Name);
 
                 _context.Companies.Remove(Company);
                 await _context.SaveChangesAsync();

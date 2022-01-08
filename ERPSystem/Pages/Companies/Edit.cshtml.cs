@@ -172,7 +172,7 @@ namespace ERPSystem.Pages.Companies
             utility.UpdateCompanyDependants(CompaniesWithModifiedState);
             utility.UpdateWhenParentIsNull();
 
-            _logger.LogInformation("Company modified: {1}", CompanyToUpdate.Name);
+            _logger.LogInformation("Company modified: {0}", CompanyToUpdate.Name);
 
             return RedirectToPage("./Index", new
             {

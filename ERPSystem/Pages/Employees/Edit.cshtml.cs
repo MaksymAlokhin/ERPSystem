@@ -596,7 +596,7 @@ namespace ERPSystem.Pages.Employees
 
             Role = EmployeeToUpdate.EmployeeRole;
 
-            _logger.LogInformation("Employee modified: {1}, {2}", EmployeeToUpdate.LastName, EmployeeToUpdate.FirstName);
+            _logger.LogInformation("Employee modified: {0}, {1}", EmployeeToUpdate.LastName, EmployeeToUpdate.FirstName);
 
             return RedirectToPage("./Index", new
             {

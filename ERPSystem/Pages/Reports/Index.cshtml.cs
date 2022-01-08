@@ -144,7 +144,7 @@ namespace ERPSystem.Pages.Reports
             Report = await PaginatedList<Report>.CreateAsync(
                 reportsIQ.AsNoTracking(), pageIndex ?? 1, pageSize);
 
-            _logger.LogInformation("Displaying page {1} of Reports", pageIndex ?? 1);
+            _logger.LogInformation("Displaying page {0} of Reports", pageIndex ?? 1);
         }
         public async Task<IActionResult> OnGetApproveAsync(string sortOrder,
             string currentFilter, int? pageIndex, int? id)

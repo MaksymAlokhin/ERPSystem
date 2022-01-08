@@ -98,7 +98,7 @@ namespace ERPSystem.Pages.Assignments
                 }
             }
 
-            _logger.LogInformation("Assignment modified: {1}", Assignment.Name);
+            _logger.LogInformation("Assignment modified: {0}", Assignment.Name);
 
             return RedirectToPage("./Index", new
             {

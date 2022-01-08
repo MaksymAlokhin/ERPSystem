@@ -108,7 +108,7 @@ namespace ERPSystem.Pages.Positions
             Position = await PaginatedList<Position>.CreateAsync(
                 positionsIQ.AsNoTracking(), pageIndex ?? 1, pageSize);
 
-            _logger.LogInformation("Displaying page {1} of Positions", pageIndex ?? 1);
+            _logger.LogInformation("Displaying page {0} of Positions", pageIndex ?? 1);
         }
         //Method to debug states
         public async Task<IActionResult> OnGetActivateAsync(string sortOrder,
