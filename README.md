@@ -13,8 +13,6 @@ Installation<br />
 ----------------------
 Everything should work out of the box.<br />
 
-Click [here](https://erpsystemdemowebapp.azurewebsites.net/) to view live demo.<br />
-
 Users:<br />
 `admin@avenga.com`<br />
 `employee@avenga.com`<br />
