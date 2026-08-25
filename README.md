@@ -3,8 +3,6 @@ ERPSystem<br />
 =========
 Demo App<br />
 
-![ERPSystem](ERPSystem/wwwroot/images/avenga-erp-logo.png)<br /><br />
-
 Technologies<br />
 ----------------------
 ![TechnologiesUsed](Screenshots/TechnologiesUsed.jpg)<br /><br />
@@ -14,8 +12,8 @@ Installation<br />
 Everything should work out of the box.<br />
 
 Users:<br />
-`admin@avenga.com`<br />
-`employee@avenga.com`<br />
+`admin@company.com`<br />
+`employee@company.com`<br />
 
 Password:<br />
 `aA!111`<br />
