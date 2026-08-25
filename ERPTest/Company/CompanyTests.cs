@@ -1,8 +1,10 @@
 using System;
 using Xunit;
 using ERPSystem.Pages;
-using ERPSystem.Data;
-using ERPSystem.Models;
+using ERPSystem.Infrastructure.Data;
+using ERPSystem.Domain.Entities;
+using ERPSystem.Application.Interfaces;
+using ERPSystem.Infrastructure.Services;
 using Microsoft.EntityFrameworkCore;
 using Moq;
 using Microsoft.Extensions.Configuration;
@@ -21,6 +23,8 @@ namespace CompanyTest
         {
             PageSize = 7;
             context = new ApplicationDbContext(contextOptions);
+            stateCascade = new StateCascadeService(context);
+            stateLookup = new EntityStateLookupService(context);
 
             SeedCompany(context);
 
@@ -28,6 +32,8 @@ namespace CompanyTest
 
         private int PageSize;
         public ApplicationDbContext context { get; private set; }
+        public IStateCascadeService stateCascade { get; private set; }
+        public IEntityStateLookupService stateLookup { get; private set; }
 
         public void Dispose()
         {
@@ -108,7 +114,7 @@ namespace CompanyTest
             // Arrange
             var logger = Mock.Of<Microsoft.Extensions.Logging.ILogger<ERPSystem.Pages.Companies.IndexModel>>();
             var config = new ConfigurationBuilder().Build();
-            var pageModel = new ERPSystem.Pages.Companies.IndexModel(context, config, logger);
+            var pageModel = new ERPSystem.Pages.Companies.IndexModel(context, config, logger, null);
             var expectedCompanies = context.Companies;
 
             // Act
@@ -128,7 +134,7 @@ namespace CompanyTest
             // Arrange
             var logger = Mock.Of<Microsoft.Extensions.Logging.ILogger<ERPSystem.Pages.Companies.IndexModel>>();
             var config = new ConfigurationBuilder().Build();
-            var pageModel = new ERPSystem.Pages.Companies.IndexModel(context, config, logger);
+            var pageModel = new ERPSystem.Pages.Companies.IndexModel(context, config, logger, null);
             var expectedCompanies = context.Companies;
 
             // Act
@@ -152,7 +158,7 @@ namespace CompanyTest
             // Arrange
             var logger = Mock.Of<Microsoft.Extensions.Logging.ILogger<ERPSystem.Pages.Companies.IndexModel>>();
             var config = new ConfigurationBuilder().Build();
-            var pageModel = new ERPSystem.Pages.Companies.IndexModel(context, config, logger);
+            var pageModel = new ERPSystem.Pages.Companies.IndexModel(context, config, logger, null);
             IQueryable<Company> expectedCompanies = context.Companies;
             if (!String.IsNullOrEmpty(searchString))
             {
@@ -185,7 +191,7 @@ namespace CompanyTest
             // Arrange
             var logger = Mock.Of<Microsoft.Extensions.Logging.ILogger<ERPSystem.Pages.Companies.IndexModel>>();
             var config = new ConfigurationBuilder().Build();
-            var pageModel = new ERPSystem.Pages.Companies.IndexModel(context, config, logger);
+            var pageModel = new ERPSystem.Pages.Companies.IndexModel(context, config, logger, null);
             List<Company> expectedCompanies = new List<Company>();
             if (pageIndex > 0 && pageIndex <= Math.Ceiling((double)context.Companies.Count() / (double)PageSize))
             {
@@ -221,7 +227,7 @@ namespace CompanyTest
         {
             // Arrange
             var logger = Mock.Of<Microsoft.Extensions.Logging.ILogger<ERPSystem.Pages.Companies.CreateModel>>();
-            var pageModel = new ERPSystem.Pages.Companies.CreateModel(context, logger);
+            var pageModel = new ERPSystem.Pages.Companies.CreateModel(context, stateCascade, stateLookup, logger);
             var expectedCompany = new Company
             {
                 Id = 11,
@@ -249,7 +255,7 @@ namespace CompanyTest
         {
             // Arrange
             var logger = Mock.Of<Microsoft.Extensions.Logging.ILogger<ERPSystem.Pages.Companies.CreateModel>>();
-            var pageModel = new ERPSystem.Pages.Companies.CreateModel(context, logger);
+            var pageModel = new ERPSystem.Pages.Companies.CreateModel(context, stateCascade, stateLookup, logger);
             var expectedCompany = new Company
             {
                 Id = 11,
@@ -274,7 +280,7 @@ namespace CompanyTest
         {
             // Arrange
             var logger = Mock.Of<Microsoft.Extensions.Logging.ILogger<ERPSystem.Pages.Companies.DeleteModel>>();
-            var pageModel = new ERPSystem.Pages.Companies.DeleteModel(context, logger);
+            var pageModel = new ERPSystem.Pages.Companies.DeleteModel(context, stateCascade, logger);
             var testId = 1;
 
             // Act
@@ -294,7 +300,7 @@ namespace CompanyTest
         {
             // Arrange
             var logger = Mock.Of<Microsoft.Extensions.Logging.ILogger<ERPSystem.Pages.Companies.DeleteModel>>();
-            var pageModel = new ERPSystem.Pages.Companies.DeleteModel(context, logger);
+            var pageModel = new ERPSystem.Pages.Companies.DeleteModel(context, stateCascade, logger);
             var testId = 1;
             var expectedCompanies = context.Companies.Where(c => c.Id != testId).ToList();
 
@@ -315,7 +321,7 @@ namespace CompanyTest
         {
             // Arrange
             var logger = Mock.Of<Microsoft.Extensions.Logging.ILogger<ERPSystem.Pages.Companies.DeleteModel>>();
-            var pageModel = new ERPSystem.Pages.Companies.DeleteModel(context, logger);
+            var pageModel = new ERPSystem.Pages.Companies.DeleteModel(context, stateCascade, logger);
             var testId = 11;
             var expectedCompanies = context.Companies;
 
@@ -336,7 +342,7 @@ namespace CompanyTest
         {
             // Arrange
             var logger = Mock.Of<Microsoft.Extensions.Logging.ILogger<ERPSystem.Pages.Companies.EditModel>>();
-            var pageModel = new ERPSystem.Pages.Companies.EditModel(context, logger);
+            var pageModel = new ERPSystem.Pages.Companies.EditModel(context, stateCascade, stateLookup, logger);
             int testId = 1;
 
             // Act
@@ -356,7 +362,7 @@ namespace CompanyTest
         {
             // Arrange
             var logger = Mock.Of<Microsoft.Extensions.Logging.ILogger<ERPSystem.Pages.Companies.EditModel>>();
-            var pageModel = new ERPSystem.Pages.Companies.EditModel(context, logger);
+            var pageModel = new ERPSystem.Pages.Companies.EditModel(context, stateCascade, stateLookup, logger);
             int testId = 1;
             var expectedCompany = new Company
             {
@@ -384,7 +390,7 @@ namespace CompanyTest
         {
             // Arrange
             var logger = Mock.Of<Microsoft.Extensions.Logging.ILogger<ERPSystem.Pages.Companies.EditModel>>();
-            var pageModel = new ERPSystem.Pages.Companies.EditModel(context, logger);
+            var pageModel = new ERPSystem.Pages.Companies.EditModel(context, stateCascade, stateLookup, logger);
             int testId = 1;
             var expectedCompany = new Company
             {

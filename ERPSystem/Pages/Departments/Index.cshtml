@@ -75,7 +75,7 @@
             int i = 0;
             @foreach (var item in Model.Department)
             {
-                <tr style="@(item.DepartmentState == Models.DepartmentState.Inactive || item.DepartmentState == Models.DepartmentState.Draft? "color:gray;" : "")">
+                <tr style="@(item.DepartmentState == ERPSystem.Domain.Entities.DepartmentState.Inactive || item.DepartmentState == ERPSystem.Domain.Entities.DepartmentState.Draft? "color:gray;" : "")">
                     <th scope="row">
                         @Model.Department.SeqNum[i]
                     </th>

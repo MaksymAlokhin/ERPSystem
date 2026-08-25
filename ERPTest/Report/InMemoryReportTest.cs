@@ -1,4 +1,4 @@
-using ERPSystem.Data;
+using ERPSystem.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 
 namespace ReportTest

@@ -39,7 +39,7 @@
         <div class="col-sm-4">
             <div class="form-group">
                 <label asp-for="Assignment.AssignmentState" class="control-label"></label>
-                <select asp-for="Assignment.AssignmentState" class="form-control" asp-items="Html.GetEnumSelectList<Models.AssignmentState>()"></select>
+                <select asp-for="Assignment.AssignmentState" class="form-control" asp-items="Html.GetEnumSelectList<ERPSystem.Domain.Entities.AssignmentState>()"></select>
                 <span asp-validation-for="Assignment.AssignmentState" class="text-danger"></span>
             </div>
         </div>

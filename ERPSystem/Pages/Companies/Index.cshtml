@@ -68,7 +68,7 @@
             int i = 0;
             @foreach (var item in Model.Company)
             {
-                <tr style="@(item.CompanyState == Models.CompanyState.Inactive || item.CompanyState == Models.CompanyState.Draft? "color:gray;" : "")">
+                <tr style="@(item.CompanyState == ERPSystem.Domain.Entities.CompanyState.Inactive || item.CompanyState == ERPSystem.Domain.Entities.CompanyState.Draft? "color:gray;" : "")">
                     <th scope="row">
                         @Model.Company.SeqNum[i]
                     </th>

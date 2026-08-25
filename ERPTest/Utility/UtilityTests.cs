@@ -1,6 +1,7 @@
-﻿using ERPSystem;
-using ERPSystem.Data;
-using ERPSystem.Models;
+﻿using ERPSystem.Application;
+using ERPSystem.Infrastructure.Data;
+using ERPSystem.Domain.Entities;
+using ERPSystem.Application.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -28,7 +29,7 @@ namespace UtilityTest
             //Arrange
 
             //Act
-            DateTime actualDate = Utility.GetRandomDate(startDate, endDate);
+            DateTime actualDate = DateRangeHelper.GetRandomDate(startDate, endDate);
 
             //Assert
             Assert.True(actualDate >= startDate && actualDate <= endDate);
@@ -46,7 +47,7 @@ namespace UtilityTest
             //Arrange
 
             //Act
-            DateTime actualDate = Utility.GetRandomDate(startDate, endDate);
+            DateTime actualDate = DateRangeHelper.GetRandomDate(startDate, endDate);
 
             //Assert
             Assert.True(actualDate <= startDate && actualDate >= endDate);
@@ -67,7 +68,7 @@ namespace UtilityTest
             //Arrange
 
             //Act
-            double actualDays = Utility.GetBusinessDays(startDate, endDate);
+            double actualDays = DateRangeHelper.GetBusinessDays(startDate, endDate);
 
             //Assert
             Assert.Equal(expectedDays, actualDays);
@@ -88,7 +89,7 @@ namespace UtilityTest
             //Arrange
 
             //Act
-            double actualDays = Utility.GetBusinessDays(startDate, endDate);
+            double actualDays = DateRangeHelper.GetBusinessDays(startDate, endDate);
 
             //Assert
             Assert.Equal(expectedDays, actualDays);

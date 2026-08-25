@@ -1,8 +1,10 @@
 using System;
 using Xunit;
 using ERPSystem.Pages;
-using ERPSystem.Data;
-using ERPSystem.Models;
+using ERPSystem.Infrastructure.Data;
+using ERPSystem.Domain.Entities;
+using ERPSystem.Application.Interfaces;
+using ERPSystem.Infrastructure.Services;
 using Microsoft.EntityFrameworkCore;
 using Moq;
 using Microsoft.Extensions.Configuration;
@@ -22,10 +24,12 @@ namespace ReportTest
             PageSize = 7;
 
             context = new ApplicationDbContext(contextOptions);
+            reportCalculation = new ReportCalculationService(context);
 
             SeedReport(context);
         }
         public ApplicationDbContext context { get; private set; }
+        public IReportCalculationService reportCalculation { get; private set; }
         private int PageSize;
         public void Dispose()
         {
@@ -220,7 +224,7 @@ namespace ReportTest
         {
             // Arrange
             var logger = Mock.Of<Microsoft.Extensions.Logging.ILogger<ERPSystem.Pages.Reports.CreateModel>>();
-            var pageModel = new ERPSystem.Pages.Reports.CreateModel(context, logger);
+            var pageModel = new ERPSystem.Pages.Reports.CreateModel(context, reportCalculation, logger);
             var expectedReport = new Report 
             {
                 Hours = 24.0,
@@ -248,7 +252,7 @@ namespace ReportTest
             // Arrange
             var logger = Mock.Of<Microsoft.Extensions.Logging.ILogger<ERPSystem.Pages.Reports.CreateModel>>();
             int testId = 1;
-            var pageModel = new ERPSystem.Pages.Reports.CreateModel(context, logger);
+            var pageModel = new ERPSystem.Pages.Reports.CreateModel(context, reportCalculation, logger);
             var expectedReport = new Report
             {
                 Hours = 24.0,
@@ -334,7 +338,7 @@ namespace ReportTest
         {
             // Arrange
             var logger = Mock.Of<Microsoft.Extensions.Logging.ILogger<ERPSystem.Pages.Reports.EditModel>>();
-            var pageModel = new ERPSystem.Pages.Reports.EditModel(context, logger);
+            var pageModel = new ERPSystem.Pages.Reports.EditModel(context, reportCalculation, logger);
             int testId = 2;
 
             // Act
@@ -359,7 +363,7 @@ namespace ReportTest
             var expectedHours = 22.0;
             var expectedDate = DateTime.Parse("2021-07-07");
             var expectedReportState = ReportState.Draft;
-            var pageModel = new ERPSystem.Pages.Reports.EditModel(context, logger);
+            var pageModel = new ERPSystem.Pages.Reports.EditModel(context, reportCalculation, logger);
             var expectedReport = context.Reports.FirstOrDefault(m => m.Id == testId);
             pageModel.Report = expectedReport;
             pageModel.Report.Date = expectedDate;
@@ -391,7 +395,7 @@ namespace ReportTest
             var expectedHours = 22.0;
             var expectedDate = DateTime.Parse("2021-07-07");
             var expectedReportState = ReportState.Draft;
-            var pageModel = new ERPSystem.Pages.Reports.EditModel(context, logger);
+            var pageModel = new ERPSystem.Pages.Reports.EditModel(context, reportCalculation, logger);
             var expectedReport = context.Reports.FirstOrDefault(m => m.Id == testId);
             pageModel.Report = expectedReport;
             pageModel.Report.Date = expectedDate;

@@ -5,8 +5,8 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
-using ERPSystem.Data;
-using ERPSystem.Models;
+using ERPSystem.Infrastructure.Data;
+using ERPSystem.Domain.Entities;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.Extensions.Logging;
 
@@ -15,13 +15,13 @@ namespace ERPSystem.Pages.Reports
     [Authorize(Policy = "AdminOnly")]
     public class DeleteModel : PageModel
     {
-        private readonly ERPSystem.Data.ApplicationDbContext _context;
+        private readonly ERPSystem.Infrastructure.Data.ApplicationDbContext _context;
         private readonly ILogger<DeleteModel> _logger;
         public int? PageIndex { get; set; }
         public string CurrentFilter { get; set; }
         public string CurrentSort { get; set; }
 
-        public DeleteModel(ERPSystem.Data.ApplicationDbContext context, ILogger<DeleteModel> logger)
+        public DeleteModel(ERPSystem.Infrastructure.Data.ApplicationDbContext context, ILogger<DeleteModel> logger)
         {
             _context = context;
             _logger = logger;

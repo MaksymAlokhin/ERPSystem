@@ -34,6 +34,10 @@ namespace ERPSystem.Areas.Identity.Pages.Admin
                 return RedirectToPage("/");
             }
             IdentityUser user = await UserManager.FindByIdAsync(Id);
+            if (user == null)
+            {
+                return NotFound();
+            }
             Claims = await UserManager.GetClaimsAsync(user);
             return Page();
         }
@@ -43,6 +47,10 @@ namespace ERPSystem.Areas.Identity.Pages.Admin
         {
 
             IdentityUser user = await UserManager.FindByIdAsync(Id);
+            if (user == null)
+            {
+                return NotFound();
+            }
 
             if (ModelState.IsValid)
             {
@@ -69,11 +77,22 @@ namespace ERPSystem.Areas.Identity.Pages.Admin
             oldValue = oldValue ?? "";
 
             IdentityUser user = await UserManager.FindByIdAsync(Id);
+            if (user == null)
+            {
+                return NotFound();
+            }
             if (ModelState.IsValid)
             {
                 var claimNew = new Claim(type, value);
                 var claimOld = new Claim(type, oldValue);
                 var result = await UserManager.ReplaceClaimAsync(user, claimOld, claimNew);
+                if (!result.Succeeded)
+                {
+                    foreach (var err in result.Errors)
+                    {
+                        ModelState.AddModelError(string.Empty, err.Description);
+                    }
+                }
             }
             Claims = await UserManager.GetClaimsAsync(user);
             return RedirectToPage();
@@ -83,11 +102,22 @@ namespace ERPSystem.Areas.Identity.Pages.Admin
                                                                 string value)
         {
             IdentityUser user = await UserManager.FindByIdAsync(Id);
+            if (user == null)
+            {
+                return NotFound();
+            }
             if (ModelState.IsValid)
             {
                 value = value ?? "";
                 var claim = new Claim(type, value);
                 var result = await UserManager.RemoveClaimAsync(user, claim);
+                if (!result.Succeeded)
+                {
+                    foreach (var err in result.Errors)
+                    {
+                        ModelState.AddModelError(string.Empty, err.Description);
+                    }
+                }
             }
             Claims = await UserManager.GetClaimsAsync(user);
             return RedirectToPage();

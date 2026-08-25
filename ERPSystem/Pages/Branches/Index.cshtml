@@ -75,7 +75,7 @@
             int i = 0;
             @foreach (var item in Model.Branch)
             {
-                <tr style="@(item.BranchState == Models.BranchState.Inactive? "color:gray;" : "")">
+                <tr style="@(item.BranchState == ERPSystem.Domain.Entities.BranchState.Inactive? "color:gray;" : "")">
                     <th scope="row">
                         @Model.Branch.SeqNum[i]
                     </th>

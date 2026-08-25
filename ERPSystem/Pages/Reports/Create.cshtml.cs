@@ -1,12 +1,13 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
-using ERPSystem.Data;
-using ERPSystem.Models;
+using ERPSystem.Infrastructure.Data;
+using ERPSystem.Domain.Entities;
+using ERPSystem.Application.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.Extensions.Logging;
@@ -16,7 +17,8 @@ namespace ERPSystem.Pages.Reports
     [Authorize(Policy = "AdminOnly")]
     public class CreateModel : PageModel
     {
-        private readonly ERPSystem.Data.ApplicationDbContext _context;
+        private readonly ERPSystem.Infrastructure.Data.ApplicationDbContext _context;
+        private readonly IReportCalculationService _reportCalculation;
         private readonly ILogger<CreateModel> _logger;
         public int? PageIndex { get; set; }
         public string CurrentFilter { get; set; }
@@ -31,9 +33,10 @@ namespace ERPSystem.Pages.Reports
             new SelectListItem { Value = "1", Text = "Submitted" }
         };
 
-        public CreateModel(ERPSystem.Data.ApplicationDbContext context, ILogger<CreateModel> logger)
+        public CreateModel(ERPSystem.Infrastructure.Data.ApplicationDbContext context, IReportCalculationService reportCalculation, ILogger<CreateModel> logger)
         {
             _context = context;
+            _reportCalculation = reportCalculation;
             _logger = logger;
         }
         public async Task<IActionResult> OnGet(string sortOrder,
@@ -45,13 +48,26 @@ namespace ERPSystem.Pages.Reports
                 .AsNoTracking()
                 .FirstOrDefaultAsync(a => a.Id == id);
 
+            if (Assignment == null)
+            {
+                return NotFound();
+            }
+
             Report = new Report();
             Report.ReportState = ReportState.Submitted;
 
-            Utility utility = new Utility(_context);
-            var obj = await utility.GetHours(DateTime.Now.Date, id);
-            Report.Hours = Hours = obj.hours;
-            Report.Date = obj.date;
+            var obj = await _reportCalculation.GetHoursAsync(DateTime.Now.Date, id);
+            if (obj == null)
+            {
+                // Nothing to report yet: the assignment hasn't started as of today.
+                Report.Hours = Hours = 0;
+                Report.Date = Assignment.StartDate;
+            }
+            else
+            {
+                Report.Hours = Hours = obj.hours;
+                Report.Date = obj.date;
+            }
             MinDate = Assignment.StartDate.ToString("yyyy-MM-dd");
             MaxDate = Assignment.EndDate.ToString("yyyy-MM-dd");
             return Page();
@@ -91,25 +107,20 @@ namespace ERPSystem.Pages.Reports
         {
             if (Int32.TryParse(assignmentId, out int id))
             {
-                Utility utility = new Utility(_context);
                 DateTime date = DateTime.Parse(inDate);
-                var result = await utility.GetHours(date, id);
-                return new JsonResult(new
+                var result = await _reportCalculation.GetHoursAsync(date, id);
+                if (result != null)
                 {
-                    hours = result.hours.ToString(),
-                    date = result.date.ToString("yyyy-MM-dd"),
-                    min = result.min.ToString("yyyy-MM-dd"),
-                    max = result.max.ToString("yyyy-MM-dd")
-                });
+                    return new JsonResult(new
+                    {
+                        hours = result.hours.ToString(),
+                        date = result.date.ToString("yyyy-MM-dd"),
+                        min = result.min.ToString("yyyy-MM-dd"),
+                        max = result.max.ToString("yyyy-MM-dd")
+                    });
+                }
             }
             return new JsonResult(null);
         }
-    }
-    public class ReportData
-    {
-        public double hours { get; set; }
-        public DateTime date { get; set; }
-        public DateTime min { get; set; }
-        public DateTime max { get; set; }
     }
 }

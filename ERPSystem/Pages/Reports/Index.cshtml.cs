@@ -5,8 +5,8 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
-using ERPSystem.Data;
-using ERPSystem.Models;
+using ERPSystem.Infrastructure.Data;
+using ERPSystem.Domain.Entities;
 using Microsoft.Extensions.Configuration;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.Extensions.Logging;
@@ -15,7 +15,7 @@ namespace ERPSystem.Pages.Reports
 {
     public class IndexModel : PageModel
     {
-        private readonly ERPSystem.Data.ApplicationDbContext _context;
+        private readonly ERPSystem.Infrastructure.Data.ApplicationDbContext _context;
         private readonly ILogger<IndexModel> _logger;
         private readonly IConfiguration Configuration;
         public string AssignmentSort { get; set; }
@@ -28,7 +28,7 @@ namespace ERPSystem.Pages.Reports
         public PaginatedList<Report> Report { get; set; }
         public List<StateDoughnut> Doughnut { get; set; }
 
-        public IndexModel(ERPSystem.Data.ApplicationDbContext context, IConfiguration configuration, ILogger<IndexModel> logger)
+        public IndexModel(ERPSystem.Infrastructure.Data.ApplicationDbContext context, IConfiguration configuration, ILogger<IndexModel> logger)
         {
             _context = context;
             Configuration = configuration;

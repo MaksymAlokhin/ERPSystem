@@ -2,11 +2,12 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using ERPSystem.Data;
+using ERPSystem.Infrastructure.Data;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.EntityFrameworkCore;
 
 namespace ERPSystem.Areas.Identity.Pages.Admin
 {
@@ -23,9 +24,9 @@ namespace ERPSystem.Areas.Identity.Pages.Admin
             _DbCtx = dbCtx;
         }
 
-        public void OnGet()
+        public async Task OnGetAsync()
         {
-            Users = _DbCtx.Users.ToList();
+            Users = await _DbCtx.Users.ToListAsync();
         }
     }
 }

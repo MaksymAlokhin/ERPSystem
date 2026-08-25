@@ -1,8 +1,10 @@
 using System;
 using Xunit;
 using ERPSystem.Pages;
-using ERPSystem.Data;
-using ERPSystem.Models;
+using ERPSystem.Infrastructure.Data;
+using ERPSystem.Domain.Entities;
+using ERPSystem.Application.Interfaces;
+using ERPSystem.Infrastructure.Services;
 using Microsoft.EntityFrameworkCore;
 using Moq;
 using Microsoft.Extensions.Configuration;
@@ -22,10 +24,14 @@ namespace BranchTest
             PageSize = 7;
 
             context = new ApplicationDbContext(contextOptions);
+            stateCascade = new StateCascadeService(context);
+            stateLookup = new EntityStateLookupService(context);
 
             SeedBranch(context);
         }
         public ApplicationDbContext context { get; private set; }
+        public IStateCascadeService stateCascade { get; private set; }
+        public IEntityStateLookupService stateLookup { get; private set; }
         private int PageSize;
         public void Dispose()
         {
@@ -107,7 +113,7 @@ namespace BranchTest
             // Arrange
             var logger = Mock.Of<Microsoft.Extensions.Logging.ILogger<ERPSystem.Pages.Branches.IndexModel>>();
             var config = new ConfigurationBuilder().Build();
-            var pageModel = new ERPSystem.Pages.Branches.IndexModel(context, config, logger);
+            var pageModel = new ERPSystem.Pages.Branches.IndexModel(context, config, logger, null);
             var expectedBranches = context.Branches;
 
             // Act
@@ -127,7 +133,7 @@ namespace BranchTest
             // Arrange
             var logger = Mock.Of<Microsoft.Extensions.Logging.ILogger<ERPSystem.Pages.Branches.IndexModel>>();
             var config = new ConfigurationBuilder().Build();
-            var pageModel = new ERPSystem.Pages.Branches.IndexModel(context, config, logger);
+            var pageModel = new ERPSystem.Pages.Branches.IndexModel(context, config, logger, null);
             var expectedBranches = context.Branches;
 
             // Act
@@ -151,7 +157,7 @@ namespace BranchTest
             // Arrange
             var logger = Mock.Of<Microsoft.Extensions.Logging.ILogger<ERPSystem.Pages.Branches.IndexModel>>();
             var config = new ConfigurationBuilder().Build();
-            var pageModel = new ERPSystem.Pages.Branches.IndexModel(context, config, logger);
+            var pageModel = new ERPSystem.Pages.Branches.IndexModel(context, config, logger, null);
             IQueryable<Branch> expectedBranches = context.Branches;
             if (!String.IsNullOrEmpty(searchString))
             {
@@ -182,7 +188,7 @@ namespace BranchTest
             // Arrange
             var logger = Mock.Of<Microsoft.Extensions.Logging.ILogger<ERPSystem.Pages.Branches.IndexModel>>();
             var config = new ConfigurationBuilder().Build();
-            var pageModel = new ERPSystem.Pages.Branches.IndexModel(context, config, logger);
+            var pageModel = new ERPSystem.Pages.Branches.IndexModel(context, config, logger, null);
             List<Branch> expectedBranches = new List<Branch>();
             if (pageIndex > 0 && pageIndex <= Math.Ceiling((double)context.Branches.Count() / (double)PageSize))
             {
@@ -217,7 +223,7 @@ namespace BranchTest
         {
             // Arrange
             var logger = Mock.Of<Microsoft.Extensions.Logging.ILogger<ERPSystem.Pages.Branches.CreateModel>>();
-            var pageModel = new ERPSystem.Pages.Branches.CreateModel(context, logger);
+            var pageModel = new ERPSystem.Pages.Branches.CreateModel(context, stateCascade, stateLookup, logger);
             var expectedBranch = new Branch 
             {
                 Name = "Test Branch",
@@ -242,7 +248,7 @@ namespace BranchTest
         {
             // Arrange
             var logger = Mock.Of<Microsoft.Extensions.Logging.ILogger<ERPSystem.Pages.Branches.CreateModel>>();
-            var pageModel = new ERPSystem.Pages.Branches.CreateModel(context, logger);
+            var pageModel = new ERPSystem.Pages.Branches.CreateModel(context, stateCascade, stateLookup, logger);
             var expectedBranch = new Branch
             {
                 Name = "Test Branch",
@@ -264,7 +270,7 @@ namespace BranchTest
         {
             // Arrange
             var logger = Mock.Of<Microsoft.Extensions.Logging.ILogger<ERPSystem.Pages.Branches.DeleteModel>>();
-            var pageModel = new ERPSystem.Pages.Branches.DeleteModel(context, logger);
+            var pageModel = new ERPSystem.Pages.Branches.DeleteModel(context, stateCascade, logger);
             var testId = 1;
 
             // Act
@@ -284,7 +290,7 @@ namespace BranchTest
         {
             // Arrange
             var logger = Mock.Of<Microsoft.Extensions.Logging.ILogger<ERPSystem.Pages.Branches.DeleteModel>>();
-            var pageModel = new ERPSystem.Pages.Branches.DeleteModel(context, logger);
+            var pageModel = new ERPSystem.Pages.Branches.DeleteModel(context, stateCascade, logger);
             var testId = 1;
             var expectedBranches = context.Branches.Where(c => c.Id != testId).ToList();
 
@@ -305,7 +311,7 @@ namespace BranchTest
         {
             // Arrange
             var logger = Mock.Of<Microsoft.Extensions.Logging.ILogger<ERPSystem.Pages.Branches.DeleteModel>>();
-            var pageModel = new ERPSystem.Pages.Branches.DeleteModel(context, logger);
+            var pageModel = new ERPSystem.Pages.Branches.DeleteModel(context, stateCascade, logger);
             var testId = 11;
             var expectedBranches = context.Branches;
 
@@ -326,7 +332,7 @@ namespace BranchTest
         {
             // Arrange
             var logger = Mock.Of<Microsoft.Extensions.Logging.ILogger<ERPSystem.Pages.Branches.EditModel>>();
-            var pageModel = new ERPSystem.Pages.Branches.EditModel(context, logger);
+            var pageModel = new ERPSystem.Pages.Branches.EditModel(context, stateCascade, stateLookup, logger);
             int testId = 2;
 
             // Act
@@ -347,7 +353,7 @@ namespace BranchTest
             // Arrange
             var testId = 1;
             var logger = Mock.Of<Microsoft.Extensions.Logging.ILogger<ERPSystem.Pages.Branches.EditModel>>();
-            var pageModel = new ERPSystem.Pages.Branches.EditModel(context, logger);
+            var pageModel = new ERPSystem.Pages.Branches.EditModel(context, stateCascade, stateLookup, logger);
             var expectedBranch = context.Branches.FirstOrDefault(m => m.Id == testId);
             pageModel.Branch = expectedBranch;
             pageModel.Branch.Name = "Modified Entity";
@@ -372,7 +378,7 @@ namespace BranchTest
         {
             // Arrange
             var logger = Mock.Of<Microsoft.Extensions.Logging.ILogger<ERPSystem.Pages.Branches.EditModel>>();
-            var pageModel = new ERPSystem.Pages.Branches.EditModel(context, logger);
+            var pageModel = new ERPSystem.Pages.Branches.EditModel(context, stateCascade, stateLookup, logger);
             int testId = 1;
             var expectedBranch = context.Branches.FirstOrDefault(m => m.Id == testId);
             pageModel.Branch = expectedBranch;

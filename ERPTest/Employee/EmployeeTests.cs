@@ -1,8 +1,10 @@
 using System;
 using Xunit;
 using ERPSystem.Pages;
-using ERPSystem.Data;
-using ERPSystem.Models;
+using ERPSystem.Infrastructure.Data;
+using ERPSystem.Domain.Entities;
+using ERPSystem.Application.Interfaces;
+using ERPSystem.Infrastructure.Services;
 using Microsoft.EntityFrameworkCore;
 using Moq;
 using Microsoft.Extensions.Configuration;
@@ -23,10 +25,18 @@ namespace EmployeeTest
             PageSize = 7;
 
             context = new ApplicationDbContext(contextOptions);
+            stateCascade = new StateCascadeService(context);
+            stateLookup = new EntityStateLookupService(context);
+            mentorLookup = new MentorLookupService(context);
+            photoUpload = new PhotoUploadService(Mock.Of<IWebHostEnvironment>(e => e.EnvironmentName == "Development"));
 
             SeedEmployee(context);
         }
         public ApplicationDbContext context { get; private set; }
+        public IStateCascadeService stateCascade { get; private set; }
+        public IEntityStateLookupService stateLookup { get; private set; }
+        public IMentorLookupService mentorLookup { get; private set; }
+        public IPhotoUploadService photoUpload { get; private set; }
         private int PageSize;
         public void Dispose()
         {
@@ -149,7 +159,7 @@ namespace EmployeeTest
             // Arrange
             var logger = Mock.Of<Microsoft.Extensions.Logging.ILogger<ERPSystem.Pages.Employees.IndexModel>>();
             var config = new ConfigurationBuilder().Build();
-            var pageModel = new ERPSystem.Pages.Employees.IndexModel(context, config, logger);
+            var pageModel = new ERPSystem.Pages.Employees.IndexModel(context, config, logger, null);
             var expectedEmployees = context.Employees;
 
             // Act
@@ -169,7 +179,7 @@ namespace EmployeeTest
             // Arrange
             var logger = Mock.Of<Microsoft.Extensions.Logging.ILogger<ERPSystem.Pages.Employees.IndexModel>>();
             var config = new ConfigurationBuilder().Build();
-            var pageModel = new ERPSystem.Pages.Employees.IndexModel(context, config, logger);
+            var pageModel = new ERPSystem.Pages.Employees.IndexModel(context, config, logger, null);
             var expectedEmployees = context.Employees;
 
             // Act
@@ -193,7 +203,7 @@ namespace EmployeeTest
             // Arrange
             var logger = Mock.Of<Microsoft.Extensions.Logging.ILogger<ERPSystem.Pages.Employees.IndexModel>>();
             var config = new ConfigurationBuilder().Build();
-            var pageModel = new ERPSystem.Pages.Employees.IndexModel(context, config, logger);
+            var pageModel = new ERPSystem.Pages.Employees.IndexModel(context, config, logger, null);
             IQueryable<Employee> expectedEmployees = context.Employees;
             if (!String.IsNullOrEmpty(searchString))
             {
@@ -224,7 +234,7 @@ namespace EmployeeTest
             // Arrange
             var logger = Mock.Of<Microsoft.Extensions.Logging.ILogger<ERPSystem.Pages.Employees.IndexModel>>();
             var config = new ConfigurationBuilder().Build();
-            var pageModel = new ERPSystem.Pages.Employees.IndexModel(context, config, logger);
+            var pageModel = new ERPSystem.Pages.Employees.IndexModel(context, config, logger, null);
             List<Employee> expectedEmployees = new List<Employee>();
             if (pageIndex > 0 && pageIndex <= Math.Ceiling((double)context.Employees.Count() / (double)PageSize))
             {
@@ -260,7 +270,7 @@ namespace EmployeeTest
             // Arrange
             //IWebHostEnvironment hostEnvironment = new 
             var logger = Mock.Of<Microsoft.Extensions.Logging.ILogger<ERPSystem.Pages.Employees.CreateModel>>();
-            var pageModel = new ERPSystem.Pages.Employees.CreateModel(context, null, logger);
+            var pageModel = new ERPSystem.Pages.Employees.CreateModel(context, stateCascade, stateLookup, mentorLookup, photoUpload, logger);
             var expectedEmployee = new Employee
             {
                 FirstName = "Test First Name",
@@ -291,7 +301,7 @@ namespace EmployeeTest
         {
             // Arrange
             var logger = Mock.Of<Microsoft.Extensions.Logging.ILogger<ERPSystem.Pages.Employees.CreateModel>>();
-            var pageModel = new ERPSystem.Pages.Employees.CreateModel(context, null, logger);
+            var pageModel = new ERPSystem.Pages.Employees.CreateModel(context, stateCascade, stateLookup, mentorLookup, photoUpload, logger);
             var expectedEmployee = new Employee
             {
                 FirstName = "Test First Name",
@@ -316,7 +326,7 @@ namespace EmployeeTest
         {
             // Arrange
             var logger = Mock.Of<Microsoft.Extensions.Logging.ILogger<ERPSystem.Pages.Employees.DeleteModel>>();
-            var pageModel = new ERPSystem.Pages.Employees.DeleteModel(context, null, logger);
+            var pageModel = new ERPSystem.Pages.Employees.DeleteModel(context, stateCascade, photoUpload, logger);
             var testId = 1;
 
             // Act
@@ -339,7 +349,7 @@ namespace EmployeeTest
         {
             // Arrange
             var logger = Mock.Of<Microsoft.Extensions.Logging.ILogger<ERPSystem.Pages.Employees.DeleteModel>>();
-            var pageModel = new ERPSystem.Pages.Employees.DeleteModel(context, null, logger);
+            var pageModel = new ERPSystem.Pages.Employees.DeleteModel(context, stateCascade, photoUpload, logger);
             var testId = 1;
             var expectedEmployees = context.Employees.Where(c => c.Id != testId).ToList();
 
@@ -360,7 +370,7 @@ namespace EmployeeTest
         {
             // Arrange
             var logger = Mock.Of<Microsoft.Extensions.Logging.ILogger<ERPSystem.Pages.Employees.DeleteModel>>();
-            var pageModel = new ERPSystem.Pages.Employees.DeleteModel(context, null, logger);
+            var pageModel = new ERPSystem.Pages.Employees.DeleteModel(context, stateCascade, photoUpload, logger);
             var testId = 11;
             var expectedEmployees = context.Employees;
 
@@ -381,7 +391,7 @@ namespace EmployeeTest
         {
             // Arrange
             var logger = Mock.Of<Microsoft.Extensions.Logging.ILogger<ERPSystem.Pages.Employees.EditModel>>();
-            var pageModel = new ERPSystem.Pages.Employees.EditModel(context, null, logger);
+            var pageModel = new ERPSystem.Pages.Employees.EditModel(context, stateCascade, stateLookup, mentorLookup, photoUpload, logger);
             int testId = 2;
 
             // Act
@@ -405,7 +415,7 @@ namespace EmployeeTest
             // Arrange
             var logger = Mock.Of<Microsoft.Extensions.Logging.ILogger<ERPSystem.Pages.Employees.EditModel>>();
             var testId = 1;
-            var pageModel = new ERPSystem.Pages.Employees.EditModel(context, null, logger);
+            var pageModel = new ERPSystem.Pages.Employees.EditModel(context, stateCascade, stateLookup, mentorLookup, photoUpload, logger);
             var expectedEmployee = context.Employees.FirstOrDefault(m => m.Id == testId);
             pageModel.Employee = expectedEmployee;
             pageModel.Employee.LastName = "Modified Entity";
@@ -430,7 +440,7 @@ namespace EmployeeTest
         {
             // Arrange
             var logger = Mock.Of<Microsoft.Extensions.Logging.ILogger<ERPSystem.Pages.Employees.EditModel>>();
-            var pageModel = new ERPSystem.Pages.Employees.EditModel(context, null, logger);
+            var pageModel = new ERPSystem.Pages.Employees.EditModel(context, stateCascade, stateLookup, mentorLookup, photoUpload, logger);
             int testId = 1;
             var expectedEmployee = context.Employees.FirstOrDefault(m => m.Id == testId);
             pageModel.Employee = expectedEmployee;

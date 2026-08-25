@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -6,12 +6,10 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
-using ERPSystem.Data;
-using ERPSystem.Models;
+using ERPSystem.Infrastructure.Data;
+using ERPSystem.Domain.Entities;
+using ERPSystem.Application.Interfaces;
 using Microsoft.AspNetCore.Http;
-using System.IO;
-using Microsoft.AspNetCore.Hosting;
-using System.Text.Json;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.Extensions.Logging;
 
@@ -20,26 +18,31 @@ namespace ERPSystem.Pages.Employees
     [Authorize(Policy = "AdminOnly")]
     public class EditModel : PageModel
     {
-        private readonly ERPSystem.Data.ApplicationDbContext _context;
+        private readonly ERPSystem.Infrastructure.Data.ApplicationDbContext _context;
+        private readonly IStateCascadeService _stateCascade;
+        private readonly IEntityStateLookupService _stateLookup;
+        private readonly IMentorLookupService _mentorLookup;
+        private readonly IPhotoUploadService _photoUpload;
         private readonly ILogger<EditModel> _logger;
-        private readonly IWebHostEnvironment webHostEnvironment;
         public int? PageIndex { get; set; }
         public string CurrentFilter { get; set; }
         public string CurrentSort { get; set; }
         public List<int> SelectedMentors { get; set; }
         public List<SelectListItem> MentorsSelectList { get; set; }
-        //public SelectList MentorsSelectList { get; set; }
         public List<int> SelectedAssignments { get; set; }
         public SelectList AssignmentsSelectList { get; set; }
         public EmployeeRole Role { get; set; }
         public IFormFile FormFile { get; set; }
-        private readonly string[] permittedExtensions = { ".jpg", ".jpeg", ".png", ".gif", ".bmp", ".tif", ".tiff" };
 
-
-        public EditModel(ERPSystem.Data.ApplicationDbContext context, IWebHostEnvironment hostEnvironment, ILogger<EditModel> logger)
+        public EditModel(ERPSystem.Infrastructure.Data.ApplicationDbContext context, IStateCascadeService stateCascade,
+            IEntityStateLookupService stateLookup, IMentorLookupService mentorLookup, IPhotoUploadService photoUpload,
+            ILogger<EditModel> logger)
         {
             _context = context;
-            webHostEnvironment = hostEnvironment;
+            _stateCascade = stateCascade;
+            _stateLookup = stateLookup;
+            _mentorLookup = mentorLookup;
+            _photoUpload = photoUpload;
             _logger = logger;
         }
 
@@ -83,33 +86,21 @@ namespace ERPSystem.Pages.Employees
             if (_context.Projects.Any())
                 ViewData["ProjectId"] = new SelectList(_context.Projects.OrderBy(p => p.Name), "Id", "Name");
 
-            //var MentorsQuery = _context.Employees
-            //    .OrderBy(e => e.LastName)
-            //    .ThenBy(e => e.FirstName)
-            //    .Where(e => e.Id != id)
-            //    .AsNoTracking();
-            //MentorsSelectList = new SelectList(MentorsQuery, "Id", "FullName"); //list, id, value
-
-            MentorsSelectList = Enumerable.Empty<SelectListItem>().ToList();
-
             //Mentors Initial Dropdown List
             switch (Employee.EmployeeRole)
             {
                 case EmployeeRole.Employee:
                 case EmployeeRole.Mentor:
-                    JsonResult jsonResult = await OnGetBranchAsync(Employee.BranchId.ToString());
-                    string json = JsonSerializer.Serialize(jsonResult.Value);
-                    MentorsSelectList = JsonSerializer.Deserialize<List<SelectListItem>>(json);
+                    MentorsSelectList = (await _mentorLookup.GetMentorsByBranchAsync(Employee.BranchId.ToString()))
+                        .Select(m => new SelectListItem { Value = m.Id.ToString(), Text = m.FullName }).ToList();
                     break;
                 case EmployeeRole.ProjectManager:
-                    jsonResult = await OnGetProjectAsync(Employee.ProjectId.ToString());
-                    json = JsonSerializer.Serialize(jsonResult.Value);
-                    MentorsSelectList = JsonSerializer.Deserialize<List<SelectListItem>>(json);
+                    MentorsSelectList = (await _mentorLookup.GetMentorsByProjectAsync(Employee.ProjectId.ToString()))
+                        .Select(m => new SelectListItem { Value = m.Id.ToString(), Text = m.FullName }).ToList();
                     break;
                 case EmployeeRole.DepartmentHead:
-                    jsonResult = await OnGetDepartmentAsync(Employee.DepartmentId.ToString());
-                    json = JsonSerializer.Serialize(jsonResult.Value);
-                    MentorsSelectList = JsonSerializer.Deserialize<List<SelectListItem>>(json);
+                    MentorsSelectList = (await _mentorLookup.GetMentorsByDepartmentAsync(Employee.DepartmentId.ToString()))
+                        .Select(m => new SelectListItem { Value = m.Id.ToString(), Text = m.FullName }).ToList();
                     break;
                 case EmployeeRole.GeneralManager:
                     MentorsSelectList = new List<SelectListItem>()
@@ -156,9 +147,9 @@ namespace ERPSystem.Pages.Employees
 
             var EmployeeToUpdate = await _context.Employees
                 .Include(e => e.Branch)
-                .Include(e => e.Company).ThenInclude(e => e.GeneralManager)
-                .Include(e => e.Department).ThenInclude(e => e.DepartmentHead)
-                .Include(e => e.Project).ThenInclude(e => e.ProjectManager)
+                .Include(e => e.Company)
+                .Include(e => e.Department)
+                .Include(e => e.Project)
                 .Include(e => e.Assignments)
                 .Include(e => e.Mentors)
                 .FirstOrDefaultAsync(m => m.Id == id);
@@ -516,45 +507,12 @@ namespace ERPSystem.Pages.Employees
 
             if (FormFile != null)
             {
-                //Check permitted extensions for photo
-                var ext = Path.GetExtension(FormFile.FileName).ToLowerInvariant();
-                if (!string.IsNullOrEmpty(ext) || permittedExtensions.Contains(ext))
+                var savedFileName = await _photoUpload.SaveAsync(FormFile.OpenReadStream(), FormFile.FileName);
+                if (savedFileName != null)
                 {
-                    //Get random filename for server storage
-                    string uploadsFolder = Path.Combine(webHostEnvironment.WebRootPath, @"images/avatars"); //webHost adds 'wwwroot'
-                    var trustedFileNameForFileStorage = Path.GetRandomFileName();
-                    trustedFileNameForFileStorage = trustedFileNameForFileStorage.Substring(0, 8)
-                        + trustedFileNameForFileStorage.Substring(9) + ext;
-                    var filePath = Path.Combine(uploadsFolder, trustedFileNameForFileStorage);
-
-                    //Copy data to a new file
-                    using (var fileStream = System.IO.File.Create(filePath))
-                    {
-                        await FormFile.CopyToAsync(fileStream);
-                    }
-
-                    bool isProduction = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") == "Production";
-                    #region Delete old photo file
-                    if (isProduction)
-                    {
-                        var oldFile = EmployeeToUpdate.ProfilePicture;
-                        var fileToDelete = string.Empty;
-                        if (!string.IsNullOrEmpty(oldFile))
-                        {
-                            fileToDelete = Path.Combine(uploadsFolder, oldFile);
-                        }
-
-                        if (System.IO.File.Exists(fileToDelete))
-                        {
-                            System.IO.File.Delete(fileToDelete);
-                        }
-                    }
-                    #endregion
-
-                    //Update photo
-                    EmployeeToUpdate.ProfilePicture = trustedFileNameForFileStorage;
+                    _photoUpload.DeleteIfProduction(EmployeeToUpdate.ProfilePicture);
+                    EmployeeToUpdate.ProfilePicture = savedFileName;
                 }
-
             }
 
             //Refactored because TryUpdateModelAsync fails while unit testing:
@@ -588,11 +546,10 @@ namespace ERPSystem.Pages.Employees
                 }
             }
 
-            Utility utility = new Utility(_context);
-            utility.UpdateCompanyDependants(CompaniesWithModifiedState);
-            utility.UpdateDepartmentDependants(DepartmentsWithModifiedState);
-            utility.UpdateProjectDependants(ProjectsWithModifiedState);
-            utility.UpdateWhenParentIsNull();
+            _stateCascade.UpdateCompanyDependants(CompaniesWithModifiedState);
+            _stateCascade.UpdateDepartmentDependants(DepartmentsWithModifiedState);
+            _stateCascade.UpdateProjectDependants(ProjectsWithModifiedState);
+            _stateCascade.UpdateWhenParentIsNull();
 
             Role = EmployeeToUpdate.EmployeeRole;
 
@@ -690,148 +647,22 @@ namespace ERPSystem.Pages.Employees
         }
         public async Task<JsonResult> OnGetBranchStateAsync(string branchId)
         {
-            Utility utility = new Utility(_context);
-            return await utility.GetBranchStateAsync(branchId);
+            return new JsonResult(await _stateLookup.GetBranchStateAsync(branchId));
         }
         public async Task<JsonResult> OnGetDepartmentAsync(string departmentId)
         {
-            if (!string.IsNullOrWhiteSpace(departmentId))
-            {
-                if (Int32.TryParse(departmentId, out int id))
-                {
-                    Department department = await _context.Departments.FindAsync(id);
-                    if (department != null)
-                    {
-                        Company company = await _context.Companies
-                            .Include(c => c.Branches)
-                            .ThenInclude(b => b.Employees)
-                            .Where(c => c.Id == department.CompanyId)
-                            .AsNoTracking()
-                            .FirstOrDefaultAsync();
-                        if (company != null)
-                        {
-                            if (company.Branches.Count > 0)
-                            {
-                                List<Employee> mentors = new List<Employee>();
-                                foreach (Branch branch in company.Branches)
-                                {
-                                    foreach (Employee mentor in branch.Employees)
-                                        mentors.Add(mentor);
-                                }
-                                IEnumerable<SelectListItem> items = mentors
-                                        .OrderBy(n => n.FullName)
-                                        .Select(n =>
-                                           new SelectListItem
-                                           {
-                                               Value = n.Id.ToString(),
-                                               Text = n.FullName
-                                           }).ToList();
-                                return new JsonResult(items);
-                            }
-                        }
-                    }
-                }
-            }
-            return new JsonResult(
-                new List<SelectListItem>
-                {
-                    new SelectListItem { Value = "0", Text = "No Mentors" }
-                });
+            var mentors = await _mentorLookup.GetMentorsByDepartmentAsync(departmentId);
+            return new JsonResult(mentors.Select(m => new SelectListItem { Value = m.Id.ToString(), Text = m.FullName }));
         }
         public async Task<JsonResult> OnGetProjectAsync(string projectId)
         {
-            if (!string.IsNullOrWhiteSpace(projectId))
-            {
-                if (Int32.TryParse(projectId, out int id))
-                {
-                    Project project = await _context.Projects.FindAsync(id);
-                    if (project != null)
-                    {
-                        Department department = await _context.Departments.FindAsync(project.DepartmentId);
-                        if (department != null)
-                        {
-                            Company company = await _context.Companies
-                                .Include(c => c.Branches)
-                                .ThenInclude(b => b.Employees)
-                                .Where(c => c.Id == department.CompanyId)
-                                .AsNoTracking()
-                                .FirstOrDefaultAsync();
-                            if (company != null)
-                            {
-                                if (company.Branches.Count > 0)
-                                {
-                                    List<Employee> mentors = new List<Employee>();
-                                    foreach (Branch branch in company.Branches)
-                                    {
-                                        foreach (Employee mentor in branch.Employees)
-                                            mentors.Add(mentor);
-                                    }
-                                    IEnumerable<SelectListItem> items = mentors
-                                            .OrderBy(n => n.FullName)
-                                            .Select(n =>
-                                               new SelectListItem
-                                               {
-                                                   Value = n.Id.ToString(),
-                                                   Text = n.FullName
-                                               }).ToList();
-                                    return new JsonResult(items);
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-            return new JsonResult(
-                new List<SelectListItem>
-                {
-                    new SelectListItem { Value = "0", Text = "No Mentors" }
-                });
+            var mentors = await _mentorLookup.GetMentorsByProjectAsync(projectId);
+            return new JsonResult(mentors.Select(m => new SelectListItem { Value = m.Id.ToString(), Text = m.FullName }));
         }
         public async Task<JsonResult> OnGetBranchAsync(string branchId)
         {
-            if (!string.IsNullOrWhiteSpace(branchId))
-            {
-                if (Int32.TryParse(branchId, out int id))
-                {
-                    Branch branch = await _context.Branches.FindAsync(id);
-                    if (branch != null)
-                    {
-                        Company company = await _context.Companies
-                            .Include(c => c.Branches)
-                            .ThenInclude(b => b.Employees)
-                            .Where(c => c.Id == branch.CompanyId)
-                            .AsNoTracking()
-                            .FirstOrDefaultAsync();
-                        if (company != null)
-                        {
-                            if (company.Branches.Count > 0)
-                            {
-                                List<Employee> mentors = new List<Employee>();
-                                foreach (Branch brnch in company.Branches)
-                                {
-                                    foreach (Employee mentor in brnch.Employees)
-                                        mentors.Add(mentor);
-                                }
-                                IEnumerable<SelectListItem> items = mentors
-                                    .OrderBy(n => n.FullName)
-                                    .Select(n =>
-                                       new SelectListItem
-                                       {
-                                           Value = n.Id.ToString(),
-                                           Text = n.FullName
-                                       }).ToList();
-                                return new JsonResult(items);
-                            }
-                        }
-                    }
-                }
-            }
-
-            return new JsonResult(
-                new List<SelectListItem>
-                {
-                    new SelectListItem { Value = "0", Text = "No Mentors" }
-                });
+            var mentors = await _mentorLookup.GetMentorsByBranchAsync(branchId);
+            return new JsonResult(mentors.Select(m => new SelectListItem { Value = m.Id.ToString(), Text = m.FullName }));
         }
     }
 }

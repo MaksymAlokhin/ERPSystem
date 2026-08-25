@@ -5,8 +5,8 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
-using ERPSystem.Data;
-using ERPSystem.Models;
+using ERPSystem.Infrastructure.Data;
+using ERPSystem.Domain.Entities;
 using Microsoft.Extensions.Configuration;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.Extensions.Logging;
@@ -15,9 +15,10 @@ namespace ERPSystem.Pages.Projects
 {
     public class IndexModel : PageModel
     {
-        private readonly ERPSystem.Data.ApplicationDbContext _context;
+        private readonly ERPSystem.Infrastructure.Data.ApplicationDbContext _context;
         private readonly ILogger<IndexModel> _logger;
         private readonly IConfiguration Configuration;
+        private readonly IAuthorizationService _authorizationService;
         public string NameSort { get; set; }
         public string StartDateSort { get; set; }
         public string EndDateSort { get; set; }
@@ -29,11 +30,13 @@ namespace ERPSystem.Pages.Projects
         public string CurrentSort { get; set; }
         public PaginatedList<Project> Project { get; set; }
 
-        public IndexModel(ERPSystem.Data.ApplicationDbContext context, IConfiguration configuration, ILogger<IndexModel> logger)
+        public IndexModel(ERPSystem.Infrastructure.Data.ApplicationDbContext context, IConfiguration configuration, ILogger<IndexModel> logger,
+            IAuthorizationService authorizationService)
         {
             _context = context;
             Configuration = configuration;
             _logger = logger;
+            _authorizationService = authorizationService;
         }
 
         public async Task OnGetAsync(string sortOrder,
@@ -126,6 +129,11 @@ namespace ERPSystem.Pages.Projects
         public async Task<IActionResult> OnGetActivateAsync(string sortOrder,
             string currentFilter, int? pageIndex)
         {
+            if (!(await _authorizationService.AuthorizeAsync(User, "AdminOnly")).Succeeded)
+            {
+                return Forbid();
+            }
+
             foreach (var project in _context.Projects)
             {
                 if (project.DepartmentId != null)

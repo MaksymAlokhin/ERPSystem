@@ -5,12 +5,13 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
-using ERPSystem.Data;
-using ERPSystem.Models;
+using ERPSystem.Infrastructure.Data;
+using ERPSystem.Domain.Entities;
+using ERPSystem.Application.Interfaces;
+using ERPSystem.Application;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.Extensions.Logging;
-//using Serilog;
 
 namespace ERPSystem.Pages.Assignments
 {
@@ -18,14 +19,16 @@ namespace ERPSystem.Pages.Assignments
     public class CreateModel : PageModel
     {
         private readonly ILogger<CreateModel> _logger;
-        private readonly ERPSystem.Data.ApplicationDbContext _context;
+        private readonly ERPSystem.Infrastructure.Data.ApplicationDbContext _context;
+        private readonly IEntityStateLookupService _stateLookup;
         public int? PageIndex { get; set; }
         public string CurrentFilter { get; set; }
         public string CurrentSort { get; set; }
 
-        public CreateModel(ERPSystem.Data.ApplicationDbContext context, ILogger<CreateModel> logger)
+        public CreateModel(ERPSystem.Infrastructure.Data.ApplicationDbContext context, IEntityStateLookupService stateLookup, ILogger<CreateModel> logger)
         {
             _context = context;
+            _stateLookup = stateLookup;
             _logger = logger;
         }
 
@@ -41,8 +44,8 @@ namespace ERPSystem.Pages.Assignments
 
             Assignment = new Assignment();
             Assignment.AssignmentState = AssignmentState.Inactive;
-            Assignment.StartDate = Utility.GetRandomDate(DateTime.Now.AddYears(-2), DateTime.Now);
-            Assignment.EndDate = Utility.GetRandomDate(DateTime.Now, DateTime.Now.AddYears(2));
+            Assignment.StartDate = DateRangeHelper.GetRandomDate(DateTime.Now.AddYears(-2), DateTime.Now);
+            Assignment.EndDate = DateRangeHelper.GetRandomDate(DateTime.Now, DateTime.Now.AddYears(2));
 
             return Page();
         }
@@ -87,13 +90,11 @@ namespace ERPSystem.Pages.Assignments
         }
         public async Task<JsonResult> OnGetPositionAsync(string positionId)
         {
-            Utility utility = new Utility(_context);
-            return await utility.GetPositionStateAsync(positionId);
+            return new JsonResult(await _stateLookup.GetPositionStateAsync(positionId));
         }
         public async Task<JsonResult> OnGetEmployeeAsync(string employeeId)
         {
-            Utility utility = new Utility(_context);
-            return await utility.GetEmployeeStateAsync(employeeId);
+            return new JsonResult(await _stateLookup.GetEmployeeStateAsync(employeeId));
         }
         public async Task<JsonResult> OnGetDateRangeAsync(string positionId)
         {

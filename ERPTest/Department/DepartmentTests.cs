@@ -1,8 +1,10 @@
 using System;
 using Xunit;
 using ERPSystem.Pages;
-using ERPSystem.Data;
-using ERPSystem.Models;
+using ERPSystem.Infrastructure.Data;
+using ERPSystem.Domain.Entities;
+using ERPSystem.Application.Interfaces;
+using ERPSystem.Infrastructure.Services;
 using Microsoft.EntityFrameworkCore;
 using Moq;
 using Microsoft.Extensions.Configuration;
@@ -22,10 +24,14 @@ namespace DepartmentTest
             PageSize = 7;
 
             context = new ApplicationDbContext(contextOptions);
+            stateCascade = new StateCascadeService(context);
+            stateLookup = new EntityStateLookupService(context);
 
             SeedDepartment(context);
         }
         public ApplicationDbContext context { get; private set; }
+        public IStateCascadeService stateCascade { get; private set; }
+        public IEntityStateLookupService stateLookup { get; private set; }
         private int PageSize;
         public void Dispose()
         {
@@ -108,7 +114,7 @@ namespace DepartmentTest
             // Arrange
             var logger = Mock.Of<Microsoft.Extensions.Logging.ILogger<ERPSystem.Pages.Departments.IndexModel>>();
             var config = new ConfigurationBuilder().Build();
-            var pageModel = new ERPSystem.Pages.Departments.IndexModel(context, config, logger);
+            var pageModel = new ERPSystem.Pages.Departments.IndexModel(context, config, logger, null);
             var expectedDepartments = context.Departments;
 
             // Act
@@ -128,7 +134,7 @@ namespace DepartmentTest
             // Arrange
             var logger = Mock.Of<Microsoft.Extensions.Logging.ILogger<ERPSystem.Pages.Departments.IndexModel>>();
             var config = new ConfigurationBuilder().Build();
-            var pageModel = new ERPSystem.Pages.Departments.IndexModel(context, config, logger);
+            var pageModel = new ERPSystem.Pages.Departments.IndexModel(context, config, logger, null);
             var expectedDepartments = context.Departments;
 
             // Act
@@ -152,7 +158,7 @@ namespace DepartmentTest
             // Arrange
             var logger = Mock.Of<Microsoft.Extensions.Logging.ILogger<ERPSystem.Pages.Departments.IndexModel>>();
             var config = new ConfigurationBuilder().Build();
-            var pageModel = new ERPSystem.Pages.Departments.IndexModel(context, config, logger);
+            var pageModel = new ERPSystem.Pages.Departments.IndexModel(context, config, logger, null);
             IQueryable<Department> expectedDepartments = context.Departments;
             if (!String.IsNullOrEmpty(searchString))
             {
@@ -183,7 +189,7 @@ namespace DepartmentTest
             // Arrange
             var logger = Mock.Of<Microsoft.Extensions.Logging.ILogger<ERPSystem.Pages.Departments.IndexModel>>();
             var config = new ConfigurationBuilder().Build();
-            var pageModel = new ERPSystem.Pages.Departments.IndexModel(context, config, logger);
+            var pageModel = new ERPSystem.Pages.Departments.IndexModel(context, config, logger, null);
             List<Department> expectedDepartments = new List<Department>();
             if (pageIndex > 0 && pageIndex <= Math.Ceiling((double)context.Departments.Count() / (double)PageSize))
             {
@@ -218,7 +224,7 @@ namespace DepartmentTest
         {
             // Arrange
             var logger = Mock.Of<Microsoft.Extensions.Logging.ILogger<ERPSystem.Pages.Departments.CreateModel>>();
-            var pageModel = new ERPSystem.Pages.Departments.CreateModel(context, logger);
+            var pageModel = new ERPSystem.Pages.Departments.CreateModel(context, stateCascade, stateLookup, logger);
             var expectedDepartment = new Department 
             {
                 Name = "Test Department",
@@ -243,7 +249,7 @@ namespace DepartmentTest
         {
             // Arrange
             var logger = Mock.Of<Microsoft.Extensions.Logging.ILogger<ERPSystem.Pages.Departments.CreateModel>>();
-            var pageModel = new ERPSystem.Pages.Departments.CreateModel(context, logger);
+            var pageModel = new ERPSystem.Pages.Departments.CreateModel(context, stateCascade, stateLookup, logger);
             var expectedDepartment = new Department
             {
                 Name = "Test Department",
@@ -265,7 +271,7 @@ namespace DepartmentTest
         {
             // Arrange
             var logger = Mock.Of<Microsoft.Extensions.Logging.ILogger<ERPSystem.Pages.Departments.DeleteModel>>();
-            var pageModel = new ERPSystem.Pages.Departments.DeleteModel(context, logger);
+            var pageModel = new ERPSystem.Pages.Departments.DeleteModel(context, stateCascade, logger);
             var testId = 1;
 
             // Act
@@ -285,7 +291,7 @@ namespace DepartmentTest
         {
             // Arrange
             var logger = Mock.Of<Microsoft.Extensions.Logging.ILogger<ERPSystem.Pages.Departments.DeleteModel>>();
-            var pageModel = new ERPSystem.Pages.Departments.DeleteModel(context, logger);
+            var pageModel = new ERPSystem.Pages.Departments.DeleteModel(context, stateCascade, logger);
             var testId = 1;
             var expectedDepartments = context.Departments.Where(c => c.Id != testId).ToList();
 
@@ -306,7 +312,7 @@ namespace DepartmentTest
         {
             // Arrange
             var logger = Mock.Of<Microsoft.Extensions.Logging.ILogger<ERPSystem.Pages.Departments.DeleteModel>>();
-            var pageModel = new ERPSystem.Pages.Departments.DeleteModel(context, logger);
+            var pageModel = new ERPSystem.Pages.Departments.DeleteModel(context, stateCascade, logger);
             var testId = 11;
             var expectedDepartments = context.Departments;
 
@@ -327,7 +333,7 @@ namespace DepartmentTest
         {
             // Arrange
             var logger = Mock.Of<Microsoft.Extensions.Logging.ILogger<ERPSystem.Pages.Departments.EditModel>>();
-            var pageModel = new ERPSystem.Pages.Departments.EditModel(context, logger);
+            var pageModel = new ERPSystem.Pages.Departments.EditModel(context, stateCascade, stateLookup, logger);
             int testId = 2;
 
             // Act
@@ -348,7 +354,7 @@ namespace DepartmentTest
             // Arrange
             var logger = Mock.Of<Microsoft.Extensions.Logging.ILogger<ERPSystem.Pages.Departments.EditModel>>();
             var testId = 1;
-            var pageModel = new ERPSystem.Pages.Departments.EditModel(context, logger);
+            var pageModel = new ERPSystem.Pages.Departments.EditModel(context, stateCascade, stateLookup, logger);
             var expectedDepartment = context.Departments.FirstOrDefault(m => m.Id == testId);
             pageModel.Department = expectedDepartment;
             pageModel.Department.Name = "Modified Entity";
@@ -373,7 +379,7 @@ namespace DepartmentTest
         {
             // Arrange
             var logger = Mock.Of<Microsoft.Extensions.Logging.ILogger<ERPSystem.Pages.Departments.EditModel>>();
-            var pageModel = new ERPSystem.Pages.Departments.EditModel(context, logger);
+            var pageModel = new ERPSystem.Pages.Departments.EditModel(context, stateCascade, stateLookup, logger);
             int testId = 1;
             var expectedDepartment = context.Departments.FirstOrDefault(m => m.Id == testId);
             pageModel.Department = expectedDepartment;

@@ -1,5 +1,5 @@
-﻿using ERPSystem.Data;
-using ERPSystem.Models;
+﻿using ERPSystem.Infrastructure.Data;
+using ERPSystem.Domain.Entities;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using System;

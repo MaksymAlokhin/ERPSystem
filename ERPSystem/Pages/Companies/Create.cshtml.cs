@@ -5,8 +5,9 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
-using ERPSystem.Data;
-using ERPSystem.Models;
+using ERPSystem.Infrastructure.Data;
+using ERPSystem.Domain.Entities;
+using ERPSystem.Application.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.Extensions.Logging;
@@ -16,7 +17,9 @@ namespace ERPSystem.Pages.Companies
     [Authorize(Policy = "AdminOnly")]
     public class CreateModel : PageModel
     {
-        private readonly ERPSystem.Data.ApplicationDbContext _context;
+        private readonly ERPSystem.Infrastructure.Data.ApplicationDbContext _context;
+        private readonly IStateCascadeService _stateCascade;
+        private readonly IEntityStateLookupService _stateLookup;
         private readonly ILogger<CreateModel> _logger;
         public int? PageIndex { get; set; }
         public string CurrentFilter { get; set; }
@@ -30,9 +33,12 @@ namespace ERPSystem.Pages.Companies
 
         public CompanyState State { get; set; }
 
-        public CreateModel(ERPSystem.Data.ApplicationDbContext context, ILogger<CreateModel> logger)
+        public CreateModel(ERPSystem.Infrastructure.Data.ApplicationDbContext context, IStateCascadeService stateCascade,
+            IEntityStateLookupService stateLookup, ILogger<CreateModel> logger)
         {
             _context = context;
+            _stateCascade = stateCascade;
+            _stateLookup = stateLookup;
             _logger = logger;
         }
 
@@ -141,8 +147,7 @@ namespace ERPSystem.Pages.Companies
 
             CompaniesWithModifiedState.Add(NewCompany.Id);
 
-            Utility utility = new Utility(_context);
-            utility.UpdateCompanyDependants(CompaniesWithModifiedState);
+            _stateCascade.UpdateCompanyDependants(CompaniesWithModifiedState);
 
             _logger.LogInformation("Company created: {0}", NewCompany.Name);
 
@@ -155,8 +160,7 @@ namespace ERPSystem.Pages.Companies
         }
         public async Task<JsonResult> OnGetEmployeeAsync(string employeeId)
         {
-            Utility utility = new Utility(_context);
-            return await utility.GetEmployeeStateAsync(employeeId);
+            return new JsonResult(await _stateLookup.GetEmployeeStateAsync(employeeId));
         }
     }
 }

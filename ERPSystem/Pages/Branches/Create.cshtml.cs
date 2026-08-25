@@ -5,8 +5,9 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
-using ERPSystem.Data;
-using ERPSystem.Models;
+using ERPSystem.Infrastructure.Data;
+using ERPSystem.Domain.Entities;
+using ERPSystem.Application.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.Extensions.Logging;
@@ -16,7 +17,9 @@ namespace ERPSystem.Pages.Branches
     [Authorize(Policy = "AdminOnly")]
     public class CreateModel : PageModel
     {
-        private readonly ERPSystem.Data.ApplicationDbContext _context;
+        private readonly ERPSystem.Infrastructure.Data.ApplicationDbContext _context;
+        private readonly IStateCascadeService _stateCascade;
+        private readonly IEntityStateLookupService _stateLookup;
         private readonly ILogger<CreateModel> _logger;
         public int? PageIndex { get; set; }
         public string CurrentFilter { get; set; }
@@ -25,9 +28,12 @@ namespace ERPSystem.Pages.Branches
         public SelectList EmployeesSelectList { get; set; }
         public SelectList CompaniesSelectList { get; set; }
 
-        public CreateModel(ERPSystem.Data.ApplicationDbContext context, ILogger<CreateModel> logger)
+        public CreateModel(ERPSystem.Infrastructure.Data.ApplicationDbContext context, IStateCascadeService stateCascade,
+            IEntityStateLookupService stateLookup, ILogger<CreateModel> logger)
         {
             _context = context;
+            _stateCascade = stateCascade;
+            _stateLookup = stateLookup;
             _logger = logger;
         }
         public IActionResult OnGet(string sortOrder,
@@ -99,8 +105,7 @@ namespace ERPSystem.Pages.Branches
 
             BranchesWithModifiedState.Add(NewBranch.Id);
 
-            Utility utility = new Utility(_context);
-            utility.UpdateBranchDependants(BranchesWithModifiedState);
+            _stateCascade.UpdateBranchDependants(BranchesWithModifiedState);
 
             _logger.LogInformation("Branch created: {0}", NewBranch.Name);
 
@@ -113,8 +118,7 @@ namespace ERPSystem.Pages.Branches
         }
         public async Task<JsonResult> OnGetCompanyAsync(string companyId)
         {
-            Utility utility = new Utility(_context);
-            return await utility.GetCompanyStateAsync(companyId);
+            return new JsonResult(await _stateLookup.GetCompanyStateAsync(companyId));
         }
     }
 }

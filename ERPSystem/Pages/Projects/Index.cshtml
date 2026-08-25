@@ -96,7 +96,7 @@
             int i = 0;
             @foreach (var item in Model.Project)
             {
-                <tr style="@(item.ProjectState == Models.ProjectState.Inactive || item.ProjectState == Models.ProjectState.Draft? "color:gray;" : "")">
+                <tr style="@(item.ProjectState == ERPSystem.Domain.Entities.ProjectState.Inactive || item.ProjectState == ERPSystem.Domain.Entities.ProjectState.Draft? "color:gray;" : "")">
                     <th scope="row">
                         @Model.Project.SeqNum[i]
                     </th>

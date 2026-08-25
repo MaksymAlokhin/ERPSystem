@@ -34,7 +34,7 @@
                 </div>
                 <div class="col-sm-auto">
                     <label asp-for="Role" class="control-label"><i class="fas fa-users"></i></label>
-                    <select asp-for="Role" style="width: auto" asp-items="Html.GetEnumSelectList<Models.EmployeeRole>()" onchange="this.form.submit();"></select>
+                    <select asp-for="Role" style="width: auto" asp-items="Html.GetEnumSelectList<ERPSystem.Domain.Entities.EmployeeRole>()" onchange="this.form.submit();"></select>
                 </div>
             </div>
         </p>
@@ -59,8 +59,8 @@
             <th>
                 @switch (@Model.Role)
                 {
-                    case Models.EmployeeRole.Employee:
-                    case Models.EmployeeRole.Mentor:
+                    case ERPSystem.Domain.Entities.EmployeeRole.Employee:
+                    case ERPSystem.Domain.Entities.EmployeeRole.Mentor:
                         <a asp-page="./Index"
                            asp-route-sortOrder="@Model.BranchSort"
                            asp-route-currentFilter="@Model.CurrentFilter"
@@ -68,7 +68,7 @@
                             @Html.DisplayNameFor(model => model.Employee[0].Branch)
                         </a>
                         break;
-                    case Models.EmployeeRole.GeneralManager:
+                    case ERPSystem.Domain.Entities.EmployeeRole.GeneralManager:
                         <a asp-page="./Index"
                            asp-route-sortOrder="@Model.CompanySort"
                            asp-route-currentFilter="@Model.CurrentFilter"
@@ -76,7 +76,7 @@
                             @Html.DisplayNameFor(model => model.Employee[0].Company)
                         </a>
                         break;
-                    case Models.EmployeeRole.ProjectManager:
+                    case ERPSystem.Domain.Entities.EmployeeRole.ProjectManager:
                         <a asp-page="./Index"
                            asp-route-sortOrder="@Model.ProjectSort"
                            asp-route-currentFilter="@Model.CurrentFilter"
@@ -84,7 +84,7 @@
                             @Html.DisplayNameFor(model => model.Employee[0].Project)
                         </a>
                         break;
-                    case Models.EmployeeRole.DepartmentHead:
+                    case ERPSystem.Domain.Entities.EmployeeRole.DepartmentHead:
                         <a asp-page="./Index"
                            asp-route-sortOrder="@Model.DepartmentSort"
                            asp-route-currentFilter="@Model.CurrentFilter"
@@ -96,8 +96,8 @@
             </th>
             @switch (@Model.Role)
             {
-                case Models.EmployeeRole.Employee:
-                case Models.EmployeeRole.Mentor:
+                case ERPSystem.Domain.Entities.EmployeeRole.Employee:
+                case ERPSystem.Domain.Entities.EmployeeRole.Mentor:
                     <th style="text-align: center">
                         <a asp-page="./Index"
                            asp-route-sortOrder="@Model.AssignmentSort"
@@ -124,7 +124,7 @@
             int i = 0;
             @foreach (var item in Model.Employee)
             {
-                <tr style="@(item.EmployeeState == Models.EmployeeState.Inactive? "color:gray;" : "")">
+                <tr style="@(item.EmployeeState == ERPSystem.Domain.Entities.EmployeeState.Inactive? "color:gray;" : "")">
                     <th scope="row">
                         @Model.Employee.SeqNum[i]
                     </th>
@@ -145,25 +145,25 @@
                     <td>
                         @switch (@Model.Role)
                         {
-                            case Models.EmployeeRole.Employee:
-                            case Models.EmployeeRole.Mentor:
+                            case ERPSystem.Domain.Entities.EmployeeRole.Employee:
+                            case ERPSystem.Domain.Entities.EmployeeRole.Mentor:
                                 @Html.DisplayFor(modelItem => item.Branch.Name)
                                 break;
-                            case Models.EmployeeRole.GeneralManager:
+                            case ERPSystem.Domain.Entities.EmployeeRole.GeneralManager:
                                 @Html.DisplayFor(modelItem => item.Company.Name)
                                 break;
-                            case Models.EmployeeRole.ProjectManager:
+                            case ERPSystem.Domain.Entities.EmployeeRole.ProjectManager:
                                 @Html.DisplayFor(modelItem => item.Project.Name)
                                 break;
-                            case Models.EmployeeRole.DepartmentHead:
+                            case ERPSystem.Domain.Entities.EmployeeRole.DepartmentHead:
                                 @Html.DisplayFor(modelItem => item.Department.Name)
                                 break;
                         }
                     </td>
                     @switch (@Model.Role)
                     {
-                        case Models.EmployeeRole.Employee:
-                        case Models.EmployeeRole.Mentor:
+                        case ERPSystem.Domain.Entities.EmployeeRole.Employee:
+                        case ERPSystem.Domain.Entities.EmployeeRole.Mentor:
                             <td style="text-align: center">
                                 @item.Assignments.Count()
                             </td>

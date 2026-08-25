@@ -6,8 +6,9 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
-using ERPSystem.Data;
-using ERPSystem.Models;
+using ERPSystem.Infrastructure.Data;
+using ERPSystem.Domain.Entities;
+using ERPSystem.Application.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.Extensions.Logging;
 
@@ -16,7 +17,9 @@ namespace ERPSystem.Pages.Companies
     [Authorize(Policy = "AdminOnly")]
     public class EditModel : PageModel
     {
-        private readonly ERPSystem.Data.ApplicationDbContext _context;
+        private readonly ERPSystem.Infrastructure.Data.ApplicationDbContext _context;
+        private readonly IStateCascadeService _stateCascade;
+        private readonly IEntityStateLookupService _stateLookup;
         private readonly ILogger<EditModel> _logger;
         public int? PageIndex { get; set; }
         public string CurrentFilter { get; set; }
@@ -28,9 +31,12 @@ namespace ERPSystem.Pages.Companies
         public List<int> SelectedDepartments { get; set; }
         public SelectList DepartmentsSelectList { get; set; }
         List<int> CompaniesWithModifiedState { get; set; }
-        public EditModel(ERPSystem.Data.ApplicationDbContext context, ILogger<EditModel> logger)
+        public EditModel(ERPSystem.Infrastructure.Data.ApplicationDbContext context, IStateCascadeService stateCascade,
+            IEntityStateLookupService stateLookup, ILogger<EditModel> logger)
         {
             _context = context;
+            _stateCascade = stateCascade;
+            _stateLookup = stateLookup;
             _logger = logger;
         }
 
@@ -138,11 +144,7 @@ namespace ERPSystem.Pages.Companies
             {
                 if (CompanyToUpdate.GeneralManager != null) //We removed GM
                 {
-                    Employee formerGm = await _context.Employees
-                        .Where(e => e.EmployeeRole == EmployeeRole.GeneralManager
-                        && e.Id == CompanyToUpdate.GeneralManager.Id)
-                        .FirstOrDefaultAsync();
-                    formerGm.CompanyId = null;
+                    CompanyToUpdate.GeneralManager.CompanyId = null;
                 }
             }
 
@@ -168,9 +170,8 @@ namespace ERPSystem.Pages.Companies
                 }
             }
 
-            Utility utility = new Utility(_context);
-            utility.UpdateCompanyDependants(CompaniesWithModifiedState);
-            utility.UpdateWhenParentIsNull();
+            _stateCascade.UpdateCompanyDependants(CompaniesWithModifiedState);
+            _stateCascade.UpdateWhenParentIsNull();
 
             _logger.LogInformation("Company modified: {0}", CompanyToUpdate.Name);
 
@@ -266,8 +267,7 @@ namespace ERPSystem.Pages.Companies
         }
         public async Task<JsonResult> OnGetEmployeeAsync(string employeeId)
         {
-            Utility utility = new Utility(_context);
-            return await utility.GetEmployeeStateAsync(employeeId);
+            return new JsonResult(await _stateLookup.GetEmployeeStateAsync(employeeId));
         }
     }
 }

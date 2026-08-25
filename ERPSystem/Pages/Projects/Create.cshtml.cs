@@ -5,8 +5,10 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
-using ERPSystem.Data;
-using ERPSystem.Models;
+using ERPSystem.Infrastructure.Data;
+using ERPSystem.Domain.Entities;
+using ERPSystem.Application.Interfaces;
+using ERPSystem.Application;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.Extensions.Logging;
@@ -16,7 +18,9 @@ namespace ERPSystem.Pages.Projects
     [Authorize(Policy = "AdminOnly")]
     public class CreateModel : PageModel
     {
-        private readonly ERPSystem.Data.ApplicationDbContext _context;
+        private readonly ERPSystem.Infrastructure.Data.ApplicationDbContext _context;
+        private readonly IStateCascadeService _stateCascade;
+        private readonly IEntityStateLookupService _stateLookup;
         private readonly ILogger<CreateModel> _logger;
         public int? PageIndex { get; set; }
         public string CurrentFilter { get; set; }
@@ -26,9 +30,12 @@ namespace ERPSystem.Pages.Projects
         public List<SelectListItem> ProjectManagerList { get; set; }
         public int? ProjectManagerId;
 
-        public CreateModel(ERPSystem.Data.ApplicationDbContext context, ILogger<CreateModel> logger)
+        public CreateModel(ERPSystem.Infrastructure.Data.ApplicationDbContext context, IStateCascadeService stateCascade,
+            IEntityStateLookupService stateLookup, ILogger<CreateModel> logger)
         {
             _context = context;
+            _stateCascade = stateCascade;
+            _stateLookup = stateLookup;
             _logger = logger;
         }
 
@@ -56,8 +63,8 @@ namespace ERPSystem.Pages.Projects
 
             Project = new Project();
             Project.ProjectState = ProjectState.Inactive;
-            Project.StartDate = Utility.GetRandomDate(DateTime.Now.AddYears(-2), DateTime.Now);
-            Project.EndDate = Utility.GetRandomDate(DateTime.Now, DateTime.Now.AddYears(2));
+            Project.StartDate = DateRangeHelper.GetRandomDate(DateTime.Now.AddYears(-2), DateTime.Now);
+            Project.EndDate = DateRangeHelper.GetRandomDate(DateTime.Now, DateTime.Now.AddYears(2));
             return Page();
         }
 
@@ -132,8 +139,7 @@ namespace ERPSystem.Pages.Projects
 
             ProjectsWithModifiedState.Add(NewProject.Id);
 
-            Utility utility = new Utility(_context);
-            utility.UpdateProjectDependants(ProjectsWithModifiedState);
+            _stateCascade.UpdateProjectDependants(ProjectsWithModifiedState);
 
             _logger.LogInformation("Project created: {0}", NewProject.Name);
 
@@ -146,13 +152,11 @@ namespace ERPSystem.Pages.Projects
         }
         public async Task<JsonResult> OnGetDepartmentAsync(string departmentId)
         {
-            Utility utility = new Utility(_context);
-            return await utility.GetDepartmentStateAsync(departmentId);
+            return new JsonResult(await _stateLookup.GetDepartmentStateAsync(departmentId));
         }
         public async Task<JsonResult> OnGetEmployeeAsync(string employeeId)
         {
-            Utility utility = new Utility(_context);
-            return await utility.GetEmployeeStateAsync(employeeId);
+            return new JsonResult(await _stateLookup.GetEmployeeStateAsync(employeeId));
         }
     }
 }

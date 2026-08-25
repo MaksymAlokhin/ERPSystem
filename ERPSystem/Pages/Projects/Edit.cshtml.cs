@@ -6,8 +6,9 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
-using ERPSystem.Data;
-using ERPSystem.Models;
+using ERPSystem.Infrastructure.Data;
+using ERPSystem.Domain.Entities;
+using ERPSystem.Application.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.Extensions.Logging;
 
@@ -16,7 +17,9 @@ namespace ERPSystem.Pages.Projects
     [Authorize(Policy = "AdminOnly")]
     public class EditModel : PageModel
     {
-        private readonly ERPSystem.Data.ApplicationDbContext _context;
+        private readonly ERPSystem.Infrastructure.Data.ApplicationDbContext _context;
+        private readonly IStateCascadeService _stateCascade;
+        private readonly IEntityStateLookupService _stateLookup;
         private readonly ILogger<EditModel> _logger;
         public int? PageIndex { get; set; }
         public string CurrentFilter { get; set; }
@@ -26,9 +29,12 @@ namespace ERPSystem.Pages.Projects
         public List<SelectListItem> ProjectManagerList { get; set; }
         public int? ProjectManagerId;
         List<int> ProjectsWithModifiedState { get; set; }
-        public EditModel(ERPSystem.Data.ApplicationDbContext context, ILogger<EditModel> logger)
+        public EditModel(ERPSystem.Infrastructure.Data.ApplicationDbContext context, IStateCascadeService stateCascade,
+            IEntityStateLookupService stateLookup, ILogger<EditModel> logger)
         {
             _context = context;
+            _stateCascade = stateCascade;
+            _stateLookup = stateLookup;
             _logger = logger;
         }
 
@@ -145,11 +151,7 @@ namespace ERPSystem.Pages.Projects
             {
                 if (ProjectToUpdate.ProjectManager != null)
                 {
-                    Employee formerPm = await _context.Employees
-                            .Where(e => e.EmployeeRole == EmployeeRole.ProjectManager
-                                && e.Id == ProjectToUpdate.ProjectManager.Id)
-                            .FirstOrDefaultAsync();
-                    formerPm.ProjectId = null;
+                    ProjectToUpdate.ProjectManager.ProjectId = null;
                 }
             }
 
@@ -172,9 +174,8 @@ namespace ERPSystem.Pages.Projects
                 }
             }
 
-            Utility utility = new Utility(_context);
-            utility.UpdateProjectDependants(ProjectsWithModifiedState);
-            utility.UpdateWhenParentIsNull();
+            _stateCascade.UpdateProjectDependants(ProjectsWithModifiedState);
+            _stateCascade.UpdateWhenParentIsNull();
 
             _logger.LogInformation("Project modified: {0}", ProjectToUpdate.Name);
 
@@ -230,13 +231,11 @@ namespace ERPSystem.Pages.Projects
         }
         public async Task<JsonResult> OnGetDepartmentAsync(string departmentId)
         {
-            Utility utility = new Utility(_context);
-            return await utility.GetDepartmentStateAsync(departmentId);
+            return new JsonResult(await _stateLookup.GetDepartmentStateAsync(departmentId));
         }
         public async Task<JsonResult> OnGetEmployeeAsync(string employeeId)
         {
-            Utility utility = new Utility(_context);
-            return await utility.GetEmployeeStateAsync(employeeId);
+            return new JsonResult(await _stateLookup.GetEmployeeStateAsync(employeeId));
         }
     }
 }

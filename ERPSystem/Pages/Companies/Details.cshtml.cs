@@ -5,8 +5,8 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
-using ERPSystem.Data;
-using ERPSystem.Models;
+using ERPSystem.Infrastructure.Data;
+using ERPSystem.Domain.Entities;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.Extensions.Logging;
 
@@ -14,7 +14,7 @@ namespace ERPSystem.Pages.Companies
 {
     public class DetailsModel : PageModel
     {
-        private readonly ERPSystem.Data.ApplicationDbContext _context;
+        private readonly ERPSystem.Infrastructure.Data.ApplicationDbContext _context;
         private readonly ILogger<DetailsModel> _logger;
         public int? PageIndex { get; set; }
         public string CurrentFilter { get; set; }
@@ -22,7 +22,7 @@ namespace ERPSystem.Pages.Companies
         public List<Department> DepartmentsList { get; set; }
         public List<Branch> BranchesList { get; set; }
 
-        public DetailsModel(ERPSystem.Data.ApplicationDbContext context, ILogger<DetailsModel> logger)
+        public DetailsModel(ERPSystem.Infrastructure.Data.ApplicationDbContext context, ILogger<DetailsModel> logger)
         {
             _context = context;
             _logger = logger;

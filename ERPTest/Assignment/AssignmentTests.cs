@@ -1,8 +1,10 @@
 using System;
 using Xunit;
 using ERPSystem.Pages;
-using ERPSystem.Data;
-using ERPSystem.Models;
+using ERPSystem.Infrastructure.Data;
+using ERPSystem.Domain.Entities;
+using ERPSystem.Application.Interfaces;
+using ERPSystem.Infrastructure.Services;
 using Microsoft.EntityFrameworkCore;
 using Moq;
 using Microsoft.Extensions.Configuration;
@@ -22,10 +24,12 @@ namespace AssignmentTest
             PageSize = 7;
 
             context = new ApplicationDbContext(contextOptions);
+            stateLookup = new EntityStateLookupService(context);
 
             SeedAssignment(context);
         }
         public ApplicationDbContext context { get; private set; }
+        public IEntityStateLookupService stateLookup { get; private set; }
         private int PageSize;
         public void Dispose()
         {
@@ -130,7 +134,7 @@ namespace AssignmentTest
             // Arrange
             var logger = Mock.Of<Microsoft.Extensions.Logging.ILogger<ERPSystem.Pages.Assignments.IndexModel>>();
             var config = new ConfigurationBuilder().Build();
-            var pageModel = new ERPSystem.Pages.Assignments.IndexModel(context, config, logger);
+            var pageModel = new ERPSystem.Pages.Assignments.IndexModel(context, config, logger, null);
             var expectedAssignments = context.Assignments;
 
             // Act
@@ -150,7 +154,7 @@ namespace AssignmentTest
             // Arrange
             var logger = Mock.Of<Microsoft.Extensions.Logging.ILogger<ERPSystem.Pages.Assignments.IndexModel>>();
             var config = new ConfigurationBuilder().Build();
-            var pageModel = new ERPSystem.Pages.Assignments.IndexModel(context, config, logger);
+            var pageModel = new ERPSystem.Pages.Assignments.IndexModel(context, config, logger, null);
             var expectedAssignments = context.Assignments;
 
             // Act
@@ -174,7 +178,7 @@ namespace AssignmentTest
             // Arrange
             var logger = Mock.Of<Microsoft.Extensions.Logging.ILogger<ERPSystem.Pages.Assignments.IndexModel>>(); 
             var config = new ConfigurationBuilder().Build();
-            var pageModel = new ERPSystem.Pages.Assignments.IndexModel(context, config, logger);
+            var pageModel = new ERPSystem.Pages.Assignments.IndexModel(context, config, logger, null);
             IQueryable<Assignment> expectedAssignments = context.Assignments;
             if (!String.IsNullOrEmpty(searchString))
             {
@@ -207,7 +211,7 @@ namespace AssignmentTest
             // Arrange
             var logger = Mock.Of<Microsoft.Extensions.Logging.ILogger<ERPSystem.Pages.Assignments.IndexModel>>();
             var config = new ConfigurationBuilder().Build();
-            var pageModel = new ERPSystem.Pages.Assignments.IndexModel(context, config, logger);
+            var pageModel = new ERPSystem.Pages.Assignments.IndexModel(context, config, logger, null);
             List<Assignment> expectedAssignments = new List<Assignment>();
             if (pageIndex > 0 && pageIndex <= Math.Ceiling((double)context.Assignments.Count() / (double)PageSize))
             {
@@ -243,7 +247,7 @@ namespace AssignmentTest
         {
             // Arrange
             var logger = Mock.Of<Microsoft.Extensions.Logging.ILogger<ERPSystem.Pages.Assignments.CreateModel>>();
-            var pageModel = new ERPSystem.Pages.Assignments.CreateModel(context, logger);
+            var pageModel = new ERPSystem.Pages.Assignments.CreateModel(context, stateLookup, logger);
             var expectedAssignment = new Assignment
             {
                 Name = "Test Assignment",
@@ -273,7 +277,7 @@ namespace AssignmentTest
         {
             // Arrange
             var logger = Mock.Of<Microsoft.Extensions.Logging.ILogger<ERPSystem.Pages.Assignments.CreateModel>>(); 
-            var pageModel = new ERPSystem.Pages.Assignments.CreateModel(context, logger);
+            var pageModel = new ERPSystem.Pages.Assignments.CreateModel(context, stateLookup, logger);
             var expectedAssignment = new Assignment
             {
                 Id = 10,
@@ -361,7 +365,7 @@ namespace AssignmentTest
         {
             // Arrange
             var logger = Mock.Of<Microsoft.Extensions.Logging.ILogger<ERPSystem.Pages.Assignments.EditModel>>();
-            var pageModel = new ERPSystem.Pages.Assignments.EditModel(context, logger);
+            var pageModel = new ERPSystem.Pages.Assignments.EditModel(context, stateLookup, logger);
             int testId = 2;
 
             // Act
@@ -382,7 +386,7 @@ namespace AssignmentTest
             // Arrange
             var logger = Mock.Of<Microsoft.Extensions.Logging.ILogger<ERPSystem.Pages.Assignments.EditModel>>();
             var testId = 1;
-            var pageModel = new ERPSystem.Pages.Assignments.EditModel(context, logger);
+            var pageModel = new ERPSystem.Pages.Assignments.EditModel(context, stateLookup, logger);
             var expectedAssignment = context.Assignments.FirstOrDefault(m => m.Id == testId);
             pageModel.Assignment = expectedAssignment;
             pageModel.Assignment.Name = "Modified Entity";
@@ -407,7 +411,7 @@ namespace AssignmentTest
         {
             // Arrange
             var logger = Mock.Of<Microsoft.Extensions.Logging.ILogger<ERPSystem.Pages.Assignments.EditModel>>();
-            var pageModel = new ERPSystem.Pages.Assignments.EditModel(context, logger);
+            var pageModel = new ERPSystem.Pages.Assignments.EditModel(context, stateLookup, logger);
             int testId = 1;
             var expectedAssignment = context.Assignments.FirstOrDefault(m => m.Id == testId);
             pageModel.Assignment = expectedAssignment;

@@ -1,8 +1,10 @@
 using System;
 using Xunit;
 using ERPSystem.Pages;
-using ERPSystem.Data;
-using ERPSystem.Models;
+using ERPSystem.Infrastructure.Data;
+using ERPSystem.Domain.Entities;
+using ERPSystem.Application.Interfaces;
+using ERPSystem.Infrastructure.Services;
 using Microsoft.EntityFrameworkCore;
 using Moq;
 using Microsoft.Extensions.Configuration;
@@ -22,10 +24,14 @@ namespace PositionTest
             PageSize = 7;
 
             context = new ApplicationDbContext(contextOptions);
+            stateCascade = new StateCascadeService(context);
+            stateLookup = new EntityStateLookupService(context);
 
             SeedPosition(context);
         }
         public ApplicationDbContext context { get; private set; }
+        public IStateCascadeService stateCascade { get; private set; }
+        public IEntityStateLookupService stateLookup { get; private set; }
         private int PageSize;
         public void Dispose()
         {
@@ -119,7 +125,7 @@ namespace PositionTest
             // Arrange
             var logger = Mock.Of<Microsoft.Extensions.Logging.ILogger<ERPSystem.Pages.Positions.IndexModel>>();
             var config = new ConfigurationBuilder().Build();
-            var pageModel = new ERPSystem.Pages.Positions.IndexModel(context, config, logger);
+            var pageModel = new ERPSystem.Pages.Positions.IndexModel(context, config, logger, null);
             var expectedPositions = context.Positions;
 
             // Act
@@ -139,7 +145,7 @@ namespace PositionTest
             // Arrange
             var logger = Mock.Of<Microsoft.Extensions.Logging.ILogger<ERPSystem.Pages.Positions.IndexModel>>();
             var config = new ConfigurationBuilder().Build();
-            var pageModel = new ERPSystem.Pages.Positions.IndexModel(context, config, logger);
+            var pageModel = new ERPSystem.Pages.Positions.IndexModel(context, config, logger, null);
             var expectedPositions = context.Positions;
 
             // Act
@@ -163,7 +169,7 @@ namespace PositionTest
             // Arrange
             var logger = Mock.Of<Microsoft.Extensions.Logging.ILogger<ERPSystem.Pages.Positions.IndexModel>>();
             var config = new ConfigurationBuilder().Build();
-            var pageModel = new ERPSystem.Pages.Positions.IndexModel(context, config, logger);
+            var pageModel = new ERPSystem.Pages.Positions.IndexModel(context, config, logger, null);
             IQueryable<Position> expectedPositions = context.Positions;
             if (!String.IsNullOrEmpty(searchString))
             {
@@ -194,7 +200,7 @@ namespace PositionTest
             // Arrange
             var logger = Mock.Of<Microsoft.Extensions.Logging.ILogger<ERPSystem.Pages.Positions.IndexModel>>();
             var config = new ConfigurationBuilder().Build();
-            var pageModel = new ERPSystem.Pages.Positions.IndexModel(context, config, logger);
+            var pageModel = new ERPSystem.Pages.Positions.IndexModel(context, config, logger, null);
             List<Position> expectedPositions = new List<Position>();
             if (pageIndex > 0 && pageIndex <= Math.Ceiling((double)context.Positions.Count() / (double)PageSize))
             {
@@ -229,7 +235,7 @@ namespace PositionTest
         {
             // Arrange
             var logger = Mock.Of<Microsoft.Extensions.Logging.ILogger<ERPSystem.Pages.Positions.CreateModel>>();
-            var pageModel = new ERPSystem.Pages.Positions.CreateModel(context, logger);
+            var pageModel = new ERPSystem.Pages.Positions.CreateModel(context, stateCascade, stateLookup, logger);
             var expectedPosition = new Position 
             {
                 Name = "Test Position",
@@ -258,7 +264,7 @@ namespace PositionTest
         {
             // Arrange
             var logger = Mock.Of<Microsoft.Extensions.Logging.ILogger<ERPSystem.Pages.Positions.CreateModel>>();
-            var pageModel = new ERPSystem.Pages.Positions.CreateModel(context, logger);
+            var pageModel = new ERPSystem.Pages.Positions.CreateModel(context, stateCascade, stateLookup, logger);
             var expectedPosition = new Position
             {
                 Name = "Test Position",
@@ -282,7 +288,7 @@ namespace PositionTest
         {
             // Arrange
             var logger = Mock.Of<Microsoft.Extensions.Logging.ILogger<ERPSystem.Pages.Positions.DeleteModel>>();
-            var pageModel = new ERPSystem.Pages.Positions.DeleteModel(context, logger);
+            var pageModel = new ERPSystem.Pages.Positions.DeleteModel(context, stateCascade, logger);
             var testId = 1;
 
             // Act
@@ -304,7 +310,7 @@ namespace PositionTest
         {
             // Arrange
             var logger = Mock.Of<Microsoft.Extensions.Logging.ILogger<ERPSystem.Pages.Positions.DeleteModel>>();
-            var pageModel = new ERPSystem.Pages.Positions.DeleteModel(context, logger);
+            var pageModel = new ERPSystem.Pages.Positions.DeleteModel(context, stateCascade, logger);
             var testId = 1;
             var expectedPositions = context.Positions.Where(c => c.Id != testId).ToList();
 
@@ -325,7 +331,7 @@ namespace PositionTest
         {
             // Arrange
             var logger = Mock.Of<Microsoft.Extensions.Logging.ILogger<ERPSystem.Pages.Positions.DeleteModel>>();
-            var pageModel = new ERPSystem.Pages.Positions.DeleteModel(context, logger);
+            var pageModel = new ERPSystem.Pages.Positions.DeleteModel(context, stateCascade, logger);
             var testId = 11;
             var expectedPositions = context.Positions;
 
@@ -346,7 +352,7 @@ namespace PositionTest
         {
             // Arrange
             var logger = Mock.Of<Microsoft.Extensions.Logging.ILogger<ERPSystem.Pages.Positions.EditModel>>();
-            var pageModel = new ERPSystem.Pages.Positions.EditModel(context, logger);
+            var pageModel = new ERPSystem.Pages.Positions.EditModel(context, stateCascade, stateLookup, logger);
             int testId = 2;
 
             // Act
@@ -369,7 +375,7 @@ namespace PositionTest
             // Arrange
             var logger = Mock.Of<Microsoft.Extensions.Logging.ILogger<ERPSystem.Pages.Positions.EditModel>>();
             var testId = 1;
-            var pageModel = new ERPSystem.Pages.Positions.EditModel(context, logger);
+            var pageModel = new ERPSystem.Pages.Positions.EditModel(context, stateCascade, stateLookup, logger);
             var expectedPosition = context.Positions.FirstOrDefault(m => m.Id == testId);
             pageModel.Position = expectedPosition;
             pageModel.Position.Name = "Modified Entity";
@@ -398,7 +404,7 @@ namespace PositionTest
         {
             // Arrange
             var logger = Mock.Of<Microsoft.Extensions.Logging.ILogger<ERPSystem.Pages.Positions.EditModel>>();
-            var pageModel = new ERPSystem.Pages.Positions.EditModel(context, logger);
+            var pageModel = new ERPSystem.Pages.Positions.EditModel(context, stateCascade, stateLookup, logger);
             int testId = 1;
             var expectedPosition = context.Positions.FirstOrDefault(m => m.Id == testId);
             pageModel.Position = expectedPosition;

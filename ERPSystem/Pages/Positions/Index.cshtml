@@ -89,7 +89,7 @@
             int i = 0;
             @foreach (var item in Model.Position)
             {
-                <tr style="@(item.PositionState == Models.PositionState.Inactive? "color:gray;" : "")">
+                <tr style="@(item.PositionState == ERPSystem.Domain.Entities.PositionState.Inactive? "color:gray;" : "")">
                     <th scope="row">
                         @Model.Position.SeqNum[i]
                     </th>

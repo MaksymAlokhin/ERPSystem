@@ -55,8 +55,8 @@
     </dd>
     @switch (@Model.Employee.EmployeeRole)
     {
-        case Models.EmployeeRole.Employee:
-        case Models.EmployeeRole.Mentor:
+        case ERPSystem.Domain.Entities.EmployeeRole.Employee:
+        case ERPSystem.Domain.Entities.EmployeeRole.Mentor:
             <dt class="col-sm-2">
                 @Html.DisplayNameFor(model => model.Employee.Branch)
             </dt>
@@ -70,7 +70,7 @@
                 }
             </dd>
             break;
-        case Models.EmployeeRole.GeneralManager:
+        case ERPSystem.Domain.Entities.EmployeeRole.GeneralManager:
             <dt class="col-sm-2">
                 @Html.DisplayNameFor(model => model.Employee.Company)
             </dt>
@@ -84,7 +84,7 @@
                 }
             </dd>
             break;
-        case Models.EmployeeRole.ProjectManager:
+        case ERPSystem.Domain.Entities.EmployeeRole.ProjectManager:
             <dt class="col-sm-2">
                 @Html.DisplayNameFor(model => model.Employee.Project)
             </dt>
@@ -98,7 +98,7 @@
                 }
             </dd>
             break;
-        case Models.EmployeeRole.DepartmentHead:
+        case ERPSystem.Domain.Entities.EmployeeRole.DepartmentHead:
             <dt class="col-sm-2">
                 @Html.DisplayNameFor(model => model.Employee.Department)
             </dt>

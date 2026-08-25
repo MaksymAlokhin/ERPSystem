@@ -39,9 +39,10 @@ namespace ERPSystem
         public static async Task<PaginatedList<T>> CreateAsync(
             IQueryable<T> source, int pageIndex, int pageSize)
         {
-            if (pageIndex > 0 && pageIndex <= Math.Ceiling((double)source.ToList().Count / (double)pageSize))
+            var count = await source.CountAsync();
+
+            if (pageIndex > 0 && pageIndex <= Math.Ceiling((double)count / (double)pageSize))
             {
-                var count = await source.CountAsync();
                 var items = await source.Skip(
                     (pageIndex - 1) * pageSize)
                     .Take(pageSize).ToListAsync();
@@ -54,7 +55,6 @@ namespace ERPSystem
             }
             else
             {
-                var count = await source.CountAsync();
                 var items = await source
                     .Take(pageSize).ToListAsync();
 

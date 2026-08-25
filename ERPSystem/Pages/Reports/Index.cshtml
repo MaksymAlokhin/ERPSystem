@@ -69,7 +69,7 @@
                     int i = 0;
                     @foreach (var item in Model.Report)
                     {
-                        <tr style="@(item.ReportState == Models.ReportState.Submitted || item.ReportState == Models.ReportState.Draft? "color:gray;" : "")">
+                        <tr style="@(item.ReportState == ERPSystem.Domain.Entities.ReportState.Submitted || item.ReportState == ERPSystem.Domain.Entities.ReportState.Draft? "color:gray;" : "")">
                             <th scope="row">
                                 @Model.Report.SeqNum[i]
                             </th>
@@ -90,7 +90,7 @@
                             </td>
                             <td>
                                 @{
-                                    var disabled = item.ReportState == Models.ReportState.Approved ? "disabled btn-light" : "btn-outline-primary";
+                                    var disabled = item.ReportState == ERPSystem.Domain.Entities.ReportState.Approved ? "disabled btn-light" : "btn-outline-primary";
                                 }
                                 @if (HttpContext.User.Claims.Any(c => c.Type == "Admin" && c.Value == ""))
                                 {

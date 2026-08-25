@@ -6,8 +6,9 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
-using ERPSystem.Data;
-using ERPSystem.Models;
+using ERPSystem.Infrastructure.Data;
+using ERPSystem.Domain.Entities;
+using ERPSystem.Application.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.Extensions.Logging;
 
@@ -16,7 +17,8 @@ namespace ERPSystem.Pages.Reports
     [Authorize(Policy = "AdminOnly")]
     public class EditModel : PageModel
     {
-        private readonly ERPSystem.Data.ApplicationDbContext _context;
+        private readonly ERPSystem.Infrastructure.Data.ApplicationDbContext _context;
+        private readonly IReportCalculationService _reportCalculation;
         private readonly ILogger<EditModel> _logger;
         public int? PageIndex { get; set; }
         public string CurrentFilter { get; set; }
@@ -31,9 +33,10 @@ namespace ERPSystem.Pages.Reports
             new SelectListItem { Value = "1", Text = "Submitted" }
         };
 
-        public EditModel(ERPSystem.Data.ApplicationDbContext context, ILogger<EditModel> logger)
+        public EditModel(ERPSystem.Infrastructure.Data.ApplicationDbContext context, IReportCalculationService reportCalculation, ILogger<EditModel> logger)
         {
             _context = context;
+            _reportCalculation = reportCalculation;
             _logger = logger;
         }
 
@@ -130,16 +133,18 @@ namespace ERPSystem.Pages.Reports
         {
             if (Int32.TryParse(assignmentId, out int id))
             {
-                Utility utility = new Utility(_context);
                 DateTime date = DateTime.Parse(inDate);
-                var result = await utility.GetHours(date, id);
-                return new JsonResult(new
+                var result = await _reportCalculation.GetHoursAsync(date, id);
+                if (result != null)
                 {
-                    hours = result.hours.ToString(),
-                    date = result.date.ToString("yyyy-MM-dd"),
-                    min = result.min.ToString("yyyy-MM-dd"),
-                    max = result.max.ToString("yyyy-MM-dd")
-                });
+                    return new JsonResult(new
+                    {
+                        hours = result.hours.ToString(),
+                        date = result.date.ToString("yyyy-MM-dd"),
+                        min = result.min.ToString("yyyy-MM-dd"),
+                        max = result.max.ToString("yyyy-MM-dd")
+                    });
+                }
             }
             return new JsonResult(null);
         }

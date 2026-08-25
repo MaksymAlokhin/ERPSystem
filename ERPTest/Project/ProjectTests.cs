@@ -1,8 +1,10 @@
 using System;
 using Xunit;
 using ERPSystem.Pages;
-using ERPSystem.Data;
-using ERPSystem.Models;
+using ERPSystem.Infrastructure.Data;
+using ERPSystem.Domain.Entities;
+using ERPSystem.Application.Interfaces;
+using ERPSystem.Infrastructure.Services;
 using Microsoft.EntityFrameworkCore;
 using Moq;
 using Microsoft.Extensions.Configuration;
@@ -22,10 +24,14 @@ namespace ProjectTest
             PageSize = 7;
 
             context = new ApplicationDbContext(contextOptions);
+            stateCascade = new StateCascadeService(context);
+            stateLookup = new EntityStateLookupService(context);
 
             SeedProject(context);
         }
         public ApplicationDbContext context { get; private set; }
+        public IStateCascadeService stateCascade { get; private set; }
+        public IEntityStateLookupService stateLookup { get; private set; }
         private int PageSize;
         public void Dispose()
         {
@@ -127,7 +133,7 @@ namespace ProjectTest
             // Arrange
             var logger = Mock.Of<Microsoft.Extensions.Logging.ILogger<ERPSystem.Pages.Projects.IndexModel>>();
             var config = new ConfigurationBuilder().Build();
-            var pageModel = new ERPSystem.Pages.Projects.IndexModel(context, config, logger);
+            var pageModel = new ERPSystem.Pages.Projects.IndexModel(context, config, logger, null);
             var expectedProjects = context.Projects;
 
             // Act
@@ -147,7 +153,7 @@ namespace ProjectTest
             // Arrange
             var logger = Mock.Of<Microsoft.Extensions.Logging.ILogger<ERPSystem.Pages.Projects.IndexModel>>();
             var config = new ConfigurationBuilder().Build();
-            var pageModel = new ERPSystem.Pages.Projects.IndexModel(context, config, logger);
+            var pageModel = new ERPSystem.Pages.Projects.IndexModel(context, config, logger, null);
             var expectedProjects = context.Projects;
 
             // Act
@@ -171,7 +177,7 @@ namespace ProjectTest
             // Arrange
             var logger = Mock.Of<Microsoft.Extensions.Logging.ILogger<ERPSystem.Pages.Projects.IndexModel>>();
             var config = new ConfigurationBuilder().Build();
-            var pageModel = new ERPSystem.Pages.Projects.IndexModel(context, config, logger);
+            var pageModel = new ERPSystem.Pages.Projects.IndexModel(context, config, logger, null);
             IQueryable<Project> expectedProjects = context.Projects;
             if (!String.IsNullOrEmpty(searchString))
             {
@@ -204,7 +210,7 @@ namespace ProjectTest
             // Arrange
             var logger = Mock.Of<Microsoft.Extensions.Logging.ILogger<ERPSystem.Pages.Projects.IndexModel>>();
             var config = new ConfigurationBuilder().Build();
-            var pageModel = new ERPSystem.Pages.Projects.IndexModel(context, config, logger);
+            var pageModel = new ERPSystem.Pages.Projects.IndexModel(context, config, logger, null);
             List<Project> expectedProjects = new List<Project>();
             if (pageIndex > 0 && pageIndex <= Math.Ceiling((double)context.Projects.Count() / (double)PageSize))
             {
@@ -239,7 +245,7 @@ namespace ProjectTest
         {
             // Arrange
             var logger = Mock.Of<Microsoft.Extensions.Logging.ILogger<ERPSystem.Pages.Projects.CreateModel>>();
-            var pageModel = new ERPSystem.Pages.Projects.CreateModel(context, logger);
+            var pageModel = new ERPSystem.Pages.Projects.CreateModel(context, stateCascade, stateLookup, logger);
             var expectedProject = new Project
             {
                 Name = "Test Project",
@@ -268,7 +274,7 @@ namespace ProjectTest
         {
             // Arrange
             var logger = Mock.Of<Microsoft.Extensions.Logging.ILogger<ERPSystem.Pages.Projects.CreateModel>>();
-            var pageModel = new ERPSystem.Pages.Projects.CreateModel(context, logger);
+            var pageModel = new ERPSystem.Pages.Projects.CreateModel(context, stateCascade, stateLookup, logger);
             var expectedProject = new Project
             {
                 Name = "Test Project",
@@ -292,7 +298,7 @@ namespace ProjectTest
         {
             // Arrange
             var logger = Mock.Of<Microsoft.Extensions.Logging.ILogger<ERPSystem.Pages.Projects.DeleteModel>>();
-            var pageModel = new ERPSystem.Pages.Projects.DeleteModel(context, logger);
+            var pageModel = new ERPSystem.Pages.Projects.DeleteModel(context, stateCascade, logger);
             var testId = 1;
 
             // Act
@@ -314,7 +320,7 @@ namespace ProjectTest
         {
             // Arrange
             var logger = Mock.Of<Microsoft.Extensions.Logging.ILogger<ERPSystem.Pages.Projects.DeleteModel>>();
-            var pageModel = new ERPSystem.Pages.Projects.DeleteModel(context, logger);
+            var pageModel = new ERPSystem.Pages.Projects.DeleteModel(context, stateCascade, logger);
             var testId = 1;
             var expectedProjects = context.Projects.Where(c => c.Id != testId).ToList();
 
@@ -335,7 +341,7 @@ namespace ProjectTest
         {
             // Arrange
             var logger = Mock.Of<Microsoft.Extensions.Logging.ILogger<ERPSystem.Pages.Projects.DeleteModel>>();
-            var pageModel = new ERPSystem.Pages.Projects.DeleteModel(context, logger);
+            var pageModel = new ERPSystem.Pages.Projects.DeleteModel(context, stateCascade, logger);
             var testId = 11;
             var expectedProjects = context.Projects;
 
@@ -356,7 +362,7 @@ namespace ProjectTest
         {
             // Arrange
             var logger = Mock.Of<Microsoft.Extensions.Logging.ILogger<ERPSystem.Pages.Projects.EditModel>>();
-            var pageModel = new ERPSystem.Pages.Projects.EditModel(context, logger);
+            var pageModel = new ERPSystem.Pages.Projects.EditModel(context, stateCascade, stateLookup, logger);
             int testId = 2;
 
             // Act
@@ -379,7 +385,7 @@ namespace ProjectTest
             // Arrange
             var logger = Mock.Of<Microsoft.Extensions.Logging.ILogger<ERPSystem.Pages.Projects.EditModel>>();
             var testId = 1;
-            var pageModel = new ERPSystem.Pages.Projects.EditModel(context, logger);
+            var pageModel = new ERPSystem.Pages.Projects.EditModel(context, stateCascade, stateLookup, logger);
             var expectedProject = context.Projects.FirstOrDefault(m => m.Id == testId);
             pageModel.Project = expectedProject;
             pageModel.Project.Name = "Modified Entity";
@@ -404,7 +410,7 @@ namespace ProjectTest
         {
             // Arrange
             var logger = Mock.Of<Microsoft.Extensions.Logging.ILogger<ERPSystem.Pages.Projects.EditModel>>();
-            var pageModel = new ERPSystem.Pages.Projects.EditModel(context, logger);
+            var pageModel = new ERPSystem.Pages.Projects.EditModel(context, stateCascade, stateLookup, logger);
             int testId = 1;
             var expectedProject = context.Projects.FirstOrDefault(m => m.Id == testId);
             pageModel.Project = expectedProject;

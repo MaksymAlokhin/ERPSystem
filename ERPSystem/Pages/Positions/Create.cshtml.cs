@@ -5,8 +5,10 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
-using ERPSystem.Data;
-using ERPSystem.Models;
+using ERPSystem.Infrastructure.Data;
+using ERPSystem.Domain.Entities;
+using ERPSystem.Application.Interfaces;
+using ERPSystem.Application;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.Extensions.Logging;
@@ -16,7 +18,9 @@ namespace ERPSystem.Pages.Positions
     [Authorize(Policy = "AdminOnly")]
     public class CreateModel : PageModel
     {
-        private readonly ERPSystem.Data.ApplicationDbContext _context;
+        private readonly ERPSystem.Infrastructure.Data.ApplicationDbContext _context;
+        private readonly IStateCascadeService _stateCascade;
+        private readonly IEntityStateLookupService _stateLookup;
         private readonly ILogger<CreateModel> _logger;
         public int? PageIndex { get; set; }
         public string CurrentFilter { get; set; }
@@ -24,9 +28,12 @@ namespace ERPSystem.Pages.Positions
         public List<int> SelectedAssignments { get; set; }
         public SelectList AssignmentsSelectList { get; set; }
 
-        public CreateModel(ERPSystem.Data.ApplicationDbContext context, ILogger<CreateModel> logger)
+        public CreateModel(ERPSystem.Infrastructure.Data.ApplicationDbContext context, IStateCascadeService stateCascade,
+            IEntityStateLookupService stateLookup, ILogger<CreateModel> logger)
         {
             _context = context;
+            _stateCascade = stateCascade;
+            _stateLookup = stateLookup;
             _logger = logger;
         }
 
@@ -42,7 +49,7 @@ namespace ERPSystem.Pages.Positions
             Position = new Position();
             Position.PositionState = PositionState.Inactive;
             Position.StartDate = DateTime.Now;
-            Position.EndDate = Utility.GetRandomDate(DateTime.Now, DateTime.Now.AddYears(2));
+            Position.EndDate = DateRangeHelper.GetRandomDate(DateTime.Now, DateTime.Now.AddYears(2));
 
             var AssignmentsQuery = _context.Assignments.OrderBy(e => e.Name).AsNoTracking();
             AssignmentsSelectList = new SelectList(AssignmentsQuery, "Id", "Name"); //list, id, value
@@ -120,8 +127,7 @@ namespace ERPSystem.Pages.Positions
 
             PositionsWithModifiedState.Add(NewPosition.Id);
 
-            Utility utility = new Utility(_context);
-            utility.UpdateProjectDependants(PositionsWithModifiedState);
+            _stateCascade.UpdatePositionDependants(PositionsWithModifiedState);
 
             _logger.LogInformation("Position created: {0}", NewPosition.Name);
 
@@ -135,8 +141,7 @@ namespace ERPSystem.Pages.Positions
 
         public async Task<JsonResult> OnGetProjectAsync(string projectId)
         {
-            Utility utility = new Utility(_context);
-            return await utility.GetProjectStateAsync(projectId);
+            return new JsonResult(await _stateLookup.GetProjectStateAsync(projectId));
         }
         public async Task<JsonResult> OnGetDateRangeAsync(string projectId)
         {

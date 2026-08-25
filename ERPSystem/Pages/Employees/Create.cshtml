@@ -41,7 +41,7 @@
                 <div class="col-sm-6">
                     <div class="form-group">
                         <label asp-for="Employee.EmployeeState" class="control-label"></label>
-                        <select asp-for="Employee.EmployeeState" class="form-control" asp-items="Html.GetEnumSelectList<Models.EmployeeState>()"></select>
+                        <select asp-for="Employee.EmployeeState" class="form-control" asp-items="Html.GetEnumSelectList<ERPSystem.Domain.Entities.EmployeeState>()"></select>
                         <span asp-validation-for="Employee.EmployeeState" class="text-danger"></span>
                     </div>
                 </div>
@@ -50,7 +50,7 @@
                 <div class="col-sm-6">
                     <div class="form-group">
                         <label asp-for="Employee.EmployeeRole" class="control-label"></label>
-                        <select asp-for="Employee.EmployeeRole" class="form-control" asp-items="Html.GetEnumSelectList<Models.EmployeeRole>()"></select>
+                        <select asp-for="Employee.EmployeeRole" class="form-control" asp-items="Html.GetEnumSelectList<ERPSystem.Domain.Entities.EmployeeRole>()"></select>
                         <span asp-validation-for="Employee.EmployeeRole" class="text-danger"></span>
                     </div>
                 </div>

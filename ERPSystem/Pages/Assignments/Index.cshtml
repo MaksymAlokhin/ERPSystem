@@ -98,7 +98,7 @@
             int i = 0;
             @foreach (var item in Model.Assignment)
             {
-                <tr style="@(item.AssignmentState == Models.AssignmentState.Inactive? "color:gray;" : "")">
+                <tr style="@(item.AssignmentState == ERPSystem.Domain.Entities.AssignmentState.Inactive? "color:gray;" : "")">
                     <th scope="row">
                         @Model.Assignment.SeqNum[i]
                     </th>
@@ -125,7 +125,7 @@
                     </td>
                     <td>
                         @{
-                            var disabled = item.AssignmentState != Models.AssignmentState.Active ? "disabled btn-light" : "btn-outline-primary";
+                            var disabled = item.AssignmentState != ERPSystem.Domain.Entities.AssignmentState.Active ? "disabled btn-light" : "btn-outline-primary";
                         }
                         <a asp-page="../Reports/Create"
                            asp-route-id="@item.Id"
