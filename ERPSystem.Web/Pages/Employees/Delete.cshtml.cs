@@ -9,7 +9,6 @@ using ERPSystem.Infrastructure.Data;
 using ERPSystem.Domain.Entities;
 using ERPSystem.Application.Interfaces;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.Extensions.Logging;
 
 namespace ERPSystem.Pages.Employees
 {
@@ -19,19 +18,17 @@ namespace ERPSystem.Pages.Employees
         private readonly ERPSystem.Infrastructure.Data.ApplicationDbContext _context;
         private readonly IStateCascadeService _stateCascade;
         private readonly IPhotoUploadService _photoUpload;
-        private readonly ILogger<DeleteModel> _logger;
         public int? PageIndex { get; set; }
         public string CurrentFilter { get; set; }
         public string CurrentSort { get; set; }
         public EmployeeRole Role { get; set; }
 
         public DeleteModel(ERPSystem.Infrastructure.Data.ApplicationDbContext context, IStateCascadeService stateCascade,
-            IPhotoUploadService photoUpload, ILogger<DeleteModel> logger)
+            IPhotoUploadService photoUpload)
         {
             _context = context;
             _stateCascade = stateCascade;
             _photoUpload = photoUpload;
-            _logger = logger;
         }
 
         [BindProperty]
@@ -141,8 +138,6 @@ namespace ERPSystem.Pages.Employees
                         }
                         break;
                 }
-
-                _logger.LogInformation("Employee deleted: {0}, {1}", Employee.LastName, Employee.FirstName);
 
                 _context.Employees.Remove(Employee);
                 await _context.SaveChangesAsync();

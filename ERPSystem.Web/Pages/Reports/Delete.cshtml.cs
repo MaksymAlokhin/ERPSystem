@@ -8,7 +8,6 @@ using Microsoft.EntityFrameworkCore;
 using ERPSystem.Infrastructure.Data;
 using ERPSystem.Domain.Entities;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.Extensions.Logging;
 
 namespace ERPSystem.Pages.Reports
 {
@@ -16,15 +15,13 @@ namespace ERPSystem.Pages.Reports
     public class DeleteModel : PageModel
     {
         private readonly ERPSystem.Infrastructure.Data.ApplicationDbContext _context;
-        private readonly ILogger<DeleteModel> _logger;
         public int? PageIndex { get; set; }
         public string CurrentFilter { get; set; }
         public string CurrentSort { get; set; }
 
-        public DeleteModel(ERPSystem.Infrastructure.Data.ApplicationDbContext context, ILogger<DeleteModel> logger)
+        public DeleteModel(ERPSystem.Infrastructure.Data.ApplicationDbContext context)
         {
             _context = context;
-            _logger = logger;
         }
 
         [BindProperty]
@@ -65,9 +62,6 @@ namespace ERPSystem.Pages.Reports
 
             if (Report != null)
             {
-                if (Report.Assignment != null)
-                    _logger.LogInformation("Report deleted for Assignment: {0}", Report.Assignment.Name);
-
                 _context.Reports.Remove(Report);
                 await _context.SaveChangesAsync();
             }

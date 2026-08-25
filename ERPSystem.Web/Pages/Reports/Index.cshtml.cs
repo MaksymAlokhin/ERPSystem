@@ -9,14 +9,12 @@ using ERPSystem.Infrastructure.Data;
 using ERPSystem.Domain.Entities;
 using Microsoft.Extensions.Configuration;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.Extensions.Logging;
 
 namespace ERPSystem.Pages.Reports
 {
     public class IndexModel : PageModel
     {
         private readonly ERPSystem.Infrastructure.Data.ApplicationDbContext _context;
-        private readonly ILogger<IndexModel> _logger;
         private readonly IConfiguration Configuration;
         public string AssignmentSort { get; set; }
         public string DateSort { get; set; }
@@ -28,11 +26,10 @@ namespace ERPSystem.Pages.Reports
         public PaginatedList<Report> Report { get; set; }
         public List<StateDoughnut> Doughnut { get; set; }
 
-        public IndexModel(ERPSystem.Infrastructure.Data.ApplicationDbContext context, IConfiguration configuration, ILogger<IndexModel> logger)
+        public IndexModel(ERPSystem.Infrastructure.Data.ApplicationDbContext context, IConfiguration configuration)
         {
             _context = context;
             Configuration = configuration;
-            _logger = logger;
             Doughnut = _context.Reports
                 .GroupBy(r => r.ReportState)
                 .Select(g => new StateDoughnut
@@ -143,8 +140,6 @@ namespace ERPSystem.Pages.Reports
             var pageSize = Configuration.GetValue("PageSize", 7);
             Report = await PaginatedList<Report>.CreateAsync(
                 reportsIQ.AsNoTracking(), pageIndex ?? 1, pageSize);
-
-            _logger.LogInformation("Displaying page {0} of Reports", pageIndex ?? 1);
         }
         public async Task<IActionResult> OnGetApproveAsync(string sortOrder,
             string currentFilter, int? pageIndex, int? id)

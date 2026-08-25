@@ -9,14 +9,12 @@ using ERPSystem.Infrastructure.Data;
 using ERPSystem.Domain.Entities;
 using Microsoft.Extensions.Configuration;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.Extensions.Logging;
 
 namespace ERPSystem.Pages.Employees
 {
     public class IndexModel : PageModel
     {
         private readonly ERPSystem.Infrastructure.Data.ApplicationDbContext _context;
-        private readonly ILogger<IndexModel> _logger;
         private readonly IConfiguration Configuration;
         private readonly IAuthorizationService _authorizationService;
         public string NameSort { get; set; }
@@ -31,12 +29,11 @@ namespace ERPSystem.Pages.Employees
         public EmployeeRole Role { get; set; }
         public PaginatedList<Employee> Employee { get; set; }
 
-        public IndexModel(ERPSystem.Infrastructure.Data.ApplicationDbContext context, IConfiguration configuration, ILogger<IndexModel> logger,
+        public IndexModel(ERPSystem.Infrastructure.Data.ApplicationDbContext context, IConfiguration configuration,
             IAuthorizationService authorizationService)
         {
             _context = context;
             Configuration = configuration;
-            _logger = logger;
             _authorizationService = authorizationService;
         }
 
@@ -126,8 +123,6 @@ namespace ERPSystem.Pages.Employees
             var pageSize = Configuration.GetValue("PageSize", 7);
             Employee = await PaginatedList<Employee>.CreateAsync(
                 employeesIQ.AsNoTracking(), pageIndex ?? 1, pageSize);
-
-            _logger.LogInformation("Displaying page {0} of Employees", pageIndex ?? 1);
         }
         //Method to debug states
         public async Task<IActionResult> OnGetActivateAsync(string sortOrder,

@@ -12,7 +12,6 @@ using ERPSystem.Application.Interfaces;
 using ERPSystem.Web.Validation;
 using FluentValidation;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.Extensions.Logging;
 
 namespace ERPSystem.Pages.Assignments
 {
@@ -22,17 +21,15 @@ namespace ERPSystem.Pages.Assignments
         private readonly ERPSystem.Infrastructure.Data.ApplicationDbContext _context;
         private readonly IEntityStateLookupService _stateLookup;
         private readonly IValidator<Assignment> _validator;
-        private readonly ILogger<EditModel> _logger;
         public int? PageIndex { get; set; }
         public string CurrentFilter { get; set; }
         public string CurrentSort { get; set; }
 
-        public EditModel(ERPSystem.Infrastructure.Data.ApplicationDbContext context, IEntityStateLookupService stateLookup, IValidator<Assignment> validator, ILogger<EditModel> logger)
+        public EditModel(ERPSystem.Infrastructure.Data.ApplicationDbContext context, IEntityStateLookupService stateLookup, IValidator<Assignment> validator)
         {
             _context = context;
             _stateLookup = stateLookup;
             _validator = validator;
-            _logger = logger;
         }
 
         [BindProperty]
@@ -110,8 +107,6 @@ namespace ERPSystem.Pages.Assignments
                     throw;
                 }
             }
-
-            _logger.LogInformation("Assignment modified: {0}", Assignment.Name);
 
             return RedirectToPage("./Index", new
             {

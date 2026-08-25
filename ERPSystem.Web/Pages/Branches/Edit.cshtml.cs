@@ -10,7 +10,6 @@ using ERPSystem.Infrastructure.Data;
 using ERPSystem.Domain.Entities;
 using ERPSystem.Application.Interfaces;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.Extensions.Logging;
 
 namespace ERPSystem.Pages.Branches
 {
@@ -20,7 +19,6 @@ namespace ERPSystem.Pages.Branches
         private readonly ERPSystem.Infrastructure.Data.ApplicationDbContext _context;
         private readonly IStateCascadeService _stateCascade;
         private readonly IEntityStateLookupService _stateLookup;
-        private readonly ILogger<EditModel> _logger;
         public int? PageIndex { get; set; }
         public string CurrentFilter { get; set; }
         public string CurrentSort { get; set; }
@@ -29,12 +27,11 @@ namespace ERPSystem.Pages.Branches
         public SelectList CompaniesSelectList { get; set; }
         List<int> BranchesWithModifiedState { get; set; }
         public EditModel(ERPSystem.Infrastructure.Data.ApplicationDbContext context, IStateCascadeService stateCascade,
-            IEntityStateLookupService stateLookup, ILogger<EditModel> logger)
+            IEntityStateLookupService stateLookup)
         {
             _context = context;
             _stateCascade = stateCascade;
             _stateLookup = stateLookup;
-            _logger = logger;
         }
 
         [BindProperty]
@@ -135,8 +132,6 @@ namespace ERPSystem.Pages.Branches
 
             _stateCascade.UpdateBranchDependants(BranchesWithModifiedState);
             _stateCascade.UpdateWhenParentIsNull();
-
-            _logger.LogInformation("Branch modified: {0}", BranchToUpdate.Name);
 
             return RedirectToPage("./Index", new
             {

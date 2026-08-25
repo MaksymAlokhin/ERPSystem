@@ -8,23 +8,20 @@ using Microsoft.EntityFrameworkCore;
 using ERPSystem.Infrastructure.Data;
 using ERPSystem.Domain.Entities;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.Extensions.Logging;
 
 namespace ERPSystem.Pages.Employees
 {
     public class DetailsModel : PageModel
     {
         private readonly ERPSystem.Infrastructure.Data.ApplicationDbContext _context;
-        private readonly ILogger<DetailsModel> _logger;
         public int? PageIndex { get; set; }
         public string CurrentFilter { get; set; }
         public string CurrentSort { get; set; }
         public EmployeeRole Role { get; set; }
 
-        public DetailsModel(ERPSystem.Infrastructure.Data.ApplicationDbContext context, ILogger<DetailsModel> logger)
+        public DetailsModel(ERPSystem.Infrastructure.Data.ApplicationDbContext context)
         {
             _context = context;
-            _logger = logger;
         }
 
         public Employee Employee { get; set; }
@@ -56,8 +53,6 @@ namespace ERPSystem.Pages.Employees
             {
                 return NotFound();
             }
-
-            _logger.LogInformation("Details displayed for Employee: {0}, {1}", Employee.LastName, Employee.FirstName);
 
             return Page();
         }

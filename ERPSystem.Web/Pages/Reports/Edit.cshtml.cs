@@ -10,7 +10,6 @@ using ERPSystem.Infrastructure.Data;
 using ERPSystem.Domain.Entities;
 using ERPSystem.Application.Interfaces;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.Extensions.Logging;
 
 namespace ERPSystem.Pages.Reports
 {
@@ -19,7 +18,6 @@ namespace ERPSystem.Pages.Reports
     {
         private readonly ERPSystem.Infrastructure.Data.ApplicationDbContext _context;
         private readonly IReportCalculationService _reportCalculation;
-        private readonly ILogger<EditModel> _logger;
         public int? PageIndex { get; set; }
         public string CurrentFilter { get; set; }
         public string CurrentSort { get; set; }
@@ -33,11 +31,10 @@ namespace ERPSystem.Pages.Reports
             new SelectListItem { Value = "1", Text = "Submitted" }
         };
 
-        public EditModel(ERPSystem.Infrastructure.Data.ApplicationDbContext context, IReportCalculationService reportCalculation, ILogger<EditModel> logger)
+        public EditModel(ERPSystem.Infrastructure.Data.ApplicationDbContext context, IReportCalculationService reportCalculation)
         {
             _context = context;
             _reportCalculation = reportCalculation;
-            _logger = logger;
         }
 
         [BindProperty]
@@ -113,9 +110,6 @@ namespace ERPSystem.Pages.Reports
             }
 
             Report = await _context.Reports.Include(a => a.Assignment).Where(r => r.Id == id).FirstOrDefaultAsync();
-
-            if (Report.Assignment != null)
-                _logger.LogInformation("Report modified for Assignment: {0}", Report.Assignment.Name);
 
             return RedirectToPage("./Index", new
             {

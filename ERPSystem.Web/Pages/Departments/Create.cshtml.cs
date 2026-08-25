@@ -10,7 +10,6 @@ using ERPSystem.Domain.Entities;
 using ERPSystem.Application.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.Extensions.Logging;
 
 namespace ERPSystem.Pages.Departments
 {
@@ -20,7 +19,6 @@ namespace ERPSystem.Pages.Departments
         private readonly ERPSystem.Infrastructure.Data.ApplicationDbContext _context;
         private readonly IStateCascadeService _stateCascade;
         private readonly IEntityStateLookupService _stateLookup;
-        private readonly ILogger<CreateModel> _logger;
         public int? PageIndex { get; set; }
         public string CurrentFilter { get; set; }
         public string CurrentSort { get; set; }
@@ -31,12 +29,11 @@ namespace ERPSystem.Pages.Departments
         public int? DepartmentHeadId;
 
         public CreateModel(ERPSystem.Infrastructure.Data.ApplicationDbContext context, IStateCascadeService stateCascade,
-            IEntityStateLookupService stateLookup, ILogger<CreateModel> logger)
+            IEntityStateLookupService stateLookup)
         {
             _context = context;
             _stateCascade = stateCascade;
             _stateLookup = stateLookup;
-            _logger = logger;
         }
 
         public IActionResult OnGet(string sortOrder,
@@ -133,8 +130,6 @@ namespace ERPSystem.Pages.Departments
 
             DepartmentsWithModifiedState.Add(NewDepartment.Id);
             _stateCascade.UpdateDepartmentDependants(DepartmentsWithModifiedState);
-
-            _logger.LogInformation("Department created: {0}", NewDepartment.Name);
 
             return RedirectToPage("./Index", new
             {

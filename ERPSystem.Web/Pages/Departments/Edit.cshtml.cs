@@ -10,7 +10,6 @@ using ERPSystem.Infrastructure.Data;
 using ERPSystem.Domain.Entities;
 using ERPSystem.Application.Interfaces;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.Extensions.Logging;
 
 namespace ERPSystem.Pages.Departments
 {
@@ -20,7 +19,6 @@ namespace ERPSystem.Pages.Departments
         private readonly ERPSystem.Infrastructure.Data.ApplicationDbContext _context;
         private readonly IStateCascadeService _stateCascade;
         private readonly IEntityStateLookupService _stateLookup;
-        private readonly ILogger<EditModel> _logger;
         public int? PageIndex { get; set; }
         public string CurrentFilter { get; set; }
         public string CurrentSort { get; set; }
@@ -32,12 +30,11 @@ namespace ERPSystem.Pages.Departments
         public int? DepartmentHeadId;
 
         public EditModel(ERPSystem.Infrastructure.Data.ApplicationDbContext context, IStateCascadeService stateCascade,
-            IEntityStateLookupService stateLookup, ILogger<EditModel> logger)
+            IEntityStateLookupService stateLookup)
         {
             _context = context;
             _stateCascade = stateCascade;
             _stateLookup = stateLookup;
-            _logger = logger;
         }
 
         [BindProperty]
@@ -173,8 +170,6 @@ namespace ERPSystem.Pages.Departments
 
             _stateCascade.UpdateDepartmentDependants(DepartmentsWithModifiedState);
             _stateCascade.UpdateWhenParentIsNull();
-
-            _logger.LogInformation("Department modified: {0}", DepartmentToUpdate.Name);
 
             return RedirectToPage("./Index", new
             {

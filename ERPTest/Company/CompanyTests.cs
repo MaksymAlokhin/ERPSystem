@@ -112,9 +112,8 @@ namespace CompanyTest
         public async Task Company_IndexModel_OnGetAsync_CompaniesAreReturned()
         {
             // Arrange
-            var logger = Mock.Of<Microsoft.Extensions.Logging.ILogger<ERPSystem.Pages.Companies.IndexModel>>();
             var config = new ConfigurationBuilder().Build();
-            var pageModel = new ERPSystem.Pages.Companies.IndexModel(context, config, logger, null);
+            var pageModel = new ERPSystem.Pages.Companies.IndexModel(context, config, null);
             var expectedCompanies = context.Companies;
 
             // Act
@@ -132,9 +131,8 @@ namespace CompanyTest
         public async Task Company_IndexModel_OnGetAsync_CompaniesAreReturnedInDescendingOrder()
         {
             // Arrange
-            var logger = Mock.Of<Microsoft.Extensions.Logging.ILogger<ERPSystem.Pages.Companies.IndexModel>>();
             var config = new ConfigurationBuilder().Build();
-            var pageModel = new ERPSystem.Pages.Companies.IndexModel(context, config, logger, null);
+            var pageModel = new ERPSystem.Pages.Companies.IndexModel(context, config, null);
             var expectedCompanies = context.Companies;
 
             // Act
@@ -156,9 +154,8 @@ namespace CompanyTest
         public async Task Company_IndexModel_OnGetAsync_FilteredListOfCompaniesIsReturned(string searchString)
         {
             // Arrange
-            var logger = Mock.Of<Microsoft.Extensions.Logging.ILogger<ERPSystem.Pages.Companies.IndexModel>>();
             var config = new ConfigurationBuilder().Build();
-            var pageModel = new ERPSystem.Pages.Companies.IndexModel(context, config, logger, null);
+            var pageModel = new ERPSystem.Pages.Companies.IndexModel(context, config, null);
             IQueryable<Company> expectedCompanies = context.Companies;
             if (!String.IsNullOrEmpty(searchString))
             {
@@ -189,9 +186,8 @@ namespace CompanyTest
         public async Task Company_IndexModel_OnGetAsync_PaginationWorkingAsExpected(int pageIndex)
         {
             // Arrange
-            var logger = Mock.Of<Microsoft.Extensions.Logging.ILogger<ERPSystem.Pages.Companies.IndexModel>>();
             var config = new ConfigurationBuilder().Build();
-            var pageModel = new ERPSystem.Pages.Companies.IndexModel(context, config, logger, null);
+            var pageModel = new ERPSystem.Pages.Companies.IndexModel(context, config, null);
             List<Company> expectedCompanies = new List<Company>();
             if (pageIndex > 0 && pageIndex <= Math.Ceiling((double)context.Companies.Count() / (double)PageSize))
             {
@@ -226,8 +222,7 @@ namespace CompanyTest
         public async Task Company_CreateModel_OnPostAsync_CompanyIsAdded()
         {
             // Arrange
-            var logger = Mock.Of<Microsoft.Extensions.Logging.ILogger<ERPSystem.Pages.Companies.CreateModel>>();
-            var pageModel = new ERPSystem.Pages.Companies.CreateModel(context, stateCascade, stateLookup, logger);
+            var pageModel = new ERPSystem.Pages.Companies.CreateModel(context, stateCascade, stateLookup);
             var expectedCompany = new Company
             {
                 Id = 11,
@@ -254,8 +249,7 @@ namespace CompanyTest
         public async Task Company_CreateModel_OnPostAsync_IfInvalidModel_ReturnPageResult()
         {
             // Arrange
-            var logger = Mock.Of<Microsoft.Extensions.Logging.ILogger<ERPSystem.Pages.Companies.CreateModel>>();
-            var pageModel = new ERPSystem.Pages.Companies.CreateModel(context, stateCascade, stateLookup, logger);
+            var pageModel = new ERPSystem.Pages.Companies.CreateModel(context, stateCascade, stateLookup);
             var expectedCompany = new Company
             {
                 Id = 11,
@@ -279,8 +273,7 @@ namespace CompanyTest
         public async Task Company_DeleteModel_OnGetAsync_CompanyIsFetched()
         {
             // Arrange
-            var logger = Mock.Of<Microsoft.Extensions.Logging.ILogger<ERPSystem.Pages.Companies.DeleteModel>>();
-            var pageModel = new ERPSystem.Pages.Companies.DeleteModel(context, stateCascade, logger);
+            var pageModel = new ERPSystem.Pages.Companies.DeleteModel(context, stateCascade);
             var testId = 1;
 
             // Act
@@ -299,8 +292,7 @@ namespace CompanyTest
         public async Task Company_DeleteModel_OnPostAsync_CompanyIsDeleted_WhenCompanyIsFound()
         {
             // Arrange
-            var logger = Mock.Of<Microsoft.Extensions.Logging.ILogger<ERPSystem.Pages.Companies.DeleteModel>>();
-            var pageModel = new ERPSystem.Pages.Companies.DeleteModel(context, stateCascade, logger);
+            var pageModel = new ERPSystem.Pages.Companies.DeleteModel(context, stateCascade);
             var testId = 1;
             var expectedCompanies = context.Companies.Where(c => c.Id != testId).ToList();
 
@@ -320,8 +312,7 @@ namespace CompanyTest
         public async Task Company_DeleteModel_OnPostAsync_NoCompanyIsDeleted_WhenCompanyIsNotFound()
         {
             // Arrange
-            var logger = Mock.Of<Microsoft.Extensions.Logging.ILogger<ERPSystem.Pages.Companies.DeleteModel>>();
-            var pageModel = new ERPSystem.Pages.Companies.DeleteModel(context, stateCascade, logger);
+            var pageModel = new ERPSystem.Pages.Companies.DeleteModel(context, stateCascade);
             var testId = 11;
             var expectedCompanies = context.Companies;
 
@@ -341,8 +332,7 @@ namespace CompanyTest
         public async Task Company_EditModel_OnGetAsync_CompanyIsFetched()
         {
             // Arrange
-            var logger = Mock.Of<Microsoft.Extensions.Logging.ILogger<ERPSystem.Pages.Companies.EditModel>>();
-            var pageModel = new ERPSystem.Pages.Companies.EditModel(context, stateCascade, stateLookup, logger);
+            var pageModel = new ERPSystem.Pages.Companies.EditModel(context, stateCascade, stateLookup);
             int testId = 1;
 
             // Act
@@ -361,8 +351,7 @@ namespace CompanyTest
         public async Task Company_EditModel_OnPostAsync_CompanyIsModified()
         {
             // Arrange
-            var logger = Mock.Of<Microsoft.Extensions.Logging.ILogger<ERPSystem.Pages.Companies.EditModel>>();
-            var pageModel = new ERPSystem.Pages.Companies.EditModel(context, stateCascade, stateLookup, logger);
+            var pageModel = new ERPSystem.Pages.Companies.EditModel(context, stateCascade, stateLookup);
             int testId = 1;
             var expectedCompany = new Company
             {
@@ -389,8 +378,7 @@ namespace CompanyTest
         public async Task Company_EditModel_OnPostAsync_IfInvalidModel_ReturnPageResult()
         {
             // Arrange
-            var logger = Mock.Of<Microsoft.Extensions.Logging.ILogger<ERPSystem.Pages.Companies.EditModel>>();
-            var pageModel = new ERPSystem.Pages.Companies.EditModel(context, stateCascade, stateLookup, logger);
+            var pageModel = new ERPSystem.Pages.Companies.EditModel(context, stateCascade, stateLookup);
             int testId = 1;
             var expectedCompany = new Company
             {
@@ -412,8 +400,7 @@ namespace CompanyTest
         public async Task Company_DetailsModel_OnGetAsync_CompanyIsFetched_WhenCompanyIsFound()
         {
             // Arrange
-            var logger = Mock.Of<Microsoft.Extensions.Logging.ILogger<ERPSystem.Pages.Companies.DetailsModel>>();
-            var pageModel = new ERPSystem.Pages.Companies.DetailsModel(context, logger);
+            var pageModel = new ERPSystem.Pages.Companies.DetailsModel(context);
             int testId = 1;
 
             // Act
@@ -432,8 +419,7 @@ namespace CompanyTest
         public async Task Company_DetailsModel_OnGetAsync_NotFoundResultReturned_WhenCompanyIsNotFound()
         {
             // Arrange
-            var logger = Mock.Of<Microsoft.Extensions.Logging.ILogger<ERPSystem.Pages.Companies.DetailsModel>>();
-            var pageModel = new ERPSystem.Pages.Companies.DetailsModel(context, logger);
+            var pageModel = new ERPSystem.Pages.Companies.DetailsModel(context);
             int testId = 11;
 
             // Act

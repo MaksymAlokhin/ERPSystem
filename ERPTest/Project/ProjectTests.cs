@@ -132,9 +132,8 @@ namespace ProjectTest
         public async Task Project_IndexModel_OnGetAsync_ProjectsAreReturned()
         {
             // Arrange
-            var logger = Mock.Of<Microsoft.Extensions.Logging.ILogger<ERPSystem.Pages.Projects.IndexModel>>();
             var config = new ConfigurationBuilder().Build();
-            var pageModel = new ERPSystem.Pages.Projects.IndexModel(context, config, logger, null);
+            var pageModel = new ERPSystem.Pages.Projects.IndexModel(context, config, null);
             var expectedProjects = context.Projects;
 
             // Act
@@ -152,9 +151,8 @@ namespace ProjectTest
         public async Task Project_IndexModel_OnGetAsync_ProjectsAreReturnedInDescendingOrder()
         {
             // Arrange
-            var logger = Mock.Of<Microsoft.Extensions.Logging.ILogger<ERPSystem.Pages.Projects.IndexModel>>();
             var config = new ConfigurationBuilder().Build();
-            var pageModel = new ERPSystem.Pages.Projects.IndexModel(context, config, logger, null);
+            var pageModel = new ERPSystem.Pages.Projects.IndexModel(context, config, null);
             var expectedProjects = context.Projects;
 
             // Act
@@ -176,9 +174,8 @@ namespace ProjectTest
         public async Task Project_IndexModel_OnGetAsync_FilteredListOfProjectsIsReturned(string searchString)
         {
             // Arrange
-            var logger = Mock.Of<Microsoft.Extensions.Logging.ILogger<ERPSystem.Pages.Projects.IndexModel>>();
             var config = new ConfigurationBuilder().Build();
-            var pageModel = new ERPSystem.Pages.Projects.IndexModel(context, config, logger, null);
+            var pageModel = new ERPSystem.Pages.Projects.IndexModel(context, config, null);
             IQueryable<Project> expectedProjects = context.Projects;
             if (!String.IsNullOrEmpty(searchString))
             {
@@ -209,9 +206,8 @@ namespace ProjectTest
         public async Task Project_IndexModel_OnGetAsync_PaginationWorkingAsExpected(int pageIndex)
         {
             // Arrange
-            var logger = Mock.Of<Microsoft.Extensions.Logging.ILogger<ERPSystem.Pages.Projects.IndexModel>>();
             var config = new ConfigurationBuilder().Build();
-            var pageModel = new ERPSystem.Pages.Projects.IndexModel(context, config, logger, null);
+            var pageModel = new ERPSystem.Pages.Projects.IndexModel(context, config, null);
             List<Project> expectedProjects = new List<Project>();
             if (pageIndex > 0 && pageIndex <= Math.Ceiling((double)context.Projects.Count() / (double)PageSize))
             {
@@ -245,8 +241,7 @@ namespace ProjectTest
         public async Task Project_CreateModel_OnPostAsync_ProjectIsAdded()
         {
             // Arrange
-            var logger = Mock.Of<Microsoft.Extensions.Logging.ILogger<ERPSystem.Pages.Projects.CreateModel>>();
-            var pageModel = new ERPSystem.Pages.Projects.CreateModel(context, stateCascade, stateLookup, new ProjectDateValidator(), logger);
+            var pageModel = new ERPSystem.Pages.Projects.CreateModel(context, stateCascade, stateLookup, new ProjectDateValidator());
             var expectedProject = new Project
             {
                 Name = "Test Project",
@@ -274,8 +269,7 @@ namespace ProjectTest
         public async Task Project_CreateModel_OnPostAsync_IfStartDateAfterEndDate_ReturnPageResultWithValidationError()
         {
             // Arrange
-            var logger = Mock.Of<Microsoft.Extensions.Logging.ILogger<ERPSystem.Pages.Projects.CreateModel>>();
-            var pageModel = new ERPSystem.Pages.Projects.CreateModel(context, stateCascade, stateLookup, new ProjectDateValidator(), logger);
+            var pageModel = new ERPSystem.Pages.Projects.CreateModel(context, stateCascade, stateLookup, new ProjectDateValidator());
             pageModel.Project = new Project
             {
                 Name = "Invalid Date Project",
@@ -298,8 +292,7 @@ namespace ProjectTest
         public async Task Project_CreateModel_OnPostAsync_IfInvalidModel_ReturnPageResult()
         {
             // Arrange
-            var logger = Mock.Of<Microsoft.Extensions.Logging.ILogger<ERPSystem.Pages.Projects.CreateModel>>();
-            var pageModel = new ERPSystem.Pages.Projects.CreateModel(context, stateCascade, stateLookup, new ProjectDateValidator(), logger);
+            var pageModel = new ERPSystem.Pages.Projects.CreateModel(context, stateCascade, stateLookup, new ProjectDateValidator());
             var expectedProject = new Project
             {
                 Name = "Test Project",
@@ -322,8 +315,7 @@ namespace ProjectTest
         public async Task Project_DeleteModel_OnGetAsync_ProjectIsFetched()
         {
             // Arrange
-            var logger = Mock.Of<Microsoft.Extensions.Logging.ILogger<ERPSystem.Pages.Projects.DeleteModel>>();
-            var pageModel = new ERPSystem.Pages.Projects.DeleteModel(context, stateCascade, logger);
+            var pageModel = new ERPSystem.Pages.Projects.DeleteModel(context, stateCascade);
             var testId = 1;
 
             // Act
@@ -344,8 +336,7 @@ namespace ProjectTest
         public async Task Project_DeleteModel_OnPostAsync_ProjectIsDeleted_WhenProjectIsFound()
         {
             // Arrange
-            var logger = Mock.Of<Microsoft.Extensions.Logging.ILogger<ERPSystem.Pages.Projects.DeleteModel>>();
-            var pageModel = new ERPSystem.Pages.Projects.DeleteModel(context, stateCascade, logger);
+            var pageModel = new ERPSystem.Pages.Projects.DeleteModel(context, stateCascade);
             var testId = 1;
             var expectedProjects = context.Projects.Where(c => c.Id != testId).ToList();
 
@@ -365,8 +356,7 @@ namespace ProjectTest
         public async Task Project_DeleteModel_OnPostAsync_NoProjectIsDeleted_WhenProjectIsNotFound()
         {
             // Arrange
-            var logger = Mock.Of<Microsoft.Extensions.Logging.ILogger<ERPSystem.Pages.Projects.DeleteModel>>();
-            var pageModel = new ERPSystem.Pages.Projects.DeleteModel(context, stateCascade, logger);
+            var pageModel = new ERPSystem.Pages.Projects.DeleteModel(context, stateCascade);
             var testId = 11;
             var expectedProjects = context.Projects;
 
@@ -386,8 +376,7 @@ namespace ProjectTest
         public async Task Project_EditModel_OnGetAsync_ProjectIsFetched()
         {
             // Arrange
-            var logger = Mock.Of<Microsoft.Extensions.Logging.ILogger<ERPSystem.Pages.Projects.EditModel>>();
-            var pageModel = new ERPSystem.Pages.Projects.EditModel(context, stateCascade, stateLookup, new ProjectDateValidator(), logger);
+            var pageModel = new ERPSystem.Pages.Projects.EditModel(context, stateCascade, stateLookup, new ProjectDateValidator());
             int testId = 2;
 
             // Act
@@ -408,9 +397,8 @@ namespace ProjectTest
         public async Task Project_EditModel_OnPostAsync_ProjectIsModified()
         {
             // Arrange
-            var logger = Mock.Of<Microsoft.Extensions.Logging.ILogger<ERPSystem.Pages.Projects.EditModel>>();
             var testId = 1;
-            var pageModel = new ERPSystem.Pages.Projects.EditModel(context, stateCascade, stateLookup, new ProjectDateValidator(), logger);
+            var pageModel = new ERPSystem.Pages.Projects.EditModel(context, stateCascade, stateLookup, new ProjectDateValidator());
             var expectedProject = context.Projects.FirstOrDefault(m => m.Id == testId);
             pageModel.Project = expectedProject;
             pageModel.Project.Name = "Modified Entity";
@@ -434,8 +422,7 @@ namespace ProjectTest
         public async Task Project_EditModel_OnPostAsync_IfInvalidModel_ReturnPageResult()
         {
             // Arrange
-            var logger = Mock.Of<Microsoft.Extensions.Logging.ILogger<ERPSystem.Pages.Projects.EditModel>>();
-            var pageModel = new ERPSystem.Pages.Projects.EditModel(context, stateCascade, stateLookup, new ProjectDateValidator(), logger);
+            var pageModel = new ERPSystem.Pages.Projects.EditModel(context, stateCascade, stateLookup, new ProjectDateValidator());
             int testId = 1;
             var expectedProject = context.Projects.FirstOrDefault(m => m.Id == testId);
             pageModel.Project = expectedProject;
@@ -455,8 +442,7 @@ namespace ProjectTest
         public async Task Project_DetailsModel_OnGetAsync_ProjectIsFetched_WhenProjectIsFound()
         {
             // Arrange
-            var logger = Mock.Of<Microsoft.Extensions.Logging.ILogger<ERPSystem.Pages.Projects.DetailsModel>>();
-            var pageModel = new ERPSystem.Pages.Projects.DetailsModel(context, logger);
+            var pageModel = new ERPSystem.Pages.Projects.DetailsModel(context);
             int testId = 2;
 
             // Act
@@ -477,8 +463,7 @@ namespace ProjectTest
         public async Task Project_DetailsModel_OnGetAsync_NotFoundResultReturned_WhenProjectIsNotFound()
         {
             // Arrange
-            var logger = Mock.Of<Microsoft.Extensions.Logging.ILogger<ERPSystem.Pages.Projects.DetailsModel>>();
-            var pageModel = new ERPSystem.Pages.Projects.DetailsModel(context, logger);
+            var pageModel = new ERPSystem.Pages.Projects.DetailsModel(context);
             int testId = 11;
 
             // Act

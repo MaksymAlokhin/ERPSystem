@@ -9,14 +9,12 @@ using ERPSystem.Infrastructure.Data;
 using ERPSystem.Domain.Entities;
 using Microsoft.Extensions.Configuration;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.Extensions.Logging;
 
 namespace ERPSystem.Pages.Projects
 {
     public class IndexModel : PageModel
     {
         private readonly ERPSystem.Infrastructure.Data.ApplicationDbContext _context;
-        private readonly ILogger<IndexModel> _logger;
         private readonly IConfiguration Configuration;
         private readonly IAuthorizationService _authorizationService;
         public string NameSort { get; set; }
@@ -30,12 +28,11 @@ namespace ERPSystem.Pages.Projects
         public string CurrentSort { get; set; }
         public PaginatedList<Project> Project { get; set; }
 
-        public IndexModel(ERPSystem.Infrastructure.Data.ApplicationDbContext context, IConfiguration configuration, ILogger<IndexModel> logger,
+        public IndexModel(ERPSystem.Infrastructure.Data.ApplicationDbContext context, IConfiguration configuration,
             IAuthorizationService authorizationService)
         {
             _context = context;
             Configuration = configuration;
-            _logger = logger;
             _authorizationService = authorizationService;
         }
 
@@ -122,8 +119,6 @@ namespace ERPSystem.Pages.Projects
             var pageSize = Configuration.GetValue("PageSize", 7);
             Project = await PaginatedList<Project>.CreateAsync(
                 projectsIQ.AsNoTracking(), pageIndex ?? 1, pageSize);
-            
-            _logger.LogInformation("Displaying page {0} of Projects", pageIndex ?? 1);
         }
         //Method to debug states
         public async Task<IActionResult> OnGetActivateAsync(string sortOrder,

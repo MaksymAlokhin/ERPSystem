@@ -13,7 +13,6 @@ using ERPSystem.Web.Validation;
 using FluentValidation;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.Extensions.Logging;
 
 namespace ERPSystem.Pages.Positions
 {
@@ -24,7 +23,6 @@ namespace ERPSystem.Pages.Positions
         private readonly IStateCascadeService _stateCascade;
         private readonly IEntityStateLookupService _stateLookup;
         private readonly IValidator<Position> _validator;
-        private readonly ILogger<CreateModel> _logger;
         public int? PageIndex { get; set; }
         public string CurrentFilter { get; set; }
         public string CurrentSort { get; set; }
@@ -32,13 +30,12 @@ namespace ERPSystem.Pages.Positions
         public SelectList AssignmentsSelectList { get; set; }
 
         public CreateModel(ERPSystem.Infrastructure.Data.ApplicationDbContext context, IStateCascadeService stateCascade,
-            IEntityStateLookupService stateLookup, IValidator<Position> validator, ILogger<CreateModel> logger)
+            IEntityStateLookupService stateLookup, IValidator<Position> validator)
         {
             _context = context;
             _stateCascade = stateCascade;
             _stateLookup = stateLookup;
             _validator = validator;
-            _logger = logger;
         }
 
         public IActionResult OnGet(string sortOrder,
@@ -138,8 +135,6 @@ namespace ERPSystem.Pages.Positions
             PositionsWithModifiedState.Add(NewPosition.Id);
 
             _stateCascade.UpdatePositionDependants(PositionsWithModifiedState);
-
-            _logger.LogInformation("Position created: {0}", NewPosition.Name);
 
             return RedirectToPage("./Index", new
             {

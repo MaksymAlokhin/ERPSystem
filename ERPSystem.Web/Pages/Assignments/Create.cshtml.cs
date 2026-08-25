@@ -13,14 +13,12 @@ using ERPSystem.Web.Validation;
 using FluentValidation;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.Extensions.Logging;
 
 namespace ERPSystem.Pages.Assignments
 {
     [Authorize(Policy = "AdminOnly")]
     public class CreateModel : PageModel
     {
-        private readonly ILogger<CreateModel> _logger;
         private readonly ERPSystem.Infrastructure.Data.ApplicationDbContext _context;
         private readonly IEntityStateLookupService _stateLookup;
         private readonly IValidator<Assignment> _validator;
@@ -28,12 +26,11 @@ namespace ERPSystem.Pages.Assignments
         public string CurrentFilter { get; set; }
         public string CurrentSort { get; set; }
 
-        public CreateModel(ERPSystem.Infrastructure.Data.ApplicationDbContext context, IEntityStateLookupService stateLookup, IValidator<Assignment> validator, ILogger<CreateModel> logger)
+        public CreateModel(ERPSystem.Infrastructure.Data.ApplicationDbContext context, IEntityStateLookupService stateLookup, IValidator<Assignment> validator)
         {
             _context = context;
             _stateLookup = stateLookup;
             _validator = validator;
-            _logger = logger;
         }
 
         public IActionResult OnGet(string sortOrder,
@@ -86,10 +83,6 @@ namespace ERPSystem.Pages.Assignments
 
             _context.Assignments.Add(Assignment);
             await _context.SaveChangesAsync();
-
-            //Static Serilog
-            //Log.Information("Assignment created: {1}", Assignment.Name);
-            _logger.LogInformation("Assignment created: {0}", Assignment.Name);
 
             return RedirectToPage("./Index", new
             {

@@ -112,9 +112,8 @@ namespace DepartmentTest
         public async Task Department_IndexModel_OnGetAsync_DepartmentsAreReturned()
         {
             // Arrange
-            var logger = Mock.Of<Microsoft.Extensions.Logging.ILogger<ERPSystem.Pages.Departments.IndexModel>>();
             var config = new ConfigurationBuilder().Build();
-            var pageModel = new ERPSystem.Pages.Departments.IndexModel(context, config, logger, null);
+            var pageModel = new ERPSystem.Pages.Departments.IndexModel(context, config, null);
             var expectedDepartments = context.Departments;
 
             // Act
@@ -132,9 +131,8 @@ namespace DepartmentTest
         public async Task Department_IndexModel_OnGetAsync_DepartmentsAreReturnedInDescendingOrder()
         {
             // Arrange
-            var logger = Mock.Of<Microsoft.Extensions.Logging.ILogger<ERPSystem.Pages.Departments.IndexModel>>();
             var config = new ConfigurationBuilder().Build();
-            var pageModel = new ERPSystem.Pages.Departments.IndexModel(context, config, logger, null);
+            var pageModel = new ERPSystem.Pages.Departments.IndexModel(context, config, null);
             var expectedDepartments = context.Departments;
 
             // Act
@@ -156,9 +154,8 @@ namespace DepartmentTest
         public async Task Department_IndexModel_OnGetAsync_FilteredListOfDepartmentsIsReturned(string searchString)
         {
             // Arrange
-            var logger = Mock.Of<Microsoft.Extensions.Logging.ILogger<ERPSystem.Pages.Departments.IndexModel>>();
             var config = new ConfigurationBuilder().Build();
-            var pageModel = new ERPSystem.Pages.Departments.IndexModel(context, config, logger, null);
+            var pageModel = new ERPSystem.Pages.Departments.IndexModel(context, config, null);
             IQueryable<Department> expectedDepartments = context.Departments;
             if (!String.IsNullOrEmpty(searchString))
             {
@@ -187,9 +184,8 @@ namespace DepartmentTest
         public async Task Department_IndexModel_OnGetAsync_PaginationWorkingAsExpected(int pageIndex)
         {
             // Arrange
-            var logger = Mock.Of<Microsoft.Extensions.Logging.ILogger<ERPSystem.Pages.Departments.IndexModel>>();
             var config = new ConfigurationBuilder().Build();
-            var pageModel = new ERPSystem.Pages.Departments.IndexModel(context, config, logger, null);
+            var pageModel = new ERPSystem.Pages.Departments.IndexModel(context, config, null);
             List<Department> expectedDepartments = new List<Department>();
             if (pageIndex > 0 && pageIndex <= Math.Ceiling((double)context.Departments.Count() / (double)PageSize))
             {
@@ -223,8 +219,7 @@ namespace DepartmentTest
         public async Task Department_CreateModel_OnPostAsync_DepartmentIsAdded()
         {
             // Arrange
-            var logger = Mock.Of<Microsoft.Extensions.Logging.ILogger<ERPSystem.Pages.Departments.CreateModel>>();
-            var pageModel = new ERPSystem.Pages.Departments.CreateModel(context, stateCascade, stateLookup, logger);
+            var pageModel = new ERPSystem.Pages.Departments.CreateModel(context, stateCascade, stateLookup);
             var expectedDepartment = new Department 
             {
                 Name = "Test Department",
@@ -248,8 +243,7 @@ namespace DepartmentTest
         public async Task Department_CreateModel_OnPostAsync_IfInvalidModel_ReturnPageResult()
         {
             // Arrange
-            var logger = Mock.Of<Microsoft.Extensions.Logging.ILogger<ERPSystem.Pages.Departments.CreateModel>>();
-            var pageModel = new ERPSystem.Pages.Departments.CreateModel(context, stateCascade, stateLookup, logger);
+            var pageModel = new ERPSystem.Pages.Departments.CreateModel(context, stateCascade, stateLookup);
             var expectedDepartment = new Department
             {
                 Name = "Test Department",
@@ -270,8 +264,7 @@ namespace DepartmentTest
         public async Task Department_DeleteModel_OnGetAsync_DepartmentIsFetched()
         {
             // Arrange
-            var logger = Mock.Of<Microsoft.Extensions.Logging.ILogger<ERPSystem.Pages.Departments.DeleteModel>>();
-            var pageModel = new ERPSystem.Pages.Departments.DeleteModel(context, stateCascade, logger);
+            var pageModel = new ERPSystem.Pages.Departments.DeleteModel(context, stateCascade);
             var testId = 1;
 
             // Act
@@ -290,8 +283,7 @@ namespace DepartmentTest
         public async Task Department_DeleteModel_OnPostAsync_DepartmentIsDeleted_WhenDepartmentIsFound()
         {
             // Arrange
-            var logger = Mock.Of<Microsoft.Extensions.Logging.ILogger<ERPSystem.Pages.Departments.DeleteModel>>();
-            var pageModel = new ERPSystem.Pages.Departments.DeleteModel(context, stateCascade, logger);
+            var pageModel = new ERPSystem.Pages.Departments.DeleteModel(context, stateCascade);
             var testId = 1;
             var expectedDepartments = context.Departments.Where(c => c.Id != testId).ToList();
 
@@ -311,8 +303,7 @@ namespace DepartmentTest
         public async Task Department_DeleteModel_OnPostAsync_NoDepartmentIsDeleted_WhenDepartmentIsNotFound()
         {
             // Arrange
-            var logger = Mock.Of<Microsoft.Extensions.Logging.ILogger<ERPSystem.Pages.Departments.DeleteModel>>();
-            var pageModel = new ERPSystem.Pages.Departments.DeleteModel(context, stateCascade, logger);
+            var pageModel = new ERPSystem.Pages.Departments.DeleteModel(context, stateCascade);
             var testId = 11;
             var expectedDepartments = context.Departments;
 
@@ -332,8 +323,7 @@ namespace DepartmentTest
         public async Task Department_EditModel_OnGetAsync_DepartmentIsFetched()
         {
             // Arrange
-            var logger = Mock.Of<Microsoft.Extensions.Logging.ILogger<ERPSystem.Pages.Departments.EditModel>>();
-            var pageModel = new ERPSystem.Pages.Departments.EditModel(context, stateCascade, stateLookup, logger);
+            var pageModel = new ERPSystem.Pages.Departments.EditModel(context, stateCascade, stateLookup);
             int testId = 2;
 
             // Act
@@ -352,9 +342,8 @@ namespace DepartmentTest
         public async Task Department_EditModel_OnPostAsync_DepartmentIsModified()
         {
             // Arrange
-            var logger = Mock.Of<Microsoft.Extensions.Logging.ILogger<ERPSystem.Pages.Departments.EditModel>>();
             var testId = 1;
-            var pageModel = new ERPSystem.Pages.Departments.EditModel(context, stateCascade, stateLookup, logger);
+            var pageModel = new ERPSystem.Pages.Departments.EditModel(context, stateCascade, stateLookup);
             var expectedDepartment = context.Departments.FirstOrDefault(m => m.Id == testId);
             pageModel.Department = expectedDepartment;
             pageModel.Department.Name = "Modified Entity";
@@ -378,8 +367,7 @@ namespace DepartmentTest
         public async Task Department_EditModel_OnPostAsync_IfInvalidModel_ReturnPageResult()
         {
             // Arrange
-            var logger = Mock.Of<Microsoft.Extensions.Logging.ILogger<ERPSystem.Pages.Departments.EditModel>>();
-            var pageModel = new ERPSystem.Pages.Departments.EditModel(context, stateCascade, stateLookup, logger);
+            var pageModel = new ERPSystem.Pages.Departments.EditModel(context, stateCascade, stateLookup);
             int testId = 1;
             var expectedDepartment = context.Departments.FirstOrDefault(m => m.Id == testId);
             pageModel.Department = expectedDepartment;
@@ -399,8 +387,7 @@ namespace DepartmentTest
         public async Task Department_DetailsModel_OnGetAsync_DepartmentIsFetched_WhenDepartmentIsFound()
         {
             // Arrange
-            var logger = Mock.Of<Microsoft.Extensions.Logging.ILogger<ERPSystem.Pages.Departments.DetailsModel>>();
-            var pageModel = new ERPSystem.Pages.Departments.DetailsModel(context, logger);
+            var pageModel = new ERPSystem.Pages.Departments.DetailsModel(context);
             int testId = 2;
 
             // Act
@@ -419,8 +406,7 @@ namespace DepartmentTest
         public async Task Department_DetailsModel_OnGetAsync_NotFoundResultReturned_WhenDepartmentIsNotFound()
         {
             // Arrange
-            var logger = Mock.Of<Microsoft.Extensions.Logging.ILogger<ERPSystem.Pages.Departments.DetailsModel>>();
-            var pageModel = new ERPSystem.Pages.Departments.DetailsModel(context, logger);
+            var pageModel = new ERPSystem.Pages.Departments.DetailsModel(context);
             int testId = 11;
 
             // Act

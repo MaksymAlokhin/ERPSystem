@@ -9,7 +9,6 @@ using ERPSystem.Infrastructure.Data;
 using ERPSystem.Domain.Entities;
 using ERPSystem.Application.Interfaces;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.Extensions.Logging;
 
 namespace ERPSystem.Pages.Branches
 {
@@ -18,17 +17,15 @@ namespace ERPSystem.Pages.Branches
     {
         private readonly ERPSystem.Infrastructure.Data.ApplicationDbContext _context;
         private readonly IStateCascadeService _stateCascade;
-        private readonly ILogger<DeleteModel> _logger;
         public int? PageIndex { get; set; }
         public string CurrentFilter { get; set; }
         public string CurrentSort { get; set; }
         public List<Employee> EmployeeList { get; set; }
 
-        public DeleteModel(ERPSystem.Infrastructure.Data.ApplicationDbContext context, IStateCascadeService stateCascade, ILogger<DeleteModel> logger)
+        public DeleteModel(ERPSystem.Infrastructure.Data.ApplicationDbContext context, IStateCascadeService stateCascade)
         {
             _context = context;
             _stateCascade = stateCascade;
-            _logger = logger;
         }
 
         [BindProperty]
@@ -81,8 +78,6 @@ namespace ERPSystem.Pages.Branches
 
             if (Branch != null)
             {
-                _logger.LogInformation("Branch deleted: {0}", Branch.Name);
-
                 _context.Branches.Remove(Branch);
                 await _context.SaveChangesAsync();
             }

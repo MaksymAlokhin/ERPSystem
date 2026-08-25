@@ -133,9 +133,8 @@ namespace AssignmentTest
         public async Task Assignment_IndexModel_OnGetAsync_AssignmentsAreReturned()
         {
             // Arrange
-            var logger = Mock.Of<Microsoft.Extensions.Logging.ILogger<ERPSystem.Pages.Assignments.IndexModel>>();
             var config = new ConfigurationBuilder().Build();
-            var pageModel = new ERPSystem.Pages.Assignments.IndexModel(context, config, logger, null);
+            var pageModel = new ERPSystem.Pages.Assignments.IndexModel(context, config, null);
             var expectedAssignments = context.Assignments;
 
             // Act
@@ -153,9 +152,8 @@ namespace AssignmentTest
         public async Task Assignment_IndexModel_OnGetAsync_AssignmentsAreReturnedInDescendingOrder()
         {
             // Arrange
-            var logger = Mock.Of<Microsoft.Extensions.Logging.ILogger<ERPSystem.Pages.Assignments.IndexModel>>();
             var config = new ConfigurationBuilder().Build();
-            var pageModel = new ERPSystem.Pages.Assignments.IndexModel(context, config, logger, null);
+            var pageModel = new ERPSystem.Pages.Assignments.IndexModel(context, config, null);
             var expectedAssignments = context.Assignments;
 
             // Act
@@ -177,9 +175,8 @@ namespace AssignmentTest
         public async Task Assignment_IndexModel_OnGetAsync_FilteredListOfAssignmentsIsReturned(string searchString)
         {
             // Arrange
-            var logger = Mock.Of<Microsoft.Extensions.Logging.ILogger<ERPSystem.Pages.Assignments.IndexModel>>(); 
             var config = new ConfigurationBuilder().Build();
-            var pageModel = new ERPSystem.Pages.Assignments.IndexModel(context, config, logger, null);
+            var pageModel = new ERPSystem.Pages.Assignments.IndexModel(context, config, null);
             IQueryable<Assignment> expectedAssignments = context.Assignments;
             if (!String.IsNullOrEmpty(searchString))
             {
@@ -210,9 +207,8 @@ namespace AssignmentTest
         public async Task Assignment_IndexModel_OnGetAsync_PaginationWorkingAsExpected(int pageIndex)
         {
             // Arrange
-            var logger = Mock.Of<Microsoft.Extensions.Logging.ILogger<ERPSystem.Pages.Assignments.IndexModel>>();
             var config = new ConfigurationBuilder().Build();
-            var pageModel = new ERPSystem.Pages.Assignments.IndexModel(context, config, logger, null);
+            var pageModel = new ERPSystem.Pages.Assignments.IndexModel(context, config, null);
             List<Assignment> expectedAssignments = new List<Assignment>();
             if (pageIndex > 0 && pageIndex <= Math.Ceiling((double)context.Assignments.Count() / (double)PageSize))
             {
@@ -247,8 +243,7 @@ namespace AssignmentTest
         public async Task Assignment_CreateModel_OnPostAsync_AssignmentIsAdded()
         {
             // Arrange
-            var logger = Mock.Of<Microsoft.Extensions.Logging.ILogger<ERPSystem.Pages.Assignments.CreateModel>>();
-            var pageModel = new ERPSystem.Pages.Assignments.CreateModel(context, stateLookup, new AssignmentDateValidator(), logger);
+            var pageModel = new ERPSystem.Pages.Assignments.CreateModel(context, stateLookup, new AssignmentDateValidator());
             var expectedAssignment = new Assignment
             {
                 Name = "Test Assignment",
@@ -277,8 +272,7 @@ namespace AssignmentTest
         public async Task Assignment_CreateModel_OnPostAsync_IfStartDateAfterEndDate_ReturnPageResultWithValidationError()
         {
             // Arrange
-            var logger = Mock.Of<Microsoft.Extensions.Logging.ILogger<ERPSystem.Pages.Assignments.CreateModel>>();
-            var pageModel = new ERPSystem.Pages.Assignments.CreateModel(context, stateLookup, new AssignmentDateValidator(), logger);
+            var pageModel = new ERPSystem.Pages.Assignments.CreateModel(context, stateLookup, new AssignmentDateValidator());
             pageModel.Assignment = new Assignment
             {
                 Name = "Invalid Date Assignment",
@@ -302,8 +296,7 @@ namespace AssignmentTest
         public async Task Assignment_CreateModel_OnPostAsync_IfInvalidModel_ReturnPageResult()
         {
             // Arrange
-            var logger = Mock.Of<Microsoft.Extensions.Logging.ILogger<ERPSystem.Pages.Assignments.CreateModel>>(); 
-            var pageModel = new ERPSystem.Pages.Assignments.CreateModel(context, stateLookup, new AssignmentDateValidator(), logger);
+            var pageModel = new ERPSystem.Pages.Assignments.CreateModel(context, stateLookup, new AssignmentDateValidator());
             var expectedAssignment = new Assignment
             {
                 Id = 10,
@@ -328,8 +321,7 @@ namespace AssignmentTest
         public async Task Assignment_DeleteModel_OnGetAsync_AssignmentIsFetched()
         {
             // Arrange
-            var logger = Mock.Of<Microsoft.Extensions.Logging.ILogger<ERPSystem.Pages.Assignments.DeleteModel>>(); 
-            var pageModel = new ERPSystem.Pages.Assignments.DeleteModel(context, logger);
+            var pageModel = new ERPSystem.Pages.Assignments.DeleteModel(context);
             var testId = 1;
 
             // Act
@@ -348,8 +340,7 @@ namespace AssignmentTest
         public async Task Assignment_DeleteModel_OnPostAsync_AssignmentIsDeleted_WhenAssignmentIsFound()
         {
             // Arrange
-            var logger = Mock.Of<Microsoft.Extensions.Logging.ILogger<ERPSystem.Pages.Assignments.DeleteModel>>(); 
-            var pageModel = new ERPSystem.Pages.Assignments.DeleteModel(context, logger);
+            var pageModel = new ERPSystem.Pages.Assignments.DeleteModel(context);
             var testId = 1;
             var expectedAssignments = context.Assignments.Where(c => c.Id != testId).ToList();
 
@@ -369,8 +360,7 @@ namespace AssignmentTest
         public async Task Assignment_DeleteModel_OnPostAsync_NoAssignmentIsDeleted_WhenAssignmentIsNotFound()
         {
             // Arrange
-            var logger = Mock.Of<Microsoft.Extensions.Logging.ILogger<ERPSystem.Pages.Assignments.DeleteModel>>();
-            var pageModel = new ERPSystem.Pages.Assignments.DeleteModel(context, logger);
+            var pageModel = new ERPSystem.Pages.Assignments.DeleteModel(context);
             var testId = 11;
             var expectedAssignments = context.Assignments;
 
@@ -390,8 +380,7 @@ namespace AssignmentTest
         public async Task Assignment_EditModel_OnGetAsync_AssignmentIsFetched()
         {
             // Arrange
-            var logger = Mock.Of<Microsoft.Extensions.Logging.ILogger<ERPSystem.Pages.Assignments.EditModel>>();
-            var pageModel = new ERPSystem.Pages.Assignments.EditModel(context, stateLookup, new AssignmentDateValidator(), logger);
+            var pageModel = new ERPSystem.Pages.Assignments.EditModel(context, stateLookup, new AssignmentDateValidator());
             int testId = 2;
 
             // Act
@@ -410,9 +399,8 @@ namespace AssignmentTest
         public async Task Assignment_EditModel_OnPostAsync_AssignmentIsModified()
         {
             // Arrange
-            var logger = Mock.Of<Microsoft.Extensions.Logging.ILogger<ERPSystem.Pages.Assignments.EditModel>>();
             var testId = 1;
-            var pageModel = new ERPSystem.Pages.Assignments.EditModel(context, stateLookup, new AssignmentDateValidator(), logger);
+            var pageModel = new ERPSystem.Pages.Assignments.EditModel(context, stateLookup, new AssignmentDateValidator());
             var expectedAssignment = context.Assignments.FirstOrDefault(m => m.Id == testId);
             pageModel.Assignment = expectedAssignment;
             pageModel.Assignment.Name = "Modified Entity";
@@ -436,8 +424,7 @@ namespace AssignmentTest
         public async Task Assignment_EditModel_OnPostAsync_IfInvalidModel_ReturnPageResult()
         {
             // Arrange
-            var logger = Mock.Of<Microsoft.Extensions.Logging.ILogger<ERPSystem.Pages.Assignments.EditModel>>();
-            var pageModel = new ERPSystem.Pages.Assignments.EditModel(context, stateLookup, new AssignmentDateValidator(), logger);
+            var pageModel = new ERPSystem.Pages.Assignments.EditModel(context, stateLookup, new AssignmentDateValidator());
             int testId = 1;
             var expectedAssignment = context.Assignments.FirstOrDefault(m => m.Id == testId);
             pageModel.Assignment = expectedAssignment;
@@ -457,8 +444,7 @@ namespace AssignmentTest
         public async Task Assignment_DetailsModel_OnGetAsync_AssignmentIsFetched_WhenAssignmentIsFound()
         {
             // Arrange
-            var logger = Mock.Of<Microsoft.Extensions.Logging.ILogger<ERPSystem.Pages.Assignments.DetailsModel>>();
-            var pageModel = new ERPSystem.Pages.Assignments.DetailsModel(context, logger);
+            var pageModel = new ERPSystem.Pages.Assignments.DetailsModel(context);
             int testId = 2;
 
             // Act
@@ -477,8 +463,7 @@ namespace AssignmentTest
         public async Task Assignment_DetailsModel_OnGetAsync_NotFoundResultReturned_WhenAssignmentIsNotFound()
         {
             // Arrange
-            var logger = Mock.Of<Microsoft.Extensions.Logging.ILogger<ERPSystem.Pages.Assignments.DetailsModel>>();
-            var pageModel = new ERPSystem.Pages.Assignments.DetailsModel(context, logger);
+            var pageModel = new ERPSystem.Pages.Assignments.DetailsModel(context);
             int testId = 11;
 
             // Act

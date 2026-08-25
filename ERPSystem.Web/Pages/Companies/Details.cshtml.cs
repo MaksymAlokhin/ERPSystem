@@ -8,24 +8,21 @@ using Microsoft.EntityFrameworkCore;
 using ERPSystem.Infrastructure.Data;
 using ERPSystem.Domain.Entities;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.Extensions.Logging;
 
 namespace ERPSystem.Pages.Companies
 {
     public class DetailsModel : PageModel
     {
         private readonly ERPSystem.Infrastructure.Data.ApplicationDbContext _context;
-        private readonly ILogger<DetailsModel> _logger;
         public int? PageIndex { get; set; }
         public string CurrentFilter { get; set; }
         public string CurrentSort { get; set; }
         public List<Department> DepartmentsList { get; set; }
         public List<Branch> BranchesList { get; set; }
 
-        public DetailsModel(ERPSystem.Infrastructure.Data.ApplicationDbContext context, ILogger<DetailsModel> logger)
+        public DetailsModel(ERPSystem.Infrastructure.Data.ApplicationDbContext context)
         {
             _context = context;
-            _logger = logger;
         }
 
         public Company Company { get; set; }
@@ -64,8 +61,6 @@ namespace ERPSystem.Pages.Companies
             {
                 return NotFound();
             }
-
-            _logger.LogInformation("Details displayed for Company: {0}", Company.Name);
 
             return Page();
         }

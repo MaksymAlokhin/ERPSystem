@@ -13,7 +13,6 @@ using ERPSystem.Web.Validation;
 using FluentValidation;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.Extensions.Logging;
 
 namespace ERPSystem.Pages.Projects
 {
@@ -24,7 +23,6 @@ namespace ERPSystem.Pages.Projects
         private readonly IStateCascadeService _stateCascade;
         private readonly IEntityStateLookupService _stateLookup;
         private readonly IValidator<Project> _validator;
-        private readonly ILogger<CreateModel> _logger;
         public int? PageIndex { get; set; }
         public string CurrentFilter { get; set; }
         public string CurrentSort { get; set; }
@@ -34,13 +32,12 @@ namespace ERPSystem.Pages.Projects
         public int? ProjectManagerId;
 
         public CreateModel(ERPSystem.Infrastructure.Data.ApplicationDbContext context, IStateCascadeService stateCascade,
-            IEntityStateLookupService stateLookup, IValidator<Project> validator, ILogger<CreateModel> logger)
+            IEntityStateLookupService stateLookup, IValidator<Project> validator)
         {
             _context = context;
             _stateCascade = stateCascade;
             _stateLookup = stateLookup;
             _validator = validator;
-            _logger = logger;
         }
 
         public IActionResult OnGet(string sortOrder,
@@ -150,8 +147,6 @@ namespace ERPSystem.Pages.Projects
             ProjectsWithModifiedState.Add(NewProject.Id);
 
             _stateCascade.UpdateProjectDependants(ProjectsWithModifiedState);
-
-            _logger.LogInformation("Project created: {0}", NewProject.Name);
 
             return RedirectToPage("./Index", new
             {

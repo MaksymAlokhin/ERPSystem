@@ -10,7 +10,6 @@ using ERPSystem.Domain.Entities;
 using ERPSystem.Application.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.Extensions.Logging;
 
 namespace ERPSystem.Pages.Branches
 {
@@ -20,7 +19,6 @@ namespace ERPSystem.Pages.Branches
         private readonly ERPSystem.Infrastructure.Data.ApplicationDbContext _context;
         private readonly IStateCascadeService _stateCascade;
         private readonly IEntityStateLookupService _stateLookup;
-        private readonly ILogger<CreateModel> _logger;
         public int? PageIndex { get; set; }
         public string CurrentFilter { get; set; }
         public string CurrentSort { get; set; }
@@ -29,12 +27,11 @@ namespace ERPSystem.Pages.Branches
         public SelectList CompaniesSelectList { get; set; }
 
         public CreateModel(ERPSystem.Infrastructure.Data.ApplicationDbContext context, IStateCascadeService stateCascade,
-            IEntityStateLookupService stateLookup, ILogger<CreateModel> logger)
+            IEntityStateLookupService stateLookup)
         {
             _context = context;
             _stateCascade = stateCascade;
             _stateLookup = stateLookup;
-            _logger = logger;
         }
         public IActionResult OnGet(string sortOrder,
             string currentFilter, int? pageIndex)
@@ -106,8 +103,6 @@ namespace ERPSystem.Pages.Branches
             BranchesWithModifiedState.Add(NewBranch.Id);
 
             _stateCascade.UpdateBranchDependants(BranchesWithModifiedState);
-
-            _logger.LogInformation("Branch created: {0}", NewBranch.Name);
 
             return RedirectToPage("./Index", new
             {

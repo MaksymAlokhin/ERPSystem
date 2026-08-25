@@ -12,7 +12,6 @@ using ERPSystem.Application;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.Extensions.Logging;
 
 namespace ERPSystem.Pages.Employees
 {
@@ -24,7 +23,6 @@ namespace ERPSystem.Pages.Employees
         private readonly IEntityStateLookupService _stateLookup;
         private readonly IMentorLookupService _mentorLookup;
         private readonly IPhotoUploadService _photoUpload;
-        private readonly ILogger<CreateModel> _logger;
         public int? PageIndex { get; set; }
         public string CurrentFilter { get; set; }
         public string CurrentSort { get; set; }
@@ -36,15 +34,13 @@ namespace ERPSystem.Pages.Employees
         public IFormFile FormFile { get; set; }
 
         public CreateModel(ERPSystem.Infrastructure.Data.ApplicationDbContext context, IStateCascadeService stateCascade,
-            IEntityStateLookupService stateLookup, IMentorLookupService mentorLookup, IPhotoUploadService photoUpload,
-            ILogger<CreateModel> logger)
+            IEntityStateLookupService stateLookup, IMentorLookupService mentorLookup, IPhotoUploadService photoUpload)
         {
             _context = context;
             _stateCascade = stateCascade;
             _stateLookup = stateLookup;
             _mentorLookup = mentorLookup;
             _photoUpload = photoUpload;
-            _logger = logger;
         }
 
         public IActionResult OnGetAsync(EmployeeRole Role, string sortOrder,
@@ -288,8 +284,6 @@ namespace ERPSystem.Pages.Employees
             _stateCascade.UpdateProjectDependants(ProjectsWithModifiedState);
 
             Role = NewEmployee.EmployeeRole;
-
-            _logger.LogInformation("Employee created: {0}, {1}", NewEmployee.LastName, NewEmployee.FirstName);
 
             return RedirectToPage("./Index", new
             {

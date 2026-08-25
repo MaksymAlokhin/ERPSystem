@@ -10,7 +10,6 @@ using ERPSystem.Domain.Entities;
 using ERPSystem.Application.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.Extensions.Logging;
 
 namespace ERPSystem.Pages.Companies
 {
@@ -20,7 +19,6 @@ namespace ERPSystem.Pages.Companies
         private readonly ERPSystem.Infrastructure.Data.ApplicationDbContext _context;
         private readonly IStateCascadeService _stateCascade;
         private readonly IEntityStateLookupService _stateLookup;
-        private readonly ILogger<CreateModel> _logger;
         public int? PageIndex { get; set; }
         public string CurrentFilter { get; set; }
         public string CurrentSort { get; set; }
@@ -34,12 +32,11 @@ namespace ERPSystem.Pages.Companies
         public CompanyState State { get; set; }
 
         public CreateModel(ERPSystem.Infrastructure.Data.ApplicationDbContext context, IStateCascadeService stateCascade,
-            IEntityStateLookupService stateLookup, ILogger<CreateModel> logger)
+            IEntityStateLookupService stateLookup)
         {
             _context = context;
             _stateCascade = stateCascade;
             _stateLookup = stateLookup;
-            _logger = logger;
         }
 
         public IActionResult OnGet(string sortOrder,
@@ -148,8 +145,6 @@ namespace ERPSystem.Pages.Companies
             CompaniesWithModifiedState.Add(NewCompany.Id);
 
             _stateCascade.UpdateCompanyDependants(CompaniesWithModifiedState);
-
-            _logger.LogInformation("Company created: {0}", NewCompany.Name);
 
             return RedirectToPage("./Index", new
             {

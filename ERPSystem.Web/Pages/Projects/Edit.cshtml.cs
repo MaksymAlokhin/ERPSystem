@@ -12,7 +12,6 @@ using ERPSystem.Application.Interfaces;
 using ERPSystem.Web.Validation;
 using FluentValidation;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.Extensions.Logging;
 
 namespace ERPSystem.Pages.Projects
 {
@@ -23,7 +22,6 @@ namespace ERPSystem.Pages.Projects
         private readonly IStateCascadeService _stateCascade;
         private readonly IEntityStateLookupService _stateLookup;
         private readonly IValidator<Project> _validator;
-        private readonly ILogger<EditModel> _logger;
         public int? PageIndex { get; set; }
         public string CurrentFilter { get; set; }
         public string CurrentSort { get; set; }
@@ -33,13 +31,12 @@ namespace ERPSystem.Pages.Projects
         public int? ProjectManagerId;
         List<int> ProjectsWithModifiedState { get; set; }
         public EditModel(ERPSystem.Infrastructure.Data.ApplicationDbContext context, IStateCascadeService stateCascade,
-            IEntityStateLookupService stateLookup, IValidator<Project> validator, ILogger<EditModel> logger)
+            IEntityStateLookupService stateLookup, IValidator<Project> validator)
         {
             _context = context;
             _stateCascade = stateCascade;
             _stateLookup = stateLookup;
             _validator = validator;
-            _logger = logger;
         }
 
         [BindProperty]
@@ -186,8 +183,6 @@ namespace ERPSystem.Pages.Projects
 
             _stateCascade.UpdateProjectDependants(ProjectsWithModifiedState);
             _stateCascade.UpdateWhenParentIsNull();
-
-            _logger.LogInformation("Project modified: {0}", ProjectToUpdate.Name);
 
             return RedirectToPage("./Index", new
             {

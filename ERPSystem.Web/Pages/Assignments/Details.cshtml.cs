@@ -8,22 +8,19 @@ using Microsoft.EntityFrameworkCore;
 using ERPSystem.Infrastructure.Data;
 using ERPSystem.Domain.Entities;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.Extensions.Logging;
 
 namespace ERPSystem.Pages.Assignments
 {
     public class DetailsModel : PageModel
     {
         private readonly ERPSystem.Infrastructure.Data.ApplicationDbContext _context;
-        private readonly ILogger<DetailsModel> _logger;
         public int? PageIndex { get; set; }
         public string CurrentFilter { get; set; }
         public string CurrentSort { get; set; }
 
-        public DetailsModel(ERPSystem.Infrastructure.Data.ApplicationDbContext context, ILogger<DetailsModel> logger)
+        public DetailsModel(ERPSystem.Infrastructure.Data.ApplicationDbContext context)
         {
             _context = context;
-            _logger = logger;
         }
 
         public Assignment Assignment { get; set; }
@@ -48,8 +45,6 @@ namespace ERPSystem.Pages.Assignments
             {
                 return NotFound();
             }
-
-            _logger.LogInformation("Details displayed for Assignment: {0}", Assignment.Name);
 
             return Page();
         }

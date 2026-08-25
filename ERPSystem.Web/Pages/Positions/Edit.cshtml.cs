@@ -12,7 +12,6 @@ using ERPSystem.Application.Interfaces;
 using ERPSystem.Web.Validation;
 using FluentValidation;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.Extensions.Logging;
 
 namespace ERPSystem.Pages.Positions
 {
@@ -23,7 +22,6 @@ namespace ERPSystem.Pages.Positions
         private readonly IStateCascadeService _stateCascade;
         private readonly IEntityStateLookupService _stateLookup;
         private readonly IValidator<Position> _validator;
-        private readonly ILogger<EditModel> _logger;
         public int? PageIndex { get; set; }
         public string CurrentFilter { get; set; }
         public string CurrentSort { get; set; }
@@ -31,13 +29,12 @@ namespace ERPSystem.Pages.Positions
         public SelectList AssignmentsSelectList { get; set; }
         List<int> PositionsWithModifiedState { get; set; }
         public EditModel(ERPSystem.Infrastructure.Data.ApplicationDbContext context, IStateCascadeService stateCascade,
-            IEntityStateLookupService stateLookup, IValidator<Position> validator, ILogger<EditModel> logger)
+            IEntityStateLookupService stateLookup, IValidator<Position> validator)
         {
             _context = context;
             _stateCascade = stateCascade;
             _stateLookup = stateLookup;
             _validator = validator;
-            _logger = logger;
         }
 
         [BindProperty]
@@ -169,8 +166,6 @@ namespace ERPSystem.Pages.Positions
 
             _stateCascade.UpdatePositionDependants(PositionsWithModifiedState);
             _stateCascade.UpdateWhenParentIsNull();
-
-            _logger.LogInformation("Position modified: {0}", PositionToUpdate.Name);
 
             return RedirectToPage("./Index", new
             {

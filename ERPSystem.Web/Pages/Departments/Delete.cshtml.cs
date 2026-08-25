@@ -9,7 +9,6 @@ using ERPSystem.Infrastructure.Data;
 using ERPSystem.Domain.Entities;
 using ERPSystem.Application.Interfaces;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.Extensions.Logging;
 
 namespace ERPSystem.Pages.Departments
 {
@@ -18,17 +17,15 @@ namespace ERPSystem.Pages.Departments
     {
         private readonly ERPSystem.Infrastructure.Data.ApplicationDbContext _context;
         private readonly IStateCascadeService _stateCascade;
-        private readonly ILogger<DeleteModel> _logger;
         public int? PageIndex { get; set; }
         public string CurrentFilter { get; set; }
         public string CurrentSort { get; set; }
         public IEnumerable<Project> ProjectsList { get; set; }
 
-        public DeleteModel(ERPSystem.Infrastructure.Data.ApplicationDbContext context, IStateCascadeService stateCascade, ILogger<DeleteModel> logger)
+        public DeleteModel(ERPSystem.Infrastructure.Data.ApplicationDbContext context, IStateCascadeService stateCascade)
         {
             _context = context;
             _stateCascade = stateCascade;
-            _logger = logger;
         }
 
         [BindProperty]
@@ -82,8 +79,6 @@ namespace ERPSystem.Pages.Departments
 
             if (Department != null)
             {
-                _logger.LogInformation("Department deleted: {0}", Department.Name);
-
                 _context.Departments.Remove(Department);
                 await _context.SaveChangesAsync();
             }

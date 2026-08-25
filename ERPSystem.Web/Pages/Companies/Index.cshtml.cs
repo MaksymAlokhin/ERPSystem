@@ -9,14 +9,12 @@ using ERPSystem.Infrastructure.Data;
 using ERPSystem.Domain.Entities;
 using Microsoft.Extensions.Configuration;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.Extensions.Logging;
 
 namespace ERPSystem.Pages.Companies
 {
     public class IndexModel : PageModel
     {
         private readonly ERPSystem.Infrastructure.Data.ApplicationDbContext _context;
-        private readonly ILogger<IndexModel> _logger;
         private readonly IConfiguration Configuration;
         private readonly IAuthorizationService _authorizationService;
         public string NameSort { get; set; }
@@ -26,12 +24,11 @@ namespace ERPSystem.Pages.Companies
         public string CurrentSort { get; set; }
         public PaginatedList<Company> Company { get; set; }
 
-        public IndexModel(ERPSystem.Infrastructure.Data.ApplicationDbContext context, IConfiguration configuration, ILogger<IndexModel> logger,
+        public IndexModel(ERPSystem.Infrastructure.Data.ApplicationDbContext context, IConfiguration configuration,
             IAuthorizationService authorizationService)
         {
             _context = context;
             Configuration = configuration;
-            _logger = logger;
             _authorizationService = authorizationService;
         }
         public async Task OnGetAsync(string sortOrder,
@@ -81,8 +78,6 @@ namespace ERPSystem.Pages.Companies
             var pageSize = Configuration.GetValue("PageSize", 7);
             Company = await PaginatedList<Company>.CreateAsync(
                 companiesIQ.AsNoTracking(), pageIndex ?? 1, pageSize);
-
-            _logger.LogInformation("Displaying page {0} of Companies", pageIndex ?? 1);
         }
         //Method to debug states
         public async Task<IActionResult> OnGetActivateAsync(string sortOrder,
@@ -107,8 +102,6 @@ namespace ERPSystem.Pages.Companies
                 }
             }
             await _context.SaveChangesAsync();
-
-            //_logger.LogInformation("Company Index returned {0} entries", Company.Count());
 
             return RedirectToPage("./Index", new
             {

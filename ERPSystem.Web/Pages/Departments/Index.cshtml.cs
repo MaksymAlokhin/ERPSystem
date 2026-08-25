@@ -9,14 +9,12 @@ using ERPSystem.Infrastructure.Data;
 using ERPSystem.Domain.Entities;
 using Microsoft.Extensions.Configuration;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.Extensions.Logging;
 
 namespace ERPSystem.Pages.Departments
 {
     public class IndexModel : PageModel
     {
         private readonly ERPSystem.Infrastructure.Data.ApplicationDbContext _context;
-        private readonly ILogger<IndexModel> _logger;
         private readonly IConfiguration Configuration;
         private readonly IAuthorizationService _authorizationService;
         public string NameSort { get; set; }
@@ -27,12 +25,11 @@ namespace ERPSystem.Pages.Departments
         public string CurrentSort { get; set; }
         public PaginatedList<Department> Department { get; set; }
 
-        public IndexModel(ERPSystem.Infrastructure.Data.ApplicationDbContext context, IConfiguration configuration, ILogger<IndexModel> logger,
+        public IndexModel(ERPSystem.Infrastructure.Data.ApplicationDbContext context, IConfiguration configuration,
             IAuthorizationService authorizationService)
         {
             _context = context;
             Configuration = configuration;
-            _logger = logger;
             _authorizationService = authorizationService;
         }
         public async Task OnGetAsync(string sortOrder,
@@ -90,8 +87,6 @@ namespace ERPSystem.Pages.Departments
             var pageSize = Configuration.GetValue("PageSize", 7);
             Department = await PaginatedList<Department>.CreateAsync(
                 departmentsIQ.AsNoTracking(), pageIndex ?? 1, pageSize);
-
-            _logger.LogInformation("Displaying page {0} of Departments", pageIndex ?? 1);
         }
         //Method to debug states
         public async Task<IActionResult> OnGetActivateAsync(string sortOrder,
