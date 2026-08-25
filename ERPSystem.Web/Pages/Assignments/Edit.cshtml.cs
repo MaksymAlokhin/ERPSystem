@@ -9,6 +9,8 @@ using Microsoft.EntityFrameworkCore;
 using ERPSystem.Infrastructure.Data;
 using ERPSystem.Domain.Entities;
 using ERPSystem.Application.Interfaces;
+using ERPSystem.Web.Validation;
+using FluentValidation;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.Extensions.Logging;
 
@@ -19,15 +21,17 @@ namespace ERPSystem.Pages.Assignments
     {
         private readonly ERPSystem.Infrastructure.Data.ApplicationDbContext _context;
         private readonly IEntityStateLookupService _stateLookup;
+        private readonly IValidator<Assignment> _validator;
         private readonly ILogger<EditModel> _logger;
         public int? PageIndex { get; set; }
         public string CurrentFilter { get; set; }
         public string CurrentSort { get; set; }
 
-        public EditModel(ERPSystem.Infrastructure.Data.ApplicationDbContext context, IEntityStateLookupService stateLookup, ILogger<EditModel> logger)
+        public EditModel(ERPSystem.Infrastructure.Data.ApplicationDbContext context, IEntityStateLookupService stateLookup, IValidator<Assignment> validator, ILogger<EditModel> logger)
         {
             _context = context;
             _stateLookup = stateLookup;
+            _validator = validator;
             _logger = logger;
         }
 
@@ -66,6 +70,12 @@ namespace ERPSystem.Pages.Assignments
         public async Task<IActionResult> OnPostAsync(string sortOrder,
             string currentFilter, int? pageIndex)
         {
+            var validationResult = await _validator.ValidateAsync(Assignment);
+            if (!validationResult.IsValid)
+            {
+                validationResult.AddToModelState(ModelState, nameof(Assignment));
+            }
+
             if (!ModelState.IsValid)
             {
                 return Page();

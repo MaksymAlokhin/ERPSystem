@@ -4,6 +4,7 @@ using ERPSystem.Pages;
 using ERPSystem.Infrastructure.Data;
 using ERPSystem.Domain.Entities;
 using ERPSystem.Application.Interfaces;
+using ERPSystem.Application.Validators;
 using ERPSystem.Infrastructure.Services;
 using Microsoft.EntityFrameworkCore;
 using Moq;
@@ -247,7 +248,7 @@ namespace AssignmentTest
         {
             // Arrange
             var logger = Mock.Of<Microsoft.Extensions.Logging.ILogger<ERPSystem.Pages.Assignments.CreateModel>>();
-            var pageModel = new ERPSystem.Pages.Assignments.CreateModel(context, stateLookup, logger);
+            var pageModel = new ERPSystem.Pages.Assignments.CreateModel(context, stateLookup, new AssignmentDateValidator(), logger);
             var expectedAssignment = new Assignment
             {
                 Name = "Test Assignment",
@@ -273,11 +274,36 @@ namespace AssignmentTest
 
         //CreateModel
         [Fact]
+        public async Task Assignment_CreateModel_OnPostAsync_IfStartDateAfterEndDate_ReturnPageResultWithValidationError()
+        {
+            // Arrange
+            var logger = Mock.Of<Microsoft.Extensions.Logging.ILogger<ERPSystem.Pages.Assignments.CreateModel>>();
+            var pageModel = new ERPSystem.Pages.Assignments.CreateModel(context, stateLookup, new AssignmentDateValidator(), logger);
+            pageModel.Assignment = new Assignment
+            {
+                Name = "Invalid Date Assignment",
+                StartDate = DateTime.Parse("2023-03-05"),
+                EndDate = DateTime.Parse("2020-12-30"),
+                FTE = 0.5,
+                AssignmentState = AssignmentState.Inactive
+            };
+
+            // Act
+            var result = await pageModel.OnPostAsync(null, null, null);
+
+            // Assert
+            Assert.IsType<PageResult>(result);
+            Assert.False(pageModel.ModelState.IsValid);
+            Assert.True(pageModel.ModelState.ContainsKey("Assignment.StartDate"));
+        }
+
+        //CreateModel
+        [Fact]
         public async Task Assignment_CreateModel_OnPostAsync_IfInvalidModel_ReturnPageResult()
         {
             // Arrange
             var logger = Mock.Of<Microsoft.Extensions.Logging.ILogger<ERPSystem.Pages.Assignments.CreateModel>>(); 
-            var pageModel = new ERPSystem.Pages.Assignments.CreateModel(context, stateLookup, logger);
+            var pageModel = new ERPSystem.Pages.Assignments.CreateModel(context, stateLookup, new AssignmentDateValidator(), logger);
             var expectedAssignment = new Assignment
             {
                 Id = 10,
@@ -365,7 +391,7 @@ namespace AssignmentTest
         {
             // Arrange
             var logger = Mock.Of<Microsoft.Extensions.Logging.ILogger<ERPSystem.Pages.Assignments.EditModel>>();
-            var pageModel = new ERPSystem.Pages.Assignments.EditModel(context, stateLookup, logger);
+            var pageModel = new ERPSystem.Pages.Assignments.EditModel(context, stateLookup, new AssignmentDateValidator(), logger);
             int testId = 2;
 
             // Act
@@ -386,7 +412,7 @@ namespace AssignmentTest
             // Arrange
             var logger = Mock.Of<Microsoft.Extensions.Logging.ILogger<ERPSystem.Pages.Assignments.EditModel>>();
             var testId = 1;
-            var pageModel = new ERPSystem.Pages.Assignments.EditModel(context, stateLookup, logger);
+            var pageModel = new ERPSystem.Pages.Assignments.EditModel(context, stateLookup, new AssignmentDateValidator(), logger);
             var expectedAssignment = context.Assignments.FirstOrDefault(m => m.Id == testId);
             pageModel.Assignment = expectedAssignment;
             pageModel.Assignment.Name = "Modified Entity";
@@ -411,7 +437,7 @@ namespace AssignmentTest
         {
             // Arrange
             var logger = Mock.Of<Microsoft.Extensions.Logging.ILogger<ERPSystem.Pages.Assignments.EditModel>>();
-            var pageModel = new ERPSystem.Pages.Assignments.EditModel(context, stateLookup, logger);
+            var pageModel = new ERPSystem.Pages.Assignments.EditModel(context, stateLookup, new AssignmentDateValidator(), logger);
             int testId = 1;
             var expectedAssignment = context.Assignments.FirstOrDefault(m => m.Id == testId);
             pageModel.Assignment = expectedAssignment;

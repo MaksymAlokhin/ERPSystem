@@ -9,6 +9,8 @@ using Microsoft.EntityFrameworkCore;
 using ERPSystem.Infrastructure.Data;
 using ERPSystem.Domain.Entities;
 using ERPSystem.Application.Interfaces;
+using ERPSystem.Web.Validation;
+using FluentValidation;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.Extensions.Logging;
 
@@ -20,6 +22,7 @@ namespace ERPSystem.Pages.Positions
         private readonly ERPSystem.Infrastructure.Data.ApplicationDbContext _context;
         private readonly IStateCascadeService _stateCascade;
         private readonly IEntityStateLookupService _stateLookup;
+        private readonly IValidator<Position> _validator;
         private readonly ILogger<EditModel> _logger;
         public int? PageIndex { get; set; }
         public string CurrentFilter { get; set; }
@@ -28,11 +31,12 @@ namespace ERPSystem.Pages.Positions
         public SelectList AssignmentsSelectList { get; set; }
         List<int> PositionsWithModifiedState { get; set; }
         public EditModel(ERPSystem.Infrastructure.Data.ApplicationDbContext context, IStateCascadeService stateCascade,
-            IEntityStateLookupService stateLookup, ILogger<EditModel> logger)
+            IEntityStateLookupService stateLookup, IValidator<Position> validator, ILogger<EditModel> logger)
         {
             _context = context;
             _stateCascade = stateCascade;
             _stateLookup = stateLookup;
+            _validator = validator;
             _logger = logger;
         }
 
@@ -83,6 +87,12 @@ namespace ERPSystem.Pages.Positions
             string currentFilter, int? pageIndex, int[] SelectedAssignments)
         {
             PositionsWithModifiedState = new List<int>();
+
+            var validationResult = await _validator.ValidateAsync(Position);
+            if (!validationResult.IsValid)
+            {
+                validationResult.AddToModelState(ModelState, nameof(Position));
+            }
 
             if (!ModelState.IsValid)
             {

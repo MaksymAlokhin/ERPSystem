@@ -9,6 +9,8 @@ using Microsoft.EntityFrameworkCore;
 using ERPSystem.Infrastructure.Data;
 using ERPSystem.Domain.Entities;
 using ERPSystem.Application.Interfaces;
+using ERPSystem.Web.Validation;
+using FluentValidation;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.Extensions.Logging;
 
@@ -20,6 +22,7 @@ namespace ERPSystem.Pages.Projects
         private readonly ERPSystem.Infrastructure.Data.ApplicationDbContext _context;
         private readonly IStateCascadeService _stateCascade;
         private readonly IEntityStateLookupService _stateLookup;
+        private readonly IValidator<Project> _validator;
         private readonly ILogger<EditModel> _logger;
         public int? PageIndex { get; set; }
         public string CurrentFilter { get; set; }
@@ -30,11 +33,12 @@ namespace ERPSystem.Pages.Projects
         public int? ProjectManagerId;
         List<int> ProjectsWithModifiedState { get; set; }
         public EditModel(ERPSystem.Infrastructure.Data.ApplicationDbContext context, IStateCascadeService stateCascade,
-            IEntityStateLookupService stateLookup, ILogger<EditModel> logger)
+            IEntityStateLookupService stateLookup, IValidator<Project> validator, ILogger<EditModel> logger)
         {
             _context = context;
             _stateCascade = stateCascade;
             _stateLookup = stateLookup;
+            _validator = validator;
             _logger = logger;
         }
 
@@ -95,6 +99,12 @@ namespace ERPSystem.Pages.Projects
             string sortOrder, string currentFilter, int? pageIndex, int[] SelectedPositions)
         {
             ProjectsWithModifiedState = new List<int>();
+
+            var validationResult = await _validator.ValidateAsync(Project);
+            if (!validationResult.IsValid)
+            {
+                validationResult.AddToModelState(ModelState, nameof(Project));
+            }
 
             if (!ModelState.IsValid)
             {

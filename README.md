@@ -3,6 +3,8 @@ ERPSystem<br />
 =========
 Demo App<br />
 
+![ERPSystem](Screenshots/ERPSystem.png)<br /><br />
+
 Technologies<br />
 ----------------------
 ![TechnologiesUsed](Screenshots/TechnologiesUsed.jpg)<br /><br />
@@ -21,8 +23,8 @@ Password:<br />
 
 Built With:<br />
 --------------------
-- ASP.NET Core 5
-- Entity Framework Core 5
+- ASP.NET Core 10
+- Entity Framework Core 10
 - Razor Pages
 - SQL Server
 - Microsoft Identity

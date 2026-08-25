@@ -4,6 +4,7 @@ using ERPSystem.Pages;
 using ERPSystem.Infrastructure.Data;
 using ERPSystem.Domain.Entities;
 using ERPSystem.Application.Interfaces;
+using ERPSystem.Application.Validators;
 using ERPSystem.Infrastructure.Services;
 using Microsoft.EntityFrameworkCore;
 using Moq;
@@ -235,7 +236,7 @@ namespace PositionTest
         {
             // Arrange
             var logger = Mock.Of<Microsoft.Extensions.Logging.ILogger<ERPSystem.Pages.Positions.CreateModel>>();
-            var pageModel = new ERPSystem.Pages.Positions.CreateModel(context, stateCascade, stateLookup, logger);
+            var pageModel = new ERPSystem.Pages.Positions.CreateModel(context, stateCascade, stateLookup, new PositionDateValidator(), logger);
             var expectedPosition = new Position 
             {
                 Name = "Test Position",
@@ -260,11 +261,35 @@ namespace PositionTest
 
         //CreateModel
         [Fact]
+        public async Task Position_CreateModel_OnPostAsync_IfStartDateAfterEndDate_ReturnPageResultWithValidationError()
+        {
+            // Arrange
+            var logger = Mock.Of<Microsoft.Extensions.Logging.ILogger<ERPSystem.Pages.Positions.CreateModel>>();
+            var pageModel = new ERPSystem.Pages.Positions.CreateModel(context, stateCascade, stateLookup, new PositionDateValidator(), logger);
+            pageModel.Position = new Position
+            {
+                Name = "Invalid Date Position",
+                StartDate = DateTime.Parse("2022-04-01"),
+                EndDate = DateTime.Parse("2021-08-18"),
+                PositionState = PositionState.Active
+            };
+
+            // Act
+            var result = await pageModel.OnPostAsync(null, null, null, null);
+
+            // Assert
+            Assert.IsType<PageResult>(result);
+            Assert.False(pageModel.ModelState.IsValid);
+            Assert.True(pageModel.ModelState.ContainsKey("Position.StartDate"));
+        }
+
+        //CreateModel
+        [Fact]
         public async Task Position_CreateModel_OnPostAsync_IfInvalidModel_ReturnPageResult()
         {
             // Arrange
             var logger = Mock.Of<Microsoft.Extensions.Logging.ILogger<ERPSystem.Pages.Positions.CreateModel>>();
-            var pageModel = new ERPSystem.Pages.Positions.CreateModel(context, stateCascade, stateLookup, logger);
+            var pageModel = new ERPSystem.Pages.Positions.CreateModel(context, stateCascade, stateLookup, new PositionDateValidator(), logger);
             var expectedPosition = new Position
             {
                 Name = "Test Position",
@@ -352,7 +377,7 @@ namespace PositionTest
         {
             // Arrange
             var logger = Mock.Of<Microsoft.Extensions.Logging.ILogger<ERPSystem.Pages.Positions.EditModel>>();
-            var pageModel = new ERPSystem.Pages.Positions.EditModel(context, stateCascade, stateLookup, logger);
+            var pageModel = new ERPSystem.Pages.Positions.EditModel(context, stateCascade, stateLookup, new PositionDateValidator(), logger);
             int testId = 2;
 
             // Act
@@ -375,7 +400,7 @@ namespace PositionTest
             // Arrange
             var logger = Mock.Of<Microsoft.Extensions.Logging.ILogger<ERPSystem.Pages.Positions.EditModel>>();
             var testId = 1;
-            var pageModel = new ERPSystem.Pages.Positions.EditModel(context, stateCascade, stateLookup, logger);
+            var pageModel = new ERPSystem.Pages.Positions.EditModel(context, stateCascade, stateLookup, new PositionDateValidator(), logger);
             var expectedPosition = context.Positions.FirstOrDefault(m => m.Id == testId);
             pageModel.Position = expectedPosition;
             pageModel.Position.Name = "Modified Entity";
@@ -404,7 +429,7 @@ namespace PositionTest
         {
             // Arrange
             var logger = Mock.Of<Microsoft.Extensions.Logging.ILogger<ERPSystem.Pages.Positions.EditModel>>();
-            var pageModel = new ERPSystem.Pages.Positions.EditModel(context, stateCascade, stateLookup, logger);
+            var pageModel = new ERPSystem.Pages.Positions.EditModel(context, stateCascade, stateLookup, new PositionDateValidator(), logger);
             int testId = 1;
             var expectedPosition = context.Positions.FirstOrDefault(m => m.Id == testId);
             pageModel.Position = expectedPosition;

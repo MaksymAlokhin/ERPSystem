@@ -4,6 +4,7 @@ using ERPSystem.Pages;
 using ERPSystem.Infrastructure.Data;
 using ERPSystem.Domain.Entities;
 using ERPSystem.Application.Interfaces;
+using ERPSystem.Application.Validators;
 using ERPSystem.Infrastructure.Services;
 using Microsoft.EntityFrameworkCore;
 using Moq;
@@ -245,7 +246,7 @@ namespace ProjectTest
         {
             // Arrange
             var logger = Mock.Of<Microsoft.Extensions.Logging.ILogger<ERPSystem.Pages.Projects.CreateModel>>();
-            var pageModel = new ERPSystem.Pages.Projects.CreateModel(context, stateCascade, stateLookup, logger);
+            var pageModel = new ERPSystem.Pages.Projects.CreateModel(context, stateCascade, stateLookup, new ProjectDateValidator(), logger);
             var expectedProject = new Project
             {
                 Name = "Test Project",
@@ -270,11 +271,35 @@ namespace ProjectTest
 
         //CreateModel
         [Fact]
+        public async Task Project_CreateModel_OnPostAsync_IfStartDateAfterEndDate_ReturnPageResultWithValidationError()
+        {
+            // Arrange
+            var logger = Mock.Of<Microsoft.Extensions.Logging.ILogger<ERPSystem.Pages.Projects.CreateModel>>();
+            var pageModel = new ERPSystem.Pages.Projects.CreateModel(context, stateCascade, stateLookup, new ProjectDateValidator(), logger);
+            pageModel.Project = new Project
+            {
+                Name = "Invalid Date Project",
+                StartDate = DateTime.Parse("2023-07-01"),
+                EndDate = DateTime.Parse("2019-11-13"),
+                ProjectState = ProjectState.Active
+            };
+
+            // Act
+            var result = await pageModel.OnPostAsync(null, null, null, null, null);
+
+            // Assert
+            Assert.IsType<PageResult>(result);
+            Assert.False(pageModel.ModelState.IsValid);
+            Assert.True(pageModel.ModelState.ContainsKey("Project.StartDate"));
+        }
+
+        //CreateModel
+        [Fact]
         public async Task Project_CreateModel_OnPostAsync_IfInvalidModel_ReturnPageResult()
         {
             // Arrange
             var logger = Mock.Of<Microsoft.Extensions.Logging.ILogger<ERPSystem.Pages.Projects.CreateModel>>();
-            var pageModel = new ERPSystem.Pages.Projects.CreateModel(context, stateCascade, stateLookup, logger);
+            var pageModel = new ERPSystem.Pages.Projects.CreateModel(context, stateCascade, stateLookup, new ProjectDateValidator(), logger);
             var expectedProject = new Project
             {
                 Name = "Test Project",
@@ -362,7 +387,7 @@ namespace ProjectTest
         {
             // Arrange
             var logger = Mock.Of<Microsoft.Extensions.Logging.ILogger<ERPSystem.Pages.Projects.EditModel>>();
-            var pageModel = new ERPSystem.Pages.Projects.EditModel(context, stateCascade, stateLookup, logger);
+            var pageModel = new ERPSystem.Pages.Projects.EditModel(context, stateCascade, stateLookup, new ProjectDateValidator(), logger);
             int testId = 2;
 
             // Act
@@ -385,7 +410,7 @@ namespace ProjectTest
             // Arrange
             var logger = Mock.Of<Microsoft.Extensions.Logging.ILogger<ERPSystem.Pages.Projects.EditModel>>();
             var testId = 1;
-            var pageModel = new ERPSystem.Pages.Projects.EditModel(context, stateCascade, stateLookup, logger);
+            var pageModel = new ERPSystem.Pages.Projects.EditModel(context, stateCascade, stateLookup, new ProjectDateValidator(), logger);
             var expectedProject = context.Projects.FirstOrDefault(m => m.Id == testId);
             pageModel.Project = expectedProject;
             pageModel.Project.Name = "Modified Entity";
@@ -410,7 +435,7 @@ namespace ProjectTest
         {
             // Arrange
             var logger = Mock.Of<Microsoft.Extensions.Logging.ILogger<ERPSystem.Pages.Projects.EditModel>>();
-            var pageModel = new ERPSystem.Pages.Projects.EditModel(context, stateCascade, stateLookup, logger);
+            var pageModel = new ERPSystem.Pages.Projects.EditModel(context, stateCascade, stateLookup, new ProjectDateValidator(), logger);
             int testId = 1;
             var expectedProject = context.Projects.FirstOrDefault(m => m.Id == testId);
             pageModel.Project = expectedProject;
