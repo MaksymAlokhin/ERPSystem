@@ -24,7 +24,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\ERPSystem\ERPSystem.csproj" />
+    <ProjectReference Include="..\ERPSystem.Web\ERPSystem.Web.csproj" />
   </ItemGroup>
 
 </Project>

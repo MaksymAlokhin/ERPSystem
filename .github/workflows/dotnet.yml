@@ -20,18 +20,15 @@ jobs:
     - name: Setup .NET
       uses: actions/setup-dotnet@v1
       with:
-        dotnet-version: 5.0.x
+        dotnet-version: 10.0.x
     - name: Restore dependencies
-      run: dotnet restore
-      working-directory: ERPSystem
+      run: dotnet restore ERPSystem.sln
     - name: Build
-      run: dotnet build --no-restore
-      working-directory: ERPSystem
+      run: dotnet build ERPSystem.sln --no-restore
     - name: Test
-      run: dotnet test --no-build --verbosity normal
-      working-directory: ERPTest
+      run: dotnet test ERPSystem.sln --no-build --verbosity normal
     #- name: Publish
-    #  run: dotnet publish ERPSystem/ERPSystem.csproj -c Release -o website
+    #  run: dotnet publish ERPSystem.Web/ERPSystem.Web.csproj -c Release -o website
     #- name: 'Deploy to Azure WebApp'
     #  uses: azure/webapps-deploy@v2
     #  with:
